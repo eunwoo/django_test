@@ -30,6 +30,8 @@ def registerAdmin(request):
     if request.method == "POST":
         form = forms.AdminForm(request.POST)
         if form.is_valid():
+            form.instance.register = True
+            form.instance.is_system_manager = True
             form.save()
             return redirect("user:login")
     else:

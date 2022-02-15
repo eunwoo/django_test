@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     class3 = models.CharField(max_length=60)
     phone = models.CharField(max_length=20)
     signImage = models.ImageField(upload_to="signature/", blank=True)
+    is_system_manager = models.BooleanField(default=False)
     register = models.BooleanField(default=False)
     first_name = None
     last_name = None
