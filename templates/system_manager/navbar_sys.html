@@ -1,0 +1,52 @@
+<!-- navigation bar for system form -->
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <a href="{% url 'appform:update_sys' %}">
+        <button class="btn1 p-2 btn btn-light col-12">현장 등록</button>
+      </a>
+    </div>
+    <div class="col">
+      <a href="{% url 'appform:update_inst' %}">
+        <button class="btn1 p-2 btn btn-light col-12">설치위치명 등록</button>
+      </a>
+    </div>
+    <div class="col">
+      <a href="{% url 'appform:update_files' %}">
+        <button class="btn1 p-2 btn btn-light col-12">문서 등록</button>
+      </a>
+    </div>
+    <div class="col">
+      <a href="{% url 'appform:view_users' %}">
+        <button class="btn1 p-2 btn btn-light col-12">사용자 등록/삭제</button>
+      </a>
+    </div>
+    <div class="col-1 offset-1">
+      <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal">저장</button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content ">
+            <br><br>
+            <div class="modal-header" style="display:none">
+              <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-12">
+                    <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">저장이 완료 되었습니다.</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer" style="margin: 0 auto;">
+              <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal" form="sysform">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

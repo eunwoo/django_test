@@ -1,0 +1,165 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  System Information
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">기본정보 등록</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section>
+      {% include 'system_manager/navbar_sys.html' %}
+    </section>
+    <form action="" id="sysform" method="POST">
+      {% csrf_token %}
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">공사명</label>
+            </div>
+            <div class="col-8">
+              {{form.constName}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">현장 전화번호</label>
+            </div>
+            <div class="col-8">
+              {{form.constPhone}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">현장 주소</label>
+            </div>
+            <div class="col-8">
+              {{form.constAddress}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">발주자명</label>
+            </div>
+            <div class="col-8">
+              {{form.orderName}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">종합건설업체명</label>
+            </div>
+            <div class="col-8">
+              {{form.gcName}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">감리 및 CM 업체명</label>
+            </div>
+            <div class="col-8">
+              {{form.cmName}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">공사 기간</label>
+            </div>
+            <div class="col-4">
+              {{form.constStart}}
+            </div>
+            <div class="col-4">
+              {{form.constEnd}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12" style="white-space: normal;">관리 대상 조립 가설기자재 종류</label>
+            </div>
+            <div class="col-7">
+              {{form.equipType}}
+            </div>
+            <div class="col-1">
+              <button class="btnx col-12" type="button" style="height: 80%;">등록</button>
+            </div>
+          </div>
+          <div class="row mt-1">
+            <div class="col-7 offset-3">
+              <div style="border: 1px solid black; height: 100px;"></div>
+              <div class="row mt-3"></div>
+            </div>
+            <div class="col-1">
+              <button class="btnx col-12" type="button" style="height: 35%;">등록</button>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12" style="white-space: normal;">전문건설업체 관리자 연락처</label>
+            </div>
+            <div class="col-7">
+              <div class="row">
+                <div class="col-2 offset-3">
+                  <input type="text" class="text-center" placeholder="이름">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="text-center" placeholder="소속">
+                </div>
+                <div class="col-2">
+                  <input type="text" class="text-center" placeholder="전화번호">
+                </div>
+                <div class="col-2 offset-1">
+                  <button class="btnx" type="button">등록</button>
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="p-3">
+                  <div class="col-12" style="border: 1px solid black; height: 100px;">
+                    <div class="row mt-4">
+                      <div class="col-9 offset-1">
+                        {{form.contact}}
+                      </div>
+                      <div class="col-2">
+                        <button type="button" class="btnx" onclick="document.getElementById('id_contact').value = ''">삭제</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <br>
+        </div>
+      </section>
+    </form>
+  </div>
+  <br><br><br><br><br>
+
+</main>
+{% endblock %}
