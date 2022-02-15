@@ -1,5 +1,7 @@
 // Unibeautify 확장플러그인 설치 필수
 {
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true,
   "files.associations": {
     "**/*.html": "html",
     "**/templates/**/*.html": "django-html",
@@ -13,5 +15,7 @@
   "[django-html]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "Glavin001.unibeautify-vscode"
-  }
+  },
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "black"
 }
