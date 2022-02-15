@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
     class2 = models.CharField(max_length=60)
     class3 = models.CharField(max_length=60)
     phone = models.CharField(max_length=20)
-    signImage = models.ImageField(upload_to='signature/', blank=True)
+    signImage = models.ImageField(upload_to="signature/", blank=True)
     register = models.BooleanField(default=False)
     first_name = None
     last_name = None
