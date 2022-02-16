@@ -8,6 +8,7 @@ class CustomUser(AbstractUser):
     class1 = models.CharField(max_length=60)
     class2 = models.CharField(max_length=60)
     class3 = models.CharField(max_length=60)
+    company = models.CharField(max_length=60)
     phone = models.CharField(max_length=20)
     signImage = models.ImageField(upload_to="signature/", blank=True)
     is_system_manager = models.BooleanField(default=False)

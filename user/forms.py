@@ -13,6 +13,13 @@ class AdminForm(UserCreationForm):
         help_text="이메일을 입력해주세요.",
     )
 
+    company = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={"class": "col-12 text-center", "placeholder": "회사를 입력해주세요"}
+        ),
+    )
+
     username = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -38,6 +45,7 @@ class AdminForm(UserCreationForm):
         model = CustomUser
         fields = (
             "username",
+            "company",
             "name",
             "email",
             "phone",
