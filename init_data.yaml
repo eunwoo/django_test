@@ -1,0 +1,15 @@
+- model: system_manager.EquipmentTypes
+  pk: 1
+  fields:
+    type: "강관 비계"
+    isActive: False
+- model: system_manager.EquipmentTypes
+  pk: 2
+  fields:
+    type: "시스템 비계"
+    isActive: False
+- model: system_manager.EquipmentTypes
+  pk: 3
+  fields:
+    type: "시스템 동바리"
+    isActive: False
