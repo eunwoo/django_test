@@ -1,0 +1,137 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  System Information
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:apply_document' %}">문서 등록</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    {{type}}
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-3">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                파일 업로드
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">파일 업로드</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method='POST' action="{% url 'system_manager:upload_documents' type=type %}" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <input class="form-control" name='file' type="file" id="formFileMultiple" multiple="multiple">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                <tr>
+                  <th style="width: 5%;">
+                    No
+                  </th>
+                  <th style="width: 65%;">
+                    문서 이름
+                  </th>
+                  <th style="width: 15%;">
+                    다운로드
+                  </th>
+                  <th style="width: 15%;">
+                    삭제
+                  </th>
+                </tr>
+                {% for file in files %}
+                  <tr>
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      {{file.filename}}
+                    </td>
+                    <td>
+                      <a class="btn btn-primary" href="{{file.file.url}}" role="button">다운로드</a>
+                    </td>
+                    <td>
+                      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal5">삭제</button>
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                          <div class="modal-content ">
+                            <br><br>
+                            <div class="modal-body">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">{{file.filename}}<br><br>해당 파일을 삭제 하시겠습니까?</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer" style="margin: 0 auto;">
+                              <form action="{% url 'system_manager:delete_documents' file.id type %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">확인</button>
+                              </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <br><br><br><br><br>
+  </main>
+{% endblock %}

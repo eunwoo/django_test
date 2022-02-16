@@ -1,0 +1,44 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  System Information
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                  </li>
+                  <li class="breadcrumb-item">설치 위치 등록
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div>
+        여기를 작성해야 합니다.
+      </div>
+    </div>
+    <br><br><br><br><br>
+
+  </main>
+{% endblock %}
