@@ -40,3 +40,11 @@ def delete_documents(request, pk, type):
         return redirect("main:home")
     DocsFile.objects.get(pk=pk).delete()
     return redirect("system_manager:apply_document_template", type=type)
+
+
+# 구조 계산서, 시공상세도면 페이지
+@login_required(login_url="/user/login/")
+def detail_menu(request, type):
+    if not request.user.is_system_manager:  # 시스템 매니저만 접근 가능
+        return redirect("main:home")
+    return render(request, "system_manager/detail_menu.html", {"type": type})
