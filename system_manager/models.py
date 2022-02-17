@@ -45,6 +45,15 @@ class InstallLocate(models.Model):
         return self.class1 + " " + self.class2 + " " + self.class3
 
 
+# 설치 위치 구분
+class LocateClass(models.Model):
+    type = models.CharField(max_length=10)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+
 # 문서 등록
 class DocsFile(models.Model):
     file = models.FileField(upload_to="docs/")  # 파일
