@@ -75,9 +75,9 @@
                       {{user.phone}}
                     </td>
                     <td>
-                      <button class="btn btn-primary col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal5">등록</button>
+                      <button class="btn btn-primary col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">등록</button>
                       <!-- Modal -->
-                      <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-sm">
                           <div class="modal-content ">
                             <br><br>
@@ -153,9 +153,9 @@
                       {{user.phone}}
                     </td>
                     <td>
-                      <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal5">삭제</button>
+                      <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#userdelete{{forloop.counter}}">삭제</button>
                       <!-- Modal -->
-                      <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="userdelete{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-sm">
                           <div class="modal-content ">
                             <br><br>

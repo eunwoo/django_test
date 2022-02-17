@@ -98,9 +98,9 @@
                       <a class="btn btn-primary" href="{{file.file.url}}" role="button">다운로드</a>
                     </td>
                     <td>
-                      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal5">삭제</button>
+                      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">삭제</button>
                       <!-- Modal -->
-                      <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-sm">
                           <div class="modal-content ">
                             <br><br>
