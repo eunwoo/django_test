@@ -12,8 +12,20 @@ app_name = "system_manager"
 
 
 urlpatterns = [
-    # 현장등록
+    # 현장 관리
+    path("manage_field/", field_views.manage_field, name="manage_field"),
+    # 현장 등록 및 수정
     path("apply_field/", field_views.apply_field, name="apply_field"),
+    # 조립 가설기자재 관리
+    path("manage_equipments", field_views.manage_equipments, name="manage_equipments"),
+    # 조립 가설기자재 등록
+    path("apply_equipments/", field_views.apply_equipments, name="apply_equipments"),
+    # 전문건설업체 관리자 연락처
+    path("manage_cm_calls/", field_views.manage_cm_calls, name="manage_cm_calls"),
+    # 전문건설업체 관리자 연락처 삭제
+    path(
+        "delete_cm_calls/<int:pk>", field_views.delete_cm_calls, name="delete_cm_calls"
+    ),
     # 설치위치명 등록
     path("apply_locate/", locate_views.apply_locate, name="apply_locate"),
     # 사용자 등록 및 삭제
