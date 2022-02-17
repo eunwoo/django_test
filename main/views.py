@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 
-def index(request):
-    return HttpResponse("안녕하세요 pybo에 오신것을 환영합니다.")
+@login_required(login_url="/user/login/")
+def home(request):
+    user = request.user
+    return render(request, "main/home.html", {"user": user})

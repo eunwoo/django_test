@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "system_manager.apps.SystemManagerConfig",
     "user.apps.UserConfig",
     "main.apps.MainConfig",
     "django.contrib.admin",
@@ -107,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
-LANGUAGE_CODE = 'ko-kr'
+LANGUAGE_CODE = "ko-kr"
 
-TIME_ZONE = 'Asia/Seoul'
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
@@ -139,10 +140,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # 로그인 성공후 이동하는 URL
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
 
 # 로그아웃시 이동하는 URL
 
-LOGOUT_REDIRECT_URL = '/user/login'
+LOGOUT_REDIRECT_URL = "/user/login"
 
-AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = "user.CustomUser"

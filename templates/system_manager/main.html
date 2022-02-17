@@ -1,0 +1,44 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  Work
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    기본정보 등록
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br><br><br><br>
+      <section>
+        {% include 'system_manager/nav.html' %}
+      </section>
+      <br><br><br><br><br><br><br><br>
+    </div>
+
+  </main>
+{% endblock %}

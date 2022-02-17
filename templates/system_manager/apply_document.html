@@ -1,0 +1,75 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  System Information
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                  </li>
+                  <li class="breadcrumb-item">문서 등록
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br><br><br><br>
+      <section>
+        <div class="row justify-content-around">
+          <div class="col-2">
+            <a href="{% url "system_manager:apply_document_template" type="품질시험계획서" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">품질시험계획서
+              </button>
+            </a>
+          </div>
+          <div class="col-2">
+            <a href="{% url "system_manager:apply_document_template" type="안전점검계획서" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">안전점검계획서
+              </button>
+            </a>
+          </div>
+          <div class="col-2">
+            <a href="{% url "system_manager:detail_menu" type="구조 계산서" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">구조 계산서
+              </button>
+            </a>
+          </div>
+          <div class="col-2">
+            <a href="{% url "system_manager:detail_menu" type="시공상세도면" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시공상세도면</button>
+            </a>
+          </div>
+          <div class="col-2">
+            <a href="{% url "system_manager:apply_document_template" type="가설기자재 공급원 승인 문서" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">가설기자재 공급원 승인 문서</button>
+            </a>
+          </div>
+        </div>
+      </section>
+      <br><br><br><br><br><br><br><br>
+    </div>
+  </main>
+
+  <br><br><br><br><br>
+{% endblock %}

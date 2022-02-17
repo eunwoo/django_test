@@ -1,0 +1,198 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  System Information
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                  </li>
+                  <li class="breadcrumb-item">사용자 등록 및 삭제
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-3">등록 대기 회원
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                <tr>
+                  <th style="width: 5%;">
+                    No
+                  </th>
+                  <th style="width: 35%;">
+                    소속
+                  </th>
+                  <th style="width: 20%;">
+                    이름
+                  </th>
+                  <th style="width: 30%;">
+                    전화번호
+                  </th>
+                  <th style="width: 10%;">
+                    등록
+                  </th>
+                </tr>
+                {% for user in await_users %}
+                  <tr>
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      {{user.class1}}-{{user.company}}
+                    </td>
+                    <td>
+                      {{user.name}}
+                    </td>
+                    <td>
+                      {{user.phone}}
+                    </td>
+                    <td>
+                      <button class="btn btn-primary col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">등록</button>
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                          <div class="modal-content ">
+                            <br><br>
+                            <div class="modal-header" style="display:none">
+                              <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">[{{user.name}}]<br>해당 회원을 등록 하시겠습니까?</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer" style="margin: 0 auto;">
+                              <form action="{% url 'system_manager:register_user' user.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">확인</button>
+                              </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-3">등록 완료 회원
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                <tr>
+                  <th style="width: 5%;">
+                    No
+                  </th>
+                  <th style="width: 35%;">
+                    소속
+                  </th>
+                  <th style="width: 20%;">
+                    이름
+                  </th>
+                  <th style="width: 30%;">
+                    전화번호
+                  </th>
+                  <th style="width: 10%;">
+                    삭제
+                  </th>
+                </tr>
+                {% for user in registered_users %}
+                  <tr>
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      {{user.class1}}-{{user.company}}
+                    </td>
+                    <td>
+                      {{user.name}}
+                    </td>
+                    <td>
+                      {{user.phone}}
+                    </td>
+                    <td>
+                      <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#userdelete{{forloop.counter}}">삭제</button>
+                      <!-- Modal -->
+                      <div class="modal fade" id="userdelete{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                          <div class="modal-content ">
+                            <br><br>
+                            <div class="modal-header" style="display:none">
+                              <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">[{{user.name}}]<br>해당 회원을 삭제 하시겠습니까?</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer" style="margin: 0 auto;">
+                              <form action="{% url 'system_manager:delete_user' user.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">확인</button>
+                              </form>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+    <br><br><br><br><br>
+
+  </main>
+{% endblock %}
