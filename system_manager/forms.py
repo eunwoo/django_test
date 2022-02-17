@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Field
+from .models import Field, ConstructManager
 
 
 class FieldForm(forms.ModelForm):
@@ -21,7 +21,11 @@ class FieldForm(forms.ModelForm):
                 attrs={"class": "col-12 text-center", "placeholder": "공사명을 입력해주세요."}
             ),
             "callNum": forms.TextInput(
-                attrs={"class": "col-12 text-center", "placeholder": "현장 전화번호를 입력해주세요."}
+                attrs={
+                    "class": "col-12 text-center",
+                    "placeholder": "현장 전화번호를 입력해주세요. ex) 010-1234-5678",
+                    "pattern": "[0-9]{3}-[0-9]{4}-[0-9]{4}",
+                }
             ),
             "address": forms.TextInput(
                 attrs={"class": "col-12 text-center", "placeholder": "현장 주소를 입력해주세요."}
@@ -57,3 +61,13 @@ class FieldForm(forms.ModelForm):
                 },
             ),
         }
+
+
+class CmPhoneForm(forms.ModelForm):
+    class Meta:
+        model = ConstructManager
+        fields = [
+            "name",
+            "belong",
+            "phone",
+        ]
