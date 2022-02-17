@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "work.apps.WorkConfig",
     "system_manager.apps.SystemManagerConfig",
     "user.apps.UserConfig",
     "main.apps.MainConfig",
