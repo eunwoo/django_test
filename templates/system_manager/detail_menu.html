@@ -26,7 +26,13 @@
                   <li class="breadcrumb-item">
                     <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
                   </li>
-                  <li class="breadcrumb-item">문서 등록
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'system_manager:apply_document' %}">
+                      문서 등록
+                    </a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    {{type}}
                   </li>
                 </ol>
               </nav>
@@ -37,39 +43,34 @@
       <br><br><br><br>
       <section>
         <div class="row justify-content-around">
-          <div class="col-2">
-            <a href="{% url "system_manager:apply_document_template" type="품질시험계획서" %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">품질시험계획서
+          <div class="col-3">
+            {% with type|add:"-강관 비계" as 강관비계 %}
+            <a href="{% url "system_manager:apply_document_template" type=강관비계 %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">강관 비계
               </button>
             </a>
+            {% endwith %}
           </div>
-          <div class="col-2">
-            <a href="{% url "system_manager:apply_document_template" type="안전점검계획서" %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">안전점검계획서
+          <div class="col-3">
+            {% with type|add:"-시스템 비계" as 시스템비계 %}
+            <a href="{% url "system_manager:apply_document_template" type=시스템비계 %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 비계
               </button>
             </a>
+            {% endwith %}
           </div>
-          <div class="col-2">
-            <a href="{% url "system_manager:detail_menu" type="구조 계산서" %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">구조 계산서
+          <div class="col-3">
+            {% with type|add:"-시스템 동바리" as 시스템동바리 %}
+            <a href="{% url "system_manager:apply_document_template" type=시스템동바리 %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 동바리
               </button>
             </a>
-          </div>
-          <div class="col-2">
-            <a href="{% url "system_manager:detail_menu" type="시공상세도면" %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시공상세도면</button>
-            </a>
-          </div>
-          <div class="col-2">
-            <a href="{% url "system_manager:apply_document_template" type="가설기자재 공급원 승인 문서" %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">가설기자재 공급원 승인 문서</button>
-            </a>
+            {% endwith %}
           </div>
         </div>
       </section>
       <br><br><br><br><br><br><br><br>
     </div>
   </main>
-
   <br><br><br><br><br>
 {% endblock %}
