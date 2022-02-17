@@ -16,8 +16,6 @@ urlpatterns = [
     path("apply_field/", field_views.apply_field, name="apply_field"),
     # 설치위치명 등록
     path("apply_locate/", locate_views.apply_locate, name="apply_locate"),
-    # 문서 등록
-    path("apply_document/", document_views.apply_document, name="apply_document"),
     # 사용자 등록 및 삭제
     path(
         "user_management/",
@@ -40,6 +38,8 @@ urlpatterns = [
         document_views.apply_document_template,
         name="apply_document_template",
     ),
+    # 문서 등록
+    path("apply_document/", document_views.apply_document, name="apply_document"),
     # 문서 업로드
     path(
         "upload_documents/<str:type>/",
@@ -52,6 +52,8 @@ urlpatterns = [
         document_views.delete_documents,
         name="delete_documents",
     ),
+    # 구조 안전성, 시공상세도면 메뉴
+    path("detail_menu/<str:type>/", document_views.detail_menu, name="detail_menu"),
     # 메인 메뉴
     path("", main_views.index, name="index"),
 ]
