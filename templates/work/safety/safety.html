@@ -1,0 +1,110 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  Safety Check
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      {% include 'base/navbar_main.html' %}
+      <section>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="{% url 'work:index' %}">업무</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-3">
+              <a href="{% url 'work:create_safety' %}">
+                <button class="btn mb-2">구조 안전성 검토 신고서 작성하기</button>
+              </a>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                <tr>
+                  <td style="width: 60%;">
+                    문서
+                  </td>
+                  <td style="width: 30%;">
+                    작성 날짜
+                  </td>
+                  <td style="width: 10%;">
+                    삭제
+                  </td>
+                </tr>
+                {% for i in safetyitems %}
+                  <tr>
+                    <td>
+                      <a href="">{{ i.docNum}}</a>
+                    </td>
+                    <td>
+                      {{i.date}}
+                    </td>
+                    <td>
+                      <form action="" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-primary col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal5">삭제</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-sm">
+                            <div class="modal-content ">
+                              <br><br>
+                              <div class="modal-header" style="display:none">
+                                <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="container-fluid">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">삭제 하시겠습니까?</label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer" style="margin: 0 auto;">
+                                <a href="">
+                                  <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <br><br><br><br><br>
+
+  </main>
+{% endblock %}

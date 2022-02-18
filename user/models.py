@@ -6,7 +6,13 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     name = models.CharField(max_length=30)
     class1 = models.CharField(max_length=60)
-    class2 = models.CharField(max_length=60)
+    class2_choices = (
+        ("일반 관리자", "일반 관리자"),
+        ("현장 대리인", "현장 대리인"),
+        ("일반 건설사업관리기술인", "일반 건설사업관리기술인"),
+        ("총괄 건설사업관리기술인", "총괄 건설사업관리기술인"),
+    )
+    class2 = models.CharField(max_length=60, choices=class2_choices)
     class3 = models.CharField(max_length=60)
     company = models.CharField(max_length=60)
     phone = models.CharField(max_length=20)
