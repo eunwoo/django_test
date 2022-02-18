@@ -91,7 +91,7 @@ https://stackoverflow.com/questions/1256190/django-getting-last-object-created-s
 
 # 02/17 마무리
 
-- 품질검사 의뢰서 작성 중 중단
+- 품질검사 의뢰서 모델 작성 중 중단
 - 일단 디비 전부 설정해두기
 
 # 02/18 해야할 것
