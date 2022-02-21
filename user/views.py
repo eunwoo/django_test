@@ -38,7 +38,12 @@ def registerAdmin(request):
         if form.is_valid():
             form.instance.register = True
             form.instance.is_system_manager = True
-            form.save()
+            sys_manager = form.save(commit=False)
+            image_file = decodeDesignImage(
+                request.POST["signImage"], form.instance.username
+            )
+            sys_manager.signImage = image_file
+            sys_manager.save()
             return redirect("user:login")
     else:
         form = forms.AdminForm()
