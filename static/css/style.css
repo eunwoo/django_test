@@ -1,10 +1,15 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
+/*div 경계선 개발용, 완성시 삭제*/
+div{
+  border: 0.5px solid green;
+}
+/*div 경계선 개발용, 완성시 삭제*/
+
 html, body{
   font-family: 'Noto Sans KR', sans-serif;
 }
-
 
 a{
   text-decoration: none;
