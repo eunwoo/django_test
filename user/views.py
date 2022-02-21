@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
 from . import forms
+from .utils import decodeDesignImage
 
 
 def usertype(request):
@@ -15,7 +16,12 @@ def registerUser(request):
     if request.method == "POST":
         form = forms.UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            answer = form.save(commit=False)  # commit False시 DB에 저장하지 않음
+            image_file = decodeDesignImage(
+                request.POST["signImage"], form.instance.username
+            )
+            answer.signImage = image_file
+            answer.save()
             return redirect("user:login")
     else:
         form = forms.UserForm()
