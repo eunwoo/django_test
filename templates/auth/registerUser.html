@@ -62,13 +62,24 @@
         <div class="col-md-8">
           <div class="row">
             <div class="col">
-              {{form.class1}}
+              <select name="class1" class="col-12 text-center" maxlength="60" id="id_class1">
+                <option value="종합건설업체">종합건설업체</option>
+                <option value="감리 및 CM 업체">감리 및 CM 업체</option>
+              </select>
             </div>
             <div class="col">
-              {{form.class2}}
+              <select name="class2" class="col-12 text-center" required="required" id="id_class2">
+                <option value="일반 관리자">일반 관리자</option>
+                <option value="현장 대리인">현장 대리인</option>
+              </select>
             </div>
             <div class="col">
-              {{form.class3}}
+              <select name="class3" class="col-12 text-center" maxlength="60" id="id_class3">
+                <option value="시공 관리자">시공 관리자</option>
+                <option value="품질 관리자">품질 관리자</option>
+                <option value="안전 관리자">안전 관리자</option>
+                <option value="해당 사항 없음">해당 사항 없음</option>
+              </select>
             </div>
           </div>
         </div>
@@ -215,7 +226,6 @@
 {% endblock %}
 
 {% block javascript %}
-{% load static %}
 <script type="text/javascript">
 $(document).ready(function () {
 window.requestAnimFrame = (function (callback) {
@@ -360,6 +370,25 @@ submitBtn.addEventListener("click", function (e) {
 
   image.value = dataUrl;
 }, false);
+})
+
+// SelectBox 선택시 이벤트
+
+$('#id_class1').change(function (e) {
+const value = e.target.value;
+const class2 = document.getElementById('id_class2');
+if (value == '종합건설업체') {
+  class2.innerHTML = `
+    <option value="일반 관리자">일반 관리자</option>
+    <option value="현장 대리인">현장 대리인</option>
+    `
+} else {
+  class2.innerHTML = `
+    <option value="일반 건설사업관리기술인">일반 건설사업관리기술인</option>
+    <option value="총괄 건설사업관리기술인">총괄 건설사업관리기술인</option>`
+}
+console.log(e)
+return
 })
 </script>
 {% endblock %}
