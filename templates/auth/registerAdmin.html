@@ -19,6 +19,7 @@
   </style>
 
 {% endblock %}
+
 {% block content %}
   {% include 'base/header.html' %}
   <main>
@@ -186,4 +187,9 @@
 <br>
 </div>
 </main>
+{% endblock %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/sign.js' %}"></script>
 {% endblock %}
