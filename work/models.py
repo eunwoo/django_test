@@ -14,11 +14,11 @@ class SafetyReport(models.Model):
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
-    replyDate = models.DateField()  # 회신 일자
+    replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (("1", "승인"), ("2", "조건부 승인"), ("3", "승인 불가"))
     result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
-    generalEngineerText = models.TextField()  # 담당자 의견
-    totalEngineerText = models.TextField()  # 총괄 담당자 의견
+    generalEngineerText = models.TextField(null=True)  # 담당자 의견
+    totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
     isReadTotalEngineer = models.BooleanField(null=True)
