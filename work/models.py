@@ -26,6 +26,8 @@ class SafetyReport(models.Model):
     isCheckAgent = models.BooleanField(null=True)
     isCheckGeneralEngineer = models.BooleanField(null=True)
 
+    docs = models.ManyToManyField(DocsFile, blank=True, related_name="safety_docs")
+
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
