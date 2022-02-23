@@ -2,6 +2,22 @@
 
 인하대학교 건설 프로젝트
 
+# 초기설치
+
+- python manage.py makemigrations
+- python manage.py migrate --run-syncdb
+- python manage.py loaddata init_data.yaml
+
+# 작업 관리
+
+- 모든 페이지의 작성 페이지는 일반 관리자만 가능
+- 모든 페이지의 수정 페이지는 관리자마다 다르게 적용
+- 모든 페이지의 읽기 모드는 모든 관리자가 해당되도록
+
+# 장고 쿼리셋
+
+https://gaussian37.github.io/python-django-django-query-set/
+
 # 모델 초기 데이터
 
 https://runebook.dev/ko/docs/django/howto/initial-data
@@ -48,6 +64,14 @@ https://stackoverflow.com/questions/50774176/sending-file-and-json-in-post-multi
 
 https://stackoverflow.com/questions/1256190/django-getting-last-object-created-simultaneous-filters
 
+# choice 필드 사용하기
+
+https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+
+# Form 작업 이전에 확인
+
+https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+
 # 수정해야 할 사항
 
 - 가입시 이미지 전송이 안됨 => 이전에는 되는 것처럼 보이게만 짜둠
@@ -58,6 +82,7 @@ https://stackoverflow.com/questions/1256190/django-getting-last-object-created-s
 
 - 설치 위치 등록 페이지
 - 페이지네이트 작성하기 (위 링크 참고)
+- 투입 공종 직접입력 란 (https://close-up.tistory.com/entry/Select-%EB%B0%95%EC%8A%A4-%EC%84%A0%ED%83%9D%EA%B0%92-input%EC%97%90-%EB%84%A3%EA%B8%B0-ex-email-%EC%A3%BC%EC%86%8C%EC%84%A0%ED%83%9D)
 
 # 참고사항
 
@@ -106,3 +131,26 @@ https://stackoverflow.com/questions/1256190/django-getting-last-object-created-s
 - 모델 전부 작성
 - javascript or jquery를 통한 form을 작성해야함
 - 요청 views 만들기 => 역할마다 disable 할 것은 기존 코드가 조금 되어있음
+
+# 02/21 마무리
+
+- 유저 사인 전송
+- 유저 삭제 오류 수정
+- 구조 안전성 검토 신고서 작성 중 중단
+
+# 02/22 해야할 것
+
+- 구조 안전성 검토 신고서 작성서 완료하기
+- 구조 안전성 검토 신고서 목록 페이지 제작하기
+
+# 02/22 마무리
+
+- 구조 안전성 검토 신고서 60프로 완성
+- 파일 불러오고 전송하는 작업을 진행해야함
+- 유저별로 권한을 다르게 부여하도록 진행
+
+# 02/23 해야할 것
+
+- 구조 안전성 검토 파일 업로드 작성
+- 구조 안전성 검토 서명 요청 과정 작성
+- (추가) 구조 안전성 검토 목록 페이지 작성

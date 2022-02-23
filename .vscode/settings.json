@@ -11,11 +11,18 @@
   "emmet.includeLanguages": {
     "django-html": "html"
   },
-  "unibeautify.enabled": true,
+  "beautify.language": {
+    "html": [
+        "htm",
+        "html",
+        "django-html"
+    ]
+  },
   "[django-html]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "Glavin001.unibeautify-vscode"
+    "editor.defaultFormatter": "HookyQR.beautify"
   },
   "editor.formatOnSave": true,
+  "html.format.enable": true,
   "python.formatting.provider": "black"
 }

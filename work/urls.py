@@ -18,6 +18,9 @@ main_url = [
 safety_url = [
     path("safety/", safety_views.safety, name="safety"),
     path("create_safety/", safety_views.create_safety, name="create_safety"),
+    path("update_safety/<int:pk>/", safety_views.update_safety, name="update_safety"),
+    path("get_users/", safety_views.get_users, name="get_users"),
+    path("require_sign", safety_views.require_sign, name="require_sign"),
 ]
 
 material_url = [
