@@ -58,7 +58,7 @@ class LocateClass(models.Model):
 class DocsFile(models.Model):
     file = models.FileField(upload_to="docs/")  # 파일
     filename = models.CharField(max_length=100)  # 파일명
-    type = models.CharField(max_length=30)  # 파일 타입
+    type = models.CharField(max_length=30, db_index=True)  # 파일 타입
 
     def __str__(self):
         return self.filename
