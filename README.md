@@ -14,6 +14,10 @@
 - 모든 페이지의 수정 페이지는 관리자마다 다르게 적용
 - 모든 페이지의 읽기 모드는 모든 관리자가 해당되도록
 
+# 장고 쿼리셋
+
+https://gaussian37.github.io/python-django-django-query-set/
+
 # 모델 초기 데이터
 
 https://runebook.dev/ko/docs/django/howto/initial-data
