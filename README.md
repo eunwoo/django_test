@@ -8,6 +8,12 @@
 - python manage.py migrate --run-syncdb
 - python manage.py loaddata init_data.yaml
 
+# 작업 관리
+
+- 모든 페이지의 작성 페이지는 일반 관리자만 가능
+- 모든 페이지의 수정 페이지는 관리자마다 다르게 적용
+- 모든 페이지의 읽기 모드는 모든 관리자가 해당되도록
+
 # 모델 초기 데이터
 
 https://runebook.dev/ko/docs/django/howto/initial-data
@@ -138,3 +144,9 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - 구조 안전성 검토 신고서 60프로 완성
 - 파일 불러오고 전송하는 작업을 진행해야함
 - 유저별로 권한을 다르게 부여하도록 진행
+
+# 02/23 해야할 것
+
+- 구조 안전성 검토 파일 업로드 작성
+- 구조 안전성 검토 서명 요청 과정 작성
+- (추가) 구조 안전성 검토 목록 페이지 작성
