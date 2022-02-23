@@ -10,15 +10,27 @@ from ..models import SafetyReport
 def get_sign_users(request):
     if request.user.class2 == "일반 관리자":
         users = CustomUser.objects.filter(class2="현장 대리인")
+    elif request.user.class2 == "현장 대리인":
+        users = CustomUser.objects.filter(class2="일반 건설사업관리기술인")
     else:
-        users = CustomUser.objects.all()
+        users = CustomUser.objects.filter(class2="총괄 건설사업관리기술인")
     return users
 
 
 def assign_user(docNum: int, user_pk: int):
     safety = SafetyReport.objects.get(docNum=docNum)
-    safety.agentId = CustomUser.objects.get(pk=user_pk)
+    user = CustomUser.objects.get(pk=user_pk)
+    if user.class2 == "현장 대리인":
+        safety.agentId = user
+        safety.isReadAgent = False
+    elif user.class2 == "일반 건설사업관리기술인":
+        safety.generalEngineerId = user
+        safety.isReadGeneralEngineer = False
+    else:
+        safety.totalEngineerId = user
+        safety.isReadTotalEngineer = False
     safety.save()
+    return True
 
 
 def update_safety_general(request, pk):
