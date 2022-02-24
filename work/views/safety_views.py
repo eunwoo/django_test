@@ -11,7 +11,9 @@ from ..forms.safety_forms import GeneralManagerSafetyReportForm
 from ..services.safety_services import (
     assign_user,
     get_sign_users,
+    update_safety_agent,
     update_safety_general,
+    get_safety_list_by_user,
 )
 from ..utils.send_alert import email_send
 
@@ -20,7 +22,7 @@ from ..utils.send_alert import email_send
 def safety(request):
     page = request.GET.get("page", 1)
 
-    safety_list = SafetyReport.objects.all().order_by("-isCheckManager", "-docNum")
+    safety_list = get_safety_list_by_user(request.user)
 
     paginator = Paginator(safety_list, 10)
     page_obj = paginator.get_page(page)
@@ -73,9 +75,20 @@ def create_safety(request):
 
 
 @login_required(login_url="/user/login/")
+def read_safety(request, pk):
+    return render(
+        request,
+        "work/safety/read_safety.html",
+        {"safety": SafetyReport.objects.get(pk=pk)},
+    )
+
+
+@login_required(login_url="/user/login/")
 def update_safety(request, pk):
     if request.user.class2 == "일반 관리자":
         return update_safety_general(request, pk)
+    elif request.user.class2 == "현장 대리인":
+        return update_safety_agent(request, pk)
     # 각 관리자 별로 IF 문 생성
     return Http404("잘못된 접근입니다.")
 
