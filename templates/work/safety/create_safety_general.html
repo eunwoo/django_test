@@ -92,8 +92,8 @@ Safety Check
         {% endif %}
         {% endfor %}
       </div>
+      {% endif %}
     </section>
-    {% endif %}
     <section id="safety" name='safety'>
       <form method="POST" id="form_safety">
         {% csrf_token %}
@@ -311,13 +311,17 @@ Safety Check
             <div class="col-2 p-2">
               담당건설사업<br>관리기술인
             </div>
-            <div class="col-4 p-2">
+            <div class="col-2 p-2">
+            </div>
+            <div class="col-2 p-2">
               (인)
             </div>
             <div class="col-2 p-2">
               총괄건설사업<br>관리기술인
             </div>
-            <div class="col-4 p-2">
+            <div class="col-2 p-2">
+            </div>
+            <div class="col-2 p-2">
               (인)
             </div>
           </div>
