@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
 /*div 경계선 개발용, 완성시 삭제*/
-div{
+/*div{
   border: 0.5px solid green;
-}
+}*/
 /*div 경계선 개발용, 완성시 삭제*/
 
 html, body{
@@ -227,6 +227,12 @@ table,th,td {
 
 td{
   overflow: hidden;
+  word-wrap: break-word;
+  white-space: normal !important;
+}
+
+table {
+  table-layout: fixed;
 }
 
 .largebtn{
