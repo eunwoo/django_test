@@ -21,6 +21,7 @@ safety_url = [
     path("update_safety/<int:pk>/", safety_views.update_safety, name="update_safety"),
     path("get_users/", safety_views.get_users, name="get_users"),
     path("require_sign", safety_views.require_sign, name="require_sign"),
+    path("read_safety/<int:pk>/", safety_views.read_safety, name="read_safety"),
 ]
 
 material_url = [

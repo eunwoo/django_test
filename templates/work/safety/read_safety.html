@@ -38,18 +38,6 @@ Safety Check
         </div>
       </div>
     </section>
-    <section>
-      {% if form.errors %}
-      <div class="alert alert-danger" role="alert">
-        {% for field in form %}
-        {% if field.errors %}
-        <strong>{{ field.label }}</strong>
-        {{ field.errors }}
-        {% endif %}
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
     <section id="safety" name='safety'>
       <form method="POST" id="form_safety">
         {% csrf_token %}
