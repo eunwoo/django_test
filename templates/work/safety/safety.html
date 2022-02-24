@@ -51,9 +51,18 @@ Safety Check
                 <td style="width: 70%;">
                   문서
                 </td>
+                {% if request.user.class2 == "일반 건설사업관리기술인" %}
+                <td style="width: 10%;">
+                  체크리스트
+                </td>
+                <td style="width: 20%;">
+                  작성 날짜
+                </td>
+                {% else %}
                 <td style="width: 30%;">
                   작성 날짜
                 </td>
+                {% endif %}
               </tr>
               {% for i in safetyitems %}
               <tr>
@@ -71,8 +80,27 @@ Safety Check
                     class="link-primary" {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary"
                     {% endif %}>구조 안전성 검토
                     신고서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "일반 건설사업관리기술인"%}
+                  <a {% if i.isCheckGeneralEngineer == False %} href="{% url 'work:read_safety' i.docNum %}"
+                    class="link-success" {% elif i.totalEngineerId == None %} href="/work/update_safety/{{i.docNum}}"
+                    class="link-primary" {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary"
+                    {% endif %}>구조 안전성 검토
+                    신고서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
+                  <a {% if i.isSuccess == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성 검토
+                    신고서-{{ i.docNum}}</a>
                   {% endif %}
                 </td>
+                {% if request.user.class2 == "일반 건설사업관리기술인" %}
+                <td>
+                  {% if i.checklistDate %}
+                  <button type="button" class="btn btn-secondary" disabled>작성완료</button>
+                  {% else %}
+                  <a class="btn btn-primary" href="{% url 'work:create_checklist' i.docNum %}" role="button">작성하기</a>
+                  {% endif %}
+                </td>
+                {% endif %}
                 <td>
                   {{i.date}}
                 </td>
@@ -84,6 +112,7 @@ Safety Check
       </div>
     </section>
     <section>
+      <!--페이징 코트-->
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
           {% if safetyitems.has_previous %}
