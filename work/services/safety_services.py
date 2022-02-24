@@ -3,26 +3,29 @@ from django.shortcuts import render, redirect
 from system_manager.models import DocsFile
 from user.models import CustomUser
 
-from ..forms.safety_forms import GeneralManagerSafetyReportForm
-from ..models import SafetyReport
+from ..forms.safety_forms import (
+    GeneralEngineerSafetyReportForm,
+    GeneralManagerSafetyReportForm,
+)
+from ..models import SafetyReport, SafetyCheckMenu, SafetyCheckList
 
 
 def get_safety_list_by_user(user):
     if user.class2 == "일반 관리자":
         return SafetyReport.objects.filter(writerId=user).order_by(
-            "-isCheckManager", "-docNum"
+            "isCheckManager", "-docNum"
         )
     elif user.class2 == "현장 대리인":
         return SafetyReport.objects.filter(agentId=user).order_by(
-            "-isReadAgent", "-isCheckAgent", "-docNum"
+            "isReadAgent", "isCheckAgent", "-docNum"
         )
     elif user.class2 == "일반 건설사업관리기술인":
         return SafetyReport.objects.filter(generalEngineerId=user).order_by(
-            "-isReadGeneralEngineer", "-isCheckGeneralEngineer", "-docNum"
+            "isReadGeneralEngineer", "isCheckGeneralEngineer", "-docNum"
         )
     else:
         return SafetyReport.objects.filter(totalEngineerId=user).order_by(
-            "-isReadTotalEngineer", "-isSuccess", "-docNum"
+            "isReadTotalEngineer", "isSuccess", "-docNum"
         )
 
 
@@ -44,9 +47,11 @@ def assign_user(docNum: int, user_pk: int):
         safety.isReadAgent = False
     elif user.class2 == "일반 건설사업관리기술인":
         safety.generalEngineerId = user
+        safety.isReadAgent = True
         safety.isReadGeneralEngineer = False
     else:
         safety.totalEngineerId = user
+        safety.isReadGeneralEngineer = True
         safety.isReadTotalEngineer = False
     safety.save()
     return True
@@ -105,3 +110,47 @@ def update_safety_agent(request, pk):
         "work/safety/create_safety_agent.html",
         {"safety": safety},
     )
+
+
+def update_safety_generalEngineer(request, pk):
+    safety = SafetyReport.objects.get(docNum=pk)
+    if request.method == "POST":
+        form = GeneralEngineerSafetyReportForm(request.POST, instance=safety)
+        if form.is_valid():
+            safety = form.save()
+            return redirect("work:update_safety", safety.docNum)
+    else:
+        form = GeneralEngineerSafetyReportForm(instance=safety)
+    return render(
+        request,
+        "work/safety/create_safety_generalEngineer.html",
+        {"safety": safety, "form": form},
+    )
+
+
+def read_checklist_service(safety):
+    safety_checklist = safety.safety_check_list.all()
+    checklist = [[], [], [], []]
+    for checklist_menu in safety_checklist:
+        checkTypeId = checklist_menu.safetyCheckMenuId.checkType_id
+        checklist[checkTypeId - 1].append(checklist_menu)
+    return checklist
+
+
+def create_checklist_service(request, pk):
+    safety = SafetyReport.objects.get(docNum=pk)
+    safety.checklistConstructType = request.POST.get("constructType")
+    safety.checklistDate = request.POST.get("date")
+    checklist = list(request.POST.keys())
+    delete_list = ["csrfmiddlewaretoken", "constructType", "date"]
+    for delete_item in delete_list:
+        checklist.remove(delete_item)
+    for item in checklist:
+        result = request.POST.get(item)
+        checkitem = SafetyCheckList(
+            safetyReportId=safety,
+            safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)),
+            result=result,
+        )
+        checkitem.save()
+    safety.save()
