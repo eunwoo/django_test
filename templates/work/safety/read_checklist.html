@@ -1,0 +1,121 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+Safety Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 체크리스트</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="checklist" name='checklist'>
+      <form method="POST" id="form_checklist">
+        {% csrf_token %}
+        <div class="container border p-4 mb-5 text-center">
+          <div class="row m-1">
+            <h1>
+              조립 가설기자재 구조 안전성 검토 체크리스트
+            </h1>
+          </div>
+          <table class="table table-bordered">
+            <tr>
+              <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
+              <td style="width: 35%">구조 안전성 검토 체크리스트-{{safety.docNum}}</td>
+              <th scope="row" class="table-secondary align-middle" style="width: 15%">담당자</th>
+              <td style="width: 35%">
+                <div class="row">
+                  <div class="col">
+                    {{safety.generalEngineerId.name}}
+                  </div>
+                  <div class="col">
+                    <img width="100%" alt="" src="{{safety.generalEngineerId.signImage.url}}" />
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="table-secondary align-middle">조립 가설기자재 종류</th>
+              <td>
+                {{safety.checklistConstructType}}
+              </td>
+              <th scope="row" class="table-secondary align-middle">확인 일자</th>
+              <td>
+                {{safety.checklistDate}}
+              </td>
+            </tr>
+          </table>
+          <table class="table table-bordered text-break">
+            <thead>
+              <tr class="table-primary">
+                <th scope="col" style="width: 15%">구분</th>
+                <th scope="col" style="width: 55%">점검항목</th>
+                <th scope="col" style="width: 10%">예</th>
+                <th scope="col" style="width: 10%">아니요</th>
+                <th scope="col" style="width: 10%">해당없음</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for checkmenu in checklist %}
+              {% for menu in checkmenu %}
+              <tr>
+                {% if forloop.counter0 == 0 %}
+                <th class="align-middle" rowspan="{{checkmenu|length}}">{{menu.safetyCheckMenuId.checkType.title}}</th>
+                {% endif %}
+                <td>{{menu.safetyCheckMenuId.content}}</td>
+                <td>
+                  {% if menu.result == "1" %}
+                  <i class="bi bi-check"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if menu.result == "2" %}
+                  <i class="bi bi-check"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if menu.result == "3" %}
+                  <i class="bi bi-check"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
