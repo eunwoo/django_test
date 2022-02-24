@@ -7,13 +7,32 @@ from ..forms.safety_forms import GeneralManagerSafetyReportForm
 from ..models import SafetyReport
 
 
+def get_safety_list_by_user(user):
+    if user.class2 == "일반 관리자":
+        return SafetyReport.objects.filter(writerId=user).order_by(
+            "-isCheckManager", "-docNum"
+        )
+    elif user.class2 == "현장 대리인":
+        return SafetyReport.objects.filter(agentId=user).order_by(
+            "-isReadAgent", "-isCheckAgent", "-docNum"
+        )
+    elif user.class2 == "일반 건설사업관리기술인":
+        return SafetyReport.objects.filter(generalEngineerId=user).order_by(
+            "-isReadGeneralEngineer", "-isCheckGeneralEngineer", "-docNum"
+        )
+    else:
+        return SafetyReport.objects.filter(totalEngineerId=user).order_by(
+            "-isReadTotalEngineer", "-isSuccess", "-docNum"
+        )
+
+
 def get_sign_users(request):
     if request.user.class2 == "일반 관리자":
-        users = CustomUser.objects.filter(class2="현장 대리인")
+        users = CustomUser.objects.filter(class2="현장 대리인", register=True)
     elif request.user.class2 == "현장 대리인":
-        users = CustomUser.objects.filter(class2="일반 건설사업관리기술인")
+        users = CustomUser.objects.filter(class2="일반 건설사업관리기술인", register=True)
     else:
-        users = CustomUser.objects.filter(class2="총괄 건설사업관리기술인")
+        users = CustomUser.objects.filter(class2="총괄 건설사업관리기술인", register=True)
     return users
 
 
@@ -76,4 +95,13 @@ def update_safety_general(request, pk):
             "construct_bills_list": construct_bills_list,
             "detail_drawings_list": detail_drawings_list,
         },
+    )
+
+
+def update_safety_agent(request, pk):
+    safety = SafetyReport.objects.get(docNum=pk)
+    return render(
+        request,
+        "work/safety/create_safety_agent.html",
+        {"safety": safety},
     )
