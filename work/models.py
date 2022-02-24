@@ -25,6 +25,7 @@ class SafetyReport(models.Model):
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
     isCheckGeneralEngineer = models.BooleanField(null=True)
+    isSuccess = models.BooleanField(default=False)
 
     docs = models.ManyToManyField(DocsFile, blank=True, related_name="safety_docs")
 
