@@ -13,10 +13,13 @@ from ..services.safety_services import (
     create_checklist_service,
     get_sign_users,
     read_checklist_service,
+    read_safety_service,
+    safety_success,
     update_safety_agent,
     update_safety_general,
     get_safety_list_by_user,
     update_safety_generalEngineer,
+    update_safety_totalEngineer,
 )
 from ..utils.send_alert import email_send
 
@@ -79,10 +82,11 @@ def create_safety(request):
 
 @login_required(login_url="/user/login/")
 def read_safety(request, pk):
+    safety = read_safety_service(request.user, pk)
     return render(
         request,
         "work/safety/read_safety.html",
-        {"safety": SafetyReport.objects.get(pk=pk)},
+        {"safety": safety},
     )
 
 
@@ -94,6 +98,8 @@ def update_safety(request, pk):
         return update_safety_agent(request, pk)
     elif request.user.class2 == "일반 건설사업관리기술인":
         return update_safety_generalEngineer(request, pk)
+    elif request.user.class2 == "총괄 건설사업관리기술인":
+        return update_safety_totalEngineer(request, pk)
     # 각 관리자 별로 IF 문 생성
     return Http404("잘못된 접근입니다.")
 
@@ -111,8 +117,11 @@ def get_users(request):
 @login_required(login_url="/user/login/")
 def require_sign(request):
     if request.method == "POST":
-        email_send(int(request.POST.get("sign")))
-        assign_user(int(request.POST.get("docNum")), int(request.POST.get("sign")))
+        if request.user.class2 == "총괄 건설사업관리기술인":
+            safety_success(request.POST.get("docNum"))
+        else:
+            email_send(int(request.POST.get("sign")))
+            assign_user(int(request.POST.get("docNum")), int(request.POST.get("sign")))
         return redirect("work:safety")
     return Http404("잘못된 접근입니다.")
 
