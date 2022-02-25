@@ -64,7 +64,7 @@ Safety Check
                       <div class="modal-body">
                         <form method="POST" action="{% url 'work:require_sign' %}" id="sign_form">
                           {% csrf_token %}
-                          <input type='hidden' name="docNum" value="{{form.instance.docNum}}" />
+                          <input type='hidden' name="docNum" value="{{safety.docNum}}" />
                           <select class="form-select" name="sign" id="sign_select">
                           </select>
                         </form>
@@ -108,16 +108,13 @@ Safety Check
               문서번호
             </div>
             <div class="col-4 p-2">
-              구조 안전성 검토 신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}
-              {% else %}{{docNum}}
-              {% endif %}
+              구조 안전성 검토 신고서-{{safety.docNum}}
             </div>
             <div class="col-2 p-2">
               작성일자
             </div>
             <div class="col-4 p-2">
-              <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+              {{safety.date}}
             </div>
           </div>
           <div class="row border">
@@ -125,8 +122,7 @@ Safety Check
               제목
             </div>
             <div class="col-10 p-2">
-              <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
-                value="{{form.instance.title|default_if_none:''}}" />
+              {{safety.title}}
             </div>
           </div>
           <div class="row border">
@@ -134,16 +130,7 @@ Safety Check
               공종
             </div>
             <div class="col-10 p-2">
-              <select class="form-select" aria-label="공종" name="constructType" id="constructType">
-                <option {% if form.instance.constructType == None %} selected="selected{% endif %}">투입 공종을 선택해주세요
-                </option>
-                <option value="건축" {% if form.instance.constructType == "건축" %} selected="selected{% endif %}">건축
-                </option>
-                <option value="토목" {% if form.instance.constructType == "토목" %} selected="selected{% endif %}">토목
-                </option>
-                <option value="기계" {% if form.instance.constructType == "기계" %} selected="selected{% endif %}">기계
-                </option>
-              </select>
+              {{safety.constructType}}
             </div>
           </div>
           <div class="row align-items-center border">
@@ -153,8 +140,7 @@ Safety Check
             <div class="col-10">
               <div class="row">
                 <div class="col p-2">
-                  <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
-                    value="{{form.instance.text|default_if_none:''}}">{{form.instance.text|default_if_none:''}}</textarea>
+                  {{safety.text}}
                 </div>
               </div>
               <div class="row">
@@ -165,44 +151,10 @@ Safety Check
                       담당자
                     </div>
                     <div class="col-3 p-2">
-                      {% if form.instance.writerId != None %}{{form.instance.writerId.name}}
-                      {% else %}{{request.user.name}}
-                      {% endif %}
+                      {{safety.writerId.name}}
                     </div>
                     <div class="col p-2">
-                      {% if form.instance.writerId != None %}<img width="100%" alt=""
-                        src="{{form.instance.writerId.signImage.url}}" />
-                      {% else %}(인)
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#signModal">
-                        서명
-                      </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">서명 요청</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                                <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                취소</button>
-                              <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {% endif %}
+                      <img width="100%" alt="" src="{{safety.writerId.signImage.url}}" />
                     </div>
                   </div>
                 </div>
@@ -215,10 +167,10 @@ Safety Check
                       현장대리인
                     </div>
                     <div class="col-3 p-2">
-                      입력란
+                      {{safety.agentId.name}}
                     </div>
                     <div class="col p-2">
-                      (인)
+                      <img width="100%" alt="" src="{{safety.agentId.signImage.url}}" />
                     </div>
                   </div>
                 </div>
@@ -231,31 +183,31 @@ Safety Check
             </div>
             <div class="col-10">
               <div class="row">
-                <div class="col-2 p-2">
+                <div class="col-3 p-2">
                   구조계산서
-                </div>
-                <div class="col-2 p-2">
-                  {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills %}
                 </div>
                 <div class="col p-2">
                   <ol class="list-group" id="구조계산서-ol">
-                    {% for item in construct_bills_list %}
-                    <li class="list-group-item">{{item.filename}}</li>
+                    {% for item in safety.docs.all %}
+                    {% if '구조 계산서' in item.type %}
+                    <li class="list-group-item"><a href="{{item.url}}"
+                        download="{{item.filename}}">{{item.filename}}</a></li>
+                    {% endif %}
                     {% endfor %}
                   </ol>
                 </div>
               </div>
               <div class="row">
-                <div class="col-2 p-2">
+                <div class="col-3 p-2">
                   시공상세도면
-                </div>
-                <div class="col-2 p-2">
-                  {% include 'work/safety/load_docs_modal.html' with title="시공상세도면" contents=detail_drawings %}
                 </div>
                 <div class="col p-2">
                   <ol class="list-group" id="시공상세도면-ol">
-                    {% for item in detail_drawings_list %}
-                    <li class="list-group-item">{{item.filename}}</li>
+                    {% for item in safety.docs.all %}
+                    {% if '시공상세도면' in item.type %}
+                    <li class="list-group-item"><a href="{{item.url}}"
+                        download="{{item.filename}}">{{item.filename}}</a></li>
+                    {% endif %}
                     {% endfor %}
                   </ol>
                 </div>
@@ -268,6 +220,8 @@ Safety Check
             </div>
             <div class="col-10 p-2">
               <div class="col-4">
+                <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="작성일자"
+                  value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
               </div>
             </div>
           </div>
@@ -281,6 +235,9 @@ Safety Check
                   담당자
                 </div>
                 <div class="col-10 p-2">
+                  <textarea class="form-control text-center" name='generalEngineerText' id="generalEngineerText"
+                    placeholder="내용을 입력해주세요." rows="2" value="{{form.instance.generalEngineerText|default_if_none:''}}"
+                    required>{{form.instance.generalEngineerText|default_if_none:''}}</textarea>
                 </div>
               </div>
               <div class="row">
@@ -288,6 +245,9 @@ Safety Check
                   총괄관리자
                 </div>
                 <div class="col-10 p-2">
+                  {% if safety.totalEngineerText %}
+                  {{safety.totalEngineerText}}
+                  {% endif %}
                 </div>
               </div>
               <div class="row">
@@ -295,6 +255,11 @@ Safety Check
                   구조안전성 검토<br>체크리스트
                 </div>
                 <div class="col-10 p-2">
+                  {% if safety.checklistDate %}
+                  <a class="link-success" target="_blank" href="{% url 'work:read_checklist' safety.docNum %}">구조 안전성 검토
+                    체크리스트 -
+                    {{safety.docNum}}</a>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -304,7 +269,19 @@ Safety Check
               결과
             </div>
             <div class="col-10 p-2">
-              결과를 선택해주세요
+              <select class="form-select" aria-label="공종" name="result" id="result" required>
+                <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
+                  선택해주세요
+                </option>
+                <option value="1" {% if form.instance.result == "1" %} selected="selected" {% endif %}>승인-의견반영
+                  후 진행
+                </option>
+                <option value="2" {% if form.instance.result == "2" %} selected="selected" {% endif %}>조건부
+                  승인-의견반영 후 진행
+                </option>
+                <option value="3" {% if form.instance.result == "3" %} selected="selected" {% endif %}>승인 불가
+                </option>
+              </select>
             </div>
           </div>
           <div class="row border">
@@ -312,17 +289,54 @@ Safety Check
               담당건설사업<br>관리기술인
             </div>
             <div class="col-2 p-2">
+              {% if safety.generalEngineerId %}
+              {{safety.generalEngineerId.name}}
+              {% endif %}
             </div>
             <div class="col-2 p-2">
-              (인)
+              {% if safety.replyDate %}<img width="100%" alt="" src="{{safety.generalEngineerId.signImage.url}}" />
+              {% else %}(인)
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signModal">
+                서명
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">서명 요청</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                        <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        취소</button>
+                      <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
             </div>
             <div class="col-2 p-2">
               총괄건설사업<br>관리기술인
             </div>
             <div class="col-2 p-2">
+              {% if safety.totalEngineerId %}
+              {{safety.totalEngineerId.name}}
+              {% endif %}
             </div>
             <div class="col-2 p-2">
-              (인)
+              {% if safety.isSuccess %}<img width="100%" alt="" src="{{safety.totalEngineerId.signImage.url}}" />
+              {% else %}(인)
+              {% endif %}
             </div>
           </div>
         </div>
@@ -354,8 +368,8 @@ Safety Check
   }
 
   // 서명 할 경우 변경
-  let isSign = '{{form.instance.writerId}}' === "None" ? false : true;
-  if ('{{form.instance.writerId}}' === "None") {
+  let isSign = '{{form.instance.replyDate}}' === "None" ? false : true;
+  if ('{{form.instance.replyDate}}' === "None") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document
@@ -403,28 +417,6 @@ Safety Check
       }
       return false;
     }
-  })
-
-  // 파일 업로드 시 옆에 목록 출력
-  const file_input_list = ['구조계산서', '시공상세도면']
-
-  file_input_list.map((value) => {
-    const file_input_button = document.getElementById(value + "-button")
-    file_input_button.addEventListener("click", (e) => {
-      const target_div = document.getElementById(value)
-      const file_list = target_div.querySelectorAll("input")
-      const checked_files = Array.prototype.slice.call(file_list).filter((item) => {
-        return item.checked
-      })
-      const ol_div = document.getElementById(value + "-ol")
-      ol_div.innerHTML = ""
-      checked_files.forEach(value => {
-        const li_div = document.createElement("li")
-        li_div.classList.add("list-group-item")
-        li_div.innerHTML = value.nextElementSibling.textContent
-        ol_div.appendChild(li_div)
-      })
-    })
   })
 
   // 서명 요청 시 서명 목록 로드
