@@ -1,3 +1,6 @@
+import smtplib
+
+from email.mime.text import MIMEText
 from user.models import CustomUser
 
 

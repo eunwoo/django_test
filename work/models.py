@@ -100,7 +100,7 @@ class MaterialSupplyReport(models.Model):
     date = models.DateField()  # 작성 일자
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
-    text = models.TextField()  # 내용
+    text = models.TextField()  # 기타사항
     acceptDocs = models.ForeignKey(
         DocsFile,
         on_delete=models.SET_NULL,
@@ -114,6 +114,22 @@ class MaterialSupplyReport(models.Model):
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
     isCheckGeneralEngineer = models.BooleanField(null=True)
+
+    businessLicense = models.FileField(
+        upload_to="business_license", null=True
+    )  # 사업자 등록증
+    deliveryPerformanceCertificate = models.FileField(
+        upload_to="delivery_performance_certificate", null=True
+    )  # 납품실적증명서
+    safetyCertificate = models.FileField(
+        upload_to="safety_certificate", null=True
+    )  # 안전인증서
+    qualityTestReport = models.FileField(
+        upload_to="quality_test_report", null=True
+    )  # 품질시험성적서
+    testPerformanceComparisonTable = models.FileField(
+        upload_to="test_performance_comparison_table", null=True
+    )  # 시험성과대비표
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -155,18 +171,6 @@ class SupplyList(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class MaterialDocs(models.Model):
-    title = models.CharField(max_length=60)  # 문서 이름
-    docs = models.FileField(upload_to="material_docs/")  # 파일 업로드
-    type = models.CharField(max_length=60)  # 문서 타입
-    materialSupplyReportId = models.ForeignKey(
-        MaterialSupplyReport, on_delete=models.CASCADE, related_name="material_docs"
-    )
-
-    def __str__(self):
-        return self.title
 
 
 # =============================================================================
