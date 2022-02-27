@@ -27,7 +27,7 @@ Material Check
                   <a href="{% url 'work:index' %}">업무</a>
                 </li>
                 <li class="breadcrumb-item" aria-current="page">
-                  <a href="{% url 'work:safety' %}">자재 반입</a>
+                  <a href="{% url 'work:material' %}">자재 반입</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고서</li>
               </ol>
@@ -60,7 +60,7 @@ Material Check
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <form method="POST" action="{% url 'work:require_sign' %}" id="sign_form">
+                        <form method="POST" action="{% url 'work:require_sign_material' %}" id="sign_form">
                           {% csrf_token %}
                           <input type='hidden' name="docNum" value="{{form.instance.docNum}}" />
                           <select class="form-select" name="sign" id="sign_select">
@@ -92,7 +92,7 @@ Material Check
       </div>
       {% endif %}
     </section>
-    <form action="" id="materialform" method="POST">
+    <form action="" id="materialform" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <section>
         <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
@@ -194,6 +194,21 @@ Material Check
                       </tr>
                     </thead>
                     <tbody id="supply_body">
+                      {% for supply_origin in supply_origins %}
+                      <tr>
+                        <td>{{supply_origin.name}}</td>
+                        <td>{{supply_origin.goods}}</td>
+                        <td>{{supply_origin.size}}</td>
+                        <td>{{supply_origin.etc}}</td>
+                        <td>
+                          <button class="btn btn-danger btn-sm" type="button" onclick="delete_button()">삭제</button>
+                          <input type="hidden" name="supply_comp[]" value="{{supply_origin.name}}">
+                          <input type="hidden" name="supply_type[]" value="{{supply_origin.goods}}">
+                          <input type="hidden" name="supply_size[]" value="{{supply_origin.size}}">
+                          <input type="hidden" name="supply_etc[]" value="{{supply_origin.etc}}">
+                        </td>
+                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -213,33 +228,56 @@ Material Check
                   </div>
                 </div>
                 <div class="row mt-2">
-                  <div class="col-2 offset-4">
+                  <div class="col-2 offset-6">
                     <label for="">담당자</label>
                   </div>
                   <div class="col-2">
-                    {{form.inCharge}}
+                    {{request.user.name}}
                   </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">(인)</label>
+                  <div class="col-2">{% if form.instance.writerId != None %}<img width="100%" alt=""
+                    src="{{form.instance.writerId.signImage.url}}" />
+                  {% else %}(인)
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#signModal">
+                    서명
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">서명 요청</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            취소</button>
+                          <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-1">
-                    <img src="" alt="">
-                  </div>
-                  <div class="col-2">
+                  {% endif %}
                   </div>
                 </div>
                 <div class="row mt-2">
-                  <div class="col-2 offset-4">
+                  <div class="col-2 offset-6">
                     <label for="">현장대리인</label>
                   </div>
                   <div class="col-2">
                     {{form.gcSiteAgent}}
                   </div>
-                  <div class="col-1">
+                  <div class="col-2">
                     <label for="" class="mr-1">(인)</label>
-                  </div>
-                  <div class="col-1">
-                    <img src="" alt="">
                   </div>
                 </div>
               </div>
@@ -271,8 +309,11 @@ Material Check
                   <table class="table">
                     <tr>
                       <th scope="row" style="width: 25%;" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
-                      <td style="width: 15%;">Mark</td>
-                      <td style="width: 60%">Otto</td>
+                      <td style="width: 15%;">
+                        {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}</td>
+                      <td style="width: 60%">
+                        <ul class="list-group" id="공급원ul"></ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">사업자등록증</th>
@@ -420,11 +461,18 @@ Material Check
     supply_body.append(supply_tr);
   }
 
-  // 변경 되었을 시 서명 입력이 안됨
+  // 업데이트용
+  function delete_button(e) {
+    e = e || window.event;
+    e = e.target || e.srcElement;
+    e.parentNode.parentNode.remove();
+  }
+
+  // 변경 되었을 시 서명 요청이 안됨
   let isChange = false;
-  let safety_form = document.getElementById("materialform")
-  const temp_input_list = safety_form.querySelectorAll("input")
-  const textarea_list = safety_form.querySelectorAll("textarea")
+  let material_form = document.getElementById("materialform")
+  const temp_input_list = material_form.querySelectorAll("input")
+  const textarea_list = material_form.querySelectorAll("textarea")
   const input_list = []
   for (let temp of temp_input_list) {
     if (temp.name) {
@@ -442,5 +490,117 @@ Material Check
       isChange = true;
     })
   }
+
+  // 서명 할 경우 변경
+  let isSign = '{{material.writerId}}' === "" ? false : true;
+  if ('{{material.writerId}}' === "") {
+    const sign_button = document.getElementById("sign_button")
+    sign_button.addEventListener("click", function () {
+      const id_input = document
+        .getElementById("signRequest")
+        .value
+      const username = "{{request.user.username}}"
+      if (id_input === username) {
+        isSign = true;
+        const signModal = $('#signModal')
+        signModal.modal('hide');
+        signModal
+          .parent()
+          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '아이디가 다릅니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+    })
+  }
+
+  // 저장 버튼 클릭 시
+  material_form.addEventListener("submit", function (e) {
+    if (isChange && isSign) {
+      return true;
+    } else {
+      e.preventDefault()
+      if (!!!isChange) {
+        Swal.fire({
+          title: 'Error!',
+          text: '변경된 내용이 없습니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '서명을 해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+      return false;
+    }
+  })
+
+  // 파일 업로드 시 옆에 목록 출력
+  const value = "공급원승인문서"
+
+  const file_input_button = document.getElementById(value + "-button")
+  file_input_button.addEventListener("click", (e) => {
+    const target_div = document.getElementById(value)
+    const file_list = target_div.querySelectorAll("input")
+    const checked_files = Array.prototype.slice.call(file_list).filter((item) => {
+      return item.checked
+    })
+    const ul_div = document.getElementById("공급원ul")
+    ul_div.innerHTML = ""
+    checked_files.forEach(value => {
+      const li_div = document.createElement("li")
+      li_div.classList.add("list-group-item")
+      li_div.innerHTML = value.nextElementSibling.textContent
+      ul_div.appendChild(li_div)
+    })
+  })
+
+  // 서명 요청 시 서명 목록 로드
+  $('#sign_modal_button').on('click', () => {
+    if (isChange === true) {
+      Swal.fire({
+        title: 'Error!',
+        text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const select_form = document.getElementById('sign_select')
+    select_form.innerHTML = ""
+    $.ajax({
+      type: "GET",
+      url: "{% url 'work:get_users' %}",
+      async: false,
+      success: (data) => {
+        data.users.forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.name
+          select_form.appendChild(option)
+        })
+        $('#signRequestModal').modal('show')
+      }
+    })
+  })
+  
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '서명 요청이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
 </script>
 {% endblock %}
