@@ -101,12 +101,14 @@ class MaterialSupplyReport(models.Model):
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
-    acceptDocs = models.ForeignKey(
-        DocsFile,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="material_supply_report_accept_docs",
-    )
+
+    replyDate = models.DateField(null=True)  # 회신 일자
+    generalEngineerText = models.TextField(null=True)  # 담당자 의견
+    totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
+    result_choices = (("1", "승인"), ("2", "조건부 승인"), ("3", "승인 불가"))
+    result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
+
+    docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
 
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
@@ -114,21 +116,22 @@ class MaterialSupplyReport(models.Model):
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
     isCheckGeneralEngineer = models.BooleanField(null=True)
+    isSuccess = models.BooleanField(default=False)
 
     businessLicense = models.FileField(
-        upload_to="business_license", null=True
+        upload_to="business_license", blank=True, null=True
     )  # 사업자 등록증
     deliveryPerformanceCertificate = models.FileField(
-        upload_to="delivery_performance_certificate", null=True
+        upload_to="delivery_performance_certificate", blank=True, null=True
     )  # 납품실적증명서
     safetyCertificate = models.FileField(
-        upload_to="safety_certificate", null=True
+        upload_to="safety_certificate", blank=True, null=True
     )  # 안전인증서
     qualityTestReport = models.FileField(
-        upload_to="quality_test_report", null=True
+        upload_to="quality_test_report", blank=True, null=True
     )  # 품질시험성적서
     testPerformanceComparisonTable = models.FileField(
-        upload_to="test_performance_comparison_table", null=True
+        upload_to="test_performance_comparison_table", blank=True, null=True
     )  # 시험성과대비표
 
     writerId = models.ForeignKey(
