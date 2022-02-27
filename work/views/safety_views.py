@@ -5,11 +5,11 @@ from django.core.paginator import Paginator
 
 from system_manager.models import DocsFile
 from user.models import CustomUser
+from work.services.common_services import assign_user
 
 from ..models import SafetyCheckMenu, SafetyReport
 from ..forms.safety_forms import GeneralManagerSafetyReportForm
 from ..services.safety_services import (
-    assign_user,
     create_checklist_service,
     get_sign_users,
     read_checklist_service,
@@ -121,7 +121,8 @@ def require_sign(request):
             safety_success(request.POST.get("docNum"))
         else:
             email_send(int(request.POST.get("sign")))
-            assign_user(int(request.POST.get("docNum")), int(request.POST.get("sign")))
+            doc = SafetyReport.objects.get(docNum=int(request.POST.get("docNum")))
+            assign_user(doc, int(request.POST.get("sign")))
         return redirect("work:safety")
     return Http404("잘못된 접근입니다.")
 
