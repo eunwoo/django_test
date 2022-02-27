@@ -35,6 +35,17 @@ safety_url = [
 material_url = [
     path("material/", material_views.material, name="material"),
     path("create_material/", material_views.create_material, name="create_material"),
+    path(
+        "update_material/<int:pk>/",
+        material_views.update_material,
+        name="update_material",
+    ),
+    path(
+        "require_sign_material/",
+        material_views.require_sign_material,
+        name="require_sign_material",
+    ),
+    path("read_material/<int:pk>/", material_views.read_material, name="read_material"),
 ]
 
 quality_request_url = [
