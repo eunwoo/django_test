@@ -191,11 +191,22 @@ class SupplyList(models.Model):
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)
-    goods = models.CharField(max_length=60)  # 품명
+    goods_choice = [
+        ("1", "강관비계용 부재 (비계용 강관)"),
+        ("2", "강관비계용 부재(강관조인트)"),
+        ("3", "조립형비계 및 동바리부재(수직재)"),
+        ("4", "조립형비계 및 동바리부재(수평재)"),
+        ("5", "조립형비계 및 동바리부재(가새재)"),
+        ("6", "조립형비계 및 동바리부재(트러스)"),
+        ("7", "립형비계 및 동바리부재(연결조인트)"),
+    ]
+    goods = models.CharField(max_length=60, choices=goods_choice)  # 품명
     size = models.CharField(max_length=60)  # 규격
     sampleQuentity = models.TextField()  # 시료량
     sampleOrigin = models.TextField()  # 시료 또는 자제 생산국
-    testType = models.CharField(max_length=60)  # 시험검사 종목
+    testType_hweem = models.BooleanField(default=False)  # 시험검사종목 - 휨하중
+    testType_zip = models.BooleanField(default=False)  # 시험검사종목 - 압축하중
+    testType_tensile = models.BooleanField(default=False)  # 시험검사종목 - 인장하중
     locateId = models.ForeignKey(
         InstallLocate, on_delete=models.SET_NULL, null=True
     )  # 시료 채취 장소
@@ -212,10 +223,8 @@ class QualityInspectionRequest(models.Model):
 
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
-    isReadTotalEngineer = models.BooleanField(null=True)
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
-    isCheckGeneralEngineer = models.BooleanField(null=True)
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -234,12 +243,6 @@ class QualityInspectionRequest(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="quality_inspection_general_engineer",
-    )
-    totalEngineerId = models.ForeignKey(
-        CustomUser,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="quality_inspection_total_engineer",
     )
 
     def __str__(self):
