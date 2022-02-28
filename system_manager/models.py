@@ -35,14 +35,28 @@ class EquipmentTypes(models.Model):
         return self.type
 
 
+# 설치 위치 클래스1
+class InstallLocateClass1(models.Model):
+    class1 = models.CharField(max_length=100)  # 클래스1
+
+
+# 설치 위치 클래스3
+class InstallLocateClass2(models.Model):
+    class1 = models.ForeignKey(
+        InstallLocateClass1, on_delete=models.CASCADE, related_name="class2"
+    )  # 클래스1
+    class2 = models.CharField(max_length=100)  # 클래스2
+
+
 # 설치 위치 명
 class InstallLocate(models.Model):
-    class1 = models.CharField(max_length=30)  # 구분 1
-    class2 = models.CharField(max_length=30)  # 구분 2
+    class2 = models.ForeignKey(
+        InstallLocateClass2, on_delete=models.CASCADE, related_name="class3"
+    )  # 클래스2
     class3 = models.CharField(max_length=30)  # 구분 3
 
     def __str__(self):
-        return self.class1 + " " + self.class2 + " " + self.class3
+        return self.class2.class1.class1 + " " + self.class2.class2 + " " + self.class3
 
 
 # 설치 위치 구분
