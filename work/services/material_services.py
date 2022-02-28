@@ -1,9 +1,7 @@
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
 
 from system_manager.models import DocsFile
-from work.utils.send_alert import email_send
 
 from ..models import MaterialSupplyReport, SupplyList
 from ..forms.material_forms import (
