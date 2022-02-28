@@ -25,13 +25,13 @@ Safety Check
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                  <a href="">업무</a>
+                  <a href="{% url 'work:index' %}">업무</a>
                 </li>
                 <li class="breadcrumb-item" aria-current="page">
-                  <a href="">품질검사</a>
+                  <a href="{% url 'work:quality_menu' %}">품질검사</a>
                 </li>
                 <li class="breadcrumb-item" aria-current="page">
-                  <a href="">품질검사 의뢰</a>
+                  <a href="{% url 'work:quality_request' %}">품질검사 의뢰</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">품질검사 의뢰서 작성</li>
               </ol>
