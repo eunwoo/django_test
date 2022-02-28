@@ -6,7 +6,10 @@ from system_manager.models import DocsFile
 from work.utils.send_alert import email_send
 
 from ..models import MaterialSupplyReport, SupplyList
-from ..forms.material_forms import GeneralManagerMaterialSupplyReportForm
+from ..forms.material_forms import (
+    GeneralEngineerMaterialSupplyReportForm,
+    GeneralManagerMaterialSupplyReportForm,
+)
 
 
 def get_material_list_by_user(user):
@@ -69,6 +72,40 @@ def create_material_service(request):
 
 
 def update_material_service(request, docNum):
+    if request.user.class2 == "일반 관리자":
+        return update_material_general(request, docNum)
+    elif request.user.class2 == "현장 대리인":
+        return update_material_agent(request, docNum)
+    elif request.user.class2 == "일반 건설사업관리기술인":
+        return update_material_generalEngineer(request, docNum)
+    else:
+        return Http404()
+
+
+def update_material_agent(request, docNum):
+    material = MaterialSupplyReport.objects.get(docNum=docNum)
+    return render(
+        request, "work/material/update_material_agent.html", {"material": material}
+    )
+
+
+def update_material_generalEngineer(request, docNum):
+    material = MaterialSupplyReport.objects.get(docNum=docNum)
+    if request.method == "POST":
+        form = GeneralEngineerMaterialSupplyReportForm(request.POST, instance=material)
+        if form.is_valid():
+            material = form.save()
+            return redirect("work:update_material", material.docNum)
+    else:
+        form = GeneralEngineerMaterialSupplyReportForm(instance=material)
+    return render(
+        request,
+        "work/material/update_material_generalEngineer.html",
+        {"material": material, "form": form},
+    )
+
+
+def update_material_general(request, docNum):
     instance = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
         form = GeneralManagerMaterialSupplyReportForm(request.POST, instance=instance)
