@@ -11,6 +11,7 @@ from work.utils.send_alert import email_send
 from ..services.material_services import (
     create_material_service,
     get_material_list_by_user,
+    material_success,
     read_material_service,
     update_material_service,
 )
@@ -42,7 +43,7 @@ def update_material(request, pk):
 def require_sign_material(request):
     if request.method == "POST":
         if request.user.class2 == "총괄 건설사업관리기술인":
-            pass
+            material_success(request.POST.get("docNum"))
         else:
             email_send(int(request.POST.get("sign")))
             doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
