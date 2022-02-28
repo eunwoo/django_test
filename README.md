@@ -204,3 +204,13 @@ https://stackoverflow.com/questions/3429878/automatic-creation-date-for-django-m
 # 참고자료
 
 https://getbootstrap.com/docs/5.1/forms/input-group/
+
+# 품질검사 의뢰서
+
+- 시료 채취 장소는 일단 패스하기
+- 보내야 할것은 품질검사 의뢰서 폼, 현장 등록에 추가된 현장
+
+# 02/28 마무리
+
+- 품질검사 의뢰서 일반 관리자 부분 작성
+- 디비 초기화 후 다시 실행하기
