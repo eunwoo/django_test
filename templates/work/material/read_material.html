@@ -284,30 +284,26 @@ Material Check
           <div class="col-2 text-center justify-content-center align-items-center d-flex">
             <label for="" class="col-12" style="color: black;">담당 건설사업관리기술인</label>
           </div>
-          <div class="col-2">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
             {{material.generalEngineerId.name}}
           </div>
-          <div class="col-1">
+          <div class="col-2">
             {% if material.totalEngineerId %}<img width="100%" alt=""
-              src="{{material.totalEngineerId.signImage.url}}" />
+              src="{{material.generalEngineerId.signImage.url}}" />
             {% else %}(인)
             {% endif %}
           </div>
-          <div class="col-1">
-          </div>
-          <div class="col-2">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
             <label for="" style="color: black;">총괄 건설사업관리기술인
             </label>
           </div>
-          <div class="col-2">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
             {{material.totalEngineerId.name}}
           </div>
-          <div class="col-1">
-            {% if isSuccess %}<img width="100%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
+          <div class="col-2">
+            {% if material.isSuccess %}<img width="100%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
             {% else %}(인)
             {% endif %}
-          </div>
-          <div class="col-1">
           </div>
         </div>
         <br>
