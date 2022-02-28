@@ -72,6 +72,10 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 
 https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
 
+# Django Model 만든날짜, 수정된날짜 자동 추가
+
+https://stackoverflow.com/questions/3429878/automatic-creation-date-for-django-model-form-objects
+
 # 수정해야 할 사항
 
 - ~가입시 이미지 전송이 안됨 => 이전에는 되는 것처럼 보이게만 짜둠~ => 해결완료
@@ -83,6 +87,7 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - 설치 위치 등록 페이지
 - 페이지네이트 작성하기 (위 링크 참고)
 - 투입 공종 직접입력 란 (https://close-up.tistory.com/entry/Select-%EB%B0%95%EC%8A%A4-%EC%84%A0%ED%83%9D%EA%B0%92-input%EC%97%90-%EB%84%A3%EA%B8%B0-ex-email-%EC%A3%BC%EC%86%8C%EC%84%A0%ED%83%9D)
+- 결과 보고 시 강관비계, 시스템비계, 시스템 동바리 선택창 => 문서 작성시 해당 속성이 입력되어야 하는데 없음
 
 # 참고사항
 
