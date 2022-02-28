@@ -59,6 +59,11 @@ quality_request_url = [
         quality_request_views.create_quality_request,
         name="create_quality_request",
     ),
+    path(
+        "require_sign_quality_request/",
+        quality_request_views.require_sign_quality_request,
+        name="require_sign_quality_request",
+    ),
 ]
 
 quality_report_url = [

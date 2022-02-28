@@ -22,3 +22,8 @@ def update_quality_request(request, pk):
 @login_required(login_url="/user/login/")
 def delete_quality_request(request, pk):
     pass
+
+
+@login_required(login_url="/user/login/")
+def require_sign_quality_request(request):
+    pass
