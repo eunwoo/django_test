@@ -143,7 +143,8 @@ Material Check
                   {{material.agentId.name}}
                 </div>
                 <div class="col-2">
-                  {% if material.generalEngineerId %}<img width="100%" alt="" src="{{material.generalEngineerId.signImage.url}}" />
+                  {% if material.generalEngineerId %}<img width="100%" alt=""
+                    src="{{material.generalEngineerId.signImage.url}}" />
                   {% else %}(인)
                   {% endif %}
                 </div>
@@ -179,40 +180,60 @@ Material Check
                     <th scope="row" style="width: 25%;" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
                     <td style="width: 75%;">
                       <ul class="list-group">
-                      {% for doc in material.docs.all %}
-                      <li class="list-group-item"><a href="{{doc.file.url}}" download="{{doc.filename}}">{{doc.filename}}</a></li>
-                      {% endfor %}
-                    </ul>
+                        {% if material.docs %}
+                        {% for doc in material.docs.all %}
+                        <li class="list-group-item"><a href="{{doc.file.url}}"
+                            download="{{doc.filename}}">{{doc.filename}}</a></li>
+                        {% endfor %}
+                        {% endif %}
+                      </ul>
                     </td>
                   </tr>
                   <tr>
                     <th scope="row" class="text-success align-middle">사업자등록증</th>
                     <td colspan="2">
-                      <a href="{{material.businessLicense.url}}">{{material.businessLicense.name|cut:'business_license/'}}</a>
+                      {% if material.businessLicense %}
+                      <a href="{{material.businessLicense.url}}">
+                        {{material.businessLicense.name|cut:'business_license/'}}
+                      </a>
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
                     <th scope="row" class="text-success align-middle">납품실적증명서</th>
                     <td colspan="2">
-                      <a href="{{material.deliveryPerformanceCertificate.url}}">{{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}</a>
+                      {% if material.deliveryPerformanceCertificate %}
+                      <a href="{{material.deliveryPerformanceCertificate.url}}">
+                        {{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}
+                      </a>
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
                     <th scope="row" class="text-success align-middle">안전인증서</th>
                     <td colspan="2">
-                      <a href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
+                      {% if material.safetyCertificate %}
+                      <a
+                        href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
                     <th scope="row" class="text-success align-middle">품질시험성적서</th>
                     <td colspan="2">
-                      <a href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
+                      {% if material.qualityTestReport %}
+                      <a
+                        href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
+                      {% endif %}
                     </td>
                   </tr>
                   <tr>
                     <th scope="row" class="text-success align-middle">시험성과대비표</th>
                     <td colspan="2">
-                      <a href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
+                      {% if material.testPerformanceComparisonTable %}
+                      <a
+                        href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
+                      {% endif %}
                     </td>
                   </tr>
                 </table>
@@ -225,7 +246,7 @@ Material Check
             <label for="" class="col-12" style="color: black;">회신일자</label>
           </div>
           <div class="col-10">
-            {{material.replyDate}}
+            {{material.replyDate|default:""}}
           </div>
         </div>
         <div class="mt-3 row text-center justify-content-center align-items-center d-flex">
@@ -238,7 +259,7 @@ Material Check
                 <label for="" style="color: black;">담당자</label>
               </div>
               <div class="col-10">
-                {{material.generalEngineerText}}
+                {{material.generalEngineerText|default:""}}
               </div>
             </div>
             <div class="row mt-2">
@@ -246,7 +267,7 @@ Material Check
                 <label for="" style="color: black;">총괄관리자</label>
               </div>
               <div class="col-10">
-                {{material.totalEngineerText}}
+                {{material.totalEngineerText|default:""}}
               </div>
             </div>
           </div>
@@ -267,7 +288,8 @@ Material Check
             {{material.generalEngineerId.name}}
           </div>
           <div class="col-1">
-            {% if material.totalEngineerId %}<img width="100%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
+            {% if material.totalEngineerId %}<img width="100%" alt=""
+              src="{{material.totalEngineerId.signImage.url}}" />
             {% else %}(인)
             {% endif %}
           </div>
