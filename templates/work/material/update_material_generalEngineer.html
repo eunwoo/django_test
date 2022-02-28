@@ -1,0 +1,525 @@
+{% extends 'base/head.html' %}
+{% block title %}
+Material Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  <a href="{% url 'work:material' %}">자재 반입</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고서</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8 ">
+            <div class="row">
+              <div class="col">
+                <div class="col">
+                  <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit"
+                    form="form_material" id="save_button">저장</button>
+                </div>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">서명
+                  요청</button>
+                <!-- Modal -->
+                <div class="modal fade" id="signRequestModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">서명 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="{% url 'work:require_sign_material' %}" id="sign_form">
+                          {% csrf_token %}
+                          <input type='hidden' name="docNum" value="{{material.docNum}}" />
+                          <select class="form-select" name="sign" id="sign_select">
+                          </select>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="signRequestBtn">요청</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--폼 에러처리 부분-->
+    {% if form.errors %}
+    <section>
+      <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+        {% if field.errors %}
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+    <section id="material" name="material">
+      <form method="POST" id="form_material">
+        {% csrf_token %}
+        <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
+          <div class="row">
+            <div class="col-12 text-center my-4">
+              <h1>자재 공급원 신고서</h1>
+            </div>
+          </div>
+          <div class="mt-3 row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">문서번호</label>
+            </div>
+            <div class="col-4">
+              자재 공급원 신고서-{{material.docNum}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">작성일자</label>
+            </div>
+            <div class="col-4">
+              {{material.date}}
+            </div>
+          </div>
+          <div class="mt-3 row text-center">
+            <div class="col-2">
+              <label for="" class=" col-12" style="color: black;">공사명</label>
+            </div>
+            <div class="col-4">
+              {{material.title}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">자재명</label>
+            </div>
+            <div class="col-4">
+              가설기자재
+            </div>
+          </div>
+          <div class="mt-3 row text-center">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">공종</label>
+            </div>
+            <div class="col-4">
+              {{material.constructType}}
+            </div>
+          </div>
+          <div class="mt-3 row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class=" col-12" style="color: black;">공급원</label>
+            </div>
+            <div class="col-10">
+              <div class="row mt-3">
+                <div class="col-12">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <td>공급 업체명</td>
+                        <td>품명</td>
+                        <td>규격</td>
+                        <td>비고</td>
+                      </tr>
+                    </thead>
+                    <tbody id="supply_body">
+                      {% for supply_origin in material.supply_list.all %}
+                      <tr>
+                        <td>{{supply_origin.name}}</td>
+                        <td>{{supply_origin.goods}}</td>
+                        <td>{{supply_origin.size}}</td>
+                        <td>{{supply_origin.etc}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12" style="color: black;">내용</label>
+            </div>
+            <div class="col-10">
+              <div style="border: 1px solid rgb(210, 210, 210);" class="p-2">
+                <div class="row mt-2">
+                  <div id="label" class="col-12 text-center">
+                    <label for="">상기 업체로부터 해당 자재를 공급받아 당해 공사에 사용하는 사항에 대한 자재공급원을 신고합니다.</label>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-2 offset-6">
+                    <label for="">담당자</label>
+                  </div>
+                  <div class="col-2">
+                    {{material.writerId.name}}
+                  </div>
+                  <div class="col-2">
+                    <img width="100%" alt="" src="{{material.writerId.signImage.url}}" />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-2 offset-6">
+                    <label for="">현장대리인</label>
+                  </div>
+                  <div class="col-2">
+                    {{material.agentId.name}}
+                  </div>
+                  <div class="col-2">
+                    <img width="100%" alt="" src="{{material.agentId.signImage.url}}" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class=" col-12" style="color: black;">붙임</label>
+            </div>
+            <div class="col-10">
+              <div style="border: 1px solid rgb(210, 210, 210);" class="p-3 mt-2">
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                      <tr>
+                        <td>
+                          기타사항
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          {{material.text}}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <table class="table">
+                    <tr>
+                      <th scope="row" style="width: 25%;" class="text-success align-middle">가설기자재 공급원
+                        승인 문서</th>
+                      <td style="width: 75%;">
+                        <ul class="list-group">
+                          {% if material.docs %}
+                          {% for doc in material.docs.all %}
+                          <li class="list-group-item"><a href="{{doc.file.url}}"
+                              download="{{doc.filename}}">{{doc.filename}}</a></li>
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">사업자등록증</th>
+                      <td colspan="2">
+                        {% if material.businessLicense %}
+                        <a href="{{material.businessLicense.url}}">
+                          {{material.businessLicense.name|cut:'business_license/'}}
+                        </a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">납품실적증명서</th>
+                      <td colspan="2">
+                        {% if material.deliveryPerformanceCertificate %}
+                        <a href="{{material.deliveryPerformanceCertificate.url}}">
+                          {{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}
+                        </a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">안전인증서</th>
+                      <td colspan="2">
+                        {% if material.safetyCertificate %}
+                        <a
+                          href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">품질시험성적서</th>
+                      <td colspan="2">
+                        {% if material.qualityTestReport %}
+                        <a
+                          href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">시험성과대비표</th>
+                      <td colspan="2">
+                        {% if material.testPerformanceComparisonTable %}
+                        <a
+                          href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">회신일자</label>
+            </div>
+            <div class="col-10">
+              <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="작성일자"
+                value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
+            </div>
+          </div>
+          <div class="mt-3 row text-center justify-content-center align-items-center d-flex">
+            <div class="col-2">
+              <label for="" class=" col-12" style="color: black;">검토 의견</label>
+            </div>
+            <div class="col-10">
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label for="" style="color: black;">담당자</label>
+                </div>
+                <div class="col-10">
+                  <textarea class="form-control text-center" name='generalEngineerText' id="generalEngineerText"
+                    placeholder="내용을 입력해주세요." rows="2" value="{{form.instance.generalEngineerText|default_if_none:''}}"
+                    required>{{form.instance.generalEngineerText|default_if_none:''}}</textarea>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label for="" style="color: black;">총괄관리자</label>
+                </div>
+                <div class="col-10">
+                  {{material.totalEngineerText|default:""}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">결과</label>
+            </div>
+            <div class="col-10">
+              <select class="form-select" aria-label="공종" name="result" id="result" required>
+                <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
+                  선택해주세요
+                </option>
+                <option value="1" {% if form.instance.result == "1" %} selected="selected" {% endif %}>승인-의견반영
+                  후 진행
+                </option>
+                <option value="2" {% if form.instance.result == "2" %} selected="selected" {% endif %}>조건부
+                  승인-의견반영 후 진행
+                </option>
+                <option value="3" {% if form.instance.result == "3" %} selected="selected" {% endif %}>승인 불가
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 row mb-3">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12" style="color: black;">담당 건설사업관리기술인</label>
+            </div>
+            <div class="col-2">
+              {{material.generalEngineerId.name}}
+            </div>
+            <div class="col-2">
+              {% if material.replyDate %}<img width="100%" alt="" src="{{material.generalEngineerId.signImage.url}}" />
+              {% else %}(인)
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signModal">
+                서명
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">서명 요청</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                        <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        취소</button>
+                      <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-2">
+              <label for="" style="color: black;">총괄 건설사업관리기술인
+              </label>
+            </div>
+            <div class="col-2">
+              {{material.totalEngineerId.name}}
+            </div>
+            <div class="col-2">
+              {% if isSuccess %}<img width="100%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
+              {% else %}(인)
+              {% endif %}
+            </div>
+          </div>
+          <br>
+        </div>
+      </form>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+  // 변경 되었을 시 서명 입력이 안됨
+
+  let isChange = false;
+  let material_form = document.getElementById("material")
+  const input_list = material_form.querySelectorAll("input")
+  const textarea_list = material_form.querySelectorAll("textarea")
+  for (let input_item of input_list) {
+    input_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  for (let textarea_item of textarea_list) {
+    textarea_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  // 서명 할 경우 변경
+  let isSign = '{{form.instance.replyDate}}' === "None" ? false : true;
+  if ('{{form.instance.replyDate}}' === "None") {
+    const sign_button = document.getElementById("sign_button")
+    sign_button.addEventListener("click", function () {
+      const id_input = document
+        .getElementById("signRequest")
+        .value
+      const username = "{{request.user.username}}"
+      if (id_input === username) {
+        isSign = true;
+        const signModal = $('#signModal')
+        signModal.modal('hide');
+        signModal
+          .parent()
+          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '아이디가 다릅니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+    })
+  }
+
+  // 저장 버튼 클릭 시
+  material_form.addEventListener("submit", function (e) {
+    if (isChange && isSign) {
+      return true;
+    } else {
+      e.preventDefault()
+      if (!!!isChange) {
+        Swal.fire({
+          title: 'Error!',
+          text: '변경된 내용이 없습니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '서명을 해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+      return false;
+    }
+  })
+
+  // 서명 요청 시 서명 목록 로드
+  $('#sign_modal_button').on('click', () => {
+    if (isSign === false) {
+      Swal.fire({
+        title: 'Error!',
+        text: '서명을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const select_form = document.getElementById('sign_select')
+    select_form.innerHTML = ""
+    $.ajax({
+      type: "GET",
+      url: "{% url 'work:get_users' %}",
+      async: false,
+      success: (data) => {
+        data.users.forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.name
+          select_form.appendChild(option)
+        })
+        $('#signRequestModal').modal('show')
+      }
+    })
+  })
+
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '서명 요청이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
+</script>
+{% endblock %}
