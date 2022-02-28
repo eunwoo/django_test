@@ -1,214 +1,79 @@
 <!-- Quality request page -->
 {% extends 'base/head.html' %}
 {% block title %}
-  Safety Check
+Safety Check
 {% endblock %}
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
-{% endblock %}
-{% block javascript %}
-  <script>
-    $(document).ready(function () {
-      var $user = '{{request.user.role_type}}'
-      if ($user == '일반 관리자') {
-        $("#id_date").prop("readonly", true);
-        $("#id_clientName").prop("readonly", true);
-        $("#id_clientNum").prop("readonly", true);
-        $("#id_clientAddress").prop("readonly", true);
-      } else if ($user == '현장 대리인') {
-        $("#qtyreqform:input")
-          .not("#id_date, #id_clientName, #id_clientNum, #id_clientAddress")
-          .prop("readonly", true);
-      } else if ($user == '시스템 관리자') {} else if ($user == '일반 건설사업관리기술인') {
-        $("#qtyreqform :input")
-          .not("#id_entrantOrg , #id_entrantRank, #id_entrantName")
-          .prop("readonly", true);
-      } else if ($user == '총괄 건설사업관리기술인') {}
-
-    });
-  </script>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      {% include 'base/navbar_main.html' %}
-      <section>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="">업무</a>
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="">품질검사</a>
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">
-                    <a href="">품질검사 의뢰</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">품질검사 의뢰서 작성</li>
-                </ol>
-              </nav>
-            </div>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="">업무</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  <a href="">품질검사</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  <a href="">품질검사 의뢰</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">품질검사 의뢰서 작성</li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
-      <section>
-        <div class="container">
-          <div class="row">
-            <div class="col-4 offset-8 ">
-              <div class="row">
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8 ">
+            <div class="row">
+              <div class="col">
                 <div class="col">
-                  <div class="col">
-                    <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal">저장</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-sm">
-                        <div class="modal-content ">
-                          <br><br>
-                          <div class="modal-header" style="display:none">
-                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container-fluid">
-                              <div class="row">
-                                <div class="col-12">
-                                  <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">저장이 완료 되었습니다.</label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer" style="margin: 0 auto;">
-                            <button type="submit" class="btn btn-secondary" form="qtyreqform" data-bs-dismiss="modal">확인</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="qtyreqform"
+                    id="save_button">저장</button>
                 </div>
-
-                <div class="col">
-                  <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal1">서명 요청</button>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm">
-                      <div class="modal-content">
-                        <br><br>
-                        <div class="modal-header" style="display:none">
-                          <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 요청</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-12">
-                                <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">저장을 해주세요.</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer" style="margin: 0 auto;">
-                          <button type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">확인</button>
-                        </div>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">서명
+                  요청</button>
+                <!-- Modal -->
+                <div class="modal fade" id="signRequestModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">서명 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                    </div>
-                  </div>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalToggle2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm">
-                      <div class="modal-content">
-                        <br><br>
-                        <div class="modal-header" style="display:none">
-                          <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 요청</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-12">
-                                <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">내용을 모두 작성해주세요.</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer" style="margin: 0 auto;">
-                          <button type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">확인</button>
-                        </div>
+                      <div class="modal-body">
+                        <form method="POST" action="{% url 'work:require_sign_quality_request' %}" id="sign_form">
+                          {% csrf_token %}
+                          <input type='hidden' name="docNum" value="{{form.instance.docNum}}" />
+                          <select class="form-select" name="sign" id="sign_select">
+                          </select>
+                        </form>
                       </div>
-                    </div>
-                  </div>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalToggle3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 요청</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-12">
-                                <label style="white-space: normal;" for="" class="col-12 text-center">수신인 지정</label>
-                              </div>
-                            </div>
-                            <div class="row mt-2">
-                              <div class="col-12">
-                                <select name="" id="" class="col-12">
-                                  <option value="" selected="selected" disabled="disabled">수신인을 지정해 주세요.</option>
-                                  <option value="">김유지</option>
-                                  <option value="">이문제</option>
-                                  <option value="">청이라</option>
-                                  <option value="">임아이</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="row mt-2">
-                              <div class="col-12">
-                                <input type="text" placeholder="전달할 메시지를 입력해 주세요." style="white-space: normal;" class="col-12">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer" style="margin: 0 auto;">
-                          <button type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">확인</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalToggle4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm">
-                      <div class="modal-content">
-                        <br><br>
-                        <div class="modal-header" style="display:none">
-                          <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 요청</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-12">
-                                <label style="white-space: normal;" for="" class="fw-bold col-12 text-center">서명 요청이 완료 되었습니다</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer" style="margin: 0 auto;">
-                          <a href="Page6.html">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-                          </a>
-                        </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="signRequestBtn">요청</button>
                       </div>
                     </div>
                   </div>
@@ -217,15 +82,25 @@
             </div>
           </div>
         </div>
+      </div>
 
-      </section>
-      <form action="" id="qtyreqform" method="POST">
-        {% csrf_token %}
-        <section>
-          <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
-            <div class="row">
-              <div class="col-12 text-center my-4">
-                <label style="font-size: large;" for="">품질검사 의뢰서</label>
+    </section>
+    <form action="" id="qtyreqform" method="POST">
+      {% csrf_token %}
+      <section>
+        <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
+          <div class="row">
+            <div class="col-12 text-center my-4">
+              <h1>품질검사 의뢰서</h1>
+            </div>
+          </div>
+          <div class="mt-3 row">
+            <div class="mt-3 row text-center">
+              <div class="col-2">
+                <label for="" class="col-12" style="color: black;">문서번호</label>
+              </div>
+              <div class="col-4">
+                품질검사 의뢰서-{{docNum}}
               </div>
             </div>
             <div class="mt-3 row text-center">
@@ -233,10 +108,13 @@
                 <label for="" class="col-12" style="color: black;">품명</label>
               </div>
               <div class="col-4">
-                {{form.prodName}}
+                {{form.goods}}
               </div>
               <div class="col-2">
                 <label for="" class="col-12" style="color: black;">규격</label>
+              </div>
+              <div class="col-4">
+                {{form.size}}
               </div>
               <div class="col-4">
                 {{form.std}}
@@ -248,7 +126,17 @@
                 <label for="" class="col-12" style="color: black;">시험ᆞ검사종목</label>
               </div>
               <div class="col-4">
-                {{form.testItem}}
+                <div class="row">
+                  <div class="col">
+                    {{form.testType_hweem.label_tag}} {{form.testType_hweem}}
+                  </div>
+                  <div class="col">
+                    {{form.testType_zip.label_tag}} {{form.testType_zip}}
+                  </div>
+                  <div class="col">
+                    {{form.testType_tensile.label_tag}} {{form.testType_tensile}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="mt-3 row">
@@ -256,7 +144,7 @@
                 <label for="" class="col-12" style="color: black;">시료량</label>
               </div>
               <div class="col-10">
-                {{form.sAmount}}
+                {{form.sampleQuentity}}
               </div>
             </div>
             <div class="mt-3 row">
@@ -264,7 +152,7 @@
                 <label for="" class="col-12" style="color: black;">시료 또는 자재 생산국</label>
               </div>
               <div class="col-10">
-                {{form.country}}
+                {{form.sampleOrigin}}
               </div>
             </div>
             <div class="mt-3 row">
@@ -272,15 +160,44 @@
                 <label for="" class="col-12" style="color: black;">시료 채취 장소</label>
               </div>
               <div class="col-10">
-                {{form.sColSite}}
+                <div class="row">
+                  <div class="col-1">구분1</div>
+                  <div class="col-3">
+                    <select class="form-select">
+                      <option selected></option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                  <div class="col-1">구분2</div>
+                  <div class="col-3">
+                    <select class="form-select">
+                      <option selected></option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                  <div class="col-1">구분3</div>
+                  <div class="col-3">
+                    <select class="form-select">
+                      <option selected></option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                  {{form.sColSite}}
+                </div>
               </div>
             </div>
             <div class="mt-3 row text-center">
               <div class="col-2">
                 <label for="" class="col-12" style="color: black;">시료 채취 일자</label>
               </div>
-              <div class="col-4">
-                {{form.sColDate}}
+              <div class="col-4"><input type="date" class="form-control" name="sampleDate" id="sampleDate"
+                  placeholder="작성일자" value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" />
               </div>
             </div>
             <div class="mt-3 row">
@@ -290,59 +207,58 @@
               <div class="col-10">
                 <div class="row mt-2">
                   <div class="col-1">
-                    <label for="">소속</label>
+                    <label for="">업체명</label>
                   </div>
                   <div class="col-2">
-                    <input type="text" value="{{systemInfo.gcName}}" disabled="disabled">
+                    {{request.user.company}}
                   </div>
                   <div class="col-1">
                     <label for="" class="mr-1">담당 업무</label>
                   </div>
                   <div class="col-2">
-                    <input type="text" value="{{request.user.role}}" disabled="disabled">
+                    {{request.user.class3}}
                   </div>
                   <div class="col-1">
                     <label for="" class="mr-1">서명</label>
                   </div>
                   <div class="col-2">
-                    <input type="text" value="{{request.user.name}}" disabled="disabled">
+                    {{request.user.name}}
                   </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">(인)</label>
-                  </div>
-                  <div class="col-1">
-                    <button data-bs-toggle="modal" data-bs-target="#exampleModal4" class="btnx">서명</button>
+                  <div class="col-2">
+                    {% if form.instance.writerId != None %}<img width="100%" alt=""
+                      src="{{form.instance.writerId.signImage.url}}" />
+                    {% else %}(인)
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                      data-bs-target="#signModal">
+                      서명
+                    </button>
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                      aria-hidden="true">
+                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명</h5>
+                            <h5 class="modal-title">서명 요청</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <div class="container-fluid">
-                              <div class="row">
-                                <div class="col-12">
-                                  <label style="white-space: normal;" for="" class="col-12 text-center">결재를 위한 서명자 아이디를 입력해주세요</label>
-                                </div>
-                              </div>
-                              <div class="mt-2 row">
-                                <div class="col-12">
-                                  <input class="col-12" type="password">
-                                </div>
-                              </div>
+                            <div class="mb-3">
+                              <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                              <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
                             </div>
                           </div>
-                          <div class="modal-footer" style="margin: 0 auto;">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                              취소</button>
+                            <button id="sign_button" type="button" class="btn btn-primary">서명</button>
                           </div>
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
-
               </div>
             </div>
             <div class="mt-3 row">
@@ -369,39 +285,8 @@
                   <div class="col-2">
                     {{form.entrantName}}
                   </div>
-                  <div class="col-1">
+                  <div class="col-2">
                     <label for="" class="mr-1">(인)</label>
-                  </div>
-                  <div class="col-1">
-                    <button data-bs-toggle="modal" data-bs-target="#exampleModal4" class="btnx">서명</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-sm">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container-fluid">
-                              <div class="row">
-                                <div class="col-12">
-                                  <label style="white-space: normal;" for="" class="col-12 text-center">결재를 위한 서명자 아이디를 입력해주세요</label>
-                                </div>
-                              </div>
-                              <div class="mt-2 row">
-                                <div class="col-12">
-                                  <input class="col-12" type="password">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer" style="margin: 0 auto;">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -419,7 +304,7 @@
                 <label for="" class="col-12" style="color: black;">성과 이용 목적</label>
               </div>
               <div class="col-10">
-                {{form.purpose}}
+                품질 시험용
               </div>
             </div>
             <div class="mt-3 row">
@@ -428,27 +313,27 @@
               </div>
               <div class="col-10">
                 <div class="row mt-3">
-                  <div class="col-1">
+                  <div class="col-2">
                     <label for="">공사명</label>
                   </div>
-                  <div class="col-11">
-                    <input type="text" value="{{systemInfo.constName}}" disabled="disabled">
+                  <div class="col-10">
+                    {{field.title}}
                   </div>
                 </div>
                 <div class="row mt-3">
-                  <div class="col-1">
+                  <div class="col-2">
                     <label for="">착공일</label>
                   </div>
-                  <div class="col-11">
-                    <input type="text" value="{{systemInfo.constStart}}" disabled="disabled">
+                  <div class="col-10">
+                    {{field.startDay}}
                   </div>
                 </div>
                 <div class="row mt-3">
-                  <div class="col-1">
+                  <div class="col-2">
                     <label for="">준공예정일</label>
                   </div>
-                  <div class="col-11">
-                    <input type="text" value="{{systemInfo.constEnd}}" disabled="disabled">
+                  <div class="col-10">
+                    {{field.endDay}}
                   </div>
                 </div>
               </div>
@@ -458,13 +343,13 @@
                 <label for="" class="col-12" style="color: black;">발주자</label>
               </div>
               <div class="col-4">
-                <input type="text" value="{{systemInfo.orderName}}" disabled="disabled">
+                {{field.orderer}}
               </div>
               <div class="col-2">
                 <label for="" class="col-12" style="color: black;">시공자</label>
               </div>
               <div class="col-4">
-                <input type="text" value="{{systemInfo.gcName}}" disabled="disabled">
+                {{field.constructComp}}
               </div>
             </div>
             <div class="mt-3 row">
@@ -472,12 +357,15 @@
                 <label for="" class="col-12" style="color: black;">국가중요시설 여부</label>
               </div>
               <div class="col-10">
-                {{form.date}}
+                <textarea class="form-control text-center" name='isImportFacility' id="isImportFacility"
+                  placeholder="내용을 입력해주세요." rows="3"
+                  value="{{form.instance.isImportFacility|default_if_none:''}}">{{form.instance.isImportFacility|default_if_none:''}}</textarea>
               </div>
             </div>
             <div class="row">
               <div class="col-12">
-                <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제 1항에 따라 품질시험ᆞ검사를 의뢰합니다</label>
+                <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제 1항에 따라 품질시험ᆞ검사를
+                  의뢰합니다</label>
               </div>
             </div>
             <div class="mt-3 row text-center">
@@ -485,21 +373,16 @@
                 <label for="" class="col-12" style="color: black;">의뢰일</label>
               </div>
               <div class="col-4">
-                {{form.date}}
               </div>
               <div class="col-1">
                 <label for="" class="col-12" style="color: black;">의뢰인</label>
               </div>
               <div class="col-1">
-                {{form.clientName}}
               </div>
               <div class="col-1">
                 <label for="" class="col-12" style="color: black;">서명</label>
               </div>
-              <div class="col-1">
-                <input type="text" placeholder="" aria-required="true" class="col-12">
-              </div>
-              <div class="col-1">
+              <div class="col-3">
                 <label for="" class="col-12" style="color: black;">(인)</label>
               </div>
             </div>
@@ -507,23 +390,148 @@
               <div class="col-1 offset-8">
                 <label for="" class="col-12" style="color: black;">전화번호</label>
               </div>
-              <div class="col-2">
-                {{form.clientNum}}
+              <div class="col-3">
+                {{field.callNum}}
               </div>
             </div>
             <div class="mt-3 row text-center">
               <div class="col-1 offset-8">
                 <label for="" class="col-12" style="color: black;">주소</label>
               </div>
-              <div class="col-2">
-                {{form.clientAddress}}
+              <div class="col-3">
+                {{field.address}}
               </div>
             </div>
             <br>
           </div>
-        </section>
-      </form>
-    </div>
-    <br><br><br><br><br>
-  </main>
+      </section>
+    </form>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+  // 변경 되었을 시 서명 요청이 안됨
+  let isChange = false;
+  let qtyreq_form = document.getElementById("qtyreqform")
+  const temp_input_list = qtyreq_form.querySelectorAll("input")
+  const textarea_list = qtyreq_form.querySelectorAll("textarea")
+  const select_list = qtyreq_form.querySelectorAll("select")
+  const input_list = []
+  for (let temp of temp_input_list) {
+    if (temp.name) {
+      input_list.push(temp)
+    }
+  }
+  for (let input_item of input_list) {
+    input_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  for (let textarea_item of textarea_list) {
+    textarea_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  for (let select_item of select_list) {
+    select_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  // 서명 할 경우 변경
+  let isSign = '{{form.instance.writerId}}' === "None" ? false : true;
+  if ('{{form.instance.writerId}}' === "None") {
+    const sign_button = document.getElementById("sign_button")
+    sign_button.addEventListener("click", function () {
+      const id_input = document
+        .getElementById("signRequest")
+        .value
+      const username = "{{request.user.username}}"
+      if (id_input === username) {
+        isSign = true;
+        const signModal = $('#signModal')
+        signModal.modal('hide');
+        signModal
+          .parent()
+          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '아이디가 다릅니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+    })
+  }
+
+  // 저장 버튼 클릭 시
+  qtyreq_form.addEventListener("submit", function (e) {
+    if (isChange && isSign) {
+      return true;
+    } else {
+      e.preventDefault()
+      if (!!!isChange) {
+        Swal.fire({
+          title: 'Error!',
+          text: '변경된 내용이 없습니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '서명을 해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+      return false;
+    }
+  })
+
+  // 서명 요청 시 서명 목록 로드
+  $('#sign_modal_button').on('click', () => {
+    if (isChange === true) {
+      Swal.fire({
+        title: 'Error!',
+        text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const select_form = document.getElementById('sign_select')
+    select_form.innerHTML = ""
+    $.ajax({
+      type: "GET",
+      url: "{% url 'work:get_users' %}",
+      async: false,
+      success: (data) => {
+        data.users.forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.name
+          select_form.appendChild(option)
+        })
+        $('#signRequestModal').modal('show')
+      }
+    })
+  })
+
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '서명 요청이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
+</script>
 {% endblock %}
