@@ -418,6 +418,7 @@ Material Check
   let material_form = document.getElementById("material")
   const input_list = material_form.querySelectorAll("input")
   const textarea_list = material_form.querySelectorAll("textarea")
+  const select_list = material_form.querySelectorAll("select")
   for (let input_item of input_list) {
     input_item.addEventListener("change", function () {
       isChange = true;
@@ -426,6 +427,12 @@ Material Check
 
   for (let textarea_item of textarea_list) {
     textarea_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  for (let select_item of select_list) {
+    select_item.addEventListener("change", function () {
       isChange = true;
     })
   }
