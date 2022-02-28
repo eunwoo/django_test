@@ -151,7 +151,7 @@ def update_material_general(request, docNum):
 
 
 def read_material_service(user, pk):
-    material = MaterialSupplyReport.objects.get(pk=pk)
+    material = MaterialSupplyReport.objects.get(docNum=pk)
     if user.class2 == "일반 관리자":
         material.isCheckManager = True
     elif user.class2 == "현장 대리인":
