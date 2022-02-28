@@ -15,7 +15,11 @@ class SafetyReport(models.Model):
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
     replyDate = models.DateField(null=True)  # 회신 일자
-    result_choices = (("1", "승인"), ("2", "조건부 승인"), ("3", "승인 불가"))
+    result_choices = (
+        ("1", "승인-제출한 내용대로 진행"),
+        ("2", "조건부 승인-의견반영 후 진행"),
+        ("3", "승인 불가"),
+    )
     result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
@@ -105,7 +109,11 @@ class MaterialSupplyReport(models.Model):
     replyDate = models.DateField(null=True)  # 회신 일자
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
-    result_choices = (("1", "승인"), ("2", "조건부 승인"), ("3", "승인 불가"))
+    result_choices = (
+        ("1", "승인-제출한 내용대로 진행"),
+        ("2", "조건부 승인-의견반영 후 진행"),
+        ("3", "승인 불가"),
+    )
     result = models.CharField(
         max_length=10, choices=result_choices, blank=True
     )  # 결과 내용
