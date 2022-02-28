@@ -31,3 +31,9 @@ class GeneralManagerMaterialSupplyReportForm(forms.ModelForm):
                 attrs={"class": "form-control"}
             ),
         }
+
+
+class GeneralEngineerMaterialSupplyReportForm(forms.ModelForm):
+    class Meta:
+        model = MaterialSupplyReport
+        fields = ["replyDate", "generalEngineerText", "result"]
