@@ -21,9 +21,9 @@ from ..services.material_services import (
 def material(request):
     page = request.GET.get("page", 1)
 
-    safety_list = get_material_list_by_user(request.user)
+    material_list = get_material_list_by_user(request.user)
 
-    paginator = Paginator(safety_list, 10)
+    paginator = Paginator(material_list, 10)
     page_obj = paginator.get_page(page)
 
     return render(request, "work/material/material.html", {"materialitems": page_obj})
