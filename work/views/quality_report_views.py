@@ -1,6 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from ..services.quality_report_services import (
+    create_quality_report_service,
+    update_quality_report_service,
+)
+
 
 @login_required(login_url="/user/login/")
 def quality_report(request):
@@ -9,14 +14,19 @@ def quality_report(request):
 
 @login_required(login_url="/user/login/")
 def create_quality_report(request):
-    return render(request, "work/quality/quality_report/create_quality_report.html")
+    return create_quality_report_service(request)
 
 
 @login_required(login_url="/user/login/")
 def update_quality_report(request, pk):
-    pass
+    return update_quality_report_service(request, pk)
 
 
 @login_required(login_url="/user/login/")
 def delete_quality_report(request, pk):
+    pass
+
+
+@login_required(login_url="/user/login/")
+def require_sign_quality_report(request, pk):
     pass
