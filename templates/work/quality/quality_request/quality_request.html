@@ -38,6 +38,7 @@
     </section>
     <section>
       <div class="container">
+        {% if request.user.class2 == "일반 관리자" %}
         <div class="row">
           <div class="col-3">
             <a href="{% url 'work:create_quality_request' %}">
@@ -45,6 +46,7 @@
             </a>
           </div>
         </div>
+        {% endif %}
         <div class="row mt-2">
           <div class="col-12">
             <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
@@ -73,10 +75,9 @@
                     href="{% url 'work:read_quality_request' i.docNum %}" class="link-secondary" {% endif %}>품질검사
                     의뢰서-{{ i.docNum}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
-                  <a {% if i.isCheckGeneralEngineer == False %} href="{% url 'work:read_quality_request' i.docNum %}"
-                    class="link-success" {% elif i.totalEngineerId == None %}
-                    href="/work/update_quality_request/{{i.docNum}}" class="link-primary" {% else %}
-                    href="{% url 'work:read_quality_request' i.docNum %}" class="link-secondary" {% endif %}>품질검사
+                  <a {% if i.isSuccess == False %} href="/work/update_quality_request/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_quality_request' i.docNum %}" class="link-secondary"
+                    {% endif %}>품질검사
                     의뢰서-{{ i.docNum}}</a>
                   {% endif %}
                 </td>
