@@ -1,136 +1,216 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  System Information
+System Information
 {% endblock %}
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      {% include 'base/navbar_main.html' %}
-      <section>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
-                  </li>
-                  <li class="breadcrumb-item">설치 위치 등록
-                  </li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </section>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
       <div class="container">
-        <div class="row mt-2">
-          <div class="col-4">
-            <div class="row">
-              <div class="col">
-                구분 1
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-1 ps-4">
-                <input type="radio" id="huey" name="drone" value="huey" checked="checked">
-              </div>
-              <div class="col-3">
-                <label for="huey">Huey</label>
-              </div>
-            </div>
-            <div class="row">
-              <input type="radio" id="huey" name="drone" value="huey" checked="checked">
-              <label for="huey">Huey</label>
-            </div>
-          </div>
-          <div class="col-4">한줄</div>
-          <div class="col-4">한줄</div>
-        </div>
-        <div class="row mt-2">
-          <div class="col-12">
-            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
-              <tr>
-                <th style="width: 5%;">
-                  No
-                </th>
-                <th style="width: 20%;">
-                  이름
-                </th>
-                <th style="width: 30%;">
-                  소속
-                </th>
-                <th style="width: 35%;">
-                  전화번호
-                </th>
-                <th style="width: 10%;">
-                  삭제
-                </th>
-              </tr>
-              {% for user in cm_calls %}
-                <tr>
-                  <td>
-                    {{forloop.counter}}
-                  </td>
-                  <td>
-                    {{user.name}}
-                  </td>
-                  <td>
-                    {{user.belong}}
-                  </td>
-                  <td>
-                    {{user.phone}}
-                  </td>
-                  <td>
-                    <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">삭제</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-sm">
-                        <div class="modal-content ">
-                          <br><br>
-                          <div class="modal-header" style="display:none">
-                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">삭제 확인</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container-fluid">
-                              <div class="row">
-                                <div class="col-12">
-                                  <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">[{{user.name}}]<br>해당 회원을 삭제 하시겠습니까?</label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer" style="margin: 0 auto;">
-                            <form action="{% url 'system_manager:delete_cm_calls' user.id %}" method="POST">
-                              {% csrf_token %}
-                              <button type="submit" class="btn btn-danger">확인</button>
-                            </form>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              {% endfor %}
-            </table>
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                </li>
+                <li class="breadcrumb-item">설치 위치 등록
+                </li>
+              </ol>
+            </nav>
           </div>
         </div>
       </div>
-      <br><br><br>
+    </section>
+    <div class="container">
+      <!--550-->
+      <div class="row mt-2">
+        <div class="col-4">
+          <div class="input-group mb-1">
+            <span class="input-group-text" id="basic-addon1">구분1</span>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-primary">추가</button>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              1공구
+            </label>
+          </div>
+          <button type="button" class="btn-close" aria-label="Close"></button>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              2공구
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">
+              3공구
+            </label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="input-group mb-1">
+            <span class="input-group-text" id="basic-addon1">구분1</span>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-primary">추가</button>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              주거시설
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              노인정
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">
+              상가
+            </label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="input-group mb-1">
+            <span class="input-group-text" id="basic-addon1">구분1</span>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-primary">추가</button>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              101동
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              102동
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              103동
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+              104동
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">
+              105동
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-4">
+          <button type="button" class="btn btn-primary">등록</button>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12">
+          <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+            <tr>
+              <th style="width: 5%;">
+                No
+              </th>
+              <th style="width: 20%;">
+                구분1
+              </th>
+              <th style="width: 30%;">
+                구분2
+              </th>
+              <th style="width: 35%;">
+                구분3
+              </th>
+              <th style="width: 10%;">
+                삭제
+              </th>
+            </tr>
+            {% for user in cm_calls %}
+            <tr>
+              <td>
+                {{forloop.counter}}
+              </td>
+              <td>
+                {{user.name}}
+              </td>
+              <td>
+                {{user.belong}}
+              </td>
+              <td>
+                {{user.phone}}
+              </td>
+              <td>
+                <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal{{forloop.counter}}">삭제</button>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content ">
+                      <br><br>
+                      <div class="modal-header" style="display:none">
+                        <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">삭제 확인</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-12">
+                              <label style="white-space: normal;" for=""
+                                class="col-12 fw-bold text-center">[{{user.name}}]<br>해당 회원을 삭제 하시겠습니까?</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer" style="margin: 0 auto;">
+                        <form action="{% url 'system_manager:delete_cm_calls' user.id %}" method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger">확인</button>
+                        </form>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+    <br><br><br>
+  </div>
   </div>
   <br><br><br><br><br>
 
