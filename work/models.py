@@ -61,6 +61,8 @@ class SafetyReport(models.Model):
         null=True,
         related_name="safety_report_total_engineer",
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "구조 안전성 검토 신고서 - " + self.docNum
@@ -168,6 +170,8 @@ class MaterialSupplyReport(models.Model):
         null=True,
         related_name="material_report_total_engineer",
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "자재 공급원 신고서 - " + self.docNum
@@ -221,10 +225,14 @@ class QualityInspectionRequest(models.Model):
     )
     isImportFacility = models.TextField()  # 국가 중요시설 여부
 
+    orderDate = models.DateField(null=True)  # 의뢰일
+
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
+
+    isSuccess = models.BooleanField(default=False)  # 성공 여부
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -244,6 +252,8 @@ class QualityInspectionRequest(models.Model):
         null=True,
         related_name="quality_inspection_general_engineer",
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "품질검사 의뢰서 - " + self.docNum
@@ -296,6 +306,8 @@ class QualityPerformanceReport(models.Model):
         null=True,
         related_name="quality_performance_total_engineer",
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "품질검사 성과 총괄표 신고서 - " + self.docNum
