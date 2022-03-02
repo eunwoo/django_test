@@ -48,7 +48,11 @@ class AdminForm(UserCreationForm):
                 attrs={"class": "col-12 text-center", "placeholder": "이름을 입력해주세요"}
             ),
             "phone": forms.TextInput(
-                attrs={"class": "col-12 text-center", "placeholder": "전화번호를 입력해주세요."}
+                attrs={
+                    "class": "col-12 text-center",
+                    "placeholder": "전화번호를 입력해주세요. ex) 010-1234-5678",
+                    "pattern": "[0-9]{3}-[0-9]{4}-[0-9]{4}",
+                }
             ),
         }
 
@@ -110,6 +114,10 @@ class UserForm(AdminForm):
                 attrs={"class": "col-12 text-center"}, choices=role_choices
             ),
             "phone": forms.TextInput(
-                attrs={"class": "col-12 text-center", "placeholder": "전화번호를 입력해주세요."}
+                attrs={
+                    "class": "col-12 text-center",
+                    "placeholder": "전화번호를 입력해주세요. ex) 010-1234-5678",
+                    "pattern": "[0-9]{3}-[0-9]{4}-[0-9]{4}",
+                }
             ),
         }

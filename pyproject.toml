@@ -11,6 +11,7 @@ django-crispy-forms = "^1.14.0"
 crispy-bootstrap5 = "^0.6"
 Pillow = "^9.0.1"
 PyYAML = "^6.0"
+pysqlite3-binary = "^0.4.6"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"

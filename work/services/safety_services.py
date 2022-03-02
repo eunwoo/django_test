@@ -40,24 +40,6 @@ def get_sign_users(request):
     return users
 
 
-def assign_user(docNum: int, user_pk: int):
-    safety = SafetyReport.objects.get(docNum=docNum)
-    user = CustomUser.objects.get(pk=user_pk)
-    if user.class2 == "현장 대리인":
-        safety.agentId = user
-        safety.isReadAgent = False
-    elif user.class2 == "일반 건설사업관리기술인":
-        safety.generalEngineerId = user
-        safety.isReadAgent = True
-        safety.isReadGeneralEngineer = False
-    else:
-        safety.totalEngineerId = user
-        safety.isReadGeneralEngineer = True
-        safety.isReadTotalEngineer = False
-    safety.save()
-    return True
-
-
 def read_safety_service(user, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     if user.class2 == "일반 관리자":
@@ -82,25 +64,24 @@ def safety_success(docNum: int):
 
 
 def update_safety_general(request, pk):
+    instance = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
-        form = GeneralManagerSafetyReportForm(request.POST, instance=pk)
+        form = GeneralManagerSafetyReportForm(request.POST, instance=instance)
         if form.is_valid():
             safety = form.save(commit=False)
             safety.writerId = request.user
             files = request.POST.getlist("docs[]")
             safety.save()
-            safety.docs.clear()
+            if files:
+                safety.docs.clear()
             for file_id in files:
                 doc_file = DocsFile.objects.get(pk=int(file_id))
                 safety.docs.add(doc_file)
             return redirect("work:update_safety", safety.docNum)
     else:
-        form = GeneralManagerSafetyReportForm(
-            instance=SafetyReport.objects.get(docNum=pk)
-        )
+        form = GeneralManagerSafetyReportForm(instance=instance)
 
     target_doc = SafetyReport.objects.get(docNum=pk)
-    docNum = target_doc.docNum
 
     # 관련 문서 로드
     construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
@@ -117,7 +98,7 @@ def update_safety_general(request, pk):
         request,
         "work/safety/create_safety_general.html",
         {
-            "docNum": docNum,
+            "docNum": pk,
             "form": form,
             "construct_bills": [construct_bills1, construct_bills2, construct_bills3],
             "detail_drawings": [detail_drawings1, detail_drawings2, detail_drawings3],

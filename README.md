@@ -72,6 +72,10 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 
 https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
 
+# Django Model 만든날짜, 수정된날짜 자동 추가
+
+https://stackoverflow.com/questions/3429878/automatic-creation-date-for-django-model-form-objects
+
 # 수정해야 할 사항
 
 - ~가입시 이미지 전송이 안됨 => 이전에는 되는 것처럼 보이게만 짜둠~ => 해결완료
@@ -83,6 +87,7 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - 설치 위치 등록 페이지
 - 페이지네이트 작성하기 (위 링크 참고)
 - 투입 공종 직접입력 란 (https://close-up.tistory.com/entry/Select-%EB%B0%95%EC%8A%A4-%EC%84%A0%ED%83%9D%EA%B0%92-input%EC%97%90-%EB%84%A3%EA%B8%B0-ex-email-%EC%A3%BC%EC%86%8C%EC%84%A0%ED%83%9D)
+- 결과 보고 시 강관비계, 시스템비계, 시스템 동바리 선택창 => 문서 작성시 해당 속성이 입력되어야 하는데 없음
 
 # 참고사항
 
@@ -164,11 +169,12 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - (추가) 이메일 연동 작업
 
 # 02/25 해야 할 것
+
 - 구조 안전성 검토 총괄 관리자 페이지 설정
 - 배포 (오후 2시까지)
 
-
 # 개발 사항
+
 - 시스템 관리자 메뉴 설치위치명 등록 제외 전부 동작
 - 구조 안전성 검토 신고서 루트 개발 완료(일반 관리자, 현장 대리인, 일반 건설사업기술관리인, 총괄 건설사업기술관리인)
 - 테스트시 각 계정별로 아이디를 하나씩 만든후 테스트 하시면 됩니다.
@@ -177,6 +183,7 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - 그 외 자재 반입, 품질검사 의뢰, 품질검사 성과보고, 설치작업 확인 페이지는 구조 안전성 검토 신고서 문서를 기반으로 재활용하여 개발할 예정입니다.
 
 # 할일 정리
+
 - 문서 갯수 표시
 - 시스템 관리자 설치위치명 등록
 - 자재 공급원 신고서
@@ -189,6 +196,30 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 - 설치작업 중 체크리스트 작성
 
 # 02/25 마무리
+
 - 자재 공급원 신고서 작성 => 서명과 공급원 연결하기
 - 자재 공급원 신고서 기타사항은 크게 하고, 읽기 전용일때는 체크박스로 넣기
 - 3/4 까지 마무리할 계획 세우기
+
+# 참고자료
+
+https://getbootstrap.com/docs/5.1/forms/input-group/
+
+# 품질검사 의뢰서
+
+- 시료 채취 장소는 일단 패스하기
+- 보내야 할것은 품질검사 의뢰서 폼, 현장 등록에 추가된 현장
+
+# 02/28 마무리
+
+- 품질검사 의뢰서 일반 관리자 부분 작성
+- 디비 초기화 후 다시 실행하기
+
+# 해야할 일 정리
+
+- 품질검사 의뢰서 - 현장대리인, 일반 건설사업기술인
+- 품질검사 총괄 신고서 - 일반관리자, 현장대리인, 일반 건설사업기술인, 총괄 건설사업기술인
+- 설치작업 전 페이지 - 일반관리자
+- 설치작업 후 페이지 - 일반관리자
+- 설치장소 등록 - 시스템 관리자
+- 결과보고 페이지 - 전체 공통

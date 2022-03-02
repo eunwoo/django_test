@@ -15,7 +15,11 @@ class SafetyReport(models.Model):
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
     replyDate = models.DateField(null=True)  # 회신 일자
-    result_choices = (("1", "승인"), ("2", "조건부 승인"), ("3", "승인 불가"))
+    result_choices = (
+        ("1", "승인-제출한 내용대로 진행"),
+        ("2", "조건부 승인-의견반영 후 진행"),
+        ("3", "승인 불가"),
+    )
     result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
@@ -101,12 +105,20 @@ class MaterialSupplyReport(models.Model):
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
-    acceptDocs = models.ForeignKey(
-        DocsFile,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="material_supply_report_accept_docs",
+
+    replyDate = models.DateField(null=True)  # 회신 일자
+    generalEngineerText = models.TextField(null=True)  # 담당자 의견
+    totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
+    result_choices = (
+        ("1", "승인-제출한 내용대로 진행"),
+        ("2", "조건부 승인-의견반영 후 진행"),
+        ("3", "승인 불가"),
     )
+    result = models.CharField(
+        max_length=10, choices=result_choices, blank=True
+    )  # 결과 내용
+
+    docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
 
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
@@ -114,21 +126,22 @@ class MaterialSupplyReport(models.Model):
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
     isCheckGeneralEngineer = models.BooleanField(null=True)
+    isSuccess = models.BooleanField(default=False)
 
     businessLicense = models.FileField(
-        upload_to="business_license", null=True
+        upload_to="business_license", blank=True, null=True
     )  # 사업자 등록증
     deliveryPerformanceCertificate = models.FileField(
-        upload_to="delivery_performance_certificate", null=True
+        upload_to="delivery_performance_certificate", blank=True, null=True
     )  # 납품실적증명서
     safetyCertificate = models.FileField(
-        upload_to="safety_certificate", null=True
+        upload_to="safety_certificate", blank=True, null=True
     )  # 안전인증서
     qualityTestReport = models.FileField(
-        upload_to="quality_test_report", null=True
+        upload_to="quality_test_report", blank=True, null=True
     )  # 품질시험성적서
     testPerformanceComparisonTable = models.FileField(
-        upload_to="test_performance_comparison_table", null=True
+        upload_to="test_performance_comparison_table", blank=True, null=True
     )  # 시험성과대비표
 
     writerId = models.ForeignKey(
@@ -178,11 +191,22 @@ class SupplyList(models.Model):
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)
-    goods = models.CharField(max_length=60)  # 품명
+    goods_choice = [
+        ("1", "강관비계용 부재 (비계용 강관)"),
+        ("2", "강관비계용 부재(강관조인트)"),
+        ("3", "조립형비계 및 동바리부재(수직재)"),
+        ("4", "조립형비계 및 동바리부재(수평재)"),
+        ("5", "조립형비계 및 동바리부재(가새재)"),
+        ("6", "조립형비계 및 동바리부재(트러스)"),
+        ("7", "립형비계 및 동바리부재(연결조인트)"),
+    ]
+    goods = models.CharField(max_length=60, choices=goods_choice)  # 품명
     size = models.CharField(max_length=60)  # 규격
     sampleQuentity = models.TextField()  # 시료량
     sampleOrigin = models.TextField()  # 시료 또는 자제 생산국
-    testType = models.CharField(max_length=60)  # 시험검사 종목
+    testType_hweem = models.BooleanField(default=False)  # 시험검사종목 - 휨하중
+    testType_zip = models.BooleanField(default=False)  # 시험검사종목 - 압축하중
+    testType_tensile = models.BooleanField(default=False)  # 시험검사종목 - 인장하중
     locateId = models.ForeignKey(
         InstallLocate, on_delete=models.SET_NULL, null=True
     )  # 시료 채취 장소
@@ -199,10 +223,8 @@ class QualityInspectionRequest(models.Model):
 
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
     isReadGeneralEngineer = models.BooleanField(null=True)
-    isReadTotalEngineer = models.BooleanField(null=True)
     isCheckManager = models.BooleanField(null=True)
     isCheckAgent = models.BooleanField(null=True)
-    isCheckGeneralEngineer = models.BooleanField(null=True)
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -221,12 +243,6 @@ class QualityInspectionRequest(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="quality_inspection_general_engineer",
-    )
-    totalEngineerId = models.ForeignKey(
-        CustomUser,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="quality_inspection_total_engineer",
     )
 
     def __str__(self):

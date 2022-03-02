@@ -1,0 +1,27 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{title}}">
+  불러오기
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{{title}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          {% for content in contents %}
+          <li class="list-group-item">
+            <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}" id="{{content.id}}" />
+            <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label></li>
+          {% endfor %}
+        </ul>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="{{title}}-button">저장</button>
+      </div>
+    </div>
+  </div>
+</div>

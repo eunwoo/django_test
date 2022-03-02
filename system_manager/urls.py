@@ -10,6 +10,7 @@ from .views import (
 
 app_name = "system_manager"
 
+locate_api = []
 
 urlpatterns = [
     # 현장 관리
