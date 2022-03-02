@@ -10,6 +10,7 @@ from ..services.quality_request_services import (
     create_quality_request_service,
     get_qty_request_list_by_user,
     qty_request_success,
+    read_qty_request_service,
     update_quality_request_service,
 )
 
@@ -42,7 +43,7 @@ def update_quality_request(request, pk):
 
 @login_required(login_url="/user/login/")
 def read_quality_request(request, pk):
-    qty_request = QualityInspectionRequest.objects.get(docNum=pk)
+    qty_request = read_qty_request_service(request.user, pk)
     return render(
         request,
         "work/quality/quality_request/read_quality_request.html",
