@@ -63,24 +63,23 @@ Material Check
                   <a {% if i.isCheckManager == False %} href="{% url 'work:read_material' i.docNum %}"
                     class="link-success" {% elif i.agentId_id == None %} href="/work/update_material/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_material' i.docNum %}"
-                    class="link-secondary" {% endif %}>구조 안전성 검토
+                    class="link-secondary" {% endif %}>자재 공급원
                     신고서-{{ i.docNum}}</a>
                   {% elif request.user.class2 == "현장 대리인" %}
                   <a {% if i.isCheckAgent == False %} href="{% url 'work:read_material' i.docNum %}"
                     class="link-success" {% elif i.generalEngineerId_id == None %}
                     href="/work/update_material/{{i.docNum}}" class="link-primary" {% else %}
-                    href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성 검토
+                    href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
                     신고서-{{ i.docNum}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
                   <a {% if i.isCheckGeneralEngineer == False %} href="{% url 'work:read_material' i.docNum %}"
                     class="link-success" {% elif i.totalEngineerId == None %} href="/work/update_material/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_material' i.docNum %}"
-                    class="link-secondary" {% endif %}>구조 안전성 검토
+                    class="link-secondary" {% endif %}>자재 공급원
                     신고서-{{ i.docNum}}</a>
                   {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
                   <a {% if i.isSuccess == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
-                    {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
-                    검토
+                    {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
                     신고서-{{ i.docNum}}</a>
                   {% endif %}
                 </td>
