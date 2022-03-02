@@ -10,9 +10,12 @@ from .views import (
 
 app_name = "system_manager"
 
-locate_api = []
+locate_api = [
+    path("locate/<int:class_type>/", locate_views.read_locate_class, name="get_locate"),
+]
 
 urlpatterns = [
+    *locate_api,
     # 현장 관리
     path("manage_field/", field_views.manage_field, name="manage_field"),
     # 현장 등록 및 수정
