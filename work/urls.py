@@ -60,9 +60,19 @@ quality_request_url = [
         name="create_quality_request",
     ),
     path(
+        "update_quality_request/<int:pk>/",
+        quality_request_views.update_quality_request,
+        name="update_quality_request",
+    ),
+    path(
         "require_sign_quality_request/",
         quality_request_views.require_sign_quality_request,
         name="require_sign_quality_request",
+    ),
+    path(
+        "read_quality_request/<int:pk>/",
+        quality_request_views.read_quality_request,
+        name="read_quality_request",
     ),
 ]
 
