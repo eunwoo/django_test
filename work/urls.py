@@ -83,6 +83,16 @@ quality_report_url = [
         quality_report_views.create_quality_report,
         name="create_quality_report",
     ),
+    path(
+        "update_quality_report/<int:pk>/",
+        quality_report_views.update_quality_report,
+        name="update_quality_report",
+    ),
+    path(
+        "require_sign_quality_report/",
+        quality_report_views.require_sign_quality_report,
+        name="require_sign_quality_report",
+    ),
 ]
 
 urlpatterns = [
