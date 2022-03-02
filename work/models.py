@@ -316,7 +316,9 @@ class QualityPerformanceReport(models.Model):
 class QualityPerformance(models.Model):  # 품질검사 성과 총괄표
     goods = models.CharField(max_length=60)  # 품명
     standard = models.CharField(max_length=60)  # 규격
-    testType = models.CharField(max_length=60)  # 시험검사 종목
+    testType_hweem = models.BooleanField(default=False)  # 시험검사종목 - 휨하중
+    testType_zip = models.BooleanField(default=False)  # 시험검사종목 - 압축하중
+    testType_tensile = models.BooleanField(default=False)  # 시험검사종목 - 인장하중
     plan = models.IntegerField()  # 계획 횟수
     conducted = models.IntegerField()  # 실시 횟수
     acceptance = models.IntegerField()  # 합격 횟수
