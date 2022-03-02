@@ -223,3 +223,8 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 - 설치작업 후 페이지 - 일반관리자
 - 설치장소 등록 - 시스템 관리자
 - 결과보고 페이지 - 전체 공통
+
+
+# Todo
+
+- 개발 안될거 같은거 정리하기
