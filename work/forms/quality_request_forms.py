@@ -41,3 +41,9 @@ class GeneralManagerQualityInspectionRequestForm(forms.ModelForm):
             "testType_zip": "압축하중",
             "testType_tensile": "인장하중",
         }
+
+
+class AgentQualityInspectionRequestForm(forms.ModelForm):
+    class Meta:
+        model = QualityInspectionRequest
+        fields = ["orderDate"]
