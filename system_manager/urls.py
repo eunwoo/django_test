@@ -12,6 +12,12 @@ app_name = "system_manager"
 
 locate_api = [
     path("locate/<int:class_type>/", locate_views.read_locate_class, name="get_locate"),
+    path("locate/add/", locate_views.add_locate, name="add_locate"),
+    path(
+        "locate/delete/",
+        locate_views.delete_locate,
+        name="delete_locate",
+    ),
 ]
 
 urlpatterns = [
