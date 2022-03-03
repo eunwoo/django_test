@@ -1,12 +1,33 @@
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
-from ..services.quality_request_services import create_quality_request_service
+from work.models import QualityInspectionRequest
+
+from ..services.quality_request_services import (
+    assign_user_for_qty_request,
+    create_quality_request_service,
+    get_qty_request_list_by_user,
+    read_qty_request_service,
+    update_quality_request_service,
+)
 
 
 @login_required(login_url="/user/login/")
 def quality_request(request):
-    return render(request, "work/quality/quality_request/quality_request.html")
+    page = request.GET.get("page", 1)
+
+    qty_request_list = get_qty_request_list_by_user(request.user)
+
+    paginator = Paginator(qty_request_list, 10)
+    page_obj = paginator.get_page(page)
+
+    return render(
+        request,
+        "work/quality/quality_request/quality_request.html",
+        {"qty_request_items": page_obj},
+    )
 
 
 @login_required(login_url="/user/login/")
@@ -16,14 +37,23 @@ def create_quality_request(request):
 
 @login_required(login_url="/user/login/")
 def update_quality_request(request, pk):
-    pass
+    return update_quality_request_service(request, pk)
 
 
 @login_required(login_url="/user/login/")
-def delete_quality_request(request, pk):
-    pass
+def read_quality_request(request, pk):
+    qty_request = read_qty_request_service(request.user, pk)
+    return render(
+        request,
+        "work/quality/quality_request/read_quality_request.html",
+        {"qty_request": qty_request},
+    )
 
 
 @login_required(login_url="/user/login/")
 def require_sign_quality_request(request):
-    pass
+    if request.method == "POST":
+        doc = QualityInspectionRequest.objects.get(docNum=request.POST.get("docNum"))
+        assign_user_for_qty_request(request.user, doc, int(request.POST.get("sign", 1)))
+        return redirect("work:quality_request")
+    return Http404("잘못된 접근입니다.")

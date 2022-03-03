@@ -11,7 +11,6 @@ from work.utils.send_alert import email_send
 from ..services.material_services import (
     create_material_service,
     get_material_list_by_user,
-    material_success,
     read_material_service,
     update_material_service,
 )
@@ -21,9 +20,9 @@ from ..services.material_services import (
 def material(request):
     page = request.GET.get("page", 1)
 
-    safety_list = get_material_list_by_user(request.user)
+    material_list = get_material_list_by_user(request.user)
 
-    paginator = Paginator(safety_list, 10)
+    paginator = Paginator(material_list, 10)
     page_obj = paginator.get_page(page)
 
     return render(request, "work/material/material.html", {"materialitems": page_obj})
@@ -42,12 +41,9 @@ def update_material(request, pk):
 @login_required(login_url="/user/login/")
 def require_sign_material(request):
     if request.method == "POST":
-        if request.user.class2 == "총괄 건설사업관리기술인":
-            material_success(request.POST.get("docNum"))
-        else:
-            email_send(int(request.POST.get("sign")))
-            doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
-            assign_user(doc, int(request.POST.get("sign")))
+        email_send(int(request.POST.get("sign")))
+        doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
+        assign_user(request.user, doc, int(request.POST.get("sign", 1)))
         return redirect("work:material")
     return Http404("잘못된 접근입니다.")
 

@@ -1,112 +1,137 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  품질검사 의뢰
+품질검사 의뢰
 {% endblock %}
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      {% include 'base/navbar_main.html' %}
-      <section>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'work:index' %}">업무</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{% url 'work:quality_menu' %}">품질검사</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">품질검사 의뢰</li>
-                </ol>
-              </nav>
-            </div>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:quality_menu' %}">품질검사</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">품질검사 의뢰</li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
-      <section>
-        <div class="container">
-          <div class="row">
-            <div class="col-3">
-              <a href="{% url 'work:create_quality_request' %}">
-                <button class="btn mb-2">품질검사 의뢰서 작성하기</button>
-              </a>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="col-12">
-              <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
-                <tr>
-                  <td style="width: 60%;">
-                    문서
-                  </td>
-                  <td style="width: 30%;">
-                    작성 날짜
-                  </td>
-                  <td style="width: 10%;">
-                    삭제
-                  </td>
-                </tr>
-                {% for i in qualityRequestItems %}
-                  <tr>
-                    <td>
-                      <a href="{% url 'appform:update_qtyrequest' i.id %}">{{ i.prodName}}</a>
-                    </td>
-                    <td>
-                      {{i.date}}
-                    </td>
-                    <td>
-                      <form action="" method="POST">
-                        {% csrf_token %}
-                        <button class="btn btn-primary col-12" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal5">삭제</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered modal-sm">
-                            <div class="modal-content ">
-                              <br><br>
-                              <div class="modal-header" style="display:none">
-                                <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">저장</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="container-fluid">
-                                  <div class="row">
-                                    <div class="col-12">
-                                      <label style="white-space: normal;" for="" class="col-12 fw-bold text-center">삭제 하시겠습니까?</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="modal-footer" style="margin: 0 auto;">
-                                <a href="">
-                                  <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        {% if request.user.class2 == "일반 관리자" %}
+        <div class="row">
+          <div class="col-3">
+            <a href="{% url 'work:create_quality_request' %}">
+              <button class="btn mb-2">품질검사 의뢰서 작성하기</button>
+            </a>
           </div>
         </div>
-      </section>
-    </div>
-    <br><br><br><br><br>
-  </main>
+        {% endif %}
+        <div class="row mt-2">
+          <div class="col-12">
+            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+              <tr>
+                <td style="width: 70%;">
+                  문서
+                </td>
+                <td style="width: 30%;">
+                  작성 날짜
+                </td>
+              </tr>
+              {% for i in qty_request_items %}
+              <tr>
+                <td>
+                  <!--관리자 유형마다 확인이 다름-->
+                  {% if request.user.class2 == "일반 관리자" %}
+                  <a {% if i.isCheckManager == False and i.isSuccess == True %}
+                    href="{% url 'work:read_quality_request' i.docNum %}" class="link-success"
+                    {% elif i.isCheckManager == False %} href="/work/update_quality_request/{{i.docNum}}"
+                    class="link-primary" {% else %} href="{% url 'work:read_quality_request' i.docNum %}"
+                    class="link-secondary" {% endif %}>품질검사
+                    의뢰서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "현장 대리인" %}
+                  <a {% if i.isCheckAgent == False and i.isSuccess == True %}
+                    href="{% url 'work:read_quality_request' i.docNum %}" class="link-success"
+                    {% elif i.isCheckAgent == False %} href="/work/update_quality_request/{{i.docNum}}"
+                    class="link-primary" {% else %} href="{% url 'work:read_quality_request' i.docNum %}"
+                    class="link-secondary" {% endif %}>품질검사
+                    의뢰서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "일반 건설사업관리기술인"%}
+                  <a {% if i.isSuccess == False %} href="/work/update_quality_request/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_quality_request' i.docNum %}" class="link-secondary"
+                    {% endif %}>품질검사
+                    의뢰서-{{ i.docNum}}</a>
+                  {% endif %}
+                </td>
+                <td>
+                  {{i.created_at|date:"Y-m-d"}}
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <!--페이징 코트-->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if qty_request_items.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{qty_request_items.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a>
+          </li>
+          {% endif %}
+          {% for page_number in qty_request_items.paginator.page_range %}
+          {% if page_number == qty_request_items.number %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+          {% if qty_request_items.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ qty_request_items.next_page_number }}">&raquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
 {% endblock %}

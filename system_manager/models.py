@@ -46,6 +46,7 @@ class InstallLocateClass2(models.Model):
         InstallLocateClass1, on_delete=models.CASCADE, related_name="class2"
     )  # 클래스1
     class2 = models.CharField(max_length=100)  # 클래스2
+    isApply = models.BooleanField(default=False)
 
 
 # 설치 위치 명
@@ -57,15 +58,6 @@ class InstallLocate(models.Model):
 
     def __str__(self):
         return self.class2.class1.class1 + " " + self.class2.class2 + " " + self.class3
-
-
-# 설치 위치 구분
-class LocateClass(models.Model):
-    type = models.CharField(max_length=10)
-    name = models.CharField(max_length=30)
-
-    def __str__(self):
-        return self.name
 
 
 # 문서 등록

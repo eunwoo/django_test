@@ -117,12 +117,8 @@ def get_users(request):
 @login_required(login_url="/user/login/")
 def require_sign(request):
     if request.method == "POST":
-        if request.user.class2 == "총괄 건설사업관리기술인":
-            safety_success(request.POST.get("docNum"))
-        else:
-            email_send(int(request.POST.get("sign")))
-            doc = SafetyReport.objects.get(docNum=int(request.POST.get("docNum")))
-            assign_user(doc, int(request.POST.get("sign")))
+        doc = SafetyReport.objects.get(docNum=int(request.POST.get("docNum")))
+        assign_user(request.user, doc, int(request.POST.get("sign", 1)))
         return redirect("work:safety")
     return Http404("잘못된 접근입니다.")
 

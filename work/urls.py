@@ -60,9 +60,19 @@ quality_request_url = [
         name="create_quality_request",
     ),
     path(
+        "update_quality_request/<int:pk>/",
+        quality_request_views.update_quality_request,
+        name="update_quality_request",
+    ),
+    path(
         "require_sign_quality_request/",
         quality_request_views.require_sign_quality_request,
         name="require_sign_quality_request",
+    ),
+    path(
+        "read_quality_request/<int:pk>/",
+        quality_request_views.read_quality_request,
+        name="read_quality_request",
     ),
 ]
 
@@ -72,6 +82,21 @@ quality_report_url = [
         "create_quality_report/",
         quality_report_views.create_quality_report,
         name="create_quality_report",
+    ),
+    path(
+        "update_quality_report/<int:pk>/",
+        quality_report_views.update_quality_report,
+        name="update_quality_report",
+    ),
+    path(
+        "require_sign_quality_report/",
+        quality_report_views.require_sign_quality_report,
+        name="require_sign_quality_report",
+    ),
+    path(
+        "read_quality_report/<int:pk>/",
+        quality_report_views.read_quality_report,
+        name="read_quality_report",
     ),
 ]
 

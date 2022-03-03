@@ -14,19 +14,19 @@ from ..models import SafetyReport, SafetyCheckMenu, SafetyCheckList
 def get_safety_list_by_user(user):
     if user.class2 == "일반 관리자":
         return SafetyReport.objects.filter(writerId=user).order_by(
-            "-isCheckManager", "-docNum"
+            "isCheckManager", "-isSuccess", "-docNum"
         )
     elif user.class2 == "현장 대리인":
         return SafetyReport.objects.filter(agentId=user).order_by(
-            "-isReadAgent", "-isCheckAgent", "-docNum"
+            "isCheckAgent", "-isSuccess", "-docNum"
         )
     elif user.class2 == "일반 건설사업관리기술인":
         return SafetyReport.objects.filter(generalEngineerId=user).order_by(
-            "-isReadGeneralEngineer", "-isCheckGeneralEngineer", "-docNum"
+            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
         )
     else:
         return SafetyReport.objects.filter(totalEngineerId=user).order_by(
-            "-isReadTotalEngineer", "-isSuccess", "-docNum"
+            "isSuccess", "-docNum"
         )
 
 
