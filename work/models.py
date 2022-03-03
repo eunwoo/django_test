@@ -24,11 +24,11 @@ class SafetyReport(models.Model):
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(null=True)
-    isReadTotalEngineer = models.BooleanField(null=True)
-    isCheckManager = models.BooleanField(null=True)
-    isCheckAgent = models.BooleanField(null=True)
-    isCheckGeneralEngineer = models.BooleanField(null=True)
+    isReadGeneralEngineer = models.BooleanField(default=False)
+    isReadTotalEngineer = models.BooleanField(default=False)
+    isCheckManager = models.BooleanField(default=False)
+    isCheckAgent = models.BooleanField(default=False)
+    isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
 
     # 체크리스트 전용 속성
@@ -123,11 +123,11 @@ class MaterialSupplyReport(models.Model):
     docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
 
     isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(null=True)
-    isReadTotalEngineer = models.BooleanField(null=True)
-    isCheckManager = models.BooleanField(null=True)
-    isCheckAgent = models.BooleanField(null=True)
-    isCheckGeneralEngineer = models.BooleanField(null=True)
+    isReadGeneralEngineer = models.BooleanField(default=False)
+    isReadTotalEngineer = models.BooleanField(default=False)
+    isCheckManager = models.BooleanField(default=False)
+    isCheckAgent = models.BooleanField(default=False)
+    isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
 
     businessLicense = models.FileField(
@@ -227,11 +227,8 @@ class QualityInspectionRequest(models.Model):
 
     orderDate = models.DateField(null=True)  # 의뢰일
 
-    isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(null=True)
-    isCheckManager = models.BooleanField(null=True)
-    isCheckAgent = models.BooleanField(null=True)
-
+    isCheckManager = models.BooleanField(default=True)
+    isCheckAgent = models.BooleanField(default=True)
     isSuccess = models.BooleanField(default=False)  # 성공 여부
 
     writerId = models.ForeignKey(
@@ -275,12 +272,10 @@ class QualityPerformanceReport(models.Model):
         related_name="quality_performance_report",
     )  # 현장등록
 
-    isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(null=True)
-    isReadTotalEngineer = models.BooleanField(null=True)
-    isCheckManager = models.BooleanField(null=True)
-    isCheckAgent = models.BooleanField(null=True)
-    isCheckGeneralEngineer = models.BooleanField(null=True)
+    isCheckManager = models.BooleanField(default=True)
+    isCheckAgent = models.BooleanField(default=True)
+    isCheckGeneralEngineer = models.BooleanField(default=True)
+    isSuccess = models.BooleanField(default=False)
 
     writerId = models.ForeignKey(
         CustomUser,

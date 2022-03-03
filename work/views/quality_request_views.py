@@ -4,12 +4,11 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 
 from work.models import QualityInspectionRequest
-from work.services.common_services import assign_user
 
 from ..services.quality_request_services import (
+    assign_user_for_qty_request,
     create_quality_request_service,
     get_qty_request_list_by_user,
-    qty_request_success,
     read_qty_request_service,
     update_quality_request_service,
 )
@@ -54,12 +53,7 @@ def read_quality_request(request, pk):
 @login_required(login_url="/user/login/")
 def require_sign_quality_request(request):
     if request.method == "POST":
-        if request.user.class2 == "일반 건설사업관리기술인":
-            qty_request_success(request.POST.get("docNum"))
-        else:
-            doc = QualityInspectionRequest.objects.get(
-                docNum=request.POST.get("docNum")
-            )
-            assign_user(doc, int(request.POST.get("sign")))
+        doc = QualityInspectionRequest.objects.get(docNum=request.POST.get("docNum"))
+        assign_user_for_qty_request(request.user, doc, int(request.POST.get("sign", 1)))
         return redirect("work:quality_request")
     return Http404("잘못된 접근입니다.")

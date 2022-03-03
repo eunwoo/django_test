@@ -14,19 +14,19 @@ from ..forms.material_forms import (
 def get_material_list_by_user(user):
     if user.class2 == "일반 관리자":
         return MaterialSupplyReport.objects.filter(writerId=user).order_by(
-            "-isCheckManager", "-docNum"
+            "isCheckManager", "-isSuccess", "-docNum"
         )
     elif user.class2 == "현장 대리인":
         return MaterialSupplyReport.objects.filter(agentId=user).order_by(
-            "-isReadAgent", "-isCheckAgent", "-docNum"
+            "isCheckAgent", "-isSuccess", "-docNum"
         )
     elif user.class2 == "일반 건설사업관리기술인":
         return MaterialSupplyReport.objects.filter(generalEngineerId=user).order_by(
-            "-isReadGeneralEngineer", "-isCheckGeneralEngineer", "-docNum"
+            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
         )
     else:
         return MaterialSupplyReport.objects.filter(totalEngineerId=user).order_by(
-            "-isReadTotalEngineer", "-isSuccess", "-docNum"
+            "isSuccess", "-docNum"
         )
 
 
@@ -137,8 +137,8 @@ def update_material_general(request, docNum):
             supply_size = request.POST.getlist("supply_size[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.save()
-            material.docs.clear()
-            material.supply_list.clear()
+            material.docs.all().delete()
+            material.supply_list.all().delete()
             for file_id in files:
                 doc_file = DocsFile.objects.get(pk=int(file_id))
                 material.docs.add(doc_file)
@@ -179,14 +179,3 @@ def read_material_service(user, pk):
         material.isCheckGeneralEngineer = True
     material.save()
     return material
-
-
-def material_success(docNum: int):
-    material = MaterialSupplyReport.objects.get(docNum=docNum)
-    # 메일전송 만들기
-    material.isSuccess = True
-    material.isCheckManager = False
-    material.isCheckAgent = False
-    material.isCheckGeneralEngineer = False
-    material.save()
-    return True

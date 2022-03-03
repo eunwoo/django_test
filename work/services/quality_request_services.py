@@ -16,29 +16,16 @@ from user.models import CustomUser
 def get_qty_request_list_by_user(user):
     if user.class2 == "일반 관리자":
         return QualityInspectionRequest.objects.filter(writerId=user).order_by(
-            "-isCheckManager", "-docNum"
+            "isCheckManager", "-isSuccess", "-docNum"
         )
     elif user.class2 == "현장 대리인":
         return QualityInspectionRequest.objects.filter(agentId=user).order_by(
-            "-isReadAgent", "-isCheckAgent", "-docNum"
+            "isCheckAgent", "-isSuccess", "-docNum"
         )
     else:
         return QualityInspectionRequest.objects.filter(generalEngineerId=user).order_by(
-            "-isSuccess", "-docNum"
+            "isSuccess", "-docNum"
         )
-
-
-def assign_user_for_qty_request(doc, user_pk: int):
-    user = CustomUser.objects.get(pk=user_pk)
-    if user.class2 == "현장 대리인":
-        doc.agentId = user
-        doc.isReadAgent = False
-    else:
-        doc.totalEngineerId = user
-        doc.isReadGeneralEngineer = True
-        doc.isReadTotalEngineer = False
-    doc.save()
-    return True
 
 
 def create_quality_request_service(request):
@@ -128,12 +115,20 @@ def update_quality_request_for_generalEngineer(request, docNum):
     )
 
 
-def qty_request_success(docNum: int):
-    qty_request = QualityInspectionRequest.objects.get(docNum=docNum)
-    qty_request.isSuccess = True
-    qty_request.isCheckManager = False
-    qty_request.isCheckAgent = False
-    qty_request.save()
+def assign_user_for_qty_request(user, doc, user_pk: int):
+    target_user = CustomUser.objects.get(pk=user_pk)
+    if user.class2 == "일반 관리자":
+        doc.agentId = target_user
+        doc.isCheckAgent = False
+        doc.isCheckManager = True
+    elif user.class2 == "현장 대리인":
+        doc.generalEngineerId = target_user
+        doc.isSuccess = False
+    else:
+        doc.isSuccess = True
+        doc.isCheckManager = False
+        doc.isCheckAgent = False
+    doc.save()
     return True
 
 
