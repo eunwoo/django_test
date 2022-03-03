@@ -40,179 +40,279 @@ System Information
         <div class="col-4">
           <div class="input-group mb-1">
             <span class="input-group-text" id="basic-addon1">구분1</span>
-            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
-            <button type="button" class="btn btn-primary">추가</button>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1"
+              id="class1_input">
+            <button type="button" class="btn btn-primary" onclick="add_locate(1, this)">추가</button>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              1공구
-            </label>
-          </div>
-          <button type="button" class="btn-close" aria-label="Close"></button>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              2공구
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-            <label class="form-check-label" for="flexRadioDefault2">
-              3공구
-            </label>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="input-group mb-1">
-            <span class="input-group-text" id="basic-addon1">구분1</span>
-            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
-            <button type="button" class="btn btn-primary">추가</button>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              주거시설
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              노인정
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-            <label class="form-check-label" for="flexRadioDefault2">
-              상가
-            </label>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="input-group mb-1">
-            <span class="input-group-text" id="basic-addon1">구분1</span>
-            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1">
-            <button type="button" class="btn btn-primary">추가</button>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              101동
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              102동
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              103동
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              104동
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-            <label class="form-check-label" for="flexRadioDefault2">
-              105동
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="container">
-      <div class="row justify-content-end">
-        <div class="col-4">
-          <button type="button" class="btn btn-primary">등록</button>
-        </div>
-      </div>
-
-      <div class="row mt-2">
-        <div class="col-12">
-          <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
-            <tr>
-              <th style="width: 5%;">
-                No
-              </th>
-              <th style="width: 20%;">
-                구분1
-              </th>
-              <th style="width: 30%;">
-                구분2
-              </th>
-              <th style="width: 35%;">
-                구분3
-              </th>
-              <th style="width: 10%;">
-                삭제
-              </th>
-            </tr>
-            {% for user in cm_calls %}
-            <tr>
-              <td>
-                {{forloop.counter}}
-              </td>
-              <td>
-                {{user.name}}
-              </td>
-              <td>
-                {{user.belong}}
-              </td>
-              <td>
-                {{user.phone}}
-              </td>
-              <td>
-                <button class="btn btn-danger col-12" aria-label="Left Align" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal{{forloop.counter}}">삭제</button>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1"
-                  aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-sm">
-                    <div class="modal-content ">
-                      <br><br>
-                      <div class="modal-header" style="display:none">
-                        <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">삭제 확인</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="container-fluid">
-                          <div class="row">
-                            <div class="col-12">
-                              <label style="white-space: normal;" for=""
-                                class="col-12 fw-bold text-center">[{{user.name}}]<br>해당 회원을 삭제 하시겠습니까?</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer" style="margin: 0 auto;">
-                        <form action="{% url 'system_manager:delete_cm_calls' user.id %}" method="POST">
-                          {% csrf_token %}
-                          <button type="submit" class="btn btn-danger">확인</button>
-                        </form>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
+          <div class="form-check" id="class1-list">
+            {% for class_item in class1 %}
+            <div class="row">
+              <div class="col-10">
+                <input class="form-check-input" type="radio" name="class1" id="class1_{{class_item.pk}}"
+                  value="{{class_item.pk}}">
+                <label class="form-check-label" for="class1_{{class_item.pk}}">
+                  {{class_item.class1}}
+                </label>
+              </div>
+              <div class="col-2">
+                <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(1, this)"
+                  id="class1btn_{{class_item.pk}}"></button>
+              </div>
+            </div>
             {% endfor %}
-          </table>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="input-group mb-1">
+            <span class="input-group-text" id="basic-addon1">구분2</span>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1"
+              id="class2_input">
+            <button type="button" class="btn btn-primary" onclick="add_locate(2, this)">추가</button>
+          </div>
+          <div class="form-check" id="class2-list">
+
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="input-group mb-1">
+            <span class="input-group-text" id="basic-addon1">구분3</span>
+            <input type="text" class="form-control" placeholder="내용을 입력해주세요." aria-describedby="basic-addon1"
+              id="class3_input">
+            <button type="button" class="btn btn-primary" onclick="add_locate(3, this)">추가</button>
+          </div>
+
+          <div class="form-check" id="class3-list">
+          </div>
+
         </div>
       </div>
+
+      <div class="container">
+        <div class="row justify-content-end">
+          <div class="col-1">
+            <button type="button" class="btn btn-primary" onclick="apply_locate()">등록</button>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-12">
+            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+              <tr>
+                <th style="width: 5%;">
+                  No
+                </th>
+                <th style="width: 20%;">
+                  구분1
+                </th>
+                <th style="width: 30%;">
+                  구분2
+                </th>
+                <th style="width: 35%;">
+                  구분3
+                </th>
+                <th style="width: 10%;">
+                  삭제
+                </th>
+              </tr>
+              {% for locate in install_locate %}
+              <tr>
+                <td>
+                  {{ forloop.counter }}
+                </td>
+                <td>
+                  {{ locate.class2.class1.class1 }}
+                </td>
+                <td>
+                  {{ locate.class2.class2 }}
+                </td>
+                <td>
+                  {{ locate.class3 }}
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger">삭제</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+      <br><br><br>
     </div>
-    <br><br><br>
-  </div>
   </div>
   <br><br><br><br><br>
 
 </main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  const clear2 = () => {
+    document.getElementById("class2-list").innerHTML = "";
+  }
+
+  const clear3 = () => {
+    document.getElementById("class3-list").innerHTML = "";
+  }
+
+  const add_locate = (class_type, e) => {
+    const input_element = document.getElementById(`class${class_type}_input`);
+    let parent_class_id = 0;
+    if (class_type !== 1) {
+      if (document.querySelectorAll(`input[name="class${class_type-1}"]:checked`).length < 1) {
+        alert(`구분${class_type-1}을 선택해주세요.`);
+        return false;
+      }
+      parent_class_id = document.querySelector(`input[name="class${class_type-1}"]:checked`).value;
+    }
+    const input_value = input_element.value;
+    if (input_value === "") {
+      return false;
+    }
+    input_element.value = "";
+    $.ajax({
+      url: "{% url 'system_manager:add_locate' %}",
+      type: "POST",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_type: class_type,
+        name: input_value,
+        class_id: parent_class_id
+      },
+      success: function (data) {
+        if (data.result === "success") {
+          const model = JSON.parse(data.data)[0];
+          const class_list = document.getElementById(`class${class_type}-list`);
+          const class_list_div = document.createElement("div");
+          let title, type;
+          if (class_type === 1) {
+            title = model.fields.class1;
+            type = 'radio';
+          } else if (class_type === 2) {
+            title = model.fields.class2;
+            type = 'radio'
+          } else if (class_type === 3) {
+            title = model.fields.class3;
+            type = 'checkbox'
+          }
+          class_list_div.className = "row";
+          class_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="${type}" name="class${class_type}" id="class${class_type}_${model.pk}"
+                value="${model.pk}">
+              <label class="form-check-label" for="class${class_type}_${model.pk}">
+                ${title}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(${class_type}, this)"
+                id="class${class_type}btn_${model.pk}"></button>
+            </div>`;
+          class_list.appendChild(class_list_div);
+        }
+      }
+    })
+  }
+
+  const delete_locate = (class_type, e) => {
+    $.ajax({
+      url: "{% url 'system_manager:delete_locate' %}",
+      type: "POST",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_type: class_type,
+        class_id: e.id.split("_")[1]
+      },
+      success: function (data) {
+        e.parentNode.parentNode.remove();
+      }
+    })
+  }
+
+  // 구분 1 선택시 구분 2 설정
+  $("input[name=class1]:radio").change(function () {
+    const class1_id = $(this).val();
+    clear2();
+    clear3();
+    $.ajax({
+      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 2),
+      type: "GET",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_id: class1_id
+      },
+      success: function (data) {
+        const class2_list = document.getElementById("class2-list");
+        for (let item of data.install_locate) {
+          const class2_list_div = document.createElement("div");
+          class2_list_div.className = "row";
+          class2_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="radio" name="class2" id="class2_${item.id}"
+                value="${item.id}">
+              <label class="form-check-label" for="class2_${item.id}">
+                ${item.class2}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(2, this)"
+                id="class2btn_${item.id}"></button>
+            </div>`;
+          class2_list.appendChild(class2_list_div);
+        }
+
+        // 구분 2 선택시 구분 3 설정
+        $("input[name=class2]:radio").change(function () {
+          const class2_id = $(this).val();
+          $.ajax({
+            url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 3),
+            type: "GET",
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+            data: {
+              class_id: class2_id
+            },
+            success: function (data) {
+              const class3_list = document.getElementById("class3-list");
+              class3_list.innerHTML = ""
+              for (let item of data.install_locate) {
+                const class3_list_div = document.createElement("div");
+                class3_list_div.className = "row";
+                class3_list_div.innerHTML = `
+                  <div class="col-10">
+                    <input class="form-check-input" type="checkbox" name="class3" id="class3_${item.id}"
+                      value="${item.id}">
+                    <label class="form-check-label" for="class3_${item.id}">
+                      ${item.class3}
+                    </label>
+                  </div>
+                  <div class="col-2">
+                    <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(3, this)"
+                      id="class3btn_${item.id}"></button>
+                  </div>`;
+                class3_list.appendChild(class3_list_div);
+              }
+            }
+          })
+        })
+      }
+    })
+  })
+
+  // 구분3 선택된 값 모두 불러오기
+  const apply_locate = () => {
+    const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item.value);
+    console.log(class3_ids)
+  }
+</script>
 {% endblock %}
