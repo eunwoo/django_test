@@ -15,7 +15,7 @@ def apply_locate(request):
     if not request.user.is_system_manager:  # 시스템 매니저만 접근 가능
         return redirect("main:home")
     class1 = InstallLocateClass1.objects.all()
-    install_locate = InstallLocate.objects.all()
+    install_locate = InstallLocate.objects.filter(isApply=True)
     return render(
         request,
         "system_manager/apply_locate.html",
@@ -43,8 +43,13 @@ def read_locate_class(request, class_type):
             class1=InstallLocateClass1.objects.get(pk=class_id)
         )
     elif class_type == 3:
+        class_accept = request.GET.get("class_accept", 1)
+        if class_accept == 1:
+            class_accept = True
+        else:
+            class_accept = False
         install_locate = InstallLocate.objects.filter(
-            class2=InstallLocateClass2.objects.get(pk=class_id)
+            class2=InstallLocateClass2.objects.get(pk=class_id), isApply=class_accept
         )
     else:
         return Http404()
@@ -92,5 +97,24 @@ def delete_locate(request):
             InstallLocateClass2.objects.get(pk=request.POST.get("class_id")).delete()
         elif class_type == 3:
             InstallLocate.objects.get(pk=request.POST.get("class_id")).delete()
+        return HttpResponse(status=200)
+    return Http404()
+
+
+@login_required(login_url="/user/login/")
+def accept_locate(request):
+    if request.method == "POST":
+        class_list = request.POST.getlist("class_list[]")
+        for class_id in class_list:
+            InstallLocate.objects.filter(pk=class_id).update(isApply=True)
+        return HttpResponse(status=200)
+    return Http404()
+
+
+@login_required(login_url="/user/login/")
+def deregistration_locate(request):
+    if request.method == "POST":
+        class_id = request.POST.get("class_id")
+        InstallLocate.objects.filter(pk=class_id).update(isApply=False)
         return HttpResponse(status=200)
     return Http404()

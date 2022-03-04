@@ -18,6 +18,12 @@ locate_api = [
         locate_views.delete_locate,
         name="delete_locate",
     ),
+    path("locate/accept/", locate_views.accept_locate, name="accept_locate"),
+    path(
+        "locate/deregistration/",
+        locate_views.deregistration_locate,
+        name="deregistration_locate",
+    ),
 ]
 
 urlpatterns = [
