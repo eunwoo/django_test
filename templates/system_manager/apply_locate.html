@@ -132,7 +132,8 @@ System Information
                   {{ locate.class3 }}
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger">삭제</button>
+                  <button type="button" class="btn btn-danger"
+                    onclick="deregistration({{locate.pk}}, '{{locate.class3}}')">삭제</button>
                 </td>
               </tr>
               {% endfor %}
@@ -280,7 +281,8 @@ System Information
               'X-CSRFToken': '{{ csrf_token }}'
             },
             data: {
-              class_id: class2_id
+              class_id: class2_id,
+              class_accept: 0
             },
             success: function (data) {
               const class3_list = document.getElementById("class3-list");
@@ -313,6 +315,63 @@ System Information
   const apply_locate = () => {
     const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item.value);
     console.log(class3_ids)
+    $.ajax({
+      url: "{% url 'system_manager:accept_locate' %}",
+      type: "POST",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        'class_list[]': class3_ids,
+      },
+      success: function (data) {
+        Swal.fire({
+          title: '설치위치 설정 완료',
+          text: '설치위치 설정이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인'
+        }).then(() => {
+          location.reload();
+        })
+      }
+    })
+  }
+
+  // 설치위치 등록 해제
+  const deregistration = (class_id, target) => {
+    Swal.fire({
+      title: '설치위치 등록 해제',
+      text: `[${target}]\n설치위치 등록 해제를 하시겠습니까?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: "{% url 'system_manager:deregistration_locate' %}",
+          type: "POST",
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          data: {
+            class_id: class_id
+          },
+          success: function (data) {
+            Swal.fire({
+              title: '설치위치 등록 해제 완료',
+              text: '설치위치 등록 해제가 완료되었습니다.',
+              icon: 'success',
+              confirmButtonText: '확인'
+            }).then(() => {
+              location.reload();
+            })
+          }
+        })
+      }
+    })
   }
 </script>
 {% endblock %}
