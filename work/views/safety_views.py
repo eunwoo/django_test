@@ -14,14 +14,12 @@ from ..services.safety_services import (
     get_sign_users,
     read_checklist_service,
     read_safety_service,
-    safety_success,
     update_safety_agent,
     update_safety_general,
     get_safety_list_by_user,
     update_safety_generalEngineer,
     update_safety_totalEngineer,
 )
-from ..utils.send_alert import email_send
 
 
 @login_required(login_url="/user/login/")
