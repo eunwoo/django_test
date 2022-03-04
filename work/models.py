@@ -357,6 +357,7 @@ class BeforeInstallCheckList(models.Model):
         null=True,
         related_name="before_checklist",
     )  # 설치 위치명
+    detailLocate = models.CharField(max_length=80, blank=True)  # 설치 위치 상세명
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
@@ -390,6 +391,13 @@ class BeforeInspectionResult(models.Model):
 
 class BeforeMeasure(models.Model):
     img = models.ImageField(upload_to="before_measure")
+    beformInspectionResult = models.ForeignKey(
+        BeforeInspectionResult,
+        on_delete=models.CASCADE,
+        related_name="measures",
+        blank=True,
+        null=True,
+    )
 
 
 # =============================================================================
@@ -406,6 +414,7 @@ class InstallCheckList(models.Model):
         null=True,
         related_name="install_checklist",
     )  # 설치 위치명
+    detailLocate = models.CharField(max_length=80, blank=True)  # 설치 위치 상세명
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
@@ -446,3 +455,10 @@ class InspectionResult(models.Model):
 
 class Measure(models.Model):
     img = models.ImageField(upload_to="measure")
+    inspectionResult = models.ForeignKey(
+        InspectionResult,
+        on_delete=models.CASCADE,
+        related_name="measures",
+        blank=True,
+        null=True,
+    )
