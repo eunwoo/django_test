@@ -248,8 +248,7 @@ Safety Check
                 <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
                   선택해주세요
                 </option>
-                <option value="1" {% if form.instance.result == "1" %} selected="selected" {% endif %}>승인-의견반영
-                  후 진행
+                <option value="1" {% if form.instance.result == "1" %} selected="selected" {% endif %}>승인-제출한 내용대로 진행
                 </option>
                 <option value="2" {% if form.instance.result == "2" %} selected="selected" {% endif %}>조건부
                   승인-의견반영 후 진행
