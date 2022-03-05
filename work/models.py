@@ -347,8 +347,6 @@ class QualityPerformanceFile(models.Model):
 
 # 설치작업 전 체크리스트
 class BeforeInstallCheckList(models.Model):
-    equipment_choices = (("1", "강관 비계"), ("2", "시스템 비계"), ("3", "시스템 동바리"))
-
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
     locateId = models.ForeignKey(
@@ -359,7 +357,7 @@ class BeforeInstallCheckList(models.Model):
     )  # 설치 위치명
     detailLocate = models.CharField(max_length=80, blank=True)  # 설치 위치 상세명
     equipment = models.CharField(
-        max_length=60, choices=equipment_choices
+        max_length=60,
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
     writerId = models.ForeignKey(
         CustomUser,
@@ -367,6 +365,8 @@ class BeforeInstallCheckList(models.Model):
         related_name="before_install_checklist_writer",
         null=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class BeforeInspectionItem(models.Model):
@@ -404,8 +404,6 @@ class BeforeMeasure(models.Model):
 
 # 설치작업 중 체크리스트
 class InstallCheckList(models.Model):
-    equipment_choices = (("1", "강관 비계"), ("2", "시스템 비계"), ("3", "시스템 동바리"))
-
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
     locateId = models.ForeignKey(
@@ -416,7 +414,7 @@ class InstallCheckList(models.Model):
     )  # 설치 위치명
     detailLocate = models.CharField(max_length=80, blank=True)  # 설치 위치 상세명
     equipment = models.CharField(
-        max_length=60, choices=equipment_choices
+        max_length=60,
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
     writerId = models.ForeignKey(
         CustomUser,
@@ -424,6 +422,8 @@ class InstallCheckList(models.Model):
         related_name="install_checklist_writer",
         null=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class InspectionItemCategory(models.Model):

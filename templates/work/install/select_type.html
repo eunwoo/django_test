@@ -39,22 +39,22 @@ Work
     <section>
       <!-- navigation bar for quality forms -->
       <div class="container">
-        <div class="row d-flex align-items-centern ">
-          <div class="col-3 offset-3 ">
-            <a href="{% url 'work:quality_request' %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">설치작업 전
-                {% if qtyItems != 0 %}
-                <span class="badge bg-success">{{qtyItems}}</span>
-                {% endif %}
+        <div class="row justify-content-center">
+          <div class="col-3">
+            <a href="{% url 'work:select_install' type="강관 비계" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">강관 비계
               </button>
             </a>
           </div>
           <div class="col-3">
-            <a href="{% url 'work:quality_report' %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">설치작업 중
-                {% if summaryItems != 0 %}
-                <span class="badge bg-success">{{summaryItems}}</span>
-                {% endif %}
+            <a href="{% url 'work:select_install' type="시스템 비계" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 비계
+              </button>
+            </a>
+          </div>
+          <div class="col-3">
+            <a href="{% url 'work:select_install' type="시스템 동바리" %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 동바리
               </button>
             </a>
           </div>

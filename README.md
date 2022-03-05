@@ -241,3 +241,11 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 - 설치 위치 등록에서 구분1, 2, 3 추가하는것 완료
 - 구분3에서 체크박스 한것을 등록하는걸 추가해야함
 - InstallLocate 모델에서 boolean 필드를 추가함 => 동기화는 아직 안시킴
+
+
+# 03/04 마무리
+
+- https://www.codehim.com/text-input/jquery-multiple-image-upload-with-preview-and-delete/
+- 위 링크는 이미지 업로드 방법
+- 설치작업 전 체크리스트 작성도중 중단
+- 해당 작업은 create와 update 탬플릿을 따로 관리할 예정

@@ -1,342 +1,360 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  Register
+Register
 {% endblock %}
 {% block style %}
-  <style>
-    @media screen and (min-width: 601px) {
-      main {
-        width: 50%;
-        margin: 20px auto;
-      }
+<style>
+  @media screen and (min-width: 601px) {
+    main {
+      width: 50%;
+      margin: 20px auto;
     }
+  }
 
-    @media screen and (max-width: 600px) {
-      main {
-        width: 100%;
-      }
+  @media screen and (max-width: 600px) {
+    main {
+      width: 100%;
     }
-  </style>
+  }
+</style>
 
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      <section>
-        <br>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">회원가입</a>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    <section>
+      <br>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">회원가입</a>
                 </li>
                 <li class="breadcrumb-item">시스템 관리자 회원</a>
-              </li>
-              <li class="breadcrumb-item">개인정보 입력</a>
-            </li>
-          </ol>
-        </nav>
+                </li>
+                <li class="breadcrumb-item">개인정보 입력</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<form action="" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <section>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">이름</label>
-          </div>
-          <div class="col-md-8">
-            {{form.name}}
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">아이디</label>
-          </div>
-          <div class="col-md-8">
-            {{form.username}}
-            {% if form.username.errors %}
-              <div class="alert alert-danger mt-1 m-0">
-                <strong>{{form.username.errors|striptags}}</strong>
+      <section>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="container">
+            <div class="row">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">이름</label>
               </div>
-            {% endif %}
-
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">비밀번호</label>
-          </div>
-          <div class="col-md-8">
-            {{form.password1}}
-            {% if form.password1.errors %}
-              <div class="alert alert-danger mt-1 m-0">
-                {% for errors in form.password1.errors %}
-                  <strong>{{errors|striptags}}</strong><br>
-                {% endfor %}
+              <div class="col-md-8">
+                {{form.name}}
               </div>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">비밀번호 재확인</label>
-          </div>
-          <div class="col-md-8">
-            {{form.password2}}
-            {% if form.password2.errors %}
-              <div class="alert alert-danger mt-1">
-                {% for errors in form.password2.errors %}
-                  <strong>{{errors|striptags}}</strong><br>
-                {% endfor %}
-              </div>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">이메일</label>
-          </div>
-          <div class="col-md-8">
-            {{form.email}}
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">전화번호</label>
-          </div>
-          <div class="col-md-8">
-            {{form.phone}}
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-2 offset-1">
-            <label for="" class="col-12">서명</label>
-          </div>
-          <div class="col-md-8" style="border: 1px solid black; height: 200px;">
+            </div>
             <div class="row mt-3">
-              <div class="col-md-2 offset-10">
-                <button class="btnx" type="button" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal">서명 등록</button>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-sm">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 등록</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="container-fluid text-center">
-                          <div style="border: 1px solid black; height: 120px;">
-                            <canvas id="sig-canvas">
-                              Get a better browser, bro.
-                            </canvas>
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">아이디</label>
+              </div>
+              <div class="col-md-8">
+                {{form.username}}
+                {% if form.username.errors %}
+                <div class="alert alert-danger mt-1 m-0">
+                  <strong>{{form.username.errors|striptags}}</strong>
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">비밀번호</label>
+              </div>
+              <div class="col-md-8">
+                {{form.password1}}
+                {% if form.password1.errors %}
+                <div class="alert alert-danger mt-1 m-0">
+                  {% for errors in form.password1.errors %}
+                  <strong>{{errors|striptags}}</strong><br>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">비밀번호 재확인</label>
+              </div>
+              <div class="col-md-8">
+                {{form.password2}}
+                {% if form.password2.errors %}
+                <div class="alert alert-danger mt-1">
+                  {% for errors in form.password2.errors %}
+                  <strong>{{errors|striptags}}</strong><br>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">이메일</label>
+              </div>
+              <div class="col-md-8">
+                {{form.email}}
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">전화번호</label>
+              </div>
+              <div class="col-md-8">
+                {{form.phone}}
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-2 offset-1">
+                <label for="" class="col-12">서명</label>
+              </div>
+              <div class="col-md-8" style="border: 1px solid black; height: 200px;">
+                <div class="row mt-3">
+                  <div class="col-md-2 offset-10">
+                    <button class="btnx" type="button" aria-label="Left Align" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal">서명 등록</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-sm">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 등록</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
-                          <label for="" class="">서명을 그려주세요</label>
+                          <div class="modal-body">
+                            <div class="container-fluid text-center">
+                              <div style="border: 1px solid black; height: 120px;">
+                                <canvas id="sig-canvas">
+                                  Get a better browser, bro.
+                                </canvas>
+                              </div>
+                              <label for="" class="">서명을 그려주세요</label>
+                            </div>
+                          </div>
+                          <div class="modal-footer" style="margin: 0 auto;">
+                            <button type="button" class="btn btn-primary" id="sig-submitBtn"
+                              data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">등록</button>
+                            <button class="btn btn-secondary" id="sig-clearBtn" type="button">삭제</button>
+                          </div>
                         </div>
-                      </div>
-                      <div class="modal-footer" style="margin: 0 auto;">
-                        <button type="button" class="btn btn-secondary" id="sig-submitBtn" data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">등록</button>
-                        <button class="btn btn-primary" id="sig-clearBtn" type="button">삭제</button>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="row mt-3 mb-1 mx-1">
+                  <textarea id="sig-dataUrl" class="form-control" rows="5"
+                    hidden="hidden">Data URL for your signature will go here!</textarea>
+                  <div class="col-md-12 text-center " style="border: 1px solid black; height: 120px;">
+                    <img id="sig-image" src="" />
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="row mt-3 mb-1 mx-1">
-              <textarea id="sig-dataUrl" class="form-control" rows="5" hidden="hidden">Data URL for your signature will go here!</textarea>
-              <div class="col-md-12 text-center " style="border: 1px solid black; height: 120px;">
-                <img id="sig-image" src=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-1">
-          <div class="offset-3 col-md-8">
-            <div class="d-none">
-              <input type="text" name="signImage" id="id_signImage">
-            </div>
-            {% if form.image.errors %}
-              <div class="alert alert-danger mt-1">
-                {% for errors in form.image.errors %}
+            <div class="row mt-1">
+              <div class="offset-3 col-md-8">
+                <div class="d-none">
+                  <input type="text" name="signImage" id="id_signImage">
+                </div>
+                {% if form.image.errors %}
+                <div class="alert alert-danger mt-1">
+                  {% for errors in form.image.errors %}
                   <strong>{{errors|striptags}}</strong><br>
-                {% endfor %}
+                  {% endfor %}
+                </div>
+                {% endif %}
               </div>
-            {% endif %}
+            </div>
+            <br>
+            <div class="row mt-3">
+              <div class="col-md-10 offset-2 text-center">
+                <a href="{% url 'user:login' %}">
+                  <button type="submit" class="btn btn-primary">가입 신청 완료</button>
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
-        <br>
-        <div class="row mt-3">
-          <div class="col-md-10 offset-2 text-center">
-            <a href="{% url 'user:login' %}">
-              <button type="submit" class="btn btn-primary">가입 신청 완료</button>
-            </a>
-          </div>
-        </div>
-      </div>
+        </form>
+      </section>
     </form>
-  </section>
-</form>
-<br>
-</div>
+    <br>
+  </div>
 </main>
 {% endblock %}
 
 {% block javascript %}
 <script type="text/javascript">
-$(document).ready(function () {
-window.requestAnimFrame = (function (callback) {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimaitonFrame || function (callback) {
-    window.setTimeout(callback, 1000 / 60);
-  };
-})();
+  $(document).ready(function () {
+    window.requestAnimFrame = (function (callback) {
+      return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window
+        .mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimaitonFrame ||
+        function (callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+    })();
 
-var canvas = document.getElementById("sig-canvas");
-var ctx = canvas.getContext("2d");
-ctx.strokeStyle = "#222222";
-ctx.lineWidth = 4;
+    var canvas = document.getElementById("sig-canvas");
+    canvas.width = 212;
+    canvas.height = 120;
 
-var drawing = false;
-var mousePos = {
-  x: 0,
-  y: 0
-};
-var lastPos = mousePos;
+    var ctx = canvas.getContext("2d");
 
-canvas.addEventListener("mousedown", function (e) {
-  drawing = true;
-  lastPos = getMousePos(canvas, e);
-}, false);
+    ctx.strokeStyle = "#222222";
+    ctx.lineWidth = 4;
+    var image = new Image();
 
-canvas.addEventListener("mouseup", function (e) {
-  drawing = false;
-}, false);
+    image.src = "https://i.imgur.com/e66zPVj.png"
+    image.crossOrigin = 'Anonymous';
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, 212, 120);
+    };
 
-canvas.addEventListener("mousemove", function (e) {
-  mousePos = getMousePos(canvas, e);
-}, false);
+    var drawing = false;
+    var mousePos = {
+      x: 0,
+      y: 0
+    };
+    var lastPos = mousePos;
 
-// Add touch event support for mobile
-canvas.addEventListener("touchstart", function (e) {}, false);
+    canvas.addEventListener("mousedown", function (e) {
+      drawing = true;
+      lastPos = getMousePos(canvas, e);
+    }, false);
 
-canvas.addEventListener("touchmove", function (e) {
-  var touch = e.touches[0];
-  var me = new MouseEvent("mousemove", {
-    clientX: touch.clientX,
-    clientY: touch.clientY
-  });
-  canvas.dispatchEvent(me);
-}, false);
+    canvas.addEventListener("mouseup", function (e) {
+      drawing = false;
+    }, false);
 
-canvas.addEventListener("touchstart", function (e) {
-  mousePos = getTouchPos(canvas, e);
-  var touch = e.touches[0];
-  var me = new MouseEvent("mousedown", {
-    clientX: touch.clientX,
-    clientY: touch.clientY
-  });
-  canvas.dispatchEvent(me);
-}, false);
+    canvas.addEventListener("mousemove", function (e) {
+      mousePos = getMousePos(canvas, e);
+    }, false);
 
-canvas.addEventListener("touchend", function (e) {
-  var me = new MouseEvent("mouseup", {});
-  canvas.dispatchEvent(me);
-}, false);
+    // Add touch event support for mobile
+    canvas.addEventListener("touchstart", function (e) {}, false);
 
-function getMousePos(canvasDom, mouseEvent) {
-  var rect = canvasDom.getBoundingClientRect();
-  return {
-    x: mouseEvent.clientX - rect.left,
-    y: mouseEvent.clientY - rect.top
-  }
-}
+    canvas.addEventListener("touchmove", function (e) {
+      var touch = e.touches[0];
+      var me = new MouseEvent("mousemove", {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      canvas.dispatchEvent(me);
+    }, false);
 
-function getTouchPos(canvasDom, touchEvent) {
-  var rect = canvasDom.getBoundingClientRect();
-  return {
-    x: touchEvent
-      .touches[0]
-      .clientX - rect.left,
-    y: touchEvent
-      .touches[0]
-      .clientY - rect.top
-  }
-}
+    canvas.addEventListener("touchstart", function (e) {
+      mousePos = getTouchPos(canvas, e);
+      var touch = e.touches[0];
+      var me = new MouseEvent("mousedown", {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      canvas.dispatchEvent(me);
+    }, false);
 
-function renderCanvas() {
-  if (drawing) {
-    ctx.moveTo(lastPos.x, lastPos.y);
-    ctx.lineTo(mousePos.x, mousePos.y);
-    ctx.stroke();
-    lastPos = mousePos;
-  }
-}
+    canvas.addEventListener("touchend", function (e) {
+      var me = new MouseEvent("mouseup", {});
+      canvas.dispatchEvent(me);
+    }, false);
 
-// Prevent scrolling when touching the canvas
-document
-  .body
-  .addEventListener("touchstart", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
+    function getMousePos(canvasDom, mouseEvent) {
+      var rect = canvasDom.getBoundingClientRect();
+      return {
+        x: mouseEvent.clientX - rect.left,
+        y: mouseEvent.clientY - rect.top
+      }
     }
-  }, false);
-document
-  .body
-  .addEventListener("touchend", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
+
+    function getTouchPos(canvasDom, touchEvent) {
+      var rect = canvasDom.getBoundingClientRect();
+      return {
+        x: touchEvent
+          .touches[0]
+          .clientX - rect.left,
+        y: touchEvent
+          .touches[0]
+          .clientY - rect.top
+      }
     }
-  }, false);
-document
-  .body
-  .addEventListener("touchmove", function (e) {
-    if (e.target == canvas) {
-      e.preventDefault();
+
+    function renderCanvas() {
+      if (drawing) {
+        ctx.moveTo(lastPos.x, lastPos.y);
+        ctx.lineTo(mousePos.x, mousePos.y);
+        ctx.stroke();
+        lastPos = mousePos;
+      }
     }
-  }, false);
 
-(function drawLoop() {
-  requestAnimFrame(drawLoop);
-  renderCanvas();
-})();
+    // Prevent scrolling when touching the canvas
+    document
+      .body
+      .addEventListener("touchstart", function (e) {
+        if (e.target == canvas) {
+          e.preventDefault();
+        }
+      }, false);
+    document
+      .body
+      .addEventListener("touchend", function (e) {
+        if (e.target == canvas) {
+          e.preventDefault();
+        }
+      }, false);
+    document
+      .body
+      .addEventListener("touchmove", function (e) {
+        if (e.target == canvas) {
+          e.preventDefault();
+        }
+      }, false);
 
-function clearCanvas() {
-  canvas.width = canvas.width;
-}
+    (function drawLoop() {
+      requestAnimFrame(drawLoop);
+      renderCanvas();
+    })();
 
-// Set up the UI
-var sigText = document.getElementById("sig-dataUrl");
-var sigImage = document.getElementById("sig-image");
-var clearBtn = document.getElementById("sig-clearBtn");
-var submitBtn = document.getElementById("sig-submitBtn");
-clearBtn.addEventListener("click", function (e) {
-  clearCanvas();
-  sigText.innerHTML = "Data URL for your signature will go here!";
-  sigImage.setAttribute("src", "");
+    function clearCanvas() {
+      canvas.width = canvas.width;
+      ctx.drawImage(image, 0, 0, 212, 120);
+    }
 
-  var image = document.getElementById('id_signImage');
+    // Set up the UI
+    var sigText = document.getElementById("sig-dataUrl");
+    var sigImage = document.getElementById("sig-image");
+    var clearBtn = document.getElementById("sig-clearBtn");
+    var submitBtn = document.getElementById("sig-submitBtn");
+    clearBtn.addEventListener("click", function (e) {
+      clearCanvas();
+      sigText.innerHTML = "Data URL for your signature will go here!";
+      sigImage.setAttribute("src", "");
 
-  image.value = '';
-}, false);
-submitBtn.addEventListener("click", function (e) {
-  var dataUrl = canvas.toDataURL('image/png');
-  sigText.innerHTML = dataUrl;
-  sigImage.setAttribute("src", dataUrl);
+      var image = document.getElementById('id_signImage');
 
-  var image = document.getElementById('id_signImage');
+      image.value = '';
+    }, false);
+    submitBtn.addEventListener("click", function (e) {
+      var dataUrl = canvas.toDataURL('image/png');
+      sigText.innerHTML = dataUrl;
+      sigImage.setAttribute("src", dataUrl);
 
-  image.value = dataUrl;
-}, false);
-})
+      var image = document.getElementById('id_signImage');
+
+      image.value = dataUrl;
+    }, false);
+  })
 </script>
 {% endblock %}

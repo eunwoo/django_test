@@ -188,9 +188,9 @@ Register
                           </div>
                         </div>
                         <div class="modal-footer" style="margin: 0 auto;">
-                          <button type="button" class="btn btn-secondary" id="sig-submitBtn"
+                          <button type="button" class="btn btn-primary" id="sig-submitBtn"
                             data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">등록</button>
-                          <button class="btn btn-primary" id="sig-clearBtn" type="button">삭제</button>
+                          <button class="btn btn-secondary" id="sig-clearBtn" type="button">삭제</button>
                         </div>
                       </div>
                     </div>
@@ -248,9 +248,20 @@ Register
     })();
 
     var canvas = document.getElementById("sig-canvas");
+    canvas.width = 212;
+    canvas.height = 120;
+
     var ctx = canvas.getContext("2d");
+
     ctx.strokeStyle = "#222222";
     ctx.lineWidth = 4;
+    var image = new Image();
+
+    image.src = "https://i.imgur.com/e66zPVj.png"
+    image.crossOrigin = 'Anonymous';
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, 212, 120);
+    };
 
     var drawing = false;
     var mousePos = {
@@ -358,6 +369,7 @@ Register
 
     function clearCanvas() {
       canvas.width = canvas.width;
+      ctx.drawImage(image, 0, 0, 212, 120);
     }
 
     // Set up the UI

@@ -6,6 +6,7 @@ from .views import (
     material_views,
     quality_request_views,
     quality_report_views,
+    install_views,
 )
 
 app_name = "work"
@@ -77,7 +78,11 @@ quality_request_url = [
 ]
 
 quality_report_url = [
-    path("quality_report/", quality_report_views.quality_report, name="quality_report"),
+    path(
+        "quality_report/",
+        quality_report_views.quality_report,
+        name="quality_report",
+    ),
     path(
         "create_quality_report/",
         quality_report_views.create_quality_report,
@@ -100,10 +105,34 @@ quality_report_url = [
     ),
 ]
 
+install_check_url = [
+    path(
+        "install_check/",
+        install_views.select_type,
+        name="install_check",
+    ),
+    path(
+        "install_check/<str:type>/",
+        install_views.select_install,
+        name="select_install",
+    ),
+    path(
+        "before_install/<str:type>/",
+        install_views.before_install,
+        name="before_install",
+    ),
+    path(
+        "before_install_checklist/<str:type>/",
+        install_views.before_install_checklist,
+        name="before_install_checklist",
+    ),
+]
+
 urlpatterns = [
     *safety_url,
     *material_url,
     *quality_request_url,
     *quality_report_url,
+    *install_check_url,
     *main_url,
 ]
