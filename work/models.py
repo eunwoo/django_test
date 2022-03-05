@@ -380,7 +380,7 @@ class BeforeInspectionItem(models.Model):
 class BeforeInspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
     result = models.CharField(max_length=10, choices=result_choices, default="1")  # 결과
-    content = models.TextField()  # 조치사항 확인 내용
+    content = models.TextField(blank=True)  # 조치사항 확인 내용
     before_install_checklist_id = models.ForeignKey(
         BeforeInstallCheckList, on_delete=models.CASCADE
     )
