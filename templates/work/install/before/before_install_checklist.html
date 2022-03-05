@@ -53,7 +53,7 @@ Safety Check
           <div class="col-6 offset-6">
             <div class="row">
               <div class="col">
-                <button class="btn1 p-2 btn btn-light col-12">
+                <button class="btn1 p-2 btn btn-light col-12" onclick="delete_button()">
                   삭제
                 </button>
               </div>
@@ -62,7 +62,7 @@ Safety Check
                   type="submit" form="form_checklist">저장</button>
               </div>
               <div class="col">
-                <button class="btn1 p-2 btn btn-light col-12">
+                <button class="btn1 p-2 btn btn-light col-12" onclick="required_save()">
                   조치사항 발송
                 </button>
               </div>
@@ -71,8 +71,8 @@ Safety Check
         </div>
       </div>
     </section>
-    <section id="checklist" name='checklist' enctype="multipart/form-data">
-      <form method="POST" id="form_checklist">
+    <section id="checklist" name='checklist'>
+      <form action="" method="POST" id="form_checklist" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="container border">
           <div class="row m-1">
@@ -83,15 +83,34 @@ Safety Check
           <table class="table table-bordered">
             <tr>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
-              <td style="width: 35%">{{type}} 설치작업 전 확인 체크리스트-{{docNum}}</td>
+              <td class="align-middle" style="width: 35%">{{type}} 설치작업 전 확인 체크리스트-{{docNum}}</td>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
               <td style="width: 35%">
+                <div class="row">
+                  <div class="col-4">
+                    <select class="form-select" id="class1" placeholder="구분1">
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <select class="form-select" id="class2">
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <select class="form-select" id="class3" name="locate" required>
+                    </select>
+                  </div>
+                </div>
+                <div class="row p-2">
+                  <input type="text" class="form-control" name="detailLocate" placeholder="세부 설치 위치"
+                    value="{{form.instance.detailLocate|default_if_none:''}}" required />
+                </div>
               </td>
             </tr>
             <tr>
               <th scope="row" class="table-secondary align-middle">확인 일자</th>
               <td>
-                <input type="date" class="form-control" name="date" id="date" placeholder="확인 일자" required />
+                <input type="date" class="form-control" name="date" id="date" placeholder="확인 일자"
+                  value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
               </td>
               <th scope="row" class="table-secondary align-middle">담당자</th>
               <td>
@@ -162,7 +181,7 @@ Safety Check
             </thead>
             <tbody>
               {% for checkmenu in checklist %}
-              <tr>
+              <tr id='{{checkmenu.pk}}-row'>
                 <td>{{forloop.counter}}</td>
                 <td>{{checkmenu.title}}</td>
                 <td>
@@ -177,12 +196,12 @@ Safety Check
                 <td>
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#model{{checkmenu.pk}}">
+                    id="modal-btn-{{checkmenu.pk}}" data-bs-target="#model{{checkmenu.pk}}">
                     입력
                   </button>
                   <!-- Modal -->
                   <div class="modal fade" id="model{{checkmenu.pk}}" tabindex="-1" role="dialog"
-                    aria-labelledby="modelTitleId" aria-hidden="true">
+                    data-bs-backdrop="static" aria-labelledby="modelTitleId" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                       <div class="modal-content" style="text-align: left;">
                         <div class="modal-header">
@@ -192,18 +211,20 @@ Safety Check
                         <div class="modal-body">
                           <div class="form-group">
                             <label class="control-label">사진</label>
-                            <div class="input-images"></div>
+                            <div class="input-images-{{checkmenu.pk}}"></div>
                           </div>
                           <div class="form-group">
                             <label class="control-label">내용</label>
                             <div>
-                              <input type="text" class="form-control input-lg" placeholder="조치 사항 확인" name="belong"
-                                value="">
+                              <input type="text" class="form-control input-lg" placeholder="조치 사항 확인"
+                                name="{{checkmenu.pk}}-belong" value="">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            onclick="change_modal_btn_inner(this)">확인</button>
+                          <input type="hidden" name="checklist-pk" value="{{checkmenu.pk}}">
                         </div>
                       </div>
                     </div>
@@ -211,7 +232,7 @@ Safety Check
 
                 </td>
                 <td>
-                  <input type="checkbox" name="checkmenu">
+                  <input type="checkbox" id="{{checkmenu.pk}}-checkbox">
                 </td>
               </tr>
               {% endfor %}
@@ -228,6 +249,17 @@ Safety Check
 
 {% block javascript %}
 <script type="text/javascript" src="{% static '/js/image-uploader.min.js' %}"></script>
+
+{% for checkmenu in checklist %}
+<script type="text/javascript">
+  // 이미지 업로드
+  $('.input-images-{{checkmenu.pk}}').imageUploader({
+    label: '여기를 클릭해 이미지를 추가하세요.',
+    imagesInputName: '{{checkmenu.pk}}-images',
+  });
+</script>
+{% endfor %}
+
 <script type="text/javascript">
   // 서명 할 경우 변경
   let isSign = false;
@@ -271,7 +303,100 @@ Safety Check
     }
   })
 
-  // 이미지 업로드
-  $('.input-images').imageUploader();
+  // 모달 완료시 입력 => 확인 버튼으로 변경
+  const change_modal_btn_inner = (e) => {
+    const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[3]
+    targetNode.innerHTML = '확인'
+    targetNode.classList.remove('btn-primary')
+    targetNode.classList.add('btn-success')
+  }
+
+  // 삭제버튼 클릭시 체크된 리스트 삭제
+  const delete_button = () => {
+    const checklist_ids = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item => item.id
+      .split('-')[0]).map(pk => document.getElementById(`${pk}-row`)).forEach(item => item.remove())
+  }
+
+  // 조치사항 발송 => 업데이트에서만 동작
+  const required_save = () => {
+    Swal.fire({
+      title: '전송불가',
+      text: "저장을 해주세요.",
+      icon: 'error',
+    })
+  }
+
+
+
+  // 설치위치 받아오기
+  (() => {
+    const [class1_select, class2_select, class3_select] = ['class1', 'class2', 'class3'].map(
+      (class_name) => document.getElementById(class_name)
+    )
+
+    const create_init_option = (select_element) => {
+      const option = document.createElement("option")
+      option.value = ''
+      option.text = '---------'
+      option.selected = true
+      select_element.appendChild(option)
+    }
+
+    $.get("{% url 'system_manager:get_locate' 1 %}", function (data) {
+      create_init_option(class1_select)
+      data['install_locate'].forEach(value => {
+        const option = document.createElement("option")
+        option.value = value.id
+        option.text = value.class1
+        class1_select.appendChild(option)
+      })
+    });
+
+    class1_select.addEventListener("change", function () {
+      const class1_id = class1_select.value
+      if (class1_id === '') {
+        class2_select.innerHTML = ""
+        class3_select.innerHTML = ""
+        create_init_option(class2_select)
+        create_init_option(class3_select)
+      } else {
+        $.get("{% url 'system_manager:get_locate' 2 %}", {
+          class_id: class1_id
+        }, function (data) {
+          class2_select.innerHTML = ""
+          create_init_option(class2_select)
+          data['install_locate'].forEach(value => {
+            const option = document.createElement("option")
+            option.value = value.id
+            option.text = value.class2
+            class2_select.appendChild(option)
+          })
+        });
+      }
+    });
+
+    class2_select.addEventListener("change", function () {
+      const class2_id = class2_select.value
+      if (class2_id === '') {
+        class3_select.innerHTML = ""
+        create_init_option(class3_select)
+      } else {
+        $.get("{% url 'system_manager:get_locate' 3 %}", {
+          class_id: class2_id
+        }, function (data) {
+          class3_select.innerHTML = ""
+          create_init_option(class3_select)
+          data['install_locate'].forEach(value => {
+            const option = document.createElement("option")
+            option.value = value.id
+            option.text = value.class3
+            class3_select.appendChild(option)
+          })
+        });
+      }
+    });
+  })();
+
+  // submit시 속성 추가하기
 </script>
 {% endblock %}
