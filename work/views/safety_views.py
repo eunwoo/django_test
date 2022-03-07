@@ -62,9 +62,9 @@ def create_safety(request):
     construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
     construct_bills2 = DocsFile.objects.filter(type="구조 계산서-시스템 비계")
     construct_bills3 = DocsFile.objects.filter(type="구조 계산서-시스템 동바리")
-    detail_drawings1 = DocsFile.objects.filter(type="시공상셰도면-강관 비계")
-    detail_drawings2 = DocsFile.objects.filter(type="시공상셰도면-시스템 비계")
-    detail_drawings3 = DocsFile.objects.filter(type="시공상셰도면-시스템 동바리")
+    detail_drawings1 = DocsFile.objects.filter(type="시공상세도면-강관 비계")
+    detail_drawings2 = DocsFile.objects.filter(type="시공상세도면-시스템 비계")
+    detail_drawings3 = DocsFile.objects.filter(type="시공상세도면-시스템 동바리")
 
     return render(
         request,
@@ -72,8 +72,16 @@ def create_safety(request):
         {
             "docNum": docNum,
             "form": form,
-            "construct_bills": [construct_bills1, construct_bills2, construct_bills3],
-            "detail_drawings": [detail_drawings1, detail_drawings2, detail_drawings3],
+            "construct_bills": [
+                construct_bills1,
+                construct_bills2,
+                construct_bills3,
+            ],
+            "detail_drawings": [
+                detail_drawings1,
+                detail_drawings2,
+                detail_drawings3,
+            ],
         },
     )
 

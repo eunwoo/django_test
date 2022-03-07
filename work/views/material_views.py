@@ -6,8 +6,6 @@ from django.core.paginator import Paginator
 from work.models import MaterialSupplyReport
 from work.services.common_services import assign_user
 
-from work.utils.send_alert import email_send
-
 from ..services.material_services import (
     create_material_service,
     get_material_list_by_user,
@@ -41,7 +39,6 @@ def update_material(request, pk):
 @login_required(login_url="/user/login/")
 def require_sign_material(request):
     if request.method == "POST":
-        email_send(int(request.POST.get("sign")))
         doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
         assign_user(request.user, doc, int(request.POST.get("sign", 1)))
         return redirect("work:material")

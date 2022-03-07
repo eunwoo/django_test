@@ -24,7 +24,7 @@ class FieldForm(forms.ModelForm):
                 attrs={
                     "class": "col-12 text-center",
                     "placeholder": "현장 전화번호를 입력해주세요. ex) 010-1234-5678",
-                    "pattern": "[0-9]{3}-[0-9]{4}-[0-9]{4}",
+                    "pattern": "[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}",
                 }
             ),
             "address": forms.TextInput(

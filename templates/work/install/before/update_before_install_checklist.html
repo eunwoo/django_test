@@ -61,13 +61,37 @@ Safety Check
                 </button>
               </div>
               <div class="col">
-                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button"
-                  type="submit" form="form_checklist">저장</button>
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit"
+                  form="form_checklist">저장</button>
               </div>
               <div class="col">
-                <button class="btn1 p-2 btn btn-light col-12" onclick="required_save()">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">
                   조치사항 발송
                 </button>
+                <!-- Modal -->
+                <div class="modal fade" id="signRequestModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">서명 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="{% url 'work:required_cm' type=type %}" id="sign_form">
+                          {% csrf_token %}
+                          <input type='hidden' name="docNum" value="{{form.instance.pk}}" />
+                          <select class="form-select" name="sign" id="sign_select">
+                          </select>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="signRequestBtn">요청</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -99,9 +123,13 @@ Safety Check
                     </select>
                   </div>
                   <div class="col-4">
-                    <select class="form-select" id="class3" name="locate" required>
+                    <select class="form-select" id="class3" name="locate">
                     </select>
                   </div>
+                </div>
+                <div class="row p-2 m-2">
+                  이전 설치 위치 : {{form.instance.locateId.class2.class1.class1}} - {{form.instance.locateId.class2.class2}}
+                  - {{form.instance.locateId.class3}}
                 </div>
                 <div class="row p-2">
                   <input type="text" class="form-control" name="detailLocate" placeholder="세부 설치 위치"
@@ -119,38 +147,11 @@ Safety Check
               <td>
                 <div class="row">
                   <div class="col">
-                    {{request.user.name}}
+                    {{form.instance.writerId.name}}
                   </div>
                   <div class="col">
-                    (인)
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                      data-bs-target="#signModal">
-                      서명
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                      aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">서명 요청</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                              <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                              취소</button>
-                            <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <img width='100%' alt='' src='{{form.instance.writerId.signImage.url}}' />
+
                   </div>
                 </div>
               </td>
@@ -184,27 +185,39 @@ Safety Check
             </thead>
             <tbody>
               {% for checkmenu in checklist %}
-              <tr id='{{checkmenu.pk}}-row'>
+              <tr id='{{checkmenu.before_inspection_item_id.pk}}-row'>
                 <td>{{forloop.counter}}</td>
-                <td>{{checkmenu.title}}</td>
+                <td>{{checkmenu.before_inspection_item_id.title}}</td>
                 <td>
-                  <input type="radio" name="{{checkmenu.pk}}" value="1" required>
+                  <input type="radio" name="{{checkmenu.before_inspection_item_id.pk}}" value="1" required
+                    {% if checkmenu.result == "1" %}checked{% endif %}>
                 </td>
                 <td>
-                  <input type="radio" name="{{checkmenu.pk}}" value="2" required>
+                  <input type="radio" name="{{checkmenu.before_inspection_item_id.pk}}" value="2" required
+                    {% if checkmenu.result == "2" %}checked{% endif %}>
                 </td>
                 <td>
-                  <input type="radio" name="{{checkmenu.pk}}" value="3" required>
+                  <input type="radio" name="{{checkmenu.before_inspection_item_id.pk}}" value="3" required
+                    {% if checkmenu.result == "3" %}checked{% endif %}>
                 </td>
                 <td>
                   <!-- Button trigger modal -->
+                  {% if checkmenu.content %}
+                  <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                    id="modal-btn-{{checkmenu.before_inspection_item_id.pk}}"
+                    data-bs-target="#model{{checkmenu.before_inspection_item_id.pk}}">
+                    확인
+                  </button>
+                  {% else %}
                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    id="modal-btn-{{checkmenu.pk}}" data-bs-target="#model{{checkmenu.pk}}">
+                    id="modal-btn-{{checkmenu.before_inspection_item_id.pk}}"
+                    data-bs-target="#model{{checkmenu.before_inspection_item_id.pk}}">
                     입력
                   </button>
+                  {% endif %}
                   <!-- Modal -->
-                  <div class="modal fade" id="model{{checkmenu.pk}}" tabindex="-1" role="dialog"
-                    data-bs-backdrop="static" aria-labelledby="modelTitleId" aria-hidden="true">
+                  <div class="modal fade" id="model{{checkmenu.before_inspection_item_id.pk}}" tabindex="-1"
+                    role="dialog" data-bs-backdrop="static" aria-labelledby="modelTitleId" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                       <div class="modal-content" style="text-align: left;">
                         <div class="modal-header">
@@ -214,20 +227,20 @@ Safety Check
                         <div class="modal-body">
                           <div class="form-group">
                             <label class="control-label">사진</label>
-                            <div class="input-images-{{checkmenu.pk}}"></div>
+                            <div class="input-images-{{checkmenu.before_inspection_item_id.pk}}"></div>
                           </div>
                           <div class="form-group">
                             <label class="control-label">내용</label>
                             <div>
                               <input type="text" class="form-control input-lg" placeholder="조치 사항 확인"
-                                name="{{checkmenu.pk}}-belong" value="">
+                                name="{{checkmenu.before_inspection_item_id.pk}}-belong" value="{{checkmenu.content}}">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                             onclick="change_modal_btn_inner(this)">확인</button>
-                          <input type="hidden" name="checklist-pk" value="{{checkmenu.pk}}">
+                          <input type="hidden" name="checklist-pk" value="{{checkmenu.before_inspection_item_id.pk}}">
                         </div>
                       </div>
                     </div>
@@ -235,7 +248,7 @@ Safety Check
 
                 </td>
                 <td>
-                  <input type="checkbox" id="{{checkmenu.pk}}-checkbox">
+                  <input type="checkbox" id="{{checkmenu.before_inspection_item_id.pk}}-checkbox">
                 </td>
               </tr>
               {% endfor %}
@@ -253,59 +266,25 @@ Safety Check
 {% block javascript %}
 <script type="text/javascript" src="{% static '/js/image-uploader.min.js' %}"></script>
 
-{% for checkmenu in checklist %}
-<script type="text/javascript">
-  // 이미지 업로드
-  $('.input-images-{{checkmenu.pk}}').imageUploader({
-    label: '여기를 클릭해 이미지를 추가하세요.',
-    imagesInputName: '{{checkmenu.pk}}-images',
-  });
-</script>
-{% endfor %}
+{% include "work/install/before/image_library.html" with checklist=checklist %}
 
 <script type="text/javascript">
-  // 서명 할 경우 변경
-  let isSign = false;
-  const sign_button = document.getElementById("sign_button")
-  sign_button.addEventListener("click", function () {
-    const id_input = document
-      .getElementById("signRequest")
-      .value
-    const username = "{{request.user.username}}"
-    if (id_input === username) {
-      isSign = true;
-      const signModal = $('#signModal')
-      signModal.modal('hide');
-      signModal
-        .parent()
-        .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: '아이디가 다릅니다.',
-        icon: 'error',
-        confirmButtonText: '닫기'
-      })
-    }
-  })
+  // 변경 되었을 시 조치사항 발송이 안됨
+  let isChange = false;
+  let checklist_form = document.getElementById("checklist")
+  const input_list = checklist_form.querySelectorAll("input")
+  const textarea_list = checklist_form.querySelectorAll("textarea")
+  for (let input_item of input_list) {
+    input_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
 
-  // 서명이 안되있을 경우 요청 실패
-  const checklist_form = document.getElementById("form_checklist")
-  checklist_form.addEventListener("submit", (e) => {
-    if (isSign) {
-      return true;
-    } else {
-      e.preventDefault()
-      Swal.fire({
-        title: 'Error!',
-        text: '서명을 해주세요.',
-        icon: 'error',
-        confirmButtonText: '닫기'
-      })
-      return false;
-    }
-  })
-
+  for (let textarea_item of textarea_list) {
+    textarea_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
   // 모달 완료시 입력 => 확인 버튼으로 변경
   const change_modal_btn_inner = (e) => {
     const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[3]
@@ -322,14 +301,15 @@ Safety Check
 
   // 조치사항 발송 => 업데이트에서만 동작
   const required_save = () => {
-    Swal.fire({
-      title: '전송불가',
-      text: "저장을 해주세요.",
-      icon: 'error',
-    })
+    if (isChange) {
+      Swal.fire({
+        title: '전송불가',
+        text: "저장을 해주세요.",
+        icon: 'error',
+      })
+      return false
+    }
   }
-
-
 
   // 설치위치 받아오기
   (() => {
@@ -400,6 +380,44 @@ Safety Check
     });
   })();
 
-  // submit시 속성 추가하기
+  // 서명 요청 시 서명 목록 로드
+  $('#sign_modal_button').on('click', () => {
+    if (isChange === true) {
+      Swal.fire({
+        title: 'Error!',
+        text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const select_form = document.getElementById('sign_select')
+    select_form.innerHTML = ""
+    $.ajax({
+      type: "GET",
+      url: "{% url 'work:get_cms' %}",
+      async: false,
+      success: (data) => {
+        data.users.forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.pk
+          option.text = value.name
+          select_form.appendChild(option)
+        })
+        $('#signRequestModal').modal('show')
+      }
+    })
+  })
+
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '서명 요청이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
 </script>
 {% endblock %}

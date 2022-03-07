@@ -201,7 +201,7 @@ Safety Check
                   <ol class="list-group" id="구조계산서-ol">
                     {% for item in safety.docs.all %}
                     {% if '구조 계산서' in item.type %}
-                    <li class="list-group-item"><a href="{{item.url}}"
+                    <li class="list-group-item"><a href="{{item.file.url}}"
                         download="{{item.filename}}">{{item.filename}}</a></li>
                     {% endif %}
                     {% endfor %}
@@ -216,7 +216,7 @@ Safety Check
                   <ol class="list-group" id="시공상세도면-ol">
                     {% for item in safety.docs.all %}
                     {% if '시공상세도면' in item.type %}
-                    <li class="list-group-item"><a href="{{item.url}}"
+                    <li class="list-group-item"><a href="{{item.file.url}}"
                         download="{{item.filename}}">{{item.filename}}</a></li>
                     {% endif %}
                     {% endfor %}
@@ -267,7 +267,6 @@ Safety Check
                   구조안전성 검토<br>체크리스트
                 </div>
                 <div class="col-10 p-2">
-                  작성요망
                 </div>
               </div>
             </div>

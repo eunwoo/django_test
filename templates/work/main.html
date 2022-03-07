@@ -55,7 +55,8 @@ Work
             </a>
           </div>
           <div class="col-3">
-            <a href="{% url 'work:quality_menu' %}">
+            <a
+              href="{% if request.user.class2 == "총괄 건설사업관리기술인" %}{% url 'work:quality_report' %}{% else %}{% url 'work:quality_menu' %}{% endif %}">
               <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">품질검사
                 {% if qtyCount != 0 %}
                 <span class="badge bg-success">{{qtyCount}}</span>

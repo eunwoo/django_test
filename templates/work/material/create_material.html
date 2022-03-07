@@ -288,6 +288,41 @@ Material Check
             </div>
             <div class="col-10">
               <div style="border: 1px solid rgb(210, 210, 210);" class="p-3 mt-2">
+                <div class="row mt-2">
+                  <table class="table">
+                    <tr>
+                      <th scope="row" class="text-success align-middle" style="width: 25%;">사업자등록증</th>
+                      <td colspan="5" style="width: 75%;">{{form.businessLicense}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">납품실적증명서</th>
+                      <td colspan="5">{{form.deliveryPerformanceCertificate}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">안전인증서</th>
+                      <td colspan="5">{{form.safetyCertificate}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">품질시험성적서</th>
+                      <td colspan="5">
+                        {{form.qualityTestReport}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">시험성과대비표</th>
+                      <td colspan="5">{{form.testPerformanceComparisonTable}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
+                      <td>
+                        {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}
+                      </td>
+                      <td colspan="4">
+                        <ul class="list-group" id="공급원ul"></ul>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
                 <div class="row mt-3">
                   <div class="col-12">
                     <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
@@ -303,41 +338,6 @@ Material Check
                       </tr>
                     </table>
                   </div>
-                </div>
-                <div class="row mt-2">
-                  <table class="table">
-                    <tr>
-                      <th scope="row" style="width: 25%;" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
-                      <td style="width: 15%;">
-                        {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}
-                      </td>
-                      <td style="width: 60%">
-                        <ul class="list-group" id="공급원ul"></ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">사업자등록증</th>
-                      <td colspan="2">{{form.businessLicense}}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">납품실적증명서</th>
-                      <td colspan="2">{{form.deliveryPerformanceCertificate}}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">안전인증서</th>
-                      <td colspan="2">{{form.safetyCertificate}}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">품질시험성적서</th>
-                      <td colspan="2">
-                        {{form.qualityTestReport}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">시험성과대비표</th>
-                      <td colspan="2">{{form.testPerformanceComparisonTable}}</td>
-                    </tr>
-                  </table>
                 </div>
               </div>
             </div>
@@ -492,8 +492,8 @@ Material Check
   }
 
   // 서명 할 경우 변경
-  let isSign = '{{material.writerId}}' === "None" ? false : true;
-  if ('{{material.writerId}}' === "None") {
+  let isSign = '{{material.writerId}}' === "" ? false : true;
+  if ('{{material.writerId}}' === "") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document
@@ -565,7 +565,7 @@ Material Check
 
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
-    if (isChange === true) {
+    if (isChange === true || isSign === false) {
       Swal.fire({
         title: 'Error!',
         text: '저장을 해주세요.',

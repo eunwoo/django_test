@@ -30,22 +30,37 @@
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="{{title}}-home" role="tabpanel"
             aria-labelledby="{{title}}-home-tab">
-            {% for content in contents.0 %}
-            <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}" id="{{content.id}}" />
-            <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
-            {% endfor %}
+            <ol class="list-group">
+              {% for content in contents.0 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
           </div>
           <div class="tab-pane fade" id="{{title}}-profile" role="tabpanel" aria-labelledby="{{title}}-profile-tab">
-            {% for content in contents.1 %}
-            <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}" id="{{content.id}}" />
-            <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
-            {% endfor %}
+            <ol class="list-group">
+              {% for content in contents.1 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
           </div>
           <div class="tab-pane fade" id="{{title}}-contact" role="tabpanel" aria-labelledby="{{title}}-contact-tab">
-            {% for content in contents.2 %}
-            <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}" id="{{content.id}}" />
-            <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
-            {% endfor %}
+            <ol class="list-group">
+              {% for content in contents.2 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
           </div>
         </div>
       </div>

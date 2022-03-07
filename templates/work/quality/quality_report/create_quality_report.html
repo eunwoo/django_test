@@ -186,7 +186,8 @@ Safety Check
                       <tr id="goods_list">
                         <td>
                           <select class="form-select" aria-label="품명 선택">
-                            <option selected value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
+                            <option value selected>품명을 선택해주세요</option>
+                            <option value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
                             <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
                             <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
                             <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
@@ -225,7 +226,7 @@ Safety Check
                           <input type="text" class="form-control" id="etc_text">
                         </td>
                         <td>
-                          <button class="btn btn-primary" type="button" id="goods_add">추가</button></td>
+                          <button class="btn btn-primary btn-sm" type="button" id="goods_add">추가</button></td>
                       </tr>
                     </thead>
                     <tbody id="goods_body">
@@ -420,11 +421,29 @@ Safety Check
     const goods_table = document.querySelector('#goods_list');
     const goods_input = goods_table.querySelectorAll('input');
     const goods_value = [goods_table.querySelector('select').value]
+    if (goods_value[0] === '') {
+      Swal.fire({
+        title: '품명이 선택되지 않았습니다.',
+        text: '품명을 선택해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
+      return false;
+    }
     for (let v of goods_input) {
       if (v.type === "checkbox") {
         goods_value.push(v.checked);
         v.checked = false;
       } else {
+        if (v.value === '') {
+          Swal.fire({
+            title: '입력되지 않은 항목이 있습니다.',
+            text: '입력되지 않은 항목을 입력해주세요.',
+            icon: 'error',
+            confirmButtonText: '확인'
+          });
+          return false;
+        }
         goods_value.push(v.value);
         v.value = '';
       }

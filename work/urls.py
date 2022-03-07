@@ -126,6 +126,26 @@ install_check_url = [
         install_views.before_install_checklist,
         name="before_install_checklist",
     ),
+    path(
+        "update_before_install_checklist/<str:type>/<int:pk>/",
+        install_views.update_before_install_checklist,
+        name="update_before_install_checklist",
+    ),
+    path(
+        "cm_list",
+        install_views.get_users,
+        name="get_cms",
+    ),
+    path(
+        "required_cm/<str:type>/",
+        install_views.required_cm,
+        name="required_cm",
+    ),
+    path(
+        "read_before_install/<str:type>/<int:pk>/",
+        install_views.read_before_checklist,
+        name="read_before_checklist",
+    ),
 ]
 
 urlpatterns = [

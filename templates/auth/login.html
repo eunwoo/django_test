@@ -2,77 +2,80 @@
 
 {% block title %}Login{% endblock %}
 {% block style %}
-  <style>
-    @media screen and (min-width: 601px) {
-      main {
-        width: 40%;
-        margin: 20px auto;
-      }
+<style>
+  @media screen and (min-width: 601px) {
+    main {
+      width: 40%;
+      margin: 20px auto;
     }
+  }
 
-    @media screen and (max-width: 600px) {
-      main {
-        width: 100%;
-        margin: 20px auto;
-      }
+  @media screen and (max-width: 600px) {
+    main {
+      width: 100%;
+      margin: 20px auto;
     }
-  </style>
+  }
+</style>
 
 {% endblock %}
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <section>
-      <br><br>
-      <div class="container bg-light p-4">
-        <form action="" method="POST">
-          {% csrf_token %}
-          <div class="row m-4">
-            <div class="col-lg-8">
-              <div class="row">
-                <div class="col-lg-3">
-                  <label for="" class="col-12 text-center">아이디</label>
-                </div>
-                <div class="col-lg-9">
-                  <input type="text" class="col-12 text-center" name="username" value="{{ form.username.value|default_if_none:'' }}" placeholder="아이디를 입력해 주세요.">
-                </div>
+{% include 'base/header.html' %}
+<main>
+  <section>
+    <br><br>
+    <div class="container bg-light p-4">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row m-4">
+          <div class="col-lg-8">
+            <div class="row">
+              <div class="col-lg-3">
+                <label for="" class="col-12 text-center">아이디</label>
               </div>
-              <div class="row mt-3">
-                <div class="col-lg-3">
-                  <label for="" class="col-12 text-center">비밀번호</label>
-                </div>
-                <div class="col-lg-9">
-                  <input type="password" class="col-12 text-center" name="password" value="{{ form.password.value|default_if_none:'' }}" placeholder="비밀번호를 입력해 주세요">
-                </div>
+              <div class="col-lg-9">
+                <input type="text" class="col-12 text-center" name="username"
+                  value="{{ form.username.value|default_if_none:'' }}" placeholder="아이디를 입력해 주세요.">
               </div>
             </div>
-            <div class="col-lg-4">
-              <button class="btn btn-primary col-12" type="submit" style="height: 100%;">로그인</button>
+            <div class="row mt-3">
+              <div class="col-lg-3">
+                <label for="" class="col-12 text-center">비밀번호</label>
+              </div>
+              <div class="col-lg-9">
+                <input type="password" class="col-12 text-center" name="password"
+                  value="{{ form.password.value|default_if_none:'' }}" placeholder="비밀번호를 입력해 주세요">
+              </div>
             </div>
           </div>
-          {% include "auth/form_errors.html" %}
-        </form>
-        <div class="row mt-4 mx-4">
-          <div class="col-5 offset-2">
-            <button class="btn btn-outline-dark col-12" style="overflow: hidden;" aria-label="Left Align" data-bs-toggle="modal" data-bs-target="#exampleModal1">아이디/비밀번호 찾기</button>
-          </div>
-          <div class="col-4">
-            <a href="{% url 'user:usertype' %}">
-              <button class="btn btn-outline-dark col-12" style="overflow: hidden;">회원가입</button>
-            </a>
+          <div class="col-lg-4">
+            <button class="btn btn-primary col-12" type="submit" style="height: 100%;">로그인</button>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-8 offset-2">
-            {% for message in messages %}
-              <div class="alert alert-danger mt-2 mx-4">
-                <strong>{{message|escape}}</strong>
-                <br>
-              </div>
-            {% endfor %}
-          </div>
+        {% include "auth/form_errors.html" %}
+      </form>
+      <div class="row mt-4 mx-4">
+        <div class="col-5 offset-2">
+          <button class="btn btn-outline-dark col-12" style="overflow: hidden;" aria-label="Left Align"
+            data-bs-toggle="modal" data-bs-target="#exampleModal1">아이디/비밀번호 찾기</button>
+        </div>
+        <div class="col-4">
+          <a href="{% url 'user:usertype' %}">
+            <button class="btn btn-outline-dark col-12" style="overflow: hidden;">회원가입</button>
+          </a>
         </div>
       </div>
-    </section>
-  </main>
+      <div class="row">
+        <div class="col-lg-8 offset-2">
+          {% for message in messages %}
+          <div class="alert alert-danger mt-2 mx-4 text-wrap">
+            <strong>{{message|escape}}</strong>
+            <br>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 {% endblock %}
