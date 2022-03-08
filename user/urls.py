@@ -17,4 +17,5 @@ urlpatterns = [
     path("register/agreement_for_admin", views.agreeForAdmin, name="agreeForAdmin"),
     path("register/user", views.registerUser, name="registerUser"),
     path("register/admin", views.registerAdmin, name="registerAdmin"),
+    path("editUser/", views.editUser, name="editUser"),
 ]
