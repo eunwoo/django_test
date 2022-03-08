@@ -11,10 +11,17 @@ from work.models import (
 
 from system_manager.models import ConstructManager
 
+from ..services.common_services import sms_send
+
 
 def assign_cm(request, type):
     cm = ConstructManager.objects.get(pk=request.POST.get("sign"))
-    doc = BeforeInstallCheckList.objects.get(pk=request.POST["docNum"])
+    doc = BeforeInstallCheckList.objects.get(pk=request.POST.get("docNum"))
+    doc.isSuccess = True
+    doc.save()
+    link = f"/read_before_install/{type}/{doc.pk}/"
+    cm_phone = cm.phone
+    sms_send(link, [cm_phone])
     # 문자 전송 페이지 만들기
 
 
