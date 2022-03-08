@@ -54,6 +54,17 @@ def read_quality_request(request, pk):
 def require_sign_quality_request(request):
     if request.method == "POST":
         doc = QualityInspectionRequest.objects.get(docNum=request.POST.get("docNum"))
-        assign_user_for_qty_request(request.user, doc, int(request.POST.get("sign", 1)))
+        base_link = (
+            "/update_quality_request/"
+            if request.user.class2 != "일반 건설사업관리기술인"
+            else "/read_quality_request/"
+        )
+        link = request.build_absolute_uri(base_link + str(doc.docNum))
+        assign_user_for_qty_request(
+            request.user,
+            doc,
+            int(request.POST.get("sign", 1)),
+            link,
+        )
         return redirect("work:quality_request")
     return Http404("잘못된 접근입니다.")

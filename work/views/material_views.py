@@ -40,7 +40,18 @@ def update_material(request, pk):
 def require_sign_material(request):
     if request.method == "POST":
         doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
-        assign_user(request.user, doc, int(request.POST.get("sign", 1)))
+        base_link = (
+            "/update_material/"
+            if request.user.class2 != "총괄 건설사업관리기술인"
+            else "/read_material/"
+        )
+        link = request.build_absolute_uri(base_link + str(doc.docNum))
+        assign_user(
+            request.user,
+            doc,
+            int(request.POST.get("sign", 1)),
+            link,
+        )
         return redirect("work:material")
     return Http404("잘못된 접근입니다.")
 

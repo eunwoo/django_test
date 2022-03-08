@@ -59,6 +59,17 @@ def delete_quality_report(request, pk):
 def require_sign_quality_report(request):
     if request.method == "POST":
         doc = QualityPerformanceReport.objects.get(docNum=request.POST.get("docNum"))
-        assign_user(request.user, doc, int(request.POST.get("sign", 1)))
+        base_link = (
+            "/update_quality_report/"
+            if request.user.class2 != "총괄 건설사업관리기술인"
+            else "/read_quality_report/"
+        )
+        link = request.build_absolute_uri(base_link + str(doc.docNum))
+        assign_user(
+            request.user,
+            doc,
+            int(request.POST.get("sign", 1)),
+            link,
+        )
         return redirect("work:quality_report")
     return Http404("잘못된 접근입니다.")

@@ -52,17 +52,6 @@ def read_safety_service(user, pk):
     return safety
 
 
-def safety_success(docNum: int):
-    safety = SafetyReport.objects.get(docNum=docNum)
-    # 메일전송 만들기
-    safety.isSuccess = True
-    safety.isCheckManager = False
-    safety.isCheckAgent = False
-    safety.isCheckGeneralEngineer = False
-    safety.save()
-    return True
-
-
 def update_safety_general(request, pk):
     instance = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":

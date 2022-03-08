@@ -124,7 +124,18 @@ def get_users(request):
 def require_sign(request):
     if request.method == "POST":
         doc = SafetyReport.objects.get(docNum=int(request.POST.get("docNum")))
-        assign_user(request.user, doc, int(request.POST.get("sign", 1)))
+        base_link = (
+            "/update_safety/"
+            if request.user.class2 != "총괄 건설사업관리기술인"
+            else "/read_safety/"
+        )
+        link = request.build_absolute_uri(base_link + str(doc.docNum))
+        assign_user(
+            request.user,
+            doc,
+            int(request.POST.get("sign", 1)),
+            link,
+        )
         return redirect("work:safety")
     return Http404("잘못된 접근입니다.")
 

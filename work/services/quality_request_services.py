@@ -12,6 +12,8 @@ from ..forms.quality_request_forms import (
 )
 from user.models import CustomUser
 
+from ..services.common_services import sms_send
+
 
 def get_qty_request_list_by_user(user):
     if user.class2 == "일반 관리자":
@@ -115,19 +117,29 @@ def update_quality_request_for_generalEngineer(request, docNum):
     )
 
 
-def assign_user_for_qty_request(user, doc, user_pk: int):
+def assign_user_for_qty_request(user, doc, user_pk: int, link):
     target_user = CustomUser.objects.get(pk=user_pk)
     if user.class2 == "일반 관리자":
         doc.agentId = target_user
         doc.isCheckAgent = False
         doc.isCheckManager = True
+        sms_send(link, [target_user.phone])
     elif user.class2 == "현장 대리인":
         doc.generalEngineerId = target_user
         doc.isSuccess = False
+        sms_send(link, [target_user.phone])
     else:
         doc.isSuccess = True
         doc.isCheckManager = False
         doc.isCheckAgent = False
+        sms_send(
+            link,
+            [
+                doc.writerId.phone,
+                doc.agentId.phone,
+            ],
+            1,
+        )
     doc.save()
     return True
 
