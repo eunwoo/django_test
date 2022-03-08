@@ -5,14 +5,6 @@ from .models import CustomUser
 
 
 class AdminForm(UserCreationForm):
-    email = forms.EmailField(
-        label="이메일",
-        widget=forms.TextInput(
-            attrs={"class": "col-12 text-center", "placeholder": "이메일을 입력해주세요"}
-        ),
-        help_text="이메일을 입력해주세요.",
-    )
-
     username = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -34,13 +26,20 @@ class AdminForm(UserCreationForm):
         ),
     )
 
+    company = forms.CharField(
+        widget=forms.TextInput(
+            attrs={"class": "col-12 text-center", "placeholder": "회사를 입력해주세요"}
+        ),
+    )
+
     class Meta:
         model = CustomUser
         fields = (
             "username",
             "name",
-            "email",
+            "company",
             "phone",
+            "class3",
             "signImage",
         )
         widgets = {
@@ -58,13 +57,6 @@ class AdminForm(UserCreationForm):
 
 
 class UserForm(AdminForm):
-
-    company = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"class": "col-12 text-center", "placeholder": "회사를 입력해주세요"}
-        ),
-    )
-
     class Meta:
         affiliation_choices = [
             ("--------------", "-----------"),
@@ -93,7 +85,6 @@ class UserForm(AdminForm):
             "username",
             "name",
             "company",
-            "email",
             "class1",
             "class2",
             "class3",
