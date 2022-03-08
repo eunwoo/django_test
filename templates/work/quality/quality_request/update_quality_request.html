@@ -85,6 +85,7 @@ Safety Check
       </div>
     </section>
     <section>
+      {% include 'base/messages.html' %}
       {% if form.errors %}
       <div class="alert alert-danger" role="alert">
         {% for field in form %}
@@ -615,7 +616,7 @@ Safety Check
   const input_element = document.createElement("input")
   input_element.type = "text"
   input_element.name = "testStandard"
-  input_element.disabled = true
+  input_element.readOnly = true
   if (goods_select.value === "1" || goods_select.value === '2') {
     input_element.value = "KS F 8002"
   } else {

@@ -68,6 +68,19 @@ Safety Check
       </div>
     </section>
     <section>
+      {% include 'base/messages.html' %}
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+        {% if field.errors %}
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+    <section>
       <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
         <div class="row">
           <div class="col-12 text-center my-4">
@@ -227,7 +240,7 @@ Safety Check
                   {{qty_request.generalEngineerId.name}}
                 </div>
                 <div class="col-2">
-                  {% if qty_request.isSuccess %}
+                  {% if qty_request.isSaveGeneralEngineer %}
                   <img width="100%" alt="" src="{{qty_request.generalEngineerId.signImage.url}}" />
                   {% else %}
                   (인)
@@ -352,7 +365,7 @@ Safety Check
               <label for="" class="col-12" style="color: black;">의뢰인</label>
             </div>
             <div class="col-1">
-              {{request.user.name}}
+              {{qty_request.agentId.name}}
             </div>
             <div class="col-1">
               <label for="" class="col-12" style="color: black;">서명</label>
@@ -418,8 +431,8 @@ Safety Check
 <script type="text/javascript">
   let qtyreq_form = document.getElementById("qtyreqform")
   // 서명 할 경우 변경
-  let isSign = '{{qty_request.isSuccess}}' === "False" ? false : true;
-  if ('{{qty_request.isSuccess}}' === "False") {
+  let isSign = '{{qty_request.isSaveGeneralEngineer}}' === "False" ? false : true;
+  if (!!!isSign) {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document

@@ -63,6 +63,7 @@ Safety Check
       </div>
     </section>
     <section>
+      {% include 'base/messages.html' %}
       {% if form.errors %}
       <div class="alert alert-danger" role="alert">
         {% for field in form %}

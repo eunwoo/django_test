@@ -41,8 +41,14 @@ Safety Check
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-2 offset-10 ">
+          <div class="col-4 offset-8">
             <div class="row">
+              <div class="col">
+                <div class="col">
+                  <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_safety"
+                    id="save_button">저장</button>
+                </div>
+              </div>
               <div class="col">
                 <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">서명
                   요청</button>
@@ -75,6 +81,9 @@ Safety Check
           </div>
         </div>
       </div>
+    </section>
+    <section>
+      {% include 'base/messages.html' %}
     </section>
     <section id="safety" name='safety'>
       <form method="POST" id="form_safety">
@@ -153,7 +162,10 @@ Safety Check
                       {{safety.agentId.name}}
                       {% endif %}
                     </div>
-                    <div class="col p-2">(인)
+                    <div class="col p-2">
+                      {% if safety.isSaveAgent %}<img width="100%" alt="" src="{{safety.agentId.signImage.url}}" />
+                      {% else %}
+                      (인)
                       <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#signModal">
                         서명
@@ -182,6 +194,7 @@ Safety Check
                           </div>
                         </div>
                       </div>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
@@ -322,27 +335,47 @@ Safety Check
 {% block javascript %}
 <script type="text/javascript">
   // 서명 할 경우 변경
-  let isSign = false;
-  const sign_button = document.getElementById("sign_button")
-  sign_button.addEventListener("click", function () {
-    const id_input = document
-      .getElementById("signRequest")
-      .value
-    const username = "{{request.user.username}}"
-    if (id_input === username) {
-      isSign = true;
-      const signModal = $('#signModal')
-      signModal.modal('hide');
-      signModal
-        .parent()
-        .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+  let isSign = "{{safety.isSaveAgent}}" === "False" ? false : true;
+  if (!!!isSign) {
+    const sign_button = document.getElementById("sign_button")
+    sign_button.addEventListener("click", function () {
+      const id_input = document
+        .getElementById("signRequest")
+        .value
+      const username = "{{request.user.username}}"
+      if (id_input === username) {
+        isSign = true;
+        const signModal = $('#signModal')
+        signModal.modal('hide');
+        signModal
+          .parent()
+          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '아이디가 다릅니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+    })
+  }
+
+
+  // 저장 버튼 클릭 시
+  const safety_form = document.getElementById("form_safety")
+  safety_form.addEventListener("submit", function (e) {
+    if (isSign) {
+      return true;
     } else {
+      e.preventDefault()
       Swal.fire({
         title: 'Error!',
-        text: '아이디가 다릅니다.',
+        text: '서명을 해주세요.',
         icon: 'error',
         confirmButtonText: '닫기'
       })
+      return false;
     }
   })
 

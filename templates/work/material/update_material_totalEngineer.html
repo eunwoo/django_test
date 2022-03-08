@@ -61,8 +61,9 @@ Material Check
       </div>
     </section>
     <!--폼 에러처리 부분-->
-    {% if form.errors %}
     <section>
+      {% include 'base/messages.html' %}
+      {% if form.errors %}
       <div class="alert alert-danger" role="alert">
         {% for field in form %}
         {% if field.errors %}
@@ -71,8 +72,8 @@ Material Check
         {% endif %}
         {% endfor %}
       </div>
+      {% endif %}
     </section>
-    {% endif %}
     <section id="material" name="material">
       <form method="POST" id="form_material">
         {% csrf_token %}
@@ -101,7 +102,7 @@ Material Check
               <label for="" class=" col-12" style="color: black;">공사명</label>
             </div>
             <div class="col-4">
-              {{material.title}}
+              {{material.fieldId.title}}
             </div>
             <div class="col-2">
               <label for="" class="col-12" style="color: black;">자재명</label>
