@@ -48,3 +48,37 @@ def registerAdmin(request):
     else:
         form = forms.AdminForm()
     return render(request, "auth/registerAdmin.html", {"form": form})
+
+
+def editUser(request):
+    user = request.user
+    if user.is_system_manager:
+        if request.method == "POST":
+            form = forms.AdminForm(request.POST, instance=user)
+            if form.is_valid():
+                answer = form.save(commit=False)  # commit False시 DB에 저장하지 않음
+                image_file = decodeDesignImage(
+                    request.POST["signImage"], form.instance.username
+                )
+                if image_file:
+                    answer.signImage = image_file
+                answer.save()
+                return redirect("main:home")
+        else:
+            form = forms.AdminForm(instance=user)
+        return render(request, "auth/registerAdmin.html", {"form": form})
+    else:
+        if request.method == "POST":
+            form = forms.UserForm(request.POST, instance=user)
+            if form.is_valid():
+                answer = form.save(commit=False)  # commit False시 DB에 저장하지 않음
+                image_file = decodeDesignImage(
+                    request.POST["signImage"], form.instance.username
+                )
+                if image_file:
+                    answer.signImage = image_file
+                answer.save()
+                return redirect("main:home")
+        else:
+            form = forms.UserForm(instance=user)
+        return render(request, "auth/registerUser.html", {"form": form})
