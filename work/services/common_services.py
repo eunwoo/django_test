@@ -49,17 +49,17 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
     # API key, userid, sender, receiver, msg
     # API키, 알리고 사이트 아이디, 발신번호, 수신번호, 문자내용
 
-    sms_data = {
-        "key": "axngr7ld8l3ng1qteoidm66axvjdlmdu",  # api key
-        "userid": "jjy1229",  # 알리고 사이트 아이디
-        "sender": sender,  # 발신번호
-        "receiver": ",".join(phone_list),  # 수신번호 (,활용하여 1000명까지 추가 가능)
-        "msg": content,  # 문자 내용
-        "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
-        "title": "[TQIMS 알림] TQIMS 결재 알림 안내",  # 메세지 제목 (장문에 적용)
-        # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
-    }
-    requests.post(send_url, data=sms_data)
+    # sms_data = {
+    #     "key": "axngr7ld8l3ng1qteoidm66axvjdlmdu",  # api key
+    #     "userid": "jjy1229",  # 알리고 사이트 아이디
+    #     "sender": sender,  # 발신번호
+    #     "receiver": ",".join(phone_list),  # 수신번호 (,활용하여 1000명까지 추가 가능)
+    #     "msg": content,  # 문자 내용
+    #     "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
+    #     "title": "[TQIMS 알림] TQIMS 결재 알림 안내",  # 메세지 제목 (장문에 적용)
+    #     # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
+    # }
+    # requests.post(send_url, data=sms_data)
 
 
 def sms_content(link, sms_type: int = 0) -> str:
