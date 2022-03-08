@@ -34,8 +34,8 @@ Safety Check
                   <a href="{% url 'work:install_check' %}">설치작업 확인</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{% url 'work:before_install' type=type %}">
-                    {{type}} - 설치작업 전
+                  <a href="{% url 'work:install' type=type %}">
+                    {{type}} - 설치작업 중
                   </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -113,10 +113,17 @@ Safety Check
             </tr>
           </thead>
           <tbody>
-            {% for checkmenu in checklist.before_inspection_result.all %}
+            {% regroup checklist_items by inspection_item_id.categoryId.type as new_checklist %}
+            {% for categoryId in new_checklist %}
+            <tr class="table-secondary">
+              <th colspan=6>
+                {{categoryId.grouper}}
+              </th>
+            </tr>
+            {% for checkmenu in categoryId.list %}
             <tr>
               <td>{{forloop.counter}}</td>
-              <td>{{checkmenu.before_inspection_item_id.title}}</td>
+              <td>{{checkmenu.inspection_item_id.title}}</td>
               <td>
                 {% if checkmenu.result == "1" %}
                 <i class="bi bi-check"></i>
@@ -139,6 +146,7 @@ Safety Check
               </td>
             </tr>
             {% endfor %}
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -154,7 +162,7 @@ Safety Check
           </tr>
         </thead>
         <tbody>
-          {% for checkmenu in checklist.before_inspection_result.all %}
+          {% for checkmenu in checklist.inspection_result.all %}
           {% if checkmenu.content %}
           <tr>
             <td class="align-middle">{{forloop.counter}}</td>

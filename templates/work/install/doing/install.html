@@ -30,7 +30,7 @@ Safety Check
                   <a href="{% url 'work:install_check' %}">설치작업 확인</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  {{type}} - 설치작업 전
+                  {{type}} - 설치작업 중
                 </li>
               </ol>
             </nav>
@@ -42,8 +42,8 @@ Safety Check
       <div class="container">
         <div class="row">
           <div class="col-3">
-            <a href="{% url 'work:before_install_checklist' type=type %}">
-              <button class="btn mb-2">설치작업 전 체크리스트 작성하기</button>
+            <a href="{% url 'work:install_checklist' type=type %}">
+              <button class="btn mb-2">설치작업 중 체크리스트 작성하기</button>
             </a>
           </div>
         </div>
@@ -58,13 +58,12 @@ Safety Check
                   작성 날짜
                 </td>
               </tr>
-              {% for i in beforeInstallItems %}
+              {% for i in InstallItems %}
               <tr>
                 <td>
-                  <a {% if i.isSuccess == False %}
-                    href="{% url 'work:update_before_install_checklist' type=type pk=i.pk %}" class="link-primary"
-                    {% else %} href="{% url 'work:read_before_checklist' type=type pk=i.pk %}" class="link-secondary"
-                    {% endif %}>{{type}} 설치작업 전 확인 체크리스트-{{i.pk}}</a>
+                  <a {% if i.isSuccess == False %} href="{% url 'work:update_install_checklist' type=type pk=i.pk %}"
+                    class="link-primary" {% else %} href="{% url 'work:read_checklist' type=type pk=i.pk %}"
+                    class="link-secondary" {% endif %}>{{type}} 설치작업 중 확인 체크리스트-{{i.pk}}</a>
                 </td>
                 <td>
                   {{i.created_at|date:"Y년 m월 d일"}}
@@ -80,9 +79,9 @@ Safety Check
       <!--페이징 코트-->
       <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-          {% if beforeInstallItems.has_previous %}
+          {% if InstallItems.has_previous %}
           <li class="page-item">
-            <a class="page-link" href="?page={{beforeInstallItems.previous_page_number}}" aria-label="Previous">
+            <a class="page-link" href="?page={{InstallItems.previous_page_number}}" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
@@ -91,8 +90,8 @@ Safety Check
             <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a>
           </li>
           {% endif %}
-          {% for page_number in beforeInstallItems.paginator.page_range %}
-          {% if page_number == beforeInstallItems.number %}
+          {% for page_number in InstallItems.paginator.page_range %}
+          {% if page_number == InstallItems.number %}
           <li class="page-item active" aria-current="page">
             <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
           </li>
@@ -102,9 +101,9 @@ Safety Check
           </li>
           {% endif %}
           {% endfor %}
-          {% if beforeInstallItems.has_next %}
+          {% if InstallItems.has_next %}
           <li class="page-item">
-            <a class="page-link" href="?page={{ beforeInstallItems.next_page_number }}">&raquo;</a>
+            <a class="page-link" href="?page={{ InstallItems.next_page_number }}">&raquo;</a>
           </li>
           {% else %}
           <li class="page-item disabled">
