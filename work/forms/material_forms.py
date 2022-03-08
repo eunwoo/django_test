@@ -8,7 +8,6 @@ class GeneralManagerMaterialSupplyReportForm(forms.ModelForm):
         model = MaterialSupplyReport
         fields = [
             "date",
-            "title",
             "constructType",
             "text",
             "businessLicense",

@@ -13,6 +13,7 @@ from ..forms.quality_request_forms import (
 from user.models import CustomUser
 
 from ..services.common_services import sms_send
+from django.contrib import messages
 
 
 def get_qty_request_list_by_user(user):
@@ -40,6 +41,7 @@ def create_quality_request_service(request):
             qty_req.fieldId = field
             qty_req.locateId = InstallLocate.objects.get(pk=request.POST["locate"])
             qty_req.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_request", qty_req.docNum)
     else:
         form = GeneralManagerQualityInspectionRequestForm()
@@ -74,9 +76,10 @@ def update_quality_request_for_generalManager(request, docNum):
         if form.is_valid():
             qty_req = form.save(commit=False)
             qty_req.writerId = request.user
-            if request.POST["locate"]:
+            if "locate" in request.POST.keys():
                 qty_req.locateId = InstallLocate.objects.get(pk=request.POST["locate"])
             qty_req.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_request", qty_req.docNum)
     else:
         form = GeneralManagerQualityInspectionRequestForm(instance=qty_req)
@@ -94,6 +97,7 @@ def update_quality_request_for_agent(request, docNum):
         form = AgentQualityInspectionRequestForm(request.POST, instance=qty_req)
         if form.is_valid():
             form.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_request", qty_req.docNum)
     else:
         form = AgentQualityInspectionRequestForm(instance=qty_req)
@@ -107,8 +111,9 @@ def update_quality_request_for_agent(request, docNum):
 def update_quality_request_for_generalEngineer(request, docNum):
     qty_request = QualityInspectionRequest.objects.get(docNum=docNum)
     if request.method == "POST":
-        qty_request.isSuccess = True
+        qty_request.isSaveGeneralEngineer = True
         qty_request.save()
+        messages.success(request, "저장이 완료되었습니다.")
         return redirect("work:update_quality_request", qty_request.docNum)
     return render(
         request,
@@ -126,6 +131,7 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
         sms_send(link, [target_user.phone])
     elif user.class2 == "현장 대리인":
         doc.generalEngineerId = target_user
+        doc.isCheckAgent = True
         doc.isSuccess = False
         sms_send(link, [target_user.phone])
     else:

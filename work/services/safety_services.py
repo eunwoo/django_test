@@ -9,6 +9,7 @@ from ..forms.safety_forms import (
     TotalEngineerSafetyReportForm,
 )
 from ..models import SafetyReport, SafetyCheckMenu, SafetyCheckList
+from django.contrib import messages
 
 
 def get_safety_list_by_user(user):
@@ -66,6 +67,7 @@ def update_safety_general(request, pk):
             for file_id in files:
                 doc_file = DocsFile.objects.get(pk=int(file_id))
                 safety.docs.add(doc_file)
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
     else:
         form = GeneralManagerSafetyReportForm(instance=instance)
@@ -99,6 +101,11 @@ def update_safety_general(request, pk):
 
 def update_safety_agent(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
+    if request.method == "POST":
+        safety.isSaveAgent = True
+        safety.save()
+        messages.success(request, "저장이 완료되었습니다.")
+        return redirect("work:update_safety", safety.docNum)
     return render(
         request,
         "work/safety/create_safety_agent.html",
@@ -111,7 +118,9 @@ def update_safety_generalEngineer(request, pk):
     if request.method == "POST":
         form = GeneralEngineerSafetyReportForm(request.POST, instance=safety)
         if form.is_valid():
+            safety.isSaveGeneralEngineer = True
             safety = form.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
     else:
         form = GeneralEngineerSafetyReportForm(instance=safety)
@@ -128,8 +137,10 @@ def update_safety_totalEngineer(request, pk):
         form = TotalEngineerSafetyReportForm(request.POST, instance=safety)
         if form.is_valid():
             safety = form.save(commit=False)
+            safety.isSaveTotalEngineer = True
             safety.isSuccess = True
             safety.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
     else:
         form = TotalEngineerSafetyReportForm(instance=safety)
