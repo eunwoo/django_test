@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    before_install_views,
     main_views,
     safety_views,
     material_views,
@@ -105,46 +106,74 @@ quality_report_url = [
     ),
 ]
 
-install_check_url = [
+before_install_check_url = [
     path(
         "install_check/",
-        install_views.select_type,
+        before_install_views.select_type,
         name="install_check",
     ),
     path(
         "install_check/<str:type>/",
-        install_views.select_install,
+        before_install_views.select_install,
         name="select_install",
     ),
     path(
         "before_install/<str:type>/",
-        install_views.before_install,
+        before_install_views.before_install,
         name="before_install",
     ),
     path(
         "before_install_checklist/<str:type>/",
-        install_views.before_install_checklist,
+        before_install_views.before_install_checklist,
         name="before_install_checklist",
     ),
     path(
         "update_before_install_checklist/<str:type>/<int:pk>/",
-        install_views.update_before_install_checklist,
+        before_install_views.update_before_install_checklist,
         name="update_before_install_checklist",
     ),
     path(
         "cm_list",
-        install_views.get_users,
+        before_install_views.get_users,
         name="get_cms",
     ),
     path(
         "required_cm/<str:type>/",
-        install_views.required_cm,
+        before_install_views.required_cm,
         name="required_cm",
     ),
     path(
         "read_before_install/<str:type>/<int:pk>/",
-        install_views.read_before_checklist,
+        before_install_views.read_before_checklist,
         name="read_before_checklist",
+    ),
+]
+
+install_check_url = [
+    path(
+        "install/<str:type>/",
+        install_views.install,
+        name="install",
+    ),
+    path(
+        "install_checklist/<str:type>/",
+        install_views.install_checklist,
+        name="install_checklist",
+    ),
+    path(
+        "update_install_checklist/<str:type>/<int:pk>/",
+        install_views.update_install_checklist,
+        name="update_install_checklist",
+    ),
+    path(
+        "read_install/<str:type>/<int:pk>/",
+        install_views.read_checklist,
+        name="read_checklist",
+    ),
+    path(
+        "required_cm_install/<str:type>/",
+        install_views.required_cm,
+        name="required_cm_install",
     ),
 ]
 
@@ -153,6 +182,7 @@ urlpatterns = [
     *material_url,
     *quality_request_url,
     *quality_report_url,
+    *before_install_check_url,
     *install_check_url,
     *main_url,
 ]
