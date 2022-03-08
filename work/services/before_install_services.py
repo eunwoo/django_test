@@ -64,7 +64,9 @@ def before_install_checklist_service(request, type: str):
                         result_item.measures.create(img=img)
             messages.success(request, "저장이 완료되었습니다.")
             return redirect(
-                "work:update_before_install_checklist", type, before_checklist.pk
+                "work:update_before_install_checklist",
+                type,
+                before_checklist.pk,
             )
     else:
         form = BeforeInstallCheckListForm()
