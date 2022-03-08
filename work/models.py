@@ -23,9 +23,12 @@ class SafetyReport(models.Model):
     result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
-    isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(default=False)
-    isReadTotalEngineer = models.BooleanField(default=False)
+
+    isSaveManager = models.BooleanField(default=False)
+    isSaveAgent = models.BooleanField(default=False)
+    isSaveGeneralEngineer = models.BooleanField(default=False)
+    isSaveTotalEngineer = models.BooleanField(default=False)
+
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
@@ -41,23 +44,27 @@ class SafetyReport(models.Model):
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="safety_report_writer",
+        blank=True,
         null=True,
     )
     agentId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="safety_report_agent",
+        blank=True,
         null=True,
     )
     generalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="safety_report_general_engineer",
     )
     totalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="safety_report_total_engineer",
     )
@@ -116,15 +123,23 @@ class MaterialSupplyReport(models.Model):
         ("2", "조건부 승인-의견반영 후 진행"),
         ("3", "승인 불가"),
     )
+    fieldId = models.ForeignKey(
+        Field,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="material_supply",
+    )
     result = models.CharField(
         max_length=10, choices=result_choices, blank=True
     )  # 결과 내용
 
     docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
 
-    isReadAgent = models.BooleanField(default=False)  # 에이전트 읽음 여부
-    isReadGeneralEngineer = models.BooleanField(default=False)
-    isReadTotalEngineer = models.BooleanField(default=False)
+    isSaveManager = models.BooleanField(default=False)
+    isSaveAgent = models.BooleanField(default=False)
+    isSaveGeneralEngineer = models.BooleanField(default=False)
+    isSaveTotalEngineer = models.BooleanField(default=False)
+
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
@@ -150,23 +165,27 @@ class MaterialSupplyReport(models.Model):
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="material_report_writer",
+        blank=True,
         null=True,
     )
     agentId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="material_report_agent",
+        blank=True,
         null=True,
     )
     generalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="material_report_general_engineer",
     )
     totalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="material_report_total_engineer",
     )
@@ -228,6 +247,10 @@ class QualityInspectionRequest(models.Model):
 
     orderDate = models.DateField(null=True)  # 의뢰일
 
+    isSaveManager = models.BooleanField(default=False)
+    isSaveAgent = models.BooleanField(default=False)
+    isSaveGeneralEngineer = models.BooleanField(default=False)
+
     isCheckManager = models.BooleanField(default=True)
     isCheckAgent = models.BooleanField(default=True)
     isSuccess = models.BooleanField(default=False)  # 성공 여부
@@ -236,17 +259,20 @@ class QualityInspectionRequest(models.Model):
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="quality_inspection_writer",
+        blank=True,
         null=True,
     )
     agentId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="quality_inspection_agent",
+        blank=True,
         null=True,
     )
     generalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="quality_inspection_general_engineer",
     )
@@ -273,6 +299,11 @@ class QualityPerformanceReport(models.Model):
         related_name="quality_performance_report",
     )  # 현장등록
 
+    isSaveManager = models.BooleanField(default=False)
+    isSaveAgent = models.BooleanField(default=False)
+    isSaveGeneralEngineer = models.BooleanField(default=False)
+    isSaveTotalEngineer = models.BooleanField(default=False)
+
     isCheckManager = models.BooleanField(default=True)
     isCheckAgent = models.BooleanField(default=True)
     isCheckGeneralEngineer = models.BooleanField(default=True)
@@ -282,23 +313,27 @@ class QualityPerformanceReport(models.Model):
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="quality_performance_writer",
+        blank=True,
         null=True,
     )
     agentId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
         related_name="quality_performance_agent",
+        blank=True,
         null=True,
     )
     generalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="quality_performance_general_engineer",
     )
     totalEngineerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         related_name="quality_performance_total_engineer",
     )
