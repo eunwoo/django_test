@@ -39,7 +39,7 @@ def assign_user(user, doc, user_pk: int, link):
 
 def sms_send(link, phone_list: list[str], sms_type: int = 0):
     send_url = "https://apis.aligo.in/send/"  # 요청을 던지는 URL, 현재는 문자보내기
-    sender = "01025093834"  # 보내는 번호
+    sender = "01025093834"  # 보내는 번호 => 현재 지영님 폰 번호만 인증이 되어서 다른 번호는 사용 불가
 
     phone_list = map(lambda x: x.replace("-", ""), phone_list)
 
@@ -55,8 +55,8 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
         "sender": sender,  # 발신번호
         "receiver": ",".join(phone_list),  # 수신번호 (,활용하여 1000명까지 추가 가능)
         "msg": content,  # 문자 내용
-        "msg_type": "SMS",  # 메세지 타입 (SMS, LMS)
-        # 'title' : 'title', #메세지 제목 (장문에 적용)
+        "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
+        "title": "[TQIMS 알림] TQIMS 결재 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
     requests.post(send_url, data=sms_data)
