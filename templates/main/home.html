@@ -1,174 +1,164 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  Home Page
+Home Page
 {% endblock %}
 {% block style %}
-  <style>
+<style>
+  main {
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .btn2 {
+    height: 110px;
+    border-color: rgb(210, 210, 210);
+
+  }
+
+  @media screen and (max-width: 600px) {
     main {
-      margin: 0 auto;
-      padding: 0;
+      width: 100%;
     }
 
-    .btn2 {
-      height: 110px;
-      border-color: rgb(210, 210, 210);
-
-    }
-
-    @media screen and (max-width: 600px) {
-      main {
-        width: 100%;
-      }
-
-    }
-  </style>
+  }
+</style>
 {% endblock %}
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <section style="width: 40%;">
-      {% if user.register == True or user.is_superuser %}
-        {% if user.is_system_manager == True %}
-          <div class="container ">
-            <br>
-            <div class="row">
-              <div class="col">
-                <div class="row">
-                  <div class="col-12 text-center mb-1">
-                    <i class="fa fa-user-circle fa-4x" style="font-size: 100px; color:rgb(107, 112, 114);"></i>
-                  </div>
-                </div>
-                <div class="row mb-1">
-                  <div class="col-12 text-center">
-                    <label class="fw-bold" for="">{{ user.name}}
-                      님</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 text-center">
-                    <label for="">{{ user.affiliation}}
-                      {{ user.role}}</label>
-                  </div>
-                </div>
-                <div class="row ">
-                  <div class="col-12 text-center mb-1">
-                    <label for="">{{ user.role_type}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-4 offset-4">
-                    <a href="">
-                      {% comment %}
-                      {% url 'account:updateregister' %}
-                      {% endcomment %}
-                      <button class="btn btn-outline-dark col-12" style="padding: 0;">개인정보 수정</button>
-                    </a>
-                  </div>
-                </div>
-                <div class="row mt-1">
-                  <div class="col-4 offset-4">
-                    <a href="{% url 'user:logout' %}">
-                      <button class="btn btn-outline-dark col-12" style="padding: 0;">로그아웃</button>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col">
-                <a href="{% url 'work:index' %}">
-                  <button class="btn2 btn btn-outline-dark col-12">업무</button>
-                </a>
-              </div>
-              <div class="col">
-                <button class="btn2 btn btn-outline-dark col-12">법령 정보</button>
-              </div>
-              <div class="col">
-                <button class="btn2 btn btn-outline-dark col-12">결과보고</button>
-              </div>
-              <div class="col">
-                <button class="btn2 btn btn-outline-dark col-12">공지사항</button>
-              </div>
-              <div class="col">
-                <a href="{% url 'system_manager:index' %}">
-                  <button class="btn2 btn btn-outline-dark col-12">기본정보 등록</button>
-                </a>
-              </div>
+{% include 'base/header.html' %}
+<main>
+  <section style="width: 40%;">
+    {% if user.register == True or user.is_superuser %}
+    {% if user.is_system_manager == True %}
+    <div class="container ">
+      <br>
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col-12 text-center mb-1">
+              <i class="fa fa-user-circle fa-4x" style="font-size: 100px; color:rgb(107, 112, 114);"></i>
             </div>
           </div>
-        {% else %}
-          <div class="container ">
-            <br>
-            <div class="row">
-              <div class="col">
-                <div class="row">
-                  <div class="col-md-12 text-center mb-1">
-                    <i class="fa fa-user-circle fa-4x" style="font-size: 100px; color:rgb(236, 240, 242);"></i>
-                  </div>
-                </div>
-                <div class="row mb-1">
-                  <div class="col-md-12 text-center">
-                    <label class="fw-bold" for="">{{ user.name}}
-                      님</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 text-center">
-                    <label for="">{{ user.affiliation}}
-                      {{ user.role}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 text-center mb-1">
-                    <label for="">{{ user.role_type}}</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <a href="">
-                      {% comment %}
-                      {% url 'account:updateregister' %}
-                      {% endcomment %}
-                      <button class="btn col-md-4 offset-4" style="padding: 0;">개인정보 수정</button>
-                    </a>
-                  </div>
-                </div>
-                <div class="row mt-2">
-                  <div class="col-md-12">
-                    <a href="{% url 'user:logout' %}">
-                      <button class="btn col-md-4 offset-4" style="padding: 0;">로그아웃</button>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-            <div class="row mt-3">
-              <div class="col">
-                <a href="{% url 'work:index' %}">
-                  <button class="btn2 btn col-md-12">업무</button>
-                </a>
-              </div>
-              <div class="col">
-                <button class="btn2 btn col-md-12">결과보고</button>
-              </div>
-              <div class="col">
-                <button class="btn2 btn col-md-12">공지사항</button>
-              </div>
-              <div class="col">
-                <button class="btn2 btn col-md-12">법령 정보</button>
-              </div>
+          <div class="row mb-1">
+            <div class="col-12 text-center">
+              <label class="fw-bold" for="">{{user.name}}
+                님</label>
             </div>
           </div>
-        {% endif %}
-      {% else %}
-        <div class="container">
-          <br><br>
-          <div class="alert alert-primary text-center" role="alert">
-            죄송합니다. 이 시스템에 대한 액세스 권한이 아직 부여되지 않았습니다.
+          <div class="row">
+            <div class="col-12 text-center">
+              <label for="">{{user.class1}} - {{user.class2}}</label>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-12 text-center mb-1">
+              <label for="">{{user.class3}}</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 offset-4">
+              <a href="">
+                <button class="btn btn-outline-dark col-12" style="padding: 0;">개인정보 수정</button>
+              </a>
+            </div>
+          </div>
+          <div class="row mt-1">
+            <div class="col-4 offset-4">
+              <a href="{% url 'user:logout' %}">
+                <button class="btn btn-outline-dark col-12" style="padding: 0;">로그아웃</button>
+              </a>
+            </div>
           </div>
         </div>
-      {% endif %}
-    </section>
-  </main>
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <button class="btn2 btn btn-outline-dark col-12">법령 정보</button>
+        </div>
+        <div class="col">
+          <button class="btn2 btn btn-outline-dark col-12">결과보고</button>
+        </div>
+        <div class="col">
+          <button class="btn2 btn btn-outline-dark col-12">공지사항</button>
+        </div>
+        <div class="col">
+          <a href="{% url 'system_manager:index' %}">
+            <button class="btn2 btn btn-outline-dark col-12">기본정보 등록</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="container ">
+      <br>
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <div class="col-md-12 text-center mb-1">
+              <i class="fa fa-user-circle fa-4x" style="font-size: 100px; color:rgb(236, 240, 242);"></i>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col-md-12 text-center">
+              <label class="fw-bold" for="">{{ user.name}}
+                님</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <label for="">{{ user.class1}} - {{ user.class2}}</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-center mb-1">
+              <label for="">{{ user.class3}}</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <a href="">
+                {% comment %}
+                {% url 'account:updateregister' %}
+                {% endcomment %}
+                <button class="btn col-md-4 offset-4" style="padding: 0;">개인정보 수정</button>
+              </a>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-12">
+              <a href="{% url 'user:logout' %}">
+                <button class="btn col-md-4 offset-4" style="padding: 0;">로그아웃</button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row mt-3">
+        <div class="col">
+          <a href="{% url 'work:index' %}">
+            <button class="btn2 btn col-md-12">업무</button>
+          </a>
+        </div>
+        <div class="col">
+          <button class="btn2 btn col-md-12">결과보고</button>
+        </div>
+        <div class="col">
+          <button class="btn2 btn col-md-12">공지사항</button>
+        </div>
+        <div class="col">
+          <button class="btn2 btn col-md-12">법령 정보</button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="container">
+      <br><br>
+      <div class="alert alert-primary text-center" role="alert">
+        죄송합니다. 이 시스템에 대한 액세스 권한이 아직 부여되지 않았습니다.
+      </div>
+    </div>
+    {% endif %}
+  </section>
+</main>
 {% endblock %}
