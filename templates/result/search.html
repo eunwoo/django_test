@@ -36,42 +36,22 @@ Work
     <br><br><br><br>
     <section>
       <div class="container">
-        <div class="row justify-content-md-center">
-          <div class="col-3">
-            <a href="{% url 'work:safety' %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">구조 안전성 검토
-                {% if workCount != 0 %}
-                <span class="badge bg-success">{{workCount}}</span>
-                {% endif %}
-              </button>
-            </a>
+        <div class="row p-2 border border-3 rounded">
+          <div class="col-1">
+            업무
           </div>
-          <div class="col-3">
-            <a href="{% url 'work:material' %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">자재 반입
-                {% if materialCount != 0 %}
-                <span class="badge bg-success">{{materialCount}}</span>
-                {% endif %}
-              </button>
-            </a>
+          <div class="col">
+            1
           </div>
-          <div class="col-3">
-            <a
-              href="{% if request.user.class2 == "총괄 건설사업관리기술인" %}{% url 'work:quality_report' %}{% else %}{% url 'work:quality_menu' %}{% endif %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">품질검사
-                {% if qtyCount != 0 %}
-                <span class="badge bg-success">{{qtyCount}}</span>
-                {% endif %}
-              </button>
-            </a>
+          <div class="col">
+            2
           </div>
-          {% if request.user.class2 == '일반 관리자' %}
-          <div class="col-3">
-            <a href="{% url 'work:install_check' %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">설치작업 확인</button>
-            </a>
+          <div class="col">
+            3
           </div>
-          {% endif %}
+          <div class="col">
+            4
+          </div>
         </div>
       </div>
     </section>
