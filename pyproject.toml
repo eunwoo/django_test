@@ -13,6 +13,7 @@ Pillow = "^9.0.1"
 PyYAML = "^6.0"
 pysqlite3-binary = "^0.4.6"
 requests = "^2.27.1"
+django-sslserver = "^0.22"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
