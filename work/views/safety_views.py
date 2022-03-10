@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 
 from system_manager.models import DocsFile
-from user.models import CustomUser
 from work.services.common_services import assign_user
+from django.contrib import messages
 
 from ..models import SafetyCheckMenu, SafetyReport
 from ..forms.safety_forms import GeneralManagerSafetyReportForm
@@ -47,6 +47,7 @@ def create_safety(request):
             for file_id in files:
                 doc_file = DocsFile.objects.get(pk=int(file_id))
                 safety.docs.add(doc_file)
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
     else:
         form = GeneralManagerSafetyReportForm()
