@@ -55,9 +55,9 @@ def require_sign_quality_request(request):
     if request.method == "POST":
         doc = QualityInspectionRequest.objects.get(docNum=request.POST.get("docNum"))
         base_link = (
-            "/update_quality_request/"
+            "/work/update_quality_request/"
             if request.user.class2 != "일반 건설사업관리기술인"
-            else "/read_quality_request/"
+            else "/work/read_quality_request/"
         )
         link = request.build_absolute_uri(base_link + str(doc.docNum))
         assign_user_for_qty_request(

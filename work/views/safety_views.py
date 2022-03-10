@@ -126,9 +126,9 @@ def require_sign(request):
     if request.method == "POST":
         doc = SafetyReport.objects.get(docNum=int(request.POST.get("docNum")))
         base_link = (
-            "/update_safety/"
+            "/work/update_safety/"
             if request.user.class2 != "총괄 건설사업관리기술인"
-            else "/read_safety/"
+            else "/work/read_safety/"
         )
         link = request.build_absolute_uri(base_link + str(doc.docNum))
         assign_user(

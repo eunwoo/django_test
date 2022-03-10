@@ -41,9 +41,9 @@ def require_sign_material(request):
     if request.method == "POST":
         doc = MaterialSupplyReport.objects.get(docNum=request.POST.get("docNum"))
         base_link = (
-            "/update_material/"
+            "/work/update_material/"
             if request.user.class2 != "총괄 건설사업관리기술인"
-            else "/read_material/"
+            else "/work/read_material/"
         )
         link = request.build_absolute_uri(base_link + str(doc.docNum))
         assign_user(
