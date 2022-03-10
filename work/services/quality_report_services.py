@@ -9,6 +9,7 @@ from ..models import (
     QualityPerformance,
 )
 from ..forms.quality_report_forms import GeneralManagerQualityPerformanceReportForm
+from django.contrib import messages
 
 
 def get_qty_report_list_by_user(user):
@@ -59,6 +60,7 @@ def create_quality_report_service(request):
                     title=file.name, doc=file, quality_performance_report_id=qty_report
                 )
                 docs_file.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_report", qty_report.docNum)
     else:
         form = GeneralManagerQualityPerformanceReportForm()
@@ -105,18 +107,29 @@ def update_quality_report_general(request, pk):
                     title=file.name, doc=file, quality_performance_report_id=qty_report
                 )
                 docs_file.save()
+            messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_report", qty_report.docNum)
     else:
         form = GeneralManagerQualityPerformanceReportForm(instance=instance)
     return render(
         request,
         "work/quality/quality_report/create_quality_report.html",
-        {"form": form, "docNum": instance.docNum, "field": instance.fieldId},
+        {
+            "form": form,
+            "docNum": instance.docNum,
+            "field": instance.fieldId,
+            "doc": instance,
+        },
     )
 
 
 def update_quality_report_agent(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
+    if request.method == "POST":
+        qty_report.isSaveAgent = True
+        qty_report.save()
+        messages.success(request, "저장이 완료되었습니다.")
+        return redirect("work:update_quality_report", qty_report.docNum)
     return render(
         request,
         "work/quality/quality_report/update_quality_report_agent.html",
@@ -126,6 +139,11 @@ def update_quality_report_agent(request, pk):
 
 def update_quality_report_generalEngineer(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
+    if request.method == "POST":
+        qty_report.isSaveGeneralEngineer = True
+        qty_report.save()
+        messages.success(request, "저장이 완료되었습니다.")
+        return redirect("work:update_quality_report", qty_report.docNum)
     return render(
         request,
         "work/quality/quality_report/update_quality_report_generalEngineer.html",
@@ -135,6 +153,11 @@ def update_quality_report_generalEngineer(request, pk):
 
 def update_quality_report_totalEngineer(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
+    if request.method == "POST":
+        qty_report.isSaveTotalEngineer = True
+        qty_report.save()
+        messages.success(request, "저장이 완료되었습니다.")
+        return redirect("work:update_quality_report", qty_report.docNum)
     return render(
         request,
         "work/quality/quality_report/update_quality_report_totalEngineer.html",
