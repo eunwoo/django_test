@@ -974,18 +974,22 @@
   fields:
     class2: 1
     class3: "인천서구"
+    isApply: True
 - model: system_manager.InstallLocate
   pk: 2
   fields:
     class2: 2
     class3: "인천동구"
+    isApply: True
 - model: system_manager.InstallLocate
   pk: 3
   fields:
     class2: 3
     class3: "경기양주"
+    isApply: True
 - model: system_manager.InstallLocate
   pk: 4
   fields:
     class2: 4
     class3: "경기의정부"
+    isApply: True
