@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "system_manager.apps.SystemManagerConfig",
     "user.apps.UserConfig",
     "main.apps.MainConfig",
+    "result.apps.ResultConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

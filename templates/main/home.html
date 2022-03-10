@@ -75,7 +75,9 @@ Home Page
           <button class="btn2 btn btn-outline-dark col-12">법령 정보</button>
         </div>
         <div class="col">
-          <button class="btn2 btn btn-outline-dark col-12">결과보고</button>
+          <a href="{% url 'result:search' %}">
+            <button class="btn2 btn btn-outline-dark col-12">결과보고</button>
+          </a>
         </div>
         <div class="col">
           <button class="btn2 btn btn-outline-dark col-12">공지사항</button>
@@ -137,7 +139,9 @@ Home Page
           </a>
         </div>
         <div class="col">
-          <button class="btn2 btn col-md-12">결과보고</button>
+          <a href="{% url 'result:search' %}">
+            <button class="btn2 btn col-md-12">결과보고</button>
+          </a>
         </div>
         <div class="col">
           <button class="btn2 btn col-md-12">공지사항</button>
