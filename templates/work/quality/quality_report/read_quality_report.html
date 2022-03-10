@@ -225,7 +225,7 @@ Safety Check
                   <div class="row">
                     <div class="col-7">{{qty_report.agentId.name}}</div>
                     <div class="col-5">
-                      {% if qty_report.generalEngineerId %}<img width="100%" alt=""
+                      {% if qty_report.isSaveAgent %}<img width="100%" alt=""
                         src="{{qty_report.agentId.signImage.url}}" />
                       {% else %}
                       (인)
@@ -237,8 +237,8 @@ Safety Check
                   <div class="row">
                     <div class="col-7">{{qty_report.generalEngineerId.name}}</div>
                     <div class="col-5">
-                      {% if qty_report.totalEngineerId %}<img width="100%" alt=""
-                        src="{{qty_report.generalEngineerId.url}}" />
+                      {% if qty_report.isSaveGeneralEngineer %}<img width="100%" alt=""
+                        src="{{qty_report.generalEngineerId.signImage.url}}" />
                       {% else %}
                       (인)
                       {% endif %}
@@ -247,10 +247,10 @@ Safety Check
                 </td>
                 <td>
                   <div class="row">
-                    <div class="col-7">{{form.gcEng}}</div>
+                    <div class="col-7">{{qty_report.totalEngineerId.name}}</div>
                     <div class="col-5">
                       {% if qty_report.isSuccess %}<img width="100%" alt=""
-                        src="{{qty_report.totalEngineer.signImage.url}}" />
+                        src="{{qty_report.totalEngineerId.signImage.url}}" />
                       {% else %}
                       (인)
                       {% endif %}

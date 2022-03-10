@@ -91,6 +91,7 @@ Safety Check
       </div>
     </section>
     <section>
+      {% include 'base/messages.html' %}
       {% if form.errors %}
       <div class="alert alert-danger" role="alert">
         {% for field in form %}
@@ -297,6 +298,9 @@ Safety Check
                   </div>
                   <div class="row">
                     <ul class="list-group" id="file_preview">
+                      {% for file in doc.quality_performance_file.all %}
+                      <li class="list-group-item">{{file.title}}</li>
+                      {% endfor %}
                     </ul>
                   </div>
                 </div>

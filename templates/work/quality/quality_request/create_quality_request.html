@@ -97,18 +97,6 @@ Safety Check
       </div>
       {% endif %}
     </section>
-    <section>
-      {% if form.errors %}
-      <div class="alert alert-danger" role="alert">
-        {% for field in form %}
-        {% if field.errors %}
-        <strong>{{ field.label }}</strong>
-        {{ field.errors }}
-        {% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
-    </section>
     <form action="" id="qtyreqform" method="POST">
       {% csrf_token %}
       <section>
