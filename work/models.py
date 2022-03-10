@@ -251,8 +251,8 @@ class QualityInspectionRequest(models.Model):
     isSaveAgent = models.BooleanField(default=False)
     isSaveGeneralEngineer = models.BooleanField(default=False)
 
-    isCheckManager = models.BooleanField(default=True)
-    isCheckAgent = models.BooleanField(default=True)
+    isCheckManager = models.BooleanField(default=False)
+    isCheckAgent = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)  # 성공 여부
 
     writerId = models.ForeignKey(
@@ -304,9 +304,9 @@ class QualityPerformanceReport(models.Model):
     isSaveGeneralEngineer = models.BooleanField(default=False)
     isSaveTotalEngineer = models.BooleanField(default=False)
 
-    isCheckManager = models.BooleanField(default=True)
-    isCheckAgent = models.BooleanField(default=True)
-    isCheckGeneralEngineer = models.BooleanField(default=True)
+    isCheckManager = models.BooleanField(default=False)
+    isCheckAgent = models.BooleanField(default=False)
+    isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
 
     writerId = models.ForeignKey(
