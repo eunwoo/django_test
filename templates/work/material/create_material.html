@@ -170,11 +170,18 @@ Material Check
                 <div class="col-12">
                   <table class="table table-bordered">
                     <thead>
+                      <tr>
+                        <td style="width: 15%;">공급 업체명</td>
+                        <td style="width: 40%;">품명</td>
+                        <td style="width: 15%;">규격</td>
+                        <td style="width: 20%;">비고</td>
+                        <td style="width: 10%;"></td>
+                      </tr>
                       <tr id="supply_table">
-                        <td style="width: 15%;">
+                        <td>
                           <input type="text" id="supply_comp" />
                         </td>
-                        <td style="width: 40%;">
+                        <td>
                           <select class="form-select" aria-label="품명 선택">
                             <option selected value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
                             <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
@@ -185,22 +192,15 @@ Material Check
                             <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
                           </select>
                         </td>
-                        <td style="width: 15%;">
+                        <td>
                           <input type="text" id="supply_size" />
                         </td>
-                        <td style="width: 20%;">
+                        <td>
                           <input type="text" id="supply_etc" />
                         </td>
-                        <td style="width: 10%;">
+                        <td>
                           <button class="btn btn-primary" type="button" id="supply_add">추가</button>
                         </td>
-                      </tr>
-                      <tr>
-                        <td>공급 업체명</td>
-                        <td>품명</td>
-                        <td>규격</td>
-                        <td>비고</td>
-                        <td></td>
                       </tr>
                     </thead>
                     <tbody id="supply_body">
@@ -615,6 +615,7 @@ Material Check
 
   //직접 입력 창
   $("#constructTypeSelect").on('change', () => {
+    isChange = true
     const value = $("#constructTypeSelect").val()
     if (value === "직접입력") {
       $("#constructType").attr('readonly', false);
