@@ -87,341 +87,338 @@ Safety Check
             <h1>품질검사 의뢰서</h1>
           </div>
         </div>
-        <div class="mt-3 row">
-          <div class="mt-3 row text-center">
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">문서번호</label>
-            </div>
-            <div class="col-4">
-              품질검사 의뢰서-{{ qty_request.docNum }}
-            </div>
+        <div class="p-2 border row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">문서번호</label>
           </div>
-          <div class="mt-3 row text-center">
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">품명</label>
-            </div>
-            <div class="col-4">
-              {{ qty_request.get_goods_display }}
-            </div>
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">규격</label>
-            </div>
-            <div class="col-4">
-              {{qty_request.size}}
-            </div>
-            <div class="col-4">
-            </div>
+          <div class="col-4">
+            품질검사 의뢰서-{{ qty_request.docNum }}
           </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">시험ᆞ검사종목</label>
-            </div>
-            <div class="col-4">
-              <div class="row">
-                {% if qty_request.testType_hweem %}
-                <div class="col">
-                  휨하중
-                </div>
-                {% endif %}
-                {% if qty_request.testType_zip %}
-                <div class="col">
-                  압축하중
-                </div>
-                {% endif %}
-                {% if qty_request.testType_tensile %}
-                <div class="col">
-                  인장하중
-                </div>
-                {% endif %}
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">품명</label>
+          </div>
+          <div class="col-4">
+            {{ qty_request.get_goods_display }}
+          </div>
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">규격</label>
+          </div>
+          <div class="col-4">
+            {{qty_request.size}}
+          </div>
+          <div class="col-4">
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">시험ᆞ검사종목</label>
+          </div>
+          <div class="col-4">
+            <div class="row">
+              {% if qty_request.testType_hweem %}
+              <div class="col">
+                휨하중
               </div>
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">시료량</label>
-            </div>
-            <div class="col-10">
-              {{qty_request.sampleQuentity}}
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">시료 또는 자재 생산국</label>
-            </div>
-            <div class="col-10">
-              {{qty_request.sampleOrigin}}
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">시료 채취 장소</label>
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-1">구분1</div>
-                <div class="col-3">
-                  {{qty_request.locateId.class2.class1.class1}}
-                </div>
-                <div class="col-1">구분2</div>
-                <div class="col-3">
-                  {{qty_request.locateId.class2.class2}}
-                </div>
-                <div class="col-1">구분3</div>
-                <div class="col-3">
-                  {{qty_request.locateId.class3}}
-                </div>
+              {% endif %}
+              {% if qty_request.testType_zip %}
+              <div class="col">
+                압축하중
               </div>
-            </div>
-          </div>
-          <div class="mt-3 row text-center">
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">시료 채취 일자</label>
-            </div>
-            <div class="col-4">
-              {{qty_request.sampleDate}}
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center justify-content-center align-items-center d-flex">
-              <label for="" class="col-12" style="color: black;">시료 채취자</label>
-            </div>
-            <div class="col-10">
-              <div class="row mt-2">
-                <div class="col-1">
-                  <label for="">업체명</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.writerId.company}}
-                </div>
-                <div class="col-1">
-                  <label for="" class="mr-1">담당 업무</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.writerId.class3}}
-                </div>
-                <div class="col-1">
-                  <label for="" class="mr-1">서명</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.writerId.name}}
-                </div>
-                <div class="col-2">
-                  {% if qty_request.writerId %}
-                  <img width="100%" alt="" src="{{qty_request.writerId.signImage.url}}" />
-                  {% else %}
-                  (인)
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center justify-content-center align-items-center d-flex">
-              <label for="" class="col-12" style="color: black;">입회자</label>
-            </div>
-            <div class="col-10">
-              <div class="row mt-2">
-                <div class="col-1">
-                  <label for="">업체명</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.generalEngineerId.company}}
-                </div>
-                <div class="col-1">
-                  <label for="" class="mr-1">담당 업무</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.generalEngineerId.class3}}
-                </div>
-                <div class="col-1">
-                  <label for="" class="mr-1">서명</label>
-                </div>
-                <div class="col-2">
-                  {{qty_request.generalEngineerId.name}}
-                </div>
-                <div class="col-2">
-                  {% if qty_request.isSaveGeneralEngineer %}
-                  <img width="100%" alt="" src="{{qty_request.generalEngineerId.signImage.url}}" />
-                  {% else %}
-                  (인)
-                  <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#signModal">
-                    서명
-                  </button>
-                  <!-- Modal -->
-                  <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">서명 요청</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="mb-3">
-                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            취소</button>
-                          <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">시험 및 시방기준</label>
-            </div>
-            <div class="col-10" id="test_standard">
-              {{qty_request.testStandard}}
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">성과 이용 목적</label>
-            </div>
-            <div class="col-10">
-              품질 시험용
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center justify-content-center align-items-center d-flex">
-              <label for="" class="col-12" style="color: black;">공사개요</label>
-            </div>
-            <div class="col-10">
-              <div class="row mt-3">
-                <div class="col-2">
-                  <label for="">공사명</label>
-                </div>
-                <div class="col-10">
-                  {{qty_request.fieldId.title}}
-                </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-2">
-                  <label for="">착공일</label>
-                </div>
-                <div class="col-10">
-                  {{qty_request.fieldId.startDay}}
-                </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-2">
-                  <label for="">준공예정일</label>
-                </div>
-                <div class="col-10">
-                  {{qty_request.fieldId.endDay}}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mt-3 row text-center">
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">발주자</label>
-            </div>
-            <div class="col-4">
-              {{qty_request.fieldId.orderer}}
-            </div>
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">시공자</label>
-            </div>
-            <div class="col-4">
-              {{qty_request.fieldId.constructComp}}
-            </div>
-          </div>
-          <div class="mt-3 row">
-            <div class="col-2 text-center">
-              <label for="" class="col-12" style="color: black;">국가중요시설 여부</label>
-            </div>
-            <div class="col-10 text-center">
-              {{qty_request.isImportFacility}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제
-                1항에 따라 품질시험ᆞ검사를
-                의뢰합니다</label>
-            </div>
-          </div>
-          <div class="mt-3 row text-center">
-            <div class="col-2">
-              <label for="" class="col-12" style="color: black;">의뢰일</label>
-            </div>
-            <div class="col-4">
-              <input type="date" class="form-control" name="orderDate" id="orderDate" placeholder="작성일자"
-                value="{{qty_request.orderDate|date:'Y-m-d'|default_if_none:''}}" required />
-            </div>
-            <div class="col-1">
-              <label for="" class="col-12" style="color: black;">의뢰인</label>
-            </div>
-            <div class="col-1">
-              {{qty_request.agentId.name}}
-            </div>
-            <div class="col-1">
-              <label for="" class="col-12" style="color: black;">서명</label>
-            </div>
-            <div class="col-3">
-              {% if qty_request.orderDate != None %}<img width="100%" alt=""
-                src="{{qty_request.agentId.signImage.url}}" />
-              {% else %}(인)
-              <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signModal">
-                서명
-              </button>
-              <!-- Modal -->
-              <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">서명 요청</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                        <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        취소</button>
-                      <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                    </div>
-                  </div>
-                </div>
+              {% endif %}
+              {% if qty_request.testType_tensile %}
+              <div class="col">
+                인장하중
               </div>
               {% endif %}
             </div>
           </div>
-          <div class="mt-3 row text-center">
-            <div class="col-1 offset-8">
-              <label for="" class="col-12" style="color: black;">전화번호</label>
-            </div>
-            <div class="col-3">
-              {{qty_request.fieldId.callNum}}
-            </div>
-          </div>
-          <div class="mt-3 row text-center">
-            <div class="col-1 offset-8">
-              <label for="" class="col-12" style="color: black;">주소</label>
-            </div>
-            <div class="col-3">
-              {{qty_request.fieldId.address}}
-            </div>
-          </div>
-          <br>
         </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">시료량</label>
+          </div>
+          <div class="col-10">
+            {{qty_request.sampleQuentity}}
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">시료 또는 자재 생산국</label>
+          </div>
+          <div class="col-10">
+            {{qty_request.sampleOrigin}}
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">시료 채취 장소</label>
+          </div>
+          <div class="col-10">
+            <div class="row">
+              <div class="col-1">구분1</div>
+              <div class="col-3">
+                {{qty_request.locateId.class2.class1.class1}}
+              </div>
+              <div class="col-1">구분2</div>
+              <div class="col-3">
+                {{qty_request.locateId.class2.class2}}
+              </div>
+              <div class="col-1">구분3</div>
+              <div class="col-3">
+                {{qty_request.locateId.class3}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">시료 채취 일자</label>
+          </div>
+          <div class="col-4">
+            {{qty_request.sampleDate}}
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class="col-12" style="color: black;">시료 채취자</label>
+          </div>
+          <div class="col-10">
+            <div class="row mt-2">
+              <div class="col-1">
+                <label for="">업체명</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.writerId.company}}
+              </div>
+              <div class="col-1">
+                <label for="" class="mr-1">담당 업무</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.writerId.class3}}
+              </div>
+              <div class="col-1">
+                <label for="" class="mr-1">서명</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.writerId.name}}
+              </div>
+              <div class="col-2">
+                {% if qty_request.writerId %}
+                <img width="100%" alt="" src="{{qty_request.writerId.signImage.url}}" />
+                {% else %}
+                (인)
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class="col-12" style="color: black;">입회자</label>
+          </div>
+          <div class="col-10">
+            <div class="row mt-2">
+              <div class="col-1">
+                <label for="">업체명</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.generalEngineerId.company}}
+              </div>
+              <div class="col-1">
+                <label for="" class="mr-1">담당 업무</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.generalEngineerId.class3}}
+              </div>
+              <div class="col-1">
+                <label for="" class="mr-1">서명</label>
+              </div>
+              <div class="col-2">
+                {{qty_request.generalEngineerId.name}}
+              </div>
+              <div class="col-2">
+                {% if qty_request.isSaveGeneralEngineer %}
+                <img width="100%" alt="" src="{{qty_request.generalEngineerId.signImage.url}}" />
+                {% else %}
+                (인)
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signModal">
+                  서명
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">서명 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                          <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                          취소</button>
+                        <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">시험 및 시방기준</label>
+          </div>
+          <div class="col-10" id="test_standard">
+            {{qty_request.testStandard}}
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">성과 이용 목적</label>
+          </div>
+          <div class="col-10">
+            품질 시험용
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class="col-12" style="color: black;">공사개요</label>
+          </div>
+          <div class="col-10">
+            <div class="row p-2 border">
+              <div class="col-2">
+                <label for="">공사명</label>
+              </div>
+              <div class="col-10">
+                {{qty_request.fieldId.title}}
+              </div>
+            </div>
+            <div class="row p-2 border">
+              <div class="col-2">
+                <label for="">착공일</label>
+              </div>
+              <div class="col-10">
+                {{qty_request.fieldId.startDay}}
+              </div>
+            </div>
+            <div class="row p-2 border">
+              <div class="col-2">
+                <label for="">준공예정일</label>
+              </div>
+              <div class="col-10">
+                {{qty_request.fieldId.endDay}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">발주자</label>
+          </div>
+          <div class="col-4">
+            {{qty_request.fieldId.orderer}}
+          </div>
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">시공자</label>
+          </div>
+          <div class="col-4">
+            {{qty_request.fieldId.constructComp}}
+          </div>
+        </div>
+        <div class="p-2 border row">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">국가중요시설 여부</label>
+          </div>
+          <div class="col-10 text-center">
+            {{qty_request.isImportFacility}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제
+              1항에 따라 품질시험ᆞ검사를
+              의뢰합니다</label>
+          </div>
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">의뢰일</label>
+          </div>
+          <div class="col-4">
+            {{qty_request.orderDate}}
+          </div>
+          <div class="col-1">
+            <label for="" class="col-12" style="color: black;">의뢰인</label>
+          </div>
+          <div class="col-1">
+            {{qty_request.agentId.name}}
+          </div>
+          <div class="col-1">
+            <label for="" class="col-12" style="color: black;">서명</label>
+          </div>
+          <div class="col-3">
+            {% if qty_request.orderDate != None %}<img width="100%" alt=""
+              src="{{qty_request.agentId.signImage.url}}" />
+            {% else %}(인)
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signModal">
+              서명
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">서명 요청</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                      <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      취소</button>
+                    <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-1 offset-8">
+            <label for="" class="col-12" style="color: black;">전화번호</label>
+          </div>
+          <div class="col-3">
+            {{qty_request.fieldId.callNum}}
+          </div>
+        </div>
+        <div class="p-2 border row text-center">
+          <div class="col-1 offset-8">
+            <label for="" class="col-12" style="color: black;">주소</label>
+          </div>
+          <div class="col-3">
+            {{qty_request.fieldId.address}}
+          </div>
+        </div>
+        <br>
+
     </section>
   </div>
   <br><br><br><br><br>

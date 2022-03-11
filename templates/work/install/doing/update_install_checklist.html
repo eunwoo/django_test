@@ -31,12 +31,13 @@ Safety Check
                   <a href="{% url 'work:index' %}">업무</a>
                 </li>
                 <li class="breadcrumb-item">
-                  <a href="{% url 'work:install_check' %}">설치작업 확인</a>
+                  <a href="{% url 'work:install_check' %}">설치작업 점검</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:select_install' type=type %}">{{type}}</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{% url 'work:install' type=type %}">
-                    {{type}} - 설치작업 중
-                  </a>
+                  <a href="{% url 'work:install' type=type %}">설치작업 중</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                   체크리스트 작성
@@ -74,7 +75,7 @@ Safety Check
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">서명 요청</h5>
+                        <h5 class="modal-title">조치사항 발송</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -104,13 +105,13 @@ Safety Check
         <div class="container border">
           <div class="row m-1">
             <h1>
-              {{type}} 설치작업 중 확인 체크리스트
+              {{type}} 설치작업 중 점검 체크리스트
             </h1>
           </div>
           <table class="table table-bordered">
             <tr>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
-              <td class="align-middle" style="width: 35%">{{type}} 설치작업 중 확인 체크리스트-{{docNum}}</td>
+              <td class="align-middle" style="width: 35%">{{type}} 설치작업 중 점검 체크리스트-{{docNum}}</td>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
               <td style="width: 35%">
                 <div class="row">
@@ -197,7 +198,7 @@ Safety Check
                     {% for checkmenu in categoryId.list %}
                     <tr id='{{checkmenu.inspection_item_id.pk}}-row'>
                       <td style="width: 5%">{{forloop.counter}}</td>
-                      <td style="width: 45%">{{checkmenu.inspection_item_id.title}}</td>
+                      <td class="text-start" style="width: 45%">{{checkmenu.inspection_item_id.title}}</td>
                       <td style="width: 10%">
                         <input type="radio" name="{{checkmenu.inspection_item_id.pk}}" value="1" required
                           {% if checkmenu.result == "1" %}checked{% endif %}>
@@ -428,7 +429,7 @@ Safety Check
   $('#signRequestBtn').on('click', () => {
     Swal.fire(
       '완료!',
-      '서명 요청이 전송되었습니다!',
+      '조치사항이 전송되었습니다!',
       'success'
     ).then(() => {
       document.forms['sign_form'].submit()

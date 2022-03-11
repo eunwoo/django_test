@@ -1,0 +1,130 @@
+{% extends 'base/head.html' %}
+{% block title %}
+Material Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'result:search' %}">결과보고</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">검색결과</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row mt-2">
+          <div class="col-12">
+            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+              <tr>
+                <td style="width: 70%;">
+                  문서
+                </td>
+                <td style="width: 30%;">
+                  작성 날짜
+                </td>
+              </tr>
+              {% for i in items %}
+              <tr>
+                <td>
+                  {% if i.type == "safety" %}
+                  <a target="_blank" href="{% url 'work:read_safety' i.docNum %}" class="link-primary">
+                    구조 안전성 검토 신고서-{{ i.docNum}}
+                  </a>
+                  {% elif i.type == "material" %}
+                  <a target="_blank" href="{% url 'work:read_material' i.docNum %}" class="link-primary">
+                    자재 공급원 신고서-{{ i.docNum}}
+                  </a>
+                  {% elif i.type == "qty_request" %}
+                  <a target="_blank" href="{% url 'work:read_quality_request' i.docNum %}" class="link-primary">
+                    품질검사 의뢰서-{{ i.docNum}}
+                  </a>
+                  {% elif i.type == "qty_report" %}
+                  <a target="_blank" href="{% url 'work:read_quality_report' i.docNum %}" class="link-primary">
+                    품질검사 성과보고서-{{ i.docNum}}
+                  </a>
+                  {% elif i.type == "beforechecklist" %}
+                  <a target="_blank" href="{% url 'work:read_before_checklist' i.equipment i.docNum %}"
+                    class="link-primary">
+                    {{i.equipment}} 설치작업 전 확인 체크리스트-{{ i.docNum}}
+                  </a>
+                  {% elif i.type == "checklist" %}
+                  <a target="_blank" href="{% url 'work:read_checklist' i.equipment i.docNum %}" class="link-primary">
+                    {{i.equipment}} 설치작업 중 체크리스트-{{ i.docNum}}
+                  </a>
+                  {% endif %}
+                </td>
+                <td>
+                  {{i.created_at|date:"Y-m-d"}}
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <!--페이징 코트-->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if items.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{items.previous_page_number}}{{query}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a>
+          </li>
+          {% endif %}
+          {% for page_number in items.paginator.page_range %}
+          {% if page_number == items.number %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}{{query}}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}{{query}}">{{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+          {% if items.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ items.next_page_number }}{{query}}">&raquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}

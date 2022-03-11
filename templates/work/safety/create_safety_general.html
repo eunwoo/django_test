@@ -246,7 +246,7 @@ Safety Check
                   구조계산서
                 </div>
                 <div class="col-2 p-2">
-                  {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills %}
+                  {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills equipment_list=equipment_list %}
                 </div>
                 <div class="col p-2">
                   <ol class="list-group" id="구조계산서-ol">
@@ -261,7 +261,7 @@ Safety Check
                   시공상세도면
                 </div>
                 <div class="col-2 p-2">
-                  {% include 'work/safety/load_docs_modal.html' with title="시공상세도면" contents=detail_drawings %}
+                  {% include 'work/safety/load_docs_modal.html' with title="시공상세도면" contents=detail_drawings equipment_list=equipment_list %}
                 </div>
                 <div class="col p-2">
                   <ol class="list-group" id="시공상세도면-ol">

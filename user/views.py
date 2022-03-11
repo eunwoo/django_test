@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from . import forms
 from .utils import decodeDesignImage
+from django.contrib import messages
 
 
 def usertype(request):
@@ -22,6 +23,7 @@ def registerUser(request):
             )
             answer.signImage = image_file
             answer.save()
+            messages.success(request, "가입이 완료되었습니다.")
             return redirect("user:login")
     else:
         form = forms.UserForm()
@@ -39,11 +41,14 @@ def registerAdmin(request):
             form.instance.register = True
             form.instance.is_system_manager = True
             sys_manager = form.save(commit=False)
+            sys_manager.class1 = "종합건설업체"
+            sys_manager.class2 = "시스템 관리자"
             image_file = decodeDesignImage(
                 request.POST["signImage"], form.instance.username
             )
             sys_manager.signImage = image_file
             sys_manager.save()
+            messages.success(request, "가입이 완료되었습니다.")
             return redirect("user:login")
     else:
         form = forms.AdminForm()
@@ -66,7 +71,7 @@ def editUser(request):
                 return redirect("main:home")
         else:
             form = forms.AdminForm(instance=user)
-        return render(request, "auth/registerAdmin.html", {"form": form})
+        return render(request, "auth/editAdmin.html", {"form": form})
     else:
         if request.method == "POST":
             form = forms.UserForm(request.POST, instance=user)
@@ -81,4 +86,4 @@ def editUser(request):
                 return redirect("main:home")
         else:
             form = forms.UserForm(instance=user)
-        return render(request, "auth/registerUser.html", {"form": form})
+        return render(request, "auth/editUser.html", {"form": form})
