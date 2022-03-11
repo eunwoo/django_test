@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from system_manager.models import DocsFile
+from system_manager.models import DocsFile, EquipmentTypes
 from user.models import CustomUser
 
 from ..forms.safety_forms import (
@@ -53,6 +53,62 @@ def read_safety_service(user, pk):
     return safety
 
 
+def create_safety_service(request):
+    if request.method == "POST":
+        form = GeneralManagerSafetyReportForm(request.POST)
+        if form.is_valid():
+            safety = form.save(commit=False)
+            safety.writerId = request.user
+            files = request.POST.getlist("docs[]")
+            safety.save()
+            safety.docs.clear()
+            for file_id in files:
+                doc_file = DocsFile.objects.get(pk=int(file_id))
+                safety.docs.add(doc_file)
+            messages.success(request, "저장이 완료되었습니다.")
+            return redirect("work:update_safety", safety.docNum)
+    else:
+        form = GeneralManagerSafetyReportForm()
+
+    # 문서 번호 로드
+    last_doc = SafetyReport.objects.last()
+    if not last_doc:
+        docNum = 1
+    else:
+        docNum = last_doc.docNum + 1
+
+    # 관련 문서 로드
+    construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
+    construct_bills2 = DocsFile.objects.filter(type="구조 계산서-시스템 비계")
+    construct_bills3 = DocsFile.objects.filter(type="구조 계산서-시스템 동바리")
+    detail_drawings1 = DocsFile.objects.filter(type="시공상세도면-강관 비계")
+    detail_drawings2 = DocsFile.objects.filter(type="시공상세도면-시스템 비계")
+    detail_drawings3 = DocsFile.objects.filter(type="시공상세도면-시스템 동바리")
+
+    equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
+    equipment_list = list(map(lambda x: x[0], equipment_list))
+
+    return render(
+        request,
+        "work/safety/create_safety_general.html",
+        {
+            "docNum": docNum,
+            "form": form,
+            "construct_bills": [
+                construct_bills1,
+                construct_bills2,
+                construct_bills3,
+            ],
+            "detail_drawings": [
+                detail_drawings1,
+                detail_drawings2,
+                detail_drawings3,
+            ],
+            "equipment_list": equipment_list,
+        },
+    )
+
+
 def update_safety_general(request, pk):
     instance = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -85,6 +141,9 @@ def update_safety_general(request, pk):
     construct_bills_list = target_doc.docs.filter(type__contains="구조 계산서")
     detail_drawings_list = target_doc.docs.filter(type__contains="시공상세도면")
 
+    equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
+    equipment_list = list(map(lambda x: x[0], equipment_list))
+
     return render(
         request,
         "work/safety/create_safety_general.html",
@@ -95,6 +154,7 @@ def update_safety_general(request, pk):
             "detail_drawings": [detail_drawings1, detail_drawings2, detail_drawings3],
             "construct_bills_list": construct_bills_list,
             "detail_drawings_list": detail_drawings_list,
+            "equipment_list": equipment_list,
         },
     )
 

@@ -11,6 +11,7 @@ from ..models import SafetyCheckMenu, SafetyReport
 from ..forms.safety_forms import GeneralManagerSafetyReportForm
 from ..services.safety_services import (
     create_checklist_service,
+    create_safety_service,
     get_sign_users,
     read_checklist_service,
     read_safety_service,
@@ -36,55 +37,7 @@ def safety(request):
 
 @login_required(login_url="/user/login/")
 def create_safety(request):
-    if request.method == "POST":
-        form = GeneralManagerSafetyReportForm(request.POST)
-        if form.is_valid():
-            safety = form.save(commit=False)
-            safety.writerId = request.user
-            files = request.POST.getlist("docs[]")
-            safety.save()
-            safety.docs.clear()
-            for file_id in files:
-                doc_file = DocsFile.objects.get(pk=int(file_id))
-                safety.docs.add(doc_file)
-            messages.success(request, "저장이 완료되었습니다.")
-            return redirect("work:update_safety", safety.docNum)
-    else:
-        form = GeneralManagerSafetyReportForm()
-
-    # 문서 번호 로드
-    last_doc = SafetyReport.objects.last()
-    if not last_doc:
-        docNum = 1
-    else:
-        docNum = last_doc.docNum + 1
-
-    # 관련 문서 로드
-    construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
-    construct_bills2 = DocsFile.objects.filter(type="구조 계산서-시스템 비계")
-    construct_bills3 = DocsFile.objects.filter(type="구조 계산서-시스템 동바리")
-    detail_drawings1 = DocsFile.objects.filter(type="시공상세도면-강관 비계")
-    detail_drawings2 = DocsFile.objects.filter(type="시공상세도면-시스템 비계")
-    detail_drawings3 = DocsFile.objects.filter(type="시공상세도면-시스템 동바리")
-
-    return render(
-        request,
-        "work/safety/create_safety_general.html",
-        {
-            "docNum": docNum,
-            "form": form,
-            "construct_bills": [
-                construct_bills1,
-                construct_bills2,
-                construct_bills3,
-            ],
-            "detail_drawings": [
-                detail_drawings1,
-                detail_drawings2,
-                detail_drawings3,
-            ],
-        },
-    )
+    return create_safety_service(request)
 
 
 @login_required(login_url="/user/login/")
