@@ -1,0 +1,657 @@
+<!-- Quality summary page -->
+{% extends 'base/head.html' %}
+{% block title %}
+Safety Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+
+  .custom-file {
+    border: 1px solid black;
+    padding: 2px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:quality_menu' %}">품질검사</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:quality_report' %}">품질검사 성과보고</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">품질검사 성과보고서 작성</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8 ">
+            <div class="row">
+              <div class="col">
+                <div class="col">
+                  <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="qtysumform"
+                    id="save_button">저장</button>
+                </div>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">서명
+                  요청</button>
+                <!-- Modal -->
+                <div class="modal fade" id="signRequestModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">서명 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="{% url 'work:require_sign_quality_report' %}" id="sign_form">
+                          {% csrf_token %}
+                          <input type='hidden' name="docNum" value="{{form.instance.docNum}}" />
+                          <select class="form-select" name="sign" id="sign_select">
+                          </select>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="signRequestBtn">요청</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      {% include 'base/messages.html' %}
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+        {% if field.errors %}
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+    <form action="" id="qtysumform" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <section>
+        <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
+          <div class="row">
+            <div class="col-12 text-center my-4">
+              <label style="font-size: large;" for="">품질검사 성과 총괄표 신고서</label>
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">문서번호</label>
+            </div>
+            <div class="col-4">
+              품질검사 성과 총괄표 신고서-{{docNum}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">작성일자</label>
+            </div>
+            <div class="col-4">
+              <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
+                value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">공사명</label>
+            </div>
+            <div class="col-4">
+              {{field.title}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">공사기간</label>
+            </div>
+            <div class="col-4">
+              {{field.startDay}} ~ {{field.endDay}}
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-12">
+              <div class="row mt-3">
+                <div class="col-12">
+                  <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                    <thead>
+                      <tr>
+                        <td rowspan="2" style="width: 15%;">품명</td>
+                        <td rowspan="2" style="width: 15%;">규격</td>
+                        <td colspan="3" style="width: 15%;">시험ᆞ검사 종목
+                        </td>
+                        <td colspan="5" style="width: 25%;">시험ᆞ검사 횟수(회)</td>
+                        <td rowspan="2" style="width: 20%;">비고</td>
+                        <td rowspan="2" style="width: 10%;">
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          휨하중
+                        </td>
+                        <td>
+                          압축하중
+                        </td>
+                        <td>
+                          인장하중
+                        </td>
+                        <td>
+                          계획
+                        </td>
+                        <td>
+                          실시
+                        </td>
+                        <td>
+                          합격
+                        </td>
+                        <td>
+                          불합격
+                        </td>
+                        <td>
+                          재시험
+                        </td>
+                      </tr>
+                      <tr id="goods_list">
+                        <td>
+                          <select class="form-select" aria-label="품명 선택">
+                            <option value selected>품명을 선택해주세요</option>
+                            <option value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
+                            <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
+                            <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
+                            <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
+                            <option value="조립형비계 및 동바리부재(가새재)">조립형비계 및 동바리부재(가새재)</option>
+                            <option value="조립형비계 및 동바리부재(트러스)">조립형비계 및 동바리부재(트러스)</option>
+                            <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="supply_size" /></td>
+                        <td>
+                          <input type="checkbox" value="" id="hweem_check" />
+                        </td>
+                        <td>
+                          <input type="checkbox" value="" id="zip_check" />
+                        </td>
+                        <td>
+                          <input type="checkbox" value="" id="tensile_check" />
+                        </td>
+                        <td>
+                          <input type="number" id="plan_count">
+                        </td>
+                        <td>
+                          <input type="number" id="do_count">
+                        </td>
+                        <td>
+                          <input type="number" id="accept_count">
+                        </td>
+                        <td>
+                          <input type="number" id="deny_count">
+                        </td>
+                        <td>
+                          <input type="number" id="retest_count">
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="etc_text">
+                        </td>
+                        <td>
+                          <button class="btn btn-primary btn-sm" type="button" id="goods_add">추가</button></td>
+                      </tr>
+                    </thead>
+                    <tbody id="goods_body">
+                      {% for goods_origin in form.instance.quality_performance.all %}
+                      <tr>
+                        <td>{{goods_origin.goods}}</td>
+                        <td>{{goods_origin.standard}}</td>
+                        <td>
+                          {% if goods_origin.testType_hweem %}
+                          <i class="bi bi-check"></i>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if goods_origin.testType_zip %}
+                          <i class="bi bi-check"></i>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if goods_origin.testType_tensile %}
+                          <i class="bi bi-check"></i>
+                          {% endif %}
+                        </td>
+                        <td>{{goods_origin.plan}}</td>
+                        <td>{{goods_origin.conducted}}</td>
+                        <td>{{goods_origin.acceptance}}</td>
+                        <td>{{goods_origin.failed}}</td>
+                        <td>{{goods_origin.retest}}</td>
+                        <td>{{goods_origin.add}}</td>
+                        <td>
+                          <button class="btn btn-danger btn-sm" type="button" onclick="delete_button()">삭제</button>
+                          <input type="hidden" name="goods" value="{{goods_origin.goods}}">
+                          <input type="hidden" name="standard" value="{{goods_origin.standard}}">
+                          <input type="hidden" name="hweem"
+                            value="{% if goods_origin.testType_hweem %}on{% else %}off{% endif %}">
+                          <input type="hidden" name="zip"
+                            value="{% if goods_origin.testType_hweem %}on{% else %}off{% endif %}">
+                          <input type="hidden" name="tensile"
+                            value="{% if goods_origin.testType_hweem %}on{% else %}off{% endif %}">
+                          <input type="hidden" name="plan" value="{{goods_origin.plan}}">
+                          <input type="hidden" name="conducted" value="{{goods_origin.conducted}}">
+                          <input type="hidden" name="acceptance" value="{{goods_origin.acceptance}}">
+                          <input type="hidden" name="failed" value="{{goods_origin.failed}}">
+                          <input type="hidden" name="retest" value="{{goods_origin.retest}}">
+                          <input type="hidden" name="add" value="{{goods_origin.add}}">
+                        </td>
+                      </tr>
+                      {% endfor %}
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-2 border row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12 fs-5 fw-bold" style="color: black;">붙임</label>
+            </div>
+            <div class="col-10">
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label for="">품질검사 성적서</label>
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <input class="form-control" type="file" id="formFileMultiple" name="docs_files" multiple>
+                  </div>
+                  <div class="row">
+                    <ul class="list-group" id="file_preview">
+                      {% for file in doc.quality_performance_file.all %}
+                      <li class="list-group-item">{{file.title}}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                </div>
+                <div class="offset-1 col-8">
+                  <div class="row mt-2">
+                    <div class='checkbox' id="uploadlist"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12 fs-5 fw-bold" style="color: black;">결재</label>
+            </div>
+            <div class="col-10">
+              <table style="border-collapse: collapse;" class="col-12">
+                <tr>
+                  <td>
+                    <label for="">담당자</label>
+                  </td>
+                  <td>
+                    <label for="">현장대리인</label>
+                  </td>
+                  <td>
+                    <label for="">담당 건설사업관리기술인</label>
+                  </td>
+                  <td>
+                    <label for="">총괄 건설사업관리기술인
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="row">
+                      <div class="col-7">{{request.user.name}}</div>
+                      <div class="col-5">
+                        {% if form.instance.writerId != None %}<img width="100%" alt=""
+                          src="{{form.instance.writerId.signImage.url}}" />
+                        {% else %}(인)
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#signModal">
+                          서명
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="signModal" tabindex="-1" role="dialog"
+                          aria-labelledby="modelTitleId" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">서명 요청</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="mb-3">
+                                  <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                                  <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                  취소</button>
+                                <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col-7">{{form.gcSiteAgent}}</div>
+                      <div class="col-5">
+                        <label for="" class="mr-1">(인)</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col-7">{{form.gcEng}}</div>
+                      <div class="col-5">
+                        <label for="" class="mr-1">(인)</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="row">
+                      <div class="col-7">{{form.gcEng}}</div>
+                      <div class="col-5">
+                        <label for="" class="mr-1">(인)</label>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <br>
+        </div>
+      </section>
+    </form>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+  // 공급원 추가 버튼
+
+  const goods_add = document.querySelector('#goods_add');
+
+  goods_add.onclick = () => {
+    // 입력된 값을 불러온다
+    const goods_table = document.querySelector('#goods_list');
+    const goods_input = goods_table.querySelectorAll('input');
+    const goods_value = [goods_table.querySelector('select').value]
+    if (goods_value[0] === '') {
+      Swal.fire({
+        title: '품명이 선택되지 않았습니다.',
+        text: '품명을 선택해주세요.',
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
+      return false;
+    }
+    for (let v of goods_input) {
+      if (v.type === "checkbox") {
+        goods_value.push(v.checked);
+        v.checked = false;
+      } else {
+        if (v.value === '' && v.id !== 'etc_text') {
+          Swal.fire({
+            title: '입력되지 않은 항목이 있습니다.',
+            text: '입력되지 않은 항목을 입력해주세요.',
+            icon: 'error',
+            confirmButtonText: '확인'
+          });
+          return false;
+        }
+        goods_value.push(v.value);
+        v.value = '';
+      }
+    }
+
+    // 테이블에 추가
+    const goods_body = document.getElementById("goods_body");
+    const goods_tr = document.createElement('tr');
+    const form_name = ['goods', 'standard', 'hweem', 'zip', 'tensile', 'plan', 'conducted', 'acceptance', 'failed',
+      'retest', 'add'
+    ];
+    goods_td = goods_value.map(v => {
+      const td = document.createElement('td');
+      if (v === true) {
+        td.innerHTML = '<i class="bi bi-check"></i>';
+      } else if (v === false) {
+        td.innerHTML = '';
+      } else {
+        td.innerHTML = v;
+      }
+      return td;
+    });
+    goods_form = goods_value.map((v, i) => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', form_name[i]);
+      let value;
+      if (v === true) {
+        value = 'on';
+      } else if (v === false) {
+        value = 'off';
+      } else {
+        value = v
+      }
+      input.setAttribute('value', value);
+      return input;
+    });
+    const td = document.createElement('td');
+    delete_button = document.createElement('button');
+    delete_button.innerHTML = '삭제';
+    delete_button.classList.add('btn', 'btn-danger', 'btn-sm');
+    delete_button.type = 'button';
+    delete_button.onclick = function () {
+      this.parentNode.parentNode.remove();
+    }
+    td.append(delete_button, ...goods_form);
+    goods_td.push(td);
+    goods_tr.append(...goods_td);
+    goods_body.append(goods_tr);
+  }
+
+  // 업데이트용
+  function delete_button(e) {
+    e = e || window.event;
+    e = e.target || e.srcElement;
+    e.parentNode.parentNode.remove();
+  }
+
+  // 파일 여러개 처리
+  const fileInput = document.getElementById('formFileMultiple')
+  const preview = document.getElementById('file_preview')
+  fileInput.addEventListener('change', function () {
+    const files = Array.from(this.files)
+    preview.innerHTML = ''
+    files.forEach(file => {
+      const li = document.createElement('li')
+      li.classList.add('list-group-item')
+      li.id = file.lastModified
+      li.innerHTML = file.name
+      const delete_button = document.createElement('button')
+      delete_button.innerHTML = '삭제'
+      delete_button.classList.add('btn', 'btn-danger', 'btn-sm')
+      delete_button.type = 'button'
+      delete_button.onclick = function () {
+        const modify = this.parentNode.id;
+        const dataTranster = new DataTransfer();
+        const current_files = document.getElementById('formFileMultiple').files;
+        Array.from(current_files).forEach(file => {
+          if (file.lastModified !== +modify) {
+            dataTranster.items.add(file)
+          }
+        })
+        document.getElementById('formFileMultiple').files = dataTranster.files;
+        this.parentNode.remove()
+      }
+      li.append(delete_button)
+      preview.append(li)
+    })
+  })
+
+
+  // 변경 되었을 시 서명 요청이 안됨
+  let isChange = false;
+  let qty_report_form = document.getElementById("qtysumform")
+  const temp_input_list = qty_report_form.querySelectorAll("input")
+  const textarea_list = qty_report_form.querySelectorAll("textarea")
+  const input_list = []
+  for (let temp of temp_input_list) {
+    if (temp.name) {
+      input_list.push(temp)
+    }
+  }
+  for (let input_item of input_list) {
+    input_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  for (let textarea_item of textarea_list) {
+    textarea_item.addEventListener("change", function () {
+      isChange = true;
+    })
+  }
+
+  // 서명 할 경우 변경
+  let isSign = '{{form.instance.writerId}}' === "None" ? false : true;
+  if ('{{form.instance.writerId}}' === "None") {
+    const sign_button = document.getElementById("sign_button")
+    sign_button.addEventListener("click", function () {
+      const id_input = document
+        .getElementById("signRequest")
+        .value
+      const username = "{{request.user.username}}"
+      if (id_input === username) {
+        isSign = true;
+        const signModal = $('#signModal')
+        signModal.modal('hide');
+        signModal
+          .parent()
+          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '아이디가 다릅니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+    })
+  }
+
+  // 저장 버튼 클릭 시
+  qty_report_form.addEventListener("submit", function (e) {
+    if (isChange && isSign) {
+      return true;
+    } else {
+      e.preventDefault()
+      if (!!!isChange) {
+        Swal.fire({
+          title: 'Error!',
+          text: '변경된 내용이 없습니다.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: '서명을 해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+      }
+      return false;
+    }
+  })
+
+  // 서명 요청 시 서명 목록 로드
+  $('#sign_modal_button').on('click', () => {
+    if (isChange === true) {
+      Swal.fire({
+        title: 'Error!',
+        text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const select_form = document.getElementById('sign_select')
+    select_form.innerHTML = ""
+    $.ajax({
+      type: "GET",
+      url: "{% url 'work:get_users' %}",
+      async: false,
+      success: (data) => {
+        data.users.forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.name
+          select_form.appendChild(option)
+        })
+        $('#signRequestModal').modal('show')
+      }
+    })
+  })
+
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '서명 요청이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
+</script>
+{% endblock %}

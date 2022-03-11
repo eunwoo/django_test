@@ -1,0 +1,64 @@
+<!-- Work Quality page -->
+{% extends 'base/head.html' %}
+{% block title %}
+Work
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:install_check' %}">설치작업 점검</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{type}}</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <br><br><br><br>
+    <section>
+      <!-- navigation bar for quality forms -->
+      <div class="container">
+        <div class="row d-flex align-items-centern ">
+          <div class="col-3 offset-3 ">
+            <a href="{% url 'work:before_install' type=type %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">설치작업 전
+              </button>
+            </a>
+          </div>
+          <div class="col-3">
+            <a href="{% url 'work:install' type=type %}">
+              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">설치작업 중
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <br><br><br><br><br><br><br><br>
+  </div>
+</main>
+{% endblock %}

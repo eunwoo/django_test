@@ -1,0 +1,138 @@
+{% extends 'base/head.html' %}
+{% block title %}
+Material Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">자재 반입</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        {% if request.user.class2 == '일반 관리자' %}
+        <div class="row">
+          <div class="col-3">
+            <a href="{% url 'work:create_material' %}">
+              <button class="btn mb-2">자재 공급원 신고서 작성하기</button>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+        <div class="row mt-2">
+          <div class="col-12">
+            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+              <tr>
+                <td style="width: 70%;">
+                  문서
+                </td>
+                <td style="width: 30%;">
+                  작성 날짜
+                </td>
+              </tr>
+              {% for i in materialitems %}
+              <tr>
+                <td>
+                  <!--관리자 유형마다 확인이 다름-->
+                  {% if request.user.class2 == "일반 관리자" %}
+                  <a {% if i.isCheckManager == False and i.isSuccess == True %}
+                    href="{% url 'work:read_material' i.docNum %}" class="link-success"
+                    {% elif i.isCheckManager == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
+                    신고서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "현장 대리인" %}
+                  <a {% if i.isCheckAgent == False and i.isSuccess == True %}
+                    href="{% url 'work:read_material' i.docNum %}" class="link-success"
+                    {% elif i.isCheckAgent == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
+                    신고서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "일반 건설사업관리기술인"%}
+                  <a {% if i.isCheckGeneralEngineer == False and i.isSuccess == True %}
+                    href="{% url 'work:read_material' i.docNum %}" class="link-success"
+                    {% elif i.isCheckGeneralEngineer == False %} href="/work/update_material/{{i.docNum}}"
+                    class="link-primary" {% else %} href="{% url 'work:read_material' i.docNum %}"
+                    class="link-secondary" {% endif %}>자재 공급원
+                    신고서-{{ i.docNum}}</a>
+                  {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
+                  <a {% if i.isSuccess == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
+                    신고서-{{ i.docNum}}</a>
+                  {% endif %}
+                </td>
+                <td>
+                  {{i.created_at|date:"Y-m-d"}}
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <!--페이징 코트-->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if materialitems.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{materialitems.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a>
+          </li>
+          {% endif %}
+          {% for page_number in materialitems.paginator.page_range %}
+          {% if page_number == materialitems.number %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+          {% if materialitems.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ materialitems.next_page_number }}">&raquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}

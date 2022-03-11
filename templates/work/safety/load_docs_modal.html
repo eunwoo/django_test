@@ -1,0 +1,84 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{title}}">
+  불러오기
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{{title}}" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{title}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="{{title}}-myTab" role="tablist">
+          {% if equipment_list.0 %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="{{title}}-home-tab" data-bs-toggle="tab"
+              data-bs-target="#{{title}}-home" type="button" role="tab" aria-controls="{{title}}-home"
+              aria-selected="true">강관 비계</button>
+          </li>
+          {% endif %}
+          {% if equipment_list.1 %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="{{title}}-profile-tab" data-bs-toggle="tab" data-bs-target="#{{title}}-profile"
+              type="button" role="tab" aria-controls="{{title}}-profile" aria-selected="false">시스템 비계</button>
+          </li>
+          {% endif %}
+          {% if equipment_list.2 %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="{{title}}-contact-tab" data-bs-toggle="tab" data-bs-target="#{{title}}-contact"
+              type="button" role="tab" aria-controls="{{title}}-contact" aria-selected="false">시스템 동바리</button>
+          </li>
+          {% endif %}
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          {% if equipment_list.0 %}
+          <div class="tab-pane fade show active" id="{{title}}-home" role="tabpanel"
+            aria-labelledby="{{title}}-home-tab">
+            <ol class="list-group">
+              {% for content in contents.0 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+          {% endif %}
+          {% if equipment_list.1 %}
+          <div class="tab-pane fade" id="{{title}}-profile" role="tabpanel" aria-labelledby="{{title}}-profile-tab">
+            <ol class="list-group">
+              {% for content in contents.1 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+          {% endif %}
+          {% if equipment_list.2 %}
+          <div class="tab-pane fade" id="{{title}}-contact" role="tabpanel" aria-labelledby="{{title}}-contact-tab">
+            <ol class="list-group">
+              {% for content in contents.2 %}
+              <li class="list-group-item">
+                <input class="form-check-input" type="checkbox" name="docs[]" value="{{content.id}}"
+                  id="{{content.id}}" />
+                <label class="form-check-label" for="{{content.id}}">{{content.filename}}</label>
+              </li>
+              {% endfor %}
+            </ol>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="{{title}}-button">저장</button>
+      </div>
+    </div>
+  </div>
+</div>

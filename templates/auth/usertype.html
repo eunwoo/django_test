@@ -1,0 +1,56 @@
+{% extends 'base/head.html' %}
+{% block title %}
+  Usertype
+{% endblock %}
+{% block style %}
+  <style>
+    main {
+      width: 70%;
+      min-width: 1200px;
+      margin: 20px auto;
+    }
+  </style>
+
+{% endblock %}
+{% block content %}
+  {% include 'base/header.html' %}
+  <main>
+    <div class="cont mt-4">
+      <section>
+        <br>
+        <div class="container">
+          <div class="row ml-0">
+            <div class="col">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">회원가입</a>
+                </li>
+                <li class="breadcrumb-item">회원 유형</a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br><br><br><br>
+  <section>
+    <div class="container">
+      <div class="row d-flex align-items-centern ">
+        <div class="col-3 offset-3 ">
+          <a href="{% url 'user:agreeForUser' %}">
+            <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">일반 회원</button>
+          </a>
+        </div>
+        <div class="col-3">
+          <a href={% url 'user:agreeForAdmin' %} "">
+            <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 관리자 회원</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br><br><br><br><br><br><br><br>
+</div>
+</main>
+{% endblock %}

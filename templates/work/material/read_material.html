@@ -1,0 +1,322 @@
+{% extends 'base/head.html' %}
+{% block title %}
+Material Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item" aria-current="page">
+                  <a href="{% url 'work:material' %}">자재 반입</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고서</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% include 'util/pdfbtn.html' %}
+    <section id="material">
+      <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
+        <div class="row">
+          <div class="col-12 text-center my-4">
+            <h1>자재 공급원 신고서</h1>
+          </div>
+        </div>
+        <div class="mt-3 row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">문서번호</label>
+          </div>
+          <div class="col-4">
+            자재 공급원 신고서-{{material.docNum}}
+          </div>
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">작성일자</label>
+          </div>
+          <div class="col-4">
+            {{material.date}}
+          </div>
+        </div>
+        <div class="mt-3 row text-center">
+          <div class="col-2">
+            <label for="" class=" col-12" style="color: black;">공사명</label>
+          </div>
+          <div class="col-4">
+            {{material.title}}
+          </div>
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">자재명</label>
+          </div>
+          <div class="col-4">
+            가설기자재
+          </div>
+        </div>
+        <div class="mt-3 row text-center">
+          <div class="col-2 text-center">
+            <label for="" class="col-12" style="color: black;">공종</label>
+          </div>
+          <div class="col-4">
+            {{material.constructType}}
+          </div>
+        </div>
+        <div class="mt-3 row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class=" col-12" style="color: black;">공급원</label>
+          </div>
+          <div class="col-10">
+            <div class="row mt-3">
+              <div class="col-12">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <td>공급 업체명</td>
+                      <td>품명</td>
+                      <td>규격</td>
+                      <td>비고</td>
+                    </tr>
+                  </thead>
+                  <tbody id="supply_body">
+                    {% for supply_origin in material.supply_list.all %}
+                    <tr>
+                      <td>{{supply_origin.name}}</td>
+                      <td>{{supply_origin.goods}}</td>
+                      <td>{{supply_origin.size}}</td>
+                      <td>{{supply_origin.etc}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class="col-12" style="color: black;">내용</label>
+          </div>
+          <div class="col-10">
+            <div style="border: 1px solid rgb(210, 210, 210);" class="p-2">
+              <div class="row mt-2">
+                <div id="label" class="col-12 text-center">
+                  <label for="">상기 업체로부터 해당 자재를 공급받아 당해 공사에 사용하는 사항에 대한 자재공급원을 신고합니다.</label>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2 offset-6">
+                  <label for="">담당자</label>
+                </div>
+                <div class="col-2">
+                  {{material.writerId.name}}
+                </div>
+                <div class="col-2">
+                  {% if material.writerId %}<img width="100%" alt="" src="{{material.writerId.signImage.url}}" />
+                  {% else %}(인)
+                  {% endif %}
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2 offset-6">
+                  <label for="">현장대리인</label>
+                </div>
+                <div class="col-2">
+                  {{material.agentId.name}}
+                </div>
+                <div class="col-2">
+                  {% if material.generalEngineerId %}<img width="100%" alt=""
+                    src="{{material.generalEngineerId.signImage.url}}" />
+                  {% else %}(인)
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 row">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class=" col-12" style="color: black;">붙임</label>
+          </div>
+          <div class="col-10">
+            <div style="border: 1px solid rgb(210, 210, 210);" class="p-3 mt-2">
+              <div class="row mt-2">
+                <table class="table">
+                  <tr>
+                    <th scope="row" style="width: 25%;" class="text-success align-middle">사업자등록증</th>
+                    <td colspan="2" style="width: 75%;">
+                      {% if material.businessLicense %}
+                      <a href="{{material.businessLicense.url}}">
+                        {{material.businessLicense.name|cut:'business_license/'}}
+                      </a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-success align-middle">납품실적증명서</th>
+                    <td colspan="2">
+                      {% if material.deliveryPerformanceCertificate %}
+                      <a href="{{material.deliveryPerformanceCertificate.url}}">
+                        {{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}
+                      </a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-success align-middle">안전인증서</th>
+                    <td colspan="2">
+                      {% if material.safetyCertificate %}
+                      <a
+                        href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-success align-middle">품질시험성적서</th>
+                    <td colspan="2">
+                      {% if material.qualityTestReport %}
+                      <a
+                        href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-success align-middle">시험성과대비표</th>
+                    <td colspan="2">
+                      {% if material.testPerformanceComparisonTable %}
+                      <a
+                        href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
+                    <td>
+                      <ul class="list-group">
+                        {% if material.docs %}
+                        {% for doc in material.docs.all %}
+                        <li class="list-group-item"><a href="{{doc.file.url}}"
+                            download="{{doc.filename}}">{{doc.filename}}</a></li>
+                        {% endfor %}
+                        {% endif %}
+                      </ul>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                    <tr>
+                      <td>
+                        기타사항
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        {{material.text}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">회신일자</label>
+          </div>
+          <div class="col-10">
+            {{material.replyDate|default:""}}
+          </div>
+        </div>
+        <div class="mt-3 row text-center justify-content-center align-items-center d-flex">
+          <div class="col-2">
+            <label for="" class=" col-12" style="color: black;">검토 의견</label>
+          </div>
+          <div class="col-10">
+            <div class="row mt-2">
+              <div class="col-2">
+                <label for="" style="color: black;">담당자</label>
+              </div>
+              <div class="col-10">
+                {{material.generalEngineerText|default:""}}
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-2">
+                <label for="" style="color: black;">총괄관리자</label>
+              </div>
+              <div class="col-10">
+                {{material.totalEngineerText|default:""}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 row text-center">
+          <div class="col-2">
+            <label for="" class="col-12" style="color: black;">결과</label>
+          </div>
+          <div class="col-10">
+            {{material.get_result_display}}
+          </div>
+        </div>
+        <div class="mt-4 row mb-3">
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" class="col-12" style="color: black;">담당 건설사업관리기술인</label>
+          </div>
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            {{material.generalEngineerId.name}}
+          </div>
+          <div class="col-2">
+            {% if material.totalEngineerId %}<img width="100%" alt=""
+              src="{{material.generalEngineerId.signImage.url}}" />
+            {% else %}(인)
+            {% endif %}
+          </div>
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            <label for="" style="color: black;">총괄 건설사업관리기술인
+            </label>
+          </div>
+          <div class="col-2 text-center justify-content-center align-items-center d-flex">
+            {{material.totalEngineerId.name}}
+          </div>
+          <div class="col-2">
+            {% if material.isSuccess %}<img width="100%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
+            {% else %}(인)
+            {% endif %}
+          </div>
+        </div>
+        <br>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+
+{% block javascript %}
+
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="material" file_name="자재 공급원 신고서" docNum=material.docNum %}
+
+{% endblock %}

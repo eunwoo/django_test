@@ -1,0 +1,194 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+Safety Check
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static '/css/image-uploader.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:install_check' %}">설치작업 점검</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:select_install' type=type %}">{{type}}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:install' type=type %}">설치작업 중</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  체크리스트
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% include 'util/pdfbtn.html' %}
+    <section id="checklist" name='checklist'>
+      <div class="container border">
+        <div class="row m-1">
+          <h1>
+            {{type}} 설치작업 중 점검 체크리스트
+          </h1>
+        </div>
+        <table class="table table-bordered">
+          <tr>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
+            <td class="align-middle" style="width: 35%">{{type}} 설치작업 중 점검 체크리스트-{{checklist.pk}}</td>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
+            <td style="width: 35%">
+              <div class="row">
+                <div class="col">
+                  {{checklist.locateId.class2.class1.class1}} - {{checklist.locateId.class2.class2}} -
+                  {{checklist.locateId.class3}}
+                </div>
+              </div>
+              <div class="row p-2">
+                <div class="col">
+                  {{checklist.detailLocate}}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">확인 일자</th>
+            <td>
+              {{checklist.date}}
+            </td>
+            <th scope="row" class="table-secondary align-middle">담당자</th>
+            <td class="align-middle">
+              <div class="row">
+                <div class="col">
+                  {{checklist.writerId.name}}
+                </div>
+                <div class="col">
+                  <img width='100%' alt='' src='{{checklist.writerId.signImage.url}}' />
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="table table-bordered text-break">
+          <thead>
+            <tr class="table-primary">
+              <th scope="col" rowspan=2 style="width: 5%">NO</th>
+              <th scope="col" rowspan=2 style="width: 55%">점검 항목</th>
+              <th scope="col" colspan=3 style="width: 30%">점검 결과</th>
+              <th scope="col" rowspan=2 style="width: 10%">조치 사항</th>
+            </tr>
+            <tr class="table-primary">
+              <th>
+                양호
+              </th>
+              <th>
+                미흡
+              </th>
+              <th>
+                해당없음
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% regroup checklist_items by inspection_item_id.categoryId.type as new_checklist %}
+            {% for categoryId in new_checklist %}
+            <tr class="table-secondary">
+              <th colspan=6>
+                {{categoryId.grouper}}
+              </th>
+            </tr>
+            {% for checkmenu in categoryId.list %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td class="text-start">{{checkmenu.inspection_item_id.title}}</td>
+              <td>
+                {% if checkmenu.result == "1" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "2" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "3" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.content %}
+                <i class="bi bi-circle"></i>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-1">
+        <h2>조치 사항</h2>
+      </div>
+      <table class="table table-bordered text-break">
+        <thead>
+          <tr class="table-primary">
+            <th scope="col" style="width: 5%">NO</th>
+            <th scope="col" style="width: 45%">내용</th>
+            <th scope="col" style="width: 50%">사진</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for checkmenu in checklist.inspection_result.all %}
+          {% if checkmenu.content %}
+          <tr>
+            <td class="align-middle">{{forloop.counter}}</td>
+            <td class="align-middle">
+              {{checkmenu.content}}
+            </td>
+            <td>
+              {% for image in checkmenu.measures.all %}
+              <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
+              {% endfor %}
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+
+{% block javascript %}
+
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="checklist" file_name=type|add:"설치작업 중 체크리스트" docNum=checklist.pk %}
+
+{% endblock %}

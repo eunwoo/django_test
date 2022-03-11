@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col mt-4">
+      {% if user.is_system_manager %}
+      <a href="{% url 'system_manager:index' %}">
+        <button type="button" class="btn1 btn-rounded p-2 btn btn-light col-12">기본정보 등록</button>
+      </a>
+      {% else %}
+      <a href="{% url 'work:index' %}">
+        <button type="button" class="btn1 btn-rounded p-2 btn btn-light col-12">업무</button>
+      </a>
+      {% endif %}
+    </div>
+    <div class="col mt-4">
+      <a href="{% url 'result:search' %}">
+        <button class="btn1 p-2 btn btn-light col-12">결과보고</button>
+      </a>
+    </div>
+    <div class="col mt-4">
+      <button class="btn1 p-2 btn btn-light col-12">공지사항</button>
+    </div>
+    <div class="col mt-4">
+      <button class="btn1 p-2 btn btn-light col-12">법령정보</button>
+    </div>
+    {% if request.user.role_type == '시스템 관리자' %}
+    <div class="col mt-4">
+      <a href="">
+        <button class="btn1 p-2 btn btn-light col-12">기본정보 등록</button>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
