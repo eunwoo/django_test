@@ -56,11 +56,11 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
         "receiver": ",".join(phone_list),  # 수신번호 (,활용하여 1000명까지 추가 가능)
         "msg": content,  # 문자 내용
         "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
-        "title": "[TQIMS 알림] TQIMS 결재 알림 안내",  # 메세지 제목 (장문에 적용)
+        "title": "[TQEMS 알림] TQEMS 결재 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
     requests.post(send_url, data=sms_data)
 
 
 def sms_content(link, sms_type: int = 0) -> str:
-    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQIMS) 내 {'결재 요청' if sms_type == 0 else '검토 완료 알림'}이 도착하여 안내드립니다.\n\n결재 {'대기' if sms_type == 0 else '완료'} 문서 바로가기\n {link}"
+    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {'결재 요청' if sms_type == 0 else '검토 완료 알림'}이 도착하여 안내드립니다.\n\n결재 {'대기' if sms_type == 0 else '완료'} 문서 바로가기\n {link}"
