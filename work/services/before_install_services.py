@@ -21,7 +21,7 @@ def assign_cm(request, type):
     doc.save()
     link = request.build_absolute_uri(f"/work/read_before_install/{type}/{doc.pk}/")
     cm_phone = cm.phone
-    sms_send(link, [cm_phone])
+    sms_send(link, [cm_phone], 2)
     # 문자 전송 페이지 만들기
 
 
