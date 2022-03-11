@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
+from system_manager.models import EquipmentTypes
 
 from work.models import (
     BeforeInstallCheckList,
@@ -17,7 +18,13 @@ from ..services.before_install_services import (
 
 @login_required(login_url="/user/login/")
 def select_type(request):
-    return render(request, "work/install/select_type.html")
+    equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
+    equipment_list = list(map(lambda x: x[0], equipment_list))
+    return render(
+        request,
+        "work/install/select_type.html",
+        {"equipment_list": equipment_list},
+    )
 
 
 @login_required(login_url="/user/login/")

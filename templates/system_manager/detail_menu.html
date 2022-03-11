@@ -1,76 +1,82 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  System Information
+System Information
 {% endblock %}
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      {% include 'base/navbar_main.html' %}
-      <section>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'system_manager:apply_document' %}">
-                      문서 등록
-                    </a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    {{type}}
-                  </li>
-                </ol>
-              </nav>
-            </div>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'system_manager:apply_document' %}">
+                    문서 등록
+                  </a>
+                </li>
+                <li class="breadcrumb-item">
+                  {{type}}
+                </li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
-      <br><br><br><br>
-      <section>
-        <div class="row justify-content-around">
-          <div class="col-3">
-            {% with type|add:"-강관 비계" as 강관비계 %}
-            <a href="{% url "system_manager:apply_document_template" type=강관비계 %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">강관 비계
-              </button>
-            </a>
-            {% endwith %}
-          </div>
-          <div class="col-3">
-            {% with type|add:"-시스템 비계" as 시스템비계 %}
-            <a href="{% url "system_manager:apply_document_template" type=시스템비계 %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 비계
-              </button>
-            </a>
-            {% endwith %}
-          </div>
-          <div class="col-3">
-            {% with type|add:"-시스템 동바리" as 시스템동바리 %}
-            <a href="{% url "system_manager:apply_document_template" type=시스템동바리 %}">
-              <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 동바리
-              </button>
-            </a>
-            {% endwith %}
-          </div>
+      </div>
+    </section>
+    <br><br><br><br>
+    <section>
+      <div class="row justify-content-around">
+        {% if equipments.0 %}
+        <div class="col-3">
+          {% with type|add:"-강관 비계" as 강관비계 %}
+          <a href="{% url "system_manager:apply_document_template" type=강관비계 %}">
+            <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">강관 비계
+            </button>
+          </a>
+          {% endwith %}
         </div>
-      </section>
-      <br><br><br><br><br><br><br><br>
-    </div>
-  </main>
-  <br><br><br><br><br>
+        {% endif %}
+        {% if equipments.1 %}
+        <div class="col-3">
+          {% with type|add:"-시스템 비계" as 시스템비계 %}
+          <a href="{% url "system_manager:apply_document_template" type=시스템비계 %}">
+            <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 비계
+            </button>
+          </a>
+          {% endwith %}
+        </div>
+        {% endif %}
+        {% if equipments.2 %}
+        <div class="col-3">
+          {% with type|add:"-시스템 동바리" as 시스템동바리 %}
+          <a href="{% url "system_manager:apply_document_template" type=시스템동바리 %}">
+            <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 동바리
+            </button>
+          </a>
+          {% endwith %}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    <br><br><br><br><br><br><br><br>
+  </div>
+</main>
+<br><br><br><br><br>
 {% endblock %}
