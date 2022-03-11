@@ -71,7 +71,7 @@ def editUser(request):
                 return redirect("main:home")
         else:
             form = forms.AdminForm(instance=user)
-        return render(request, "auth/registerAdmin.html", {"form": form})
+        return render(request, "auth/editAdmin.html", {"form": form})
     else:
         if request.method == "POST":
             form = forms.UserForm(request.POST, instance=user)
@@ -86,4 +86,4 @@ def editUser(request):
                 return redirect("main:home")
         else:
             form = forms.UserForm(instance=user)
-        return render(request, "auth/registerUser.html", {"form": form})
+        return render(request, "auth/editUser.html", {"form": form})
