@@ -33,46 +33,173 @@ Work
         </div>
       </div>
     </section>
-    <br><br><br><br>
     <section>
-      <div class="container">
-        <div class="row p-2 border border-3 rounded">
-          <div class="col-1">
-            업무
+      <form target="_blank" action="" method="get">
+        {% csrf_token %}
+        <div class="container">
+          <div class="row p-2 m-2 border border-3 rounded">
+            <div class="col-1">
+              업무
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="safety" id="safety">
+              <label class="form-check-label" for="safety">
+                구조 안전성 검토
+              </label>
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="material" id="material">
+              <label class="form-check-label" for="material">
+                자재 반입
+              </label>
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="quality" id="quality">
+              <label class="form-check-label" for="quality">
+                품질검사
+              </label>
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="install" id="install">
+              <label class="form-check-label" for="install">
+                설치작업 확인
+              </label>
+            </div>
           </div>
-          <div class="col form-check">
-            <input class="form-check-input" type="checkbox" value="" id="safety" checked>
-            <label class="form-check-label" for="safety">
-              구조 안전성 검토
-            </label>
+          <div class="row p-2 m-2 border border-3 rounded d-none" id="type_div">
+            <div class="col-1">
+              종류
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="type1" id="type1">
+              <label class="form-check-label" for="type1">
+                강관 비계
+              </label>
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="type2" id="type2">
+              <label class="form-check-label" for="type2">
+                시스템 비계
+              </label>
+            </div>
+            <div class="col form-check">
+              <input class="form-check-input" type="checkbox" name="query" value="type3" id="type3">
+              <label class="form-check-label" for="type3">
+                시스템 동바리
+              </label>
+            </div>
           </div>
-          <div class="col form-check">
-            <input class="form-check-input" type="checkbox" value="" id="material" checked>
-            <label class="form-check-label" for="material">
-              자재 반입
-            </label>
+          <div class="row p-2 m-2 border border-3 rounded d-none" id="locate_div">
+            <div class="col-1">
+              설치 위치
+            </div>
+            <div class="col">
+              <select class="form-select" id="class1" placeholder="구분1">
+              </select>
+            </div>
+            <div class="col">
+              <select class="form-select" id="class2">
+              </select>
+            </div>
+            <div class="col">
+              <select class="form-select" id="class3" name="locate">
+              </select>
+            </div>
           </div>
-          <div class="col form-check">
-            <input class="form-check-input" type="checkbox" value="" id="quality" checked>
-            <label class="form-check-label" for="quality">
-              품질검사
-            </label>
-          </div>
-          <div class="col form-check">
-            <input class="form-check-input" type="checkbox" value="" id="install" checked>
-            <label class="form-check-label" for="install">
-              설치작업 확인
-            </label>
+          <div class="row m-2 justify-content-end">
+            <button class="col-2 btn btn-primary" type="submit">
+              검색
+            </button>
           </div>
         </div>
-        <div class="row m-2 justify-content-end">
-          <button class="col-2 btn btn-primary">
-            검색
-          </button>
-        </div>
-      </div>
+      </form>
     </section>
     <br><br><br><br><br><br><br><br>
   </div>
 </main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  // 설치위치 받아오기
+  (() => {
+    const [class1_select, class2_select, class3_select] = ['class1', 'class2', 'class3'].map(
+      (class_name) => document.getElementById(class_name)
+    )
+
+    const create_init_option = (select_element) => {
+      const option = document.createElement("option")
+      option.value = ''
+      option.text = '---------'
+      option.selected = true
+      select_element.appendChild(option)
+    }
+
+    $.get("{% url 'system_manager:get_locate' 1 %}", function (data) {
+      create_init_option(class1_select)
+      data['install_locate'].forEach(value => {
+        const option = document.createElement("option")
+        option.value = value.id
+        option.text = value.class1
+        class1_select.appendChild(option)
+      })
+    });
+
+    class1_select.addEventListener("change", function () {
+      const class1_id = class1_select.value
+      if (class1_id === '') {
+        class2_select.innerHTML = ""
+        class3_select.innerHTML = ""
+        create_init_option(class2_select)
+        create_init_option(class3_select)
+      } else {
+        $.get("{% url 'system_manager:get_locate' 2 %}", {
+          class_id: class1_id
+        }, function (data) {
+          class2_select.innerHTML = ""
+          create_init_option(class2_select)
+          data['install_locate'].forEach(value => {
+            const option = document.createElement("option")
+            option.value = value.id
+            option.text = value.class2
+            class2_select.appendChild(option)
+          })
+        });
+      }
+    });
+
+    class2_select.addEventListener("change", function () {
+      const class2_id = class2_select.value
+      if (class2_id === '') {
+        class3_select.innerHTML = ""
+        create_init_option(class3_select)
+      } else {
+        $.get("{% url 'system_manager:get_locate' 3 %}", {
+          class_id: class2_id
+        }, function (data) {
+          class3_select.innerHTML = ""
+          create_init_option(class3_select)
+          data['install_locate'].forEach(value => {
+            const option = document.createElement("option")
+            option.value = value.id
+            option.text = value.class3
+            class3_select.appendChild(option)
+          })
+        });
+      }
+    });
+  })();
+
+  // 설치작업 확인 체크시 동작
+  const install_check = document.getElementById('install')
+  install_check.onchange = function () {
+    if (install_check.checked) {
+      document.getElementById('type_div').classList.remove('d-none')
+      document.getElementById('locate_div').classList.remove('d-none')
+    } else {
+      document.getElementById('type_div').classList.add('d-none')
+      document.getElementById('locate_div').classList.add('d-none')
+    }
+  }
+</script>
 {% endblock %}
