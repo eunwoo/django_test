@@ -47,7 +47,8 @@ Safety Check
         </div>
       </div>
     </section>
-    <section id="checklist" name='checklist'>
+    {% include 'util/pdfbtn.html' %}
+    <section id="checklist">
       <div class="container border">
         <div class="row m-1">
           <h1>
@@ -141,38 +142,44 @@ Safety Check
             {% endfor %}
           </tbody>
         </table>
+        <div class="row m-1">
+          <h3>조치 사항</h3>
+        </div>
+        <table class="table table-bordered text-break">
+          <thead>
+            <tr class="table-primary">
+              <th scope="col" style="width: 5%">NO</th>
+              <th scope="col" style="width: 45%">내용</th>
+              <th scope="col" style="width: 50%">사진</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for checkmenu in checklist.before_inspection_result.all %}
+            {% if checkmenu.content %}
+            <tr>
+              <td class="align-middle">{{forloop.counter}}</td>
+              <td class="align-middle">
+                {{checkmenu.content}}
+              </td>
+              <td>
+                {% for image in checkmenu.measures.all %}
+                <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
+                {% endfor %}
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-    </section>
-    <section>
-      <h2>조치 사항</h2>
-      <table class="table table-bordered text-break">
-        <thead>
-          <tr class="table-primary">
-            <th scope="col" style="width: 5%">NO</th>
-            <th scope="col" style="width: 45%">내용</th>
-            <th scope="col" style="width: 50%">사진</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for checkmenu in checklist.before_inspection_result.all %}
-          {% if checkmenu.content %}
-          <tr>
-            <td class="align-middle">{{forloop.counter}}</td>
-            <td class="align-middle">
-              {{checkmenu.content}}
-            </td>
-            <td>
-              {% for image in checkmenu.measures.all %}
-              <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
-              {% endfor %}
-            </td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </tbody>
-      </table>
     </section>
   </div>
   <br><br><br><br><br>
 </main>
+{% endblock %}
+
+{% block javascript %}
+
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="checklist" file_name=type|add:"설치작업 전 체크리스트" docNum=checklist.pk %}
+
 {% endblock %}

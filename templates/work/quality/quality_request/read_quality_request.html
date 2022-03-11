@@ -40,7 +40,8 @@ Safety Check
         </div>
       </div>
     </section>
-    <section>
+    {% include 'util/pdfbtn.html' %}
+    <section id="qty_request">
       <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
         <div class="row">
           <div class="col-12 text-center my-4">
@@ -331,4 +332,10 @@ Safety Check
   </div>
   <br><br><br><br><br>
 </main>
+{% endblock %}
+
+{% block javascript %}
+
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="qty_request" file_name="품질검사 의뢰서" docNum=qty_request.docNum %}
+
 {% endblock %}
