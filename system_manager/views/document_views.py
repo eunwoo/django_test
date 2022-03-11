@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from ..models import DocsFile
+from ..models import DocsFile, EquipmentTypes
 
 
 @login_required(login_url="/user/login/")
@@ -47,4 +47,13 @@ def delete_documents(request, pk, type):
 def detail_menu(request, type):
     if not request.user.is_system_manager:  # 시스템 매니저만 접근 가능
         return redirect("main:home")
-    return render(request, "system_manager/detail_menu.html", {"type": type})
+    equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
+    equipment_list = list(map(lambda x: x[0], equipment_list))
+    return render(
+        request,
+        "system_manager/detail_menu.html",
+        {
+            "type": type,
+            "equipments": equipment_list,
+        },
+    )

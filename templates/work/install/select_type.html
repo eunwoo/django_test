@@ -28,7 +28,7 @@ Work
                 <li class="breadcrumb-item">
                   <a href="{% url 'work:index' %}">업무</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">설치작업 확인</li>
+                <li class="breadcrumb-item active" aria-current="page">설치작업 점검</li>
               </ol>
             </nav>
           </div>
@@ -40,24 +40,30 @@ Work
       <!-- navigation bar for quality forms -->
       <div class="container">
         <div class="row justify-content-center">
+          {% if equipment_list.0 %}
           <div class="col-3">
             <a href="{% url 'work:select_install' type="강관 비계" %}">
               <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">강관 비계
               </button>
             </a>
           </div>
+          {% endif %}
+          {% if equipment_list.1 %}
           <div class="col-3">
             <a href="{% url 'work:select_install' type="시스템 비계" %}">
               <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 비계
               </button>
             </a>
           </div>
+          {% endif %}
+          {% if equipment_list.2 %}
           <div class="col-3">
             <a href="{% url 'work:select_install' type="시스템 동바리" %}">
               <button class="col-12 btn1 p-2 pt-4 pb-4 btn btn-light">시스템 동바리
               </button>
             </a>
           </div>
+          {% endif %}
         </div>
       </div>
     </section>

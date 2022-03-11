@@ -213,41 +213,11 @@ Material Check
             </div>
             <div class="col-10">
               <div style="border: 1px solid rgb(210, 210, 210);" class="p-3 mt-2">
-                <div class="row mt-3">
-                  <div class="col-12">
-                    <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
-                      <tr>
-                        <td>
-                          기타사항
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          {{material.text}}
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
                 <div class="row mt-2">
                   <table class="table">
-                    <tr>
-                      <th scope="row" style="width: 25%;" class="text-success align-middle">가설기자재 공급원
-                        승인 문서</th>
-                      <td style="width: 75%;">
-                        <ul class="list-group">
-                          {% if material.docs %}
-                          {% for doc in material.docs.all %}
-                          <li class="list-group-item"><a href="{{doc.file.url}}"
-                              download="{{doc.filename}}">{{doc.filename}}</a></li>
-                          {% endfor %}
-                          {% endif %}
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
+                    <tr style="width: 25%;">
                       <th scope="row" class="text-success align-middle">사업자등록증</th>
-                      <td colspan="2">
+                      <td colspan="2" style="width: 75%;">
                         {% if material.businessLicense %}
                         <a href="{{material.businessLicense.url}}">
                           {{material.businessLicense.name|cut:'business_license/'}}
@@ -292,7 +262,37 @@ Material Check
                         {% endif %}
                       </td>
                     </tr>
+                    <tr>
+                      <th scope="row" class="text-success align-middle">가설기자재 공급원
+                        승인 문서</th>
+                      <td>
+                        <ul class="list-group">
+                          {% if material.docs %}
+                          {% for doc in material.docs.all %}
+                          <li class="list-group-item"><a href="{{doc.file.url}}"
+                              download="{{doc.filename}}">{{doc.filename}}</a></li>
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
+                    </tr>
                   </table>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+                      <tr>
+                        <td>
+                          기타사항
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          {{material.text}}
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

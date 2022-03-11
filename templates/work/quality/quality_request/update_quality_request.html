@@ -106,311 +106,310 @@ Safety Check
               <h1>품질검사 의뢰서</h1>
             </div>
           </div>
-          <div class="mt-3 row">
-            <div class="mt-3 row text-center">
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">문서번호</label>
-              </div>
-              <div class="col-4">
-                품질검사 의뢰서-{{docNum}}
-              </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">문서번호</label>
             </div>
-            <div class="mt-3 row text-center">
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">품명</label>
-              </div>
-              <div class="col-4">
-                {{form.goods}}
-              </div>
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">규격</label>
-              </div>
-              <div class="col-4">
-                {{form.size}}
-              </div>
-              <div class="col-4">
-                {{form.std}}
-              </div>
+            <div class="col-4">
+              품질검사 의뢰서-{{docNum}}
             </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">품명</label>
+            </div>
+            <div class="col-4">
+              {{form.goods}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">규격</label>
+            </div>
+            <div class="col-4">
+              {{form.size}}
+            </div>
+            <div class="col-4">
+              {{form.std}}
+            </div>
+          </div>
 
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">시험ᆞ검사종목</label>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col">
-                    {{form.testType_hweem.label_tag}} {{form.testType_hweem}}
-                  </div>
-                  <div class="col">
-                    {{form.testType_zip.label_tag}} {{form.testType_zip}}
-                  </div>
-                  <div class="col">
-                    {{form.testType_tensile.label_tag}} {{form.testType_tensile}}
-                  </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">시험ᆞ검사종목</label>
+            </div>
+            <div class="col-4">
+              <div class="row">
+                <div class="col">
+                  {{form.testType_hweem.label_tag}} {{form.testType_hweem}}
+                </div>
+                <div class="col">
+                  {{form.testType_zip.label_tag}} {{form.testType_zip}}
+                </div>
+                <div class="col">
+                  {{form.testType_tensile.label_tag}} {{form.testType_tensile}}
                 </div>
               </div>
             </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">시료량</label>
-              </div>
-              <div class="col-10">
-                {{form.sampleQuentity}}
-              </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">시료량</label>
             </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">시료 또는 자재 생산국</label>
-              </div>
-              <div class="col-10">
-                {{form.sampleOrigin}}
-              </div>
+            <div class="col-10">
+              {{form.sampleQuentity}}
             </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">시료 채취 장소</label>
-              </div>
-              <div class="col-10">
-                <div class="row">
-                  <div class="col-10">
-                    기존 위치: {{form.instance.locateId.class2.class1.class1}} -
-                    {{form.instance.locateId.class2.class2}} -
-                    {{form.instance.locateId.class3}}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-1">구분1</div>
-                  <div class="col-3">
-                    <select class="form-select" id="class1">
-                    </select>
-                  </div>
-                  <div class="col-1">구분2</div>
-                  <div class="col-3">
-                    <select class="form-select" id="class2">
-                    </select>
-                  </div>
-                  <div class="col-1">구분3</div>
-                  <div class="col-3">
-                    <select class="form-select" id="class3" name="locate">
-                    </select>
-                  </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">시료 또는 자재 생산국</label>
+            </div>
+            <div class="col-10">
+              {{form.sampleOrigin}}
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">시료 채취 장소</label>
+            </div>
+            <div class="col-10">
+              <div class="row">
+                <div class="col-10">
+                  기존 위치: {{form.instance.locateId.class2.class1.class1}} -
+                  {{form.instance.locateId.class2.class2}} -
+                  {{form.instance.locateId.class3}}
                 </div>
               </div>
+              <div class="row">
+                <div class="col-1">구분1</div>
+                <div class="col-3">
+                  <select class="form-select" id="class1">
+                  </select>
+                </div>
+                <div class="col-1">구분2</div>
+                <div class="col-3">
+                  <select class="form-select" id="class2">
+                  </select>
+                </div>
+                <div class="col-1">구분3</div>
+                <div class="col-3">
+                  <select class="form-select" id="class3" name="locate">
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="mt-3 row text-center">
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">시료 채취 일자</label>
-              </div>
-              <div class="col-4"><input type="date" class="form-control" name="sampleDate" id="sampleDate"
-                  placeholder="작성일자" value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" required />
-              </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">시료 채취 일자</label>
             </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center justify-content-center align-items-center d-flex">
-                <label for="" class="col-12" style="color: black;">시료 채취자</label>
-              </div>
-              <div class="col-10">
-                <div class="row mt-2">
-                  <div class="col-1">
-                    <label for="">업체명</label>
-                  </div>
-                  <div class="col-2">
-                    {{request.user.company}}
-                  </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">담당 업무</label>
-                  </div>
-                  <div class="col-2">
-                    {{request.user.class3}}
-                  </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">서명</label>
-                  </div>
-                  <div class="col-2">
-                    {{request.user.name}}
-                  </div>
-                  <div class="col-2">
-                    {% if form.instance.writerId != None %}<img width="100%" alt=""
-                      src="{{form.instance.writerId.signImage.url}}" />
-                    {% else %}(인)
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                      data-bs-target="#signModal">
-                      서명
-                    </button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                      aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">서명 요청</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="col-4"><input type="date" class="form-control" name="sampleDate" id="sampleDate"
+                placeholder="작성일자" value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" required />
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12" style="color: black;">시료 채취자</label>
+            </div>
+            <div class="col-10">
+              <div class="row mt-2">
+                <div class="col-1">
+                  <label for="">업체명</label>
+                </div>
+                <div class="col-2">
+                  {{request.user.company}}
+                </div>
+                <div class="col-1">
+                  <label for="" class="mr-1">담당 업무</label>
+                </div>
+                <div class="col-2">
+                  {{request.user.class3}}
+                </div>
+                <div class="col-1">
+                  <label for="" class="mr-1">서명</label>
+                </div>
+                <div class="col-2">
+                  {{request.user.name}}
+                </div>
+                <div class="col-2">
+                  {% if form.instance.writerId != None %}<img width="100%" alt=""
+                    src="{{form.instance.writerId.signImage.url}}" />
+                  {% else %}(인)
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#signModal">
+                    서명
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">서명 요청</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="signRequest" class="form-label">아이디를
+                              입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
                           </div>
-                          <div class="modal-body">
-                            <div class="mb-3">
-                              <label for="signRequest" class="form-label">아이디를
-                                입력해주세요</label>
-                              <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                              취소</button>
-                            <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            취소</button>
+                          <button id="sign_button" type="button" class="btn btn-primary">서명</button>
                         </div>
                       </div>
                     </div>
-                    {% endif %}
                   </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center justify-content-center align-items-center d-flex">
-                <label for="" class="col-12" style="color: black;">입회자</label>
-              </div>
-              <div class="col-10">
-                <div class="row mt-2">
-                  <div class="col-1">
-                    <label for="">업체명</label>
-                  </div>
-                  <div class="col-2">
-                    {{form.entrantOrg}}
-                  </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">담당 업무</label>
-                  </div>
-                  <div class="col-2">
-                    {{form.entrantRank}}
-                  </div>
-                  <div class="col-1">
-                    <label for="" class="mr-1">서명</label>
-                  </div>
-                  <div class="col-2">
-                    {{form.entrantName}}
-                  </div>
-                  <div class="col-2">
-                    <label for="" class="mr-1">(인)</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">시험 및 시방기준</label>
-              </div>
-              <div class="col-10" id="test_standard">
-              </div>
-            </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">성과 이용 목적</label>
-              </div>
-              <div class="col-10">
-                품질 시험용
-              </div>
-            </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center justify-content-center align-items-center d-flex">
-                <label for="" class="col-12" style="color: black;">공사개요</label>
-              </div>
-              <div class="col-10">
-                <div class="row mt-3">
-                  <div class="col-2">
-                    <label for="">공사명</label>
-                  </div>
-                  <div class="col-10">
-                    {{field.title}}
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-2">
-                    <label for="">착공일</label>
-                  </div>
-                  <div class="col-10">
-                    {{field.startDay}}
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-2">
-                    <label for="">준공예정일</label>
-                  </div>
-                  <div class="col-10">
-                    {{field.endDay}}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="mt-3 row text-center">
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">발주자</label>
-              </div>
-              <div class="col-4">
-                {{field.orderer}}
-              </div>
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">시공자</label>
-              </div>
-              <div class="col-4">
-                {{field.constructComp}}
-              </div>
-            </div>
-            <div class="mt-3 row">
-              <div class="col-2 text-center">
-                <label for="" class="col-12" style="color: black;">국가중요시설 여부</label>
-              </div>
-              <div class="col-10">
-                <textarea class="form-control text-center" name='isImportFacility' id="isImportFacility"
-                  placeholder="내용을 입력해주세요." rows="3" value="{{form.instance.isImportFacility|default_if_none:''}}"
-                  required>{{form.instance.isImportFacility|default_if_none:''}}</textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제
-                  1항에 따라 품질시험ᆞ검사를
-                  의뢰합니다</label>
-              </div>
-            </div>
-            <div class="mt-3 row text-center">
-              <div class="col-2">
-                <label for="" class="col-12" style="color: black;">의뢰일</label>
-              </div>
-              <div class="col-4">
-              </div>
-              <div class="col-1">
-                <label for="" class="col-12" style="color: black;">의뢰인</label>
-              </div>
-              <div class="col-1">
-              </div>
-              <div class="col-1">
-                <label for="" class="col-12" style="color: black;">서명</label>
-              </div>
-              <div class="col-3">
-                <label for="" class="col-12" style="color: black;">(인)</label>
-              </div>
-            </div>
-            <div class="mt-3 row text-center">
-              <div class="col-1 offset-8">
-                <label for="" class="col-12" style="color: black;">전화번호</label>
-              </div>
-              <div class="col-3">
-                {{field.callNum}}
-              </div>
-            </div>
-            <div class="mt-3 row text-center">
-              <div class="col-1 offset-8">
-                <label for="" class="col-12" style="color: black;">주소</label>
-              </div>
-              <div class="col-3">
-                {{field.address}}
-              </div>
-            </div>
-            <br>
           </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12" style="color: black;">입회자</label>
+            </div>
+            <div class="col-10">
+              <div class="row mt-2">
+                <div class="col-1">
+                  <label for="">업체명</label>
+                </div>
+                <div class="col-2">
+                  {{form.entrantOrg}}
+                </div>
+                <div class="col-1">
+                  <label for="" class="mr-1">담당 업무</label>
+                </div>
+                <div class="col-2">
+                  {{form.entrantRank}}
+                </div>
+                <div class="col-1">
+                  <label for="" class="mr-1">서명</label>
+                </div>
+                <div class="col-2">
+                  {{form.entrantName}}
+                </div>
+                <div class="col-2">
+                  <label for="" class="mr-1">(인)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">시험 및 시방기준</label>
+            </div>
+            <div class="col-10" id="test_standard">
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">성과 이용 목적</label>
+            </div>
+            <div class="col-10">
+              품질 시험용
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center justify-content-center align-items-center d-flex">
+              <label for="" class="col-12" style="color: black;">공사개요</label>
+            </div>
+            <div class="col-10">
+              <div class="row p-2 border">
+                <div class="col-2">
+                  <label for="">공사명</label>
+                </div>
+                <div class="col-10">
+                  {{field.title}}
+                </div>
+              </div>
+              <div class="row p-2 border">
+                <div class="col-2">
+                  <label for="">착공일</label>
+                </div>
+                <div class="col-10">
+                  {{field.startDay}}
+                </div>
+              </div>
+              <div class="row p-2 border">
+                <div class="col-2">
+                  <label for="">준공예정일</label>
+                </div>
+                <div class="col-10">
+                  {{field.endDay}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">발주자</label>
+            </div>
+            <div class="col-4">
+              {{field.orderer}}
+            </div>
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">시공자</label>
+            </div>
+            <div class="col-4">
+              {{field.constructComp}}
+            </div>
+          </div>
+          <div class="p-2 border row">
+            <div class="col-2 text-center">
+              <label for="" class="col-12" style="color: black;">국가중요시설 여부</label>
+            </div>
+            <div class="col-10">
+              <textarea class="form-control text-center" name='isImportFacility' id="isImportFacility"
+                placeholder="내용을 입력해주세요." rows="3" value="{{form.instance.isImportFacility|default_if_none:''}}"
+                required>{{form.instance.isImportFacility|default_if_none:''}}</textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label style="white-space: normal;" for="" class="col-12 text-center">건설기술 진흥법 제60조 제
+                1항에 따라 품질시험ᆞ검사를
+                의뢰합니다</label>
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-2">
+              <label for="" class="col-12" style="color: black;">의뢰일</label>
+            </div>
+            <div class="col-4">
+            </div>
+            <div class="col-1">
+              <label for="" class="col-12" style="color: black;">의뢰인</label>
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-1">
+              <label for="" class="col-12" style="color: black;">서명</label>
+            </div>
+            <div class="col-3">
+              <label for="" class="col-12" style="color: black;">(인)</label>
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-1 offset-8">
+              <label for="" class="col-12" style="color: black;">전화번호</label>
+            </div>
+            <div class="col-3">
+              {{field.callNum}}
+            </div>
+          </div>
+          <div class="p-2 border row text-center">
+            <div class="col-1 offset-8">
+              <label for="" class="col-12" style="color: black;">주소</label>
+            </div>
+            <div class="col-3">
+              {{field.address}}
+            </div>
+          </div>
+          <br>
+
       </section>
     </form>
   </div>

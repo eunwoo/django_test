@@ -28,7 +28,10 @@ Work
                 <li class="breadcrumb-item">
                   <a href="{% url 'work:index' %}">업무</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">설치작업 확인</li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:install_check' %}">설치작업 점검</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{type}}</li>
               </ol>
             </nav>
           </div>
