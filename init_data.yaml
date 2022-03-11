@@ -2,17 +2,17 @@
   pk: 1
   fields:
     type: "강관 비계"
-    isActive: False
+    isActive: True
 - model: system_manager.EquipmentTypes
   pk: 2
   fields:
     type: "시스템 비계"
-    isActive: False
+    isActive: True
 - model: system_manager.EquipmentTypes
   pk: 3
   fields:
     type: "시스템 동바리"
-    isActive: False
+    isActive: True
 # 조립가설기자재 체크리스트
 - model: work.SafetyCheckType
   pk: 1
@@ -940,56 +940,3 @@
     equipment: "3"
     categoryId: 11
     title: "자재 낙하에 의한 위험 예방 조치가 이루어졌는가"
-# 설치 위치 초기 값
-- model: system_manager.InstallLocateClass1
-  pk: 1
-  fields:
-    class1: "인천"
-- model: system_manager.InstallLocateClass1
-  pk: 2
-  fields:
-    class1: "경기"
-- model: system_manager.InstallLocateClass2
-  pk: 1
-  fields:
-    class1: 1
-    class2: "서구"
-- model: system_manager.InstallLocateClass2
-  pk: 2
-  fields:
-    class1: 1
-    class2: "동구"
-- model: system_manager.InstallLocateClass2
-  pk: 3
-  fields:
-    class1: 2
-    class2: "양주"
-- model: system_manager.InstallLocateClass2
-  pk: 4
-  fields:
-    class1: 2
-    class2: "의정부"
-- model: system_manager.InstallLocate
-  pk: 1
-  fields:
-    class2: 1
-    class3: "인천서구"
-    isApply: True
-- model: system_manager.InstallLocate
-  pk: 2
-  fields:
-    class2: 2
-    class3: "인천동구"
-    isApply: True
-- model: system_manager.InstallLocate
-  pk: 3
-  fields:
-    class2: 3
-    class3: "경기양주"
-    isApply: True
-- model: system_manager.InstallLocate
-  pk: 4
-  fields:
-    class2: 4
-    class3: "경기의정부"
-    isApply: True
