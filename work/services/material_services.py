@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from system_manager.models import DocsFile, Field
 
-from ..models import MaterialSupplyReport, SupplyList
+from ..models import MaterialSupplyReport, SupplyList, MaterialDocs
 from ..forms.material_forms import (
     GeneralEngineerMaterialSupplyReportForm,
     GeneralManagerMaterialSupplyReportForm,
@@ -34,7 +34,7 @@ def get_material_list_by_user(user):
 def create_material_service(request):
     field = Field.objects.get(pk=1)
     if request.method == "POST":
-        form = GeneralManagerMaterialSupplyReportForm(request.POST, request.FILES)
+        form = GeneralManagerMaterialSupplyReportForm(request.POST)
         if form.is_valid():
             material = form.save(commit=False)
             material.writerId = request.user
@@ -58,6 +58,22 @@ def create_material_service(request):
                     materialSupplyReportId=material,
                 )
                 supply_list.save()
+            file_id_list = [
+                "businessLicenses",
+                "deliveryPerformanceCertificate",
+                "safetyCertificate",
+                "qualityTestReport",
+                "testPerformanceComparisonTable",
+            ]
+            for file_id in file_id_list:
+                if file_id not in request.FILES:
+                    continue
+                for file in request.FILES.getlist(file_id):
+                    material.material_docs.create(
+                        file=file,
+                        filename=file.name,
+                        type=file_id,
+                    )
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)
     else:
@@ -110,7 +126,8 @@ def update_material_general(request, docNum):
             supply_size = request.POST.getlist("supply_size[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.save()
-            material.docs.all().delete()
+            if files:
+                material.docs.clear()
             material.supply_list.all().delete()
             for file_id in files:
                 doc_file = DocsFile.objects.get(pk=int(file_id))
@@ -125,6 +142,25 @@ def update_material_general(request, docNum):
                 )
                 supply_list.save()
                 material.supply_list.add(supply_list)
+            file_id_list = [
+                "businessLicenses",
+                "deliveryPerformanceCertificate",
+                "safetyCertificate",
+                "qualityTestReport",
+                "testPerformanceComparisonTable",
+            ]
+            for file_id in file_id_list:
+                if file_id not in request.FILES:
+                    continue
+                MaterialDocs.objects.filter(
+                    type=file_id, materialSupplyReport=material
+                ).delete()
+                for file in request.FILES.getlist(file_id):
+                    material.material_docs.create(
+                        file=file,
+                        filename=file.name,
+                        type=file_id,
+                    )
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)
     else:
