@@ -86,12 +86,11 @@ def update_checklist_service(request, type, pk):
                 )
             pk_checklist = request.POST.getlist("checklist-pk")
             image_keys = request.FILES.keys()
-            doing_checklist.inspection_result.all().delete()
             doing_checklist.save()
             for pk_item in pk_checklist:
                 before_result_item = InspectionResult.objects.filter(
-                    before_install_checklist_id=doing_checklist,
-                    before_inspection_item_id=InspectionItem.objects.get(pk=pk_item),
+                    install_checklist_id=doing_checklist,
+                    inspection_item_id=InspectionItem.objects.get(pk=pk_item),
                 )[0]
                 result_item = InspectionResult(
                     result=request.POST[pk_item],
@@ -104,11 +103,11 @@ def update_checklist_service(request, type, pk):
                 for image_id in image_ids:
                     image = Measure.objects.filter(
                         pk=image_id,
-                        InspectionResult=before_result_item,
+                        inspectionResult=before_result_item,
                     )
                     if image:
                         image = image[0]
-                        image.InspectionResult = result_item
+                        image.inspectionResult = result_item
                         image.save()
                 if f"{pk_item}-images[]" in image_keys:
                     images = request.FILES.getlist(f"{pk_item}-images[]")
