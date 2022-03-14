@@ -12,7 +12,7 @@ from work.models import (
 
 from system_manager.models import ConstructManager
 
-from ..services.common_services import sms_send
+from ..services.common_services import image_send, sms_send
 
 
 def assign_cm(request, type):
@@ -23,6 +23,20 @@ def assign_cm(request, type):
     link = request.build_absolute_uri(f"/work/read_before_install/{type}/{doc.pk}/")
     cm_phone = cm.phone
     sms_send(link, [cm_phone], 2)
+    checklist_ids = request.POST.getlist("checklist_id")
+    message_list = []
+    for checklist_id in checklist_ids:
+        target = BeforeInspectionResult.objects.get(
+            before_install_checklist_id=doc,
+            before_inspection_item_id=BeforeInspectionItem.objects.get(pk=checklist_id),
+        )
+        message_list.append(
+            {
+                "content": target.content,
+                "img": list(map(lambda x: x.img, list(target.measures.all()))),
+            }
+        )
+    image_send(message_list, cm_phone)
     # 문자 전송 페이지 만들기
 
 
