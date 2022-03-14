@@ -5,13 +5,14 @@
     label: '여기를 클릭해 이미지를 추가하세요.',
     preloaded: [
       {% for image in checkmenu.measures.all %} {
+        id: {{image.pk}},
         src: '{{image.img.url}}',
         alt: '{{image.img.name}}',
       },
       {% endfor %}
     ],
     imagesInputName: '{{checkmenu.inspection_item_id.pk}}-images',
-    preloadedInputName: '{{checkmenu.inspection_item_id.pk}}-images',
+    preloadedInputName: '{{checkmenu.inspection_item_id.pk}}-images-preloaded',
   });
   {% endfor %}
 </script>

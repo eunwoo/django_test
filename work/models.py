@@ -448,7 +448,7 @@ class BeforeInspectionResult(models.Model):
 
 class BeforeMeasure(models.Model):
     img = models.ImageField(upload_to="before_measure")
-    beformInspectionResult = models.ForeignKey(
+    beforeInspectionResult = models.ForeignKey(
         BeforeInspectionResult,
         on_delete=models.CASCADE,
         related_name="measures",

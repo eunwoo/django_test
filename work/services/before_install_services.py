@@ -7,6 +7,7 @@ from work.models import (
     BeforeInspectionItem,
     BeforeInspectionResult,
     BeforeInstallCheckList,
+    BeforeMeasure,
 )
 
 from system_manager.models import ConstructManager
@@ -101,22 +102,38 @@ def update_before_checklist_service(request, type, pk):
                 )
             pk_checklist = request.POST.getlist("checklist-pk")
             image_keys = request.FILES.keys()
-            before_checklist.before_inspection_result.all().delete()
             before_checklist.save()
             for pk_item in pk_checklist:
-                result_item = BeforeInspectionResult(
-                    result=request.POST[pk_item],
+                before_result_item = BeforeInspectionResult.objects.filter(
                     before_install_checklist_id=before_checklist,
                     before_inspection_item_id=BeforeInspectionItem.objects.get(
                         pk=pk_item
                     ),
+                )[0]
+                result_item = BeforeInspectionResult(
+                    result=request.POST[pk_item],
+                    before_install_checklist_id=before_checklist,
+                    content=request.POST[f"{pk_item}-belong"],
+                    before_inspection_item_id=BeforeInspectionItem.objects.get(
+                        pk=pk_item
+                    ),
                 )
-                result_item.content = request.POST[f"{pk_item}-belong"]
                 result_item.save()
+                before_image_ids = request.POST.getlist(f"{pk_item}-images-preloaded[]")
+                for before_image_id in before_image_ids:
+                    before_image = BeforeMeasure.objects.filter(
+                        pk=before_image_id,
+                        beforeInspectionResult=before_result_item,
+                    )
+                    if before_image:
+                        before_image = before_image[0]
+                        before_image.beforeInspectionResult = result_item
+                        before_image.save()
                 if f"{pk_item}-images[]" in image_keys:
                     images = request.FILES.getlist(f"{pk_item}-images[]")
                     for img in images:
                         result_item.measures.create(img=img)
+                before_result_item.delete()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_before_install_checklist", type, pk)
     else:
