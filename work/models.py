@@ -209,6 +209,21 @@ class SupplyList(models.Model):
         return self.name
 
 
+# 문서 등록
+class MaterialDocs(models.Model):
+    file = models.FileField(upload_to="docs/")  # 파일
+    filename = models.CharField(max_length=100)  # 파일명
+    type = models.CharField(max_length=30, db_index=True)  # 파일 타입
+    materialSupplyReport = models.ForeignKey(
+        MaterialSupplyReport,
+        on_delete=models.CASCADE,
+        related_name="material_docs",
+    )
+
+    def __str__(self):
+        return self.filename
+
+
 # =============================================================================
 
 # 품질검사 의뢰서 관련 문서
