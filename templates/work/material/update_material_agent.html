@@ -237,48 +237,76 @@ Material Check
                     <tr>
                       <th scope="row" style="width: 25%;" class="text-success align-middle">사업자등록증</th>
                       <td colspan="2" style="width: 75%;">
-                        {% if material.businessLicense %}
-                        <a href="{{material.businessLicense.url}}">
-                          {{material.businessLicense.name|cut:'business_license/'}}
-                        </a>
-                        {% endif %}
+                        <ul class="list-group" id="businessLicenses_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'businessLicenses' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">납품실적증명서</th>
                       <td colspan="2">
-                        {% if material.deliveryPerformanceCertificate %}
-                        <a href="{{material.deliveryPerformanceCertificate.url}}">
-                          {{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}
-                        </a>
-                        {% endif %}
+                        <ul class="list-group" id="deliveryPerformanceCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'deliveryPerformanceCertificate' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">안전인증서</th>
                       <td colspan="2">
-                        {% if material.safetyCertificate %}
-                        <a
-                          href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="safetyCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'safetyCertificate' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">품질시험성적서</th>
                       <td colspan="2">
-                        {% if material.qualityTestReport %}
-                        <a
-                          href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="qualityTestReport_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'qualityTestReport' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">시험성과대비표</th>
                       <td colspan="2">
-                        {% if material.testPerformanceComparisonTable %}
-                        <a
-                          href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="testPerformanceComparisonTable_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'testPerformanceComparisonTable' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
