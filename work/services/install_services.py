@@ -10,7 +10,7 @@ from work.models import (
     Measure,
 )
 
-from ..services.common_services import sms_send
+from ..services.common_services import image_send, sms_send
 
 
 def install_checklist_service(request, type: str):
@@ -138,4 +138,18 @@ def assign_cm(request, type):
     link = request.build_absolute_uri(f"/work/read_install/{type}/{doc.pk}/")
     cm_phone = cm.phone
     sms_send(link, [cm_phone], 3)
+    checklist_ids = request.POST.getlist("checklist_id")
+    message_list = []
+    for checklist_id in checklist_ids:
+        target = InspectionResult.objects.get(
+            install_checklist_id=doc,
+            inspection_item_id=InspectionItem.objects.get(pk=checklist_id),
+        )
+        message_list.append(
+            {
+                "content": target.content,
+                "img": list(map(lambda x: x.img, list(target.measures.all()))),
+            }
+        )
+    image_send(message_list, cm_phone)
     # 문자 전송 페이지 만들기

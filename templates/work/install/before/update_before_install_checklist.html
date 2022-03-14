@@ -54,13 +54,8 @@ Safety Check
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-6 offset-6">
+          <div class="col-4 offset-8">
             <div class="row">
-              <div class="col">
-                <button class="btn1 p-2 btn btn-light col-12" onclick="delete_button()">
-                  삭제
-                </button>
-              </div>
               <div class="col">
                 <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit"
                   form="form_checklist">저장</button>
@@ -152,7 +147,6 @@ Safety Check
                   </div>
                   <div class="col">
                     <img width='100%' alt='' src='{{form.instance.writerId.signImage.url}}' />
-
                   </div>
                 </div>
               </td>
@@ -246,7 +240,6 @@ Safety Check
                       </div>
                     </div>
                   </div>
-
                 </td>
                 <td>
                   <input type="checkbox" id="{{checkmenu.before_inspection_item_id.pk}}-checkbox">
@@ -276,9 +269,11 @@ Safety Check
   const input_list = checklist_form.querySelectorAll("input")
   const textarea_list = checklist_form.querySelectorAll("textarea")
   for (let input_item of input_list) {
-    input_item.addEventListener("change", function () {
-      isChange = true;
-    })
+    if (input_item.type !== 'checkbox') {
+      input_item.addEventListener("change", function () {
+        isChange = true;
+      })
+    }
   }
 
   for (let textarea_item of textarea_list) {
@@ -292,24 +287,6 @@ Safety Check
     targetNode.innerHTML = '확인'
     targetNode.classList.remove('btn-primary')
     targetNode.classList.add('btn-success')
-  }
-
-  // 삭제버튼 클릭시 체크된 리스트 삭제
-  const delete_button = () => {
-    const checklist_ids = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item => item.id
-      .split('-')[0]).map(pk => document.getElementById(`${pk}-row`)).forEach(item => item.remove())
-  }
-
-  // 조치사항 발송 => 업데이트에서만 동작
-  const required_save = () => {
-    if (isChange) {
-      Swal.fire({
-        title: '전송불가',
-        text: "저장을 해주세요.",
-        icon: 'error',
-      })
-      return false
-    }
   }
 
   // 설치위치 받아오기
@@ -410,6 +387,11 @@ Safety Check
     })
   })
 
+  const delete_button = () => {
+    const checklist_ids = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item => item.id
+      .split('-')[0]).map(pk => document.getElementById(`${pk}-row`)).forEach(item => item.remove())
+  }
+
   // 서명 요청 후 알림창 띄우기
   $('#signRequestBtn').on('click', () => {
     Swal.fire(
@@ -417,6 +399,10 @@ Safety Check
       '조치사항이 전송되었습니다!',
       'success'
     ).then(() => {
+      const sign_form = document.getElementById('sign_form')
+      Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item =>
+        item.id.split('-')[0]).forEach(pk => sign_form.innerHTML +=
+        `<input type="hidden" name="checklist_id" value="${pk}">`)
       document.forms['sign_form'].submit()
     })
   })
