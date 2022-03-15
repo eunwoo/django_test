@@ -66,7 +66,7 @@ def get_search_list(post_key, locate_value=0):
                     locateId=InstallLocate.objects.get(pk=locate_value),
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at")
+                .values("docNum", "created_at", "equipment")
                 .annotate(type=Value("beforechecklist", output_field=CharField()))
             )
             install_query = (
@@ -75,7 +75,7 @@ def get_search_list(post_key, locate_value=0):
                     locateId=InstallLocate.objects.get(pk=locate_value),
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at")
+                .values("docNum", "created_at", "equipment")
                 .annotate(type=Value("beforechecklist", output_field=CharField()))
             )
         else:
