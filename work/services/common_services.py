@@ -64,15 +64,20 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
 
 def sms_content(link, sms_type: int = 0) -> str:
     context = ""
+    link_text = ""
     if sms_type == 0:
         context = "결재 요청"
+        link_text = "결재 대기 문서"
     elif sms_type == 1:
         context = "검토 완료 알림"
+        link_text = "결재 완료 문서"
     elif sms_type == 2:
         context = "설치작업 전 점검 조치사항 알림"
+        link_text = "조치사항 항목"
     elif sms_type == 3:
         context = "설치작업 중 점검 조치사항 알림"
-    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {context}이 도착하여 안내드립니다.\n\n결재 {'대기' if sms_type == 0 else '완료'} 문서 바로가기\n {link}"
+        link_text = "조치사항 항목"
+    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {context}이 도착하여 안내드립니다.\n\n{link_text} 바로가기\n {link}"
 
 
 def image_send(message_list, user_phone):
