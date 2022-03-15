@@ -142,7 +142,7 @@ Safety Check
                 {% if forloop.counter0 == 0 %}
                 <th class="align-middle" rowspan="{{checkmenu.count}}">{{menu.checkType.title}}</th>
                 {% endif %}
-                <td>{{menu.content}}</td>
+                <td class="text-start">{{menu.content}}</td>
                 <td>
                   <input type="radio" name="{{menu.pk}}" value="1" required>
                 </td>
