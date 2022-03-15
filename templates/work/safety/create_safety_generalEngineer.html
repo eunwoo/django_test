@@ -429,6 +429,14 @@ Safety Check
         confirmButtonText: '닫기'
       })
       return false;
+    } else if ('{{safety.checklistDate}}' === 'None') {
+      Swal.fire({
+        title: 'Error!',
+        text: '체크리스트를 작성해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
     }
     const select_form = document.getElementById('sign_select')
     select_form.innerHTML = ""
