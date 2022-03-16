@@ -305,3 +305,7 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 # 상세 계획
 - 오전 : 결과보고 페이지 작성하기 => 해당 문서 클릭시 read 페이지로 읽기
 - 오후 : 오전 작업을 이어서, 수정사항 반영하기, 주간 보고서 작성하기
+
+# 웹에디터
+- https://blog.devgenius.io/best-free-wysiwyg-editor-python-django-admin-panel-integration-d9cb30da1dba
+- https://bookpark.github.io/2018-02-01/django-ckeditor
