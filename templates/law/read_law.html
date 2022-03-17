@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-공지사항 작성
+구조 안전성 검토 신고서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -26,9 +26,9 @@
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{% url 'announcement:announcement' %}">공지사항</a>
+                  <a href="{% url 'law:law' %}">법령정보</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">공지사항 작성</li>
+                <li class="breadcrumb-item active" aria-current="page">법령정보 작성</li>
               </ol>
             </nav>
           </div>
@@ -41,8 +41,13 @@
           <div class="col-4 offset-8">
             <div class="row">
               <div class="col-6">
-                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_post"
-                  id="save_button">제출</button>
+                <a class="btn1 p-2 btn btn-light col-12" href="{% url 'law:law' %}" role="button">목록</a>
+              </div>
+              <div class="col-6">
+                {% if item.writer == request.user %}
+                <a class="btn1 p-2 btn btn-secondary col-12" href="{% url 'law:update_law' item.pk %}"
+                  role="button">수정</a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -51,27 +56,36 @@
     </section>
     <section>
       <div class="container">
-        <form id="form_post" action="" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="row p-2 mb-3">
-            <div class="col-7">
-              <label class="form-label">글 제목</label>
-              <input type="text" class="form-control" name="title" placeholder="글 제목을 입력해주세요."
-                value="{{form.instance.title|default_if_none:''}}" />
+        <div class="row p-2 mb-3">
+          <div class="col-7">
+            <label class="form-label">글 제목</label>
+            <div class="border p-3">
+              {{item.title}}
             </div>
           </div>
           <div class="row p-2 mb-3">
-            <label class="form-label">내용</label>
-            {{form.content|safe}}
+            <div class="col-7">
+              <label class="form-label">내용</label>
+              <div class="border p-3 text-wrap" id="inner_content">
+                {{item.content|safe}}"
+              </div>
+            </div>
           </div>
           <div class="row p-2 mb-3">
             <div class="col-7">
               <label class="form-label">파일첨부</label>
-              <input class="form-control" type="file" name="file_list" multiple>
+              {% if item.files.all %}
+              <ul class="list-group">
+                {% for file in item.files.all %}
+                <li class="list-group-item"><a href="{{file.file.url}}"
+                    class="link-primary">{{file.file.name|cut:"law/files/"}}</a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
             </div>
           </div>
-        </form>
-      </div>
+        </div>
     </section>
   </div>
   <br><br><br><br><br>

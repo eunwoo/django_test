@@ -1,0 +1,118 @@
+{% extends 'base/head.html' %}
+{% block title %}
+공지사항
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">법령정보</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-3">
+            <a href="{% url 'law:create_law' %}">
+              <button class="btn mb-2">법령정보 작성하기</button>
+            </a>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
+              <tr>
+                <td style="width: 70%;">
+                  문서
+                </td>
+                <td style="width: 10%;">
+                  작성자
+                </td>
+                <td style="width: 20%;">
+                  작성 날짜
+                </td>
+              </tr>
+              {% for i in lawitems %}
+              <tr>
+                <td>
+                  <a href="{% url 'law:read_law' i.pk %}" class="link-primary">
+                    {{i.title}}
+                  </a>
+                </td>
+                <td>
+                  {{i.writer.name}}
+                </td>
+                <td>
+                  {{i.created_on|date:"Y-m-d"}}
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <!--페이징 코트-->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          {% if lawitems.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{lawitems.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&laquo;</a>
+          </li>
+          {% endif %}
+          {% for page_number in lawitems.paginator.page_range %}
+          {% if page_number == lawitems.number %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+          {% if lawitems.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ lawitems.next_page_number }}">&raquo;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">&raquo;</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </section>
+  </div>
+  <br><br><br><br><br>
+
+</main>
+{% endblock %}

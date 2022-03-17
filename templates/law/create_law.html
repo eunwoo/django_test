@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-공지사항 작성
+구조 안전성 검토 신고서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -26,9 +26,9 @@
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{% url 'announcement:announcement' %}">공지사항</a>
+                  <a href="{% url 'law:law' %}">법령정보</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">공지사항 작성</li>
+                <li class="breadcrumb-item active" aria-current="page">법령정보 작성</li>
               </ol>
             </nav>
           </div>

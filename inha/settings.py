@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "main.apps.MainConfig",
     "result.apps.ResultConfig",
+    "law.apps.LawConfig",
     "announcement.apps.AnnouncementConfig",
     "django.contrib.admin",
     "django.contrib.auth",
