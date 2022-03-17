@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "main.apps.MainConfig",
     "result.apps.ResultConfig",
+    "announcement.apps.AnnouncementConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "sslserver",
+    "django_summernote",
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = BASE_DIR / "static"
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static", "custom")]
 
 MEDIA_URL = "/media/"
 
@@ -150,3 +154,7 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/user/login"
 
 AUTH_USER_MODEL = "user.CustomUser"
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+SUMMERNOTE_THEME = "bs5"
