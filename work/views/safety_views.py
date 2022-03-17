@@ -2,13 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-
-from system_manager.models import DocsFile
 from work.services.common_services import assign_user
-from django.contrib import messages
-
 from ..models import SafetyCheckMenu, SafetyReport
-from ..forms.safety_forms import GeneralManagerSafetyReportForm
 from ..services.safety_services import (
     create_checklist_service,
     create_safety_service,

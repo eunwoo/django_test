@@ -25,4 +25,7 @@ urlpatterns = [
     path("work/", include("work.urls", "work")),
     path("", include("main.urls", "main")),
     path("result/", include("result.urls", "result")),
+    path("announcement/", include("announcement.urls", "announcement")),
+    path("law/", include("law.urls", "law")),
+    path("summernote/", include("django_summernote.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
