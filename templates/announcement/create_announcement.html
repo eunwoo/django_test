@@ -25,13 +25,10 @@
           <div class="col">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="{% url 'work:index' %}">업무</a>
-                </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
+                  <a href="{% url 'announcement:announcement' %}">공지사항</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">공지사항 작성</li>
               </ol>
             </nav>
           </div>
@@ -39,12 +36,40 @@
       </div>
     </section>
     <section>
-      <div class="conatiner">
-        <form method="POST">
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8">
+            <div class="row">
+              <div class="col-6">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_post"
+                  id="save_button">제출</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <form id="form_post" action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          {{form.foo|safe}}
-          <br>
-          <input class="btn btn dark" type="submit" value="제출하기">
+          <div class="row p-2 mb-3">
+            <div class="col-7">
+              <label class="form-label">글 제목</label>
+              <input type="text" class="form-control" name="title" placeholder="글 제목을 입력해주세요."
+                value="{{form.instance.title|default_if_none:''}}" />
+            </div>
+          </div>
+          <div class="row p-2 mb-3">
+            <label class="form-label">내용</label>
+            {{form.content|safe}}
+          </div>
+          <div class="row p-2 mb-3">
+            <div class="col-7">
+              <label class="form-label">파일첨부</label>
+              <input class="form-control" type="file" name="file_list" multiple>
+            </div>
+          </div>
         </form>
       </div>
     </section>

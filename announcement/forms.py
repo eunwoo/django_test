@@ -1,6 +1,13 @@
 from django import forms
 from django_summernote.widgets import SummernoteWidget
 
+from . import models
 
-class SomeForm(forms.Form):
-    foo = forms.CharField(widget=SummernoteWidget())
+
+class AnnouncePostForm(forms.ModelForm):
+    class Meta:
+        model = models.AnnouncePost
+        fields = ["title", "content"]
+        widgets = {
+            "content": SummernoteWidget(),
+        }

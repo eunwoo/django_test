@@ -157,4 +157,21 @@ AUTH_USER_MODEL = "user.CustomUser"
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-SUMMERNOTE_THEME = "bs5"
+SUMMERNOTE_CONFIG = {
+    "summernote": {
+        "fontNames": [
+            "맑은 고딕",
+            "굴림",
+            "돋움",
+            "바탕",
+            "궁서",
+            "NotoSansKR",
+            "Arial",
+            "Courier New",
+            "Verdana",
+            "Tahoma",
+            "Times New Roamn",
+        ],
+        "lang": "ko-KR",
+    },
+}
