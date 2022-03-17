@@ -1,0 +1,55 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+구조 안전성 검토 신고서 작성
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="conatiner">
+        <form method="POST">
+          {% csrf_token %}
+          {{form.foo|safe}}
+          <br>
+          <input class="btn btn dark" type="submit" value="제출하기">
+        </form>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
+
+</main>
+{% endblock %}
