@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-Material Check
+자재 공급원 신고서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -116,7 +116,7 @@ Material Check
             </div>
             <div class="col-4">
               <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+                value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
             </div>
           </div>
           <div class="p-2 row text-center border">
@@ -138,7 +138,7 @@ Material Check
               <label for="" class="col-12" style="color: black;">공종</label>
             </div>
             <div class="col-4">
-              <select class="form-select" aria-label="공종" id="constructTypeSelect">
+              <select class="form-select" aria-label="공종" id="constructTypeSelect" required>
                 <option value="">투입 공종을
                   선택해주세요
                 </option>
@@ -302,25 +302,82 @@ Material Check
                   <table class="table">
                     <tr>
                       <th scope="row" class="text-success align-middle" style="width: 25%;">사업자등록증</th>
-                      <td colspan="5" style="width: 75%;">{{form.businessLicense}}</td>
+                      <td colspan="5" style="width: 75%;">
+                        <input class="form-control" type="file" id="businessLicenses" name="businessLicenses" multiple>
+                        <ul class="list-group" id="businessLicenses_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'businessLicenses' %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">납품실적증명서</th>
-                      <td colspan="5">{{form.deliveryPerformanceCertificate}}</td>
+                      <td colspan="5">
+                        <input class="form-control" type="file" id="deliveryPerformanceCertificate"
+                          name="deliveryPerformanceCertificate" multiple>
+                        <ul class="list-group" id="deliveryPerformanceCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'deliveryPerformanceCertificate' %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">안전인증서</th>
-                      <td colspan="5">{{form.safetyCertificate}}</td>
+                      <td colspan="5">
+                        <input class="form-control" type="file" id="safetyCertificate" name="safetyCertificate"
+                          multiple>
+                        <ul class="list-group" id="safetyCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'safetyCertificate' %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">품질시험성적서</th>
                       <td colspan="5">
-                        {{form.qualityTestReport}}
+                        <input class="form-control" type="file" id="qualityTestReport" name="qualityTestReport"
+                          multiple>
+                        <ul class="list-group" id="qualityTestReport_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'qualityTestReport' %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">시험성과대비표</th>
-                      <td colspan="5">{{form.testPerformanceComparisonTable}}</td>
+                      <td colspan="5">
+                        <input class="form-control" type="file" id="testPerformanceComparisonTable"
+                          name="testPerformanceComparisonTable" multiple>
+                        <ul class="list-group" id="testPerformanceComparisonTable_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'testPerformanceComparisonTable' %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
@@ -328,7 +385,13 @@ Material Check
                         {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}
                       </td>
                       <td colspan="4">
-                        <ul class="list-group" id="공급원ul"></ul>
+                        <ul class="list-group" id="공급원ul">
+                          {% if material.docs %}
+                          {% for item in material.docs.all %}
+                          <li class="list-group-item">{{item.filename}}</li>
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                   </table>
@@ -624,6 +687,44 @@ Material Check
       $("#constructType").attr('readonly', true);
       $("#constructType").val(value)
     }
+  })
+
+
+  // 파일 여러개 처리
+  const file_id_list = ['businessLicenses', 'deliveryPerformanceCertificate', 'safetyCertificate', 'qualityTestReport',
+    'testPerformanceComparisonTable'
+  ]
+  file_id_list.map(v => {
+    const fileInput = document.getElementById(v)
+    const preview = document.getElementById(`${v}_preview`)
+    fileInput.addEventListener('change', function () {
+      const files = Array.from(this.files)
+      preview.innerHTML = ''
+      files.forEach(file => {
+        const li = document.createElement('li')
+        li.classList.add('list-group-item')
+        li.id = file.lastModified
+        li.innerHTML = file.name
+        const delete_button = document.createElement('button')
+        delete_button.innerHTML = '삭제'
+        delete_button.classList.add('btn', 'btn-danger', 'btn-sm')
+        delete_button.type = 'button'
+        delete_button.onclick = function () {
+          const modify = this.parentNode.id;
+          const dataTranster = new DataTransfer();
+          const current_files = document.getElementById(v).files;
+          Array.from(current_files).forEach(file => {
+            if (file.lastModified !== +modify) {
+              dataTranster.items.add(file)
+            }
+          })
+          document.getElementById(v).files = dataTranster.files;
+          this.parentNode.remove()
+        }
+        li.append(delete_button)
+        preview.append(li)
+      })
+    })
   })
 </script>
 {% endblock %}

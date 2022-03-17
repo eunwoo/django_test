@@ -7,9 +7,10 @@ from work.models import (
     InspectionItem,
     InspectionResult,
     InstallCheckList,
+    Measure,
 )
 
-from ..services.common_services import sms_send
+from ..services.common_services import image_send, sms_send
 
 
 def install_checklist_service(request, type: str):
@@ -85,20 +86,34 @@ def update_checklist_service(request, type, pk):
                 )
             pk_checklist = request.POST.getlist("checklist-pk")
             image_keys = request.FILES.keys()
-            doing_checklist.inspection_result.all().delete()
             doing_checklist.save()
             for pk_item in pk_checklist:
+                before_result_item = InspectionResult.objects.filter(
+                    install_checklist_id=doing_checklist,
+                    inspection_item_id=InspectionItem.objects.get(pk=pk_item),
+                )[0]
                 result_item = InspectionResult(
                     result=request.POST[pk_item],
                     install_checklist_id=doing_checklist,
+                    content=request.POST[f"{pk_item}-belong"],
                     inspection_item_id=InspectionItem.objects.get(pk=pk_item),
                 )
-                result_item.content = request.POST[f"{pk_item}-belong"]
                 result_item.save()
+                image_ids = request.POST.getlist(f"{pk_item}-images-preloaded[]")
+                for image_id in image_ids:
+                    image = Measure.objects.filter(
+                        pk=image_id,
+                        inspectionResult=before_result_item,
+                    )
+                    if image:
+                        image = image[0]
+                        image.inspectionResult = result_item
+                        image.save()
                 if f"{pk_item}-images[]" in image_keys:
                     images = request.FILES.getlist(f"{pk_item}-images[]")
                     for img in images:
                         result_item.measures.create(img=img)
+                before_result_item.delete()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_install_checklist", type, pk)
     else:
@@ -123,4 +138,18 @@ def assign_cm(request, type):
     link = request.build_absolute_uri(f"/work/read_install/{type}/{doc.pk}/")
     cm_phone = cm.phone
     sms_send(link, [cm_phone], 3)
+    # checklist_ids = request.POST.getlist("checklist_id")
+    # message_list = []
+    # for checklist_id in checklist_ids:
+    #     target = InspectionResult.objects.get(
+    #         install_checklist_id=doc,
+    #         inspection_item_id=InspectionItem.objects.get(pk=checklist_id),
+    #     )
+    #     message_list.append(
+    #         {
+    #             "content": target.content,
+    #             "img": list(map(lambda x: x.img, list(target.measures.all()))),
+    #         }
+    #     )
+    # image_send(message_list, cm_phone)
     # 문자 전송 페이지 만들기

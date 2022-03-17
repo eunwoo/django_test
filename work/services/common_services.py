@@ -64,12 +64,40 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
 
 def sms_content(link, sms_type: int = 0) -> str:
     context = ""
+    link_text = ""
     if sms_type == 0:
         context = "결재 요청"
+        link_text = "결재 대기 문서"
     elif sms_type == 1:
         context = "검토 완료 알림"
+        link_text = "결재 완료 문서"
     elif sms_type == 2:
         context = "설치작업 전 점검 조치사항 알림"
+        link_text = "조치사항 항목"
     elif sms_type == 3:
         context = "설치작업 중 점검 조치사항 알림"
-    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {context}이 도착하여 안내드립니다.\n\n결재 {'대기' if sms_type == 0 else '완료'} 문서 바로가기\n {link}"
+        link_text = "조치사항 항목"
+    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {context}이 도착하여 안내드립니다.\n\n{link_text} 바로가기\n {link}"
+
+
+def image_send(message_list, user_phone):
+    send_url = "https://apis.aligo.in/send/"  # 요청을 던지는 URL, 현재는 문자보내기
+    sender = "01025093834"  # 보내는 번호 => 현재 지영님 폰 번호만 인증이 되어서 다른 번호는 사용 불가
+
+    for data in message_list:
+        sms_data = {
+            "key": "axngr7ld8l3ng1qteoidm66axvjdlmdu",  # api key
+            "userid": "jjy1229",  # 알리고 사이트 아이디
+            "sender": sender,  # 발신번호
+            "receiver": user_phone.replace("-", ""),  # 수신번호 (,활용하여 1000명까지 추가 가능)
+            "msg": data["content"],  # 문자 내용
+            "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
+            "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
+            # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
+        }
+
+        # 이미지 입력, 절대경로, 상대경로 상관없음.
+        for image in list(data["img"]):
+            files = {"image": image.file}
+            send_response = requests.post(send_url, data=sms_data, files=files)
+            print(send_response.json())

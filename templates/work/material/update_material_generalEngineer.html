@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-Material Check
+자재 공급원 신고서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -103,7 +103,7 @@ Material Check
               <h1>자재 공급원 신고서</h1>
             </div>
           </div>
-          <div class="mt-3 row text-center">
+          <div class="row border p-2 text-center">
             <div class="col-2">
               <label for="" class="col-12" style="color: black;">문서번호</label>
             </div>
@@ -117,7 +117,7 @@ Material Check
               {{material.date}}
             </div>
           </div>
-          <div class="mt-3 row text-center">
+          <div class="row border p-2 text-center">
             <div class="col-2">
               <label for="" class=" col-12" style="color: black;">공사명</label>
             </div>
@@ -131,7 +131,7 @@ Material Check
               가설기자재
             </div>
           </div>
-          <div class="mt-3 row text-center">
+          <div class="row border p-2 text-center">
             <div class="col-2 text-center">
               <label for="" class="col-12" style="color: black;">공종</label>
             </div>
@@ -139,7 +139,7 @@ Material Check
               {{material.constructType}}
             </div>
           </div>
-          <div class="mt-3 row">
+          <div class="row border p-2">
             <div class="col-2 text-center justify-content-center align-items-center d-flex">
               <label for="" class=" col-12" style="color: black;">공급원</label>
             </div>
@@ -171,7 +171,7 @@ Material Check
             </div>
           </div>
 
-          <div class="mt-3 row">
+          <div class="row border p-2">
             <div class="col-2 text-center justify-content-center align-items-center d-flex">
               <label for="" class="col-12" style="color: black;">내용</label>
             </div>
@@ -207,7 +207,7 @@ Material Check
               </div>
             </div>
           </div>
-          <div class="mt-3 row">
+          <div class="row border p-2">
             <div class="col-2 text-center justify-content-center align-items-center d-flex">
               <label for="" class=" col-12" style="color: black;">붙임</label>
             </div>
@@ -215,51 +215,79 @@ Material Check
               <div style="border: 1px solid rgb(210, 210, 210);" class="p-3 mt-2">
                 <div class="row mt-2">
                   <table class="table">
-                    <tr style="width: 25%;">
-                      <th scope="row" class="text-success align-middle">사업자등록증</th>
+                    <tr>
+                      <th scope="row" style="width: 25%;" class="text-success align-middle">사업자등록증</th>
                       <td colspan="2" style="width: 75%;">
-                        {% if material.businessLicense %}
-                        <a href="{{material.businessLicense.url}}">
-                          {{material.businessLicense.name|cut:'business_license/'}}
-                        </a>
-                        {% endif %}
+                        <ul class="list-group" id="businessLicenses_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'businessLicenses' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">납품실적증명서</th>
                       <td colspan="2">
-                        {% if material.deliveryPerformanceCertificate %}
-                        <a href="{{material.deliveryPerformanceCertificate.url}}">
-                          {{material.deliveryPerformanceCertificate.name|cut:"delivery_performance_certificate/"}}
-                        </a>
-                        {% endif %}
+                        <ul class="list-group" id="deliveryPerformanceCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'deliveryPerformanceCertificate' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">안전인증서</th>
                       <td colspan="2">
-                        {% if material.safetyCertificate %}
-                        <a
-                          href="{{material.safetyCertificate.url}}">{{material.safetyCertificate.name|cut:'safety_certificate/'}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="safetyCertificate_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'safetyCertificate' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">품질시험성적서</th>
                       <td colspan="2">
-                        {% if material.qualityTestReport %}
-                        <a
-                          href="{{material.qualityTestReport.url}}">{{material.qualityTestReport.name|cut:"quality_test_report/"}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="qualityTestReport_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'qualityTestReport' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
                       <th scope="row" class="text-success align-middle">시험성과대비표</th>
                       <td colspan="2">
-                        {% if material.testPerformanceComparisonTable %}
-                        <a
-                          href="{{material.testPerformanceComparisonTable.url}}">{{material.testPerformanceComparisonTable.name|cut:'test_performance_comparison_table/'}}</a>
-                        {% endif %}
+                        <ul class="list-group" id="testPerformanceComparisonTable_preview">
+                          {% if material.material_docs %}
+                          {% for item in material.material_docs.all %}
+                          {% if item.type == 'testPerformanceComparisonTable' %}
+                          <li class="list-group-item"><a href="{{item.file.url}}"
+                              class="link-primary">{{item.filename}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
@@ -297,7 +325,7 @@ Material Check
               </div>
             </div>
           </div>
-          <div class="mt-3 row text-center">
+          <div class="row border p-2 text-center">
             <div class="col-2">
               <label for="" class="col-12" style="color: black;">회신일자</label>
             </div>
@@ -306,7 +334,7 @@ Material Check
                 value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
             </div>
           </div>
-          <div class="mt-3 row text-center justify-content-center align-items-center d-flex">
+          <div class="row border p-2 text-center justify-content-center align-items-center d-flex">
             <div class="col-2">
               <label for="" class=" col-12" style="color: black;">검토 의견</label>
             </div>
@@ -331,7 +359,7 @@ Material Check
               </div>
             </div>
           </div>
-          <div class="mt-3 row text-center">
+          <div class="row border p-2 text-center">
             <div class="col-2">
               <label for="" class="col-12" style="color: black;">결과</label>
             </div>

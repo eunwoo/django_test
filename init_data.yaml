@@ -206,737 +206,737 @@
 - model: work.InspectionItemCategory
   pk: 1
   fields:
-    type: "비계기둥"
+    type: "수직재, 수평재, 가새재"
 - model: work.InspectionItemCategory
   pk: 2
   fields:
-    type: "띠장"
+    type: "U 헤드, 장선, 멍예"
 - model: work.InspectionItemCategory
   pk: 3
   fields:
-    type: "장선"
+    type: "비계기둥"
 - model: work.InspectionItemCategory
   pk: 4
   fields:
-    type: "가새"
+    type: "띠장"
 - model: work.InspectionItemCategory
   pk: 5
   fields:
-    type: "벽이음"
+    type: "장선"
 - model: work.InspectionItemCategory
   pk: 6
   fields:
-    type: "작업발판"
+    type: "가새"
 - model: work.InspectionItemCategory
   pk: 7
   fields:
-    type: "안전 난간대"
+    type: "벽이음"
 - model: work.InspectionItemCategory
   pk: 8
   fields:
-    type: "추락 방호망"
+    type: "작업발판"
 - model: work.InspectionItemCategory
   pk: 9
   fields:
-    type: "가설통로"
+    type: "안전 난간대"
 - model: work.InspectionItemCategory
   pk: 10
   fields:
-    type: "경사로"
+    type: "추락 방호망"
 - model: work.InspectionItemCategory
   pk: 11
   fields:
-    type: "기타"
+    type: "가설통로"
 - model: work.InspectionItemCategory
   pk: 12
   fields:
-    type: "수직재, 수평재, 가새재"
+    type: "경사로"
 - model: work.InspectionItemCategory
   pk: 13
   fields:
-    type: "U 헤드, 장선, 멍예"
+    type: "기타"
 # 세분류
 - model: work.InspectionItem
   pk: 1
   fields:
     equipment: "1"
-    categoryId: 1
+    categoryId: 3
     title: "인접하는 모든 비계기둥은 밑둥잡이로 연결되었는가"
 - model: work.InspectionItem
   pk: 2
   fields:
     equipment: "1"
-    categoryId: 1
+    categoryId: 3
     title: "모든 비계기둥은 띠장방향 간격이 1.5m 이상 1.8m 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 3
   fields:
     equipment: "1"
-    categoryId: 1
+    categoryId: 3
     title: "모든 비계기둥은 장선방향 간격이 1.5m 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 4
   fields:
     equipment: "1"
-    categoryId: 1
+    categoryId: 3
     title: "비계기둥의 최고부로부터 아래방향으로 31m를 넘는 비계기둥은 2본의 강관으로 묶어 설치되었는가"
 - model: work.InspectionItem
   pk: 5
   fields:
     equipment: "1"
-    categoryId: 1
+    categoryId: 3
     title: "모든 비계기둥과 구조물 사이의 간격은 300mm 이내로 설치되었는가"
 - model: work.InspectionItem
   pk: 6
   fields:
     equipment: "1"
-    categoryId: 2
+    categoryId: 4
     title: "모든 띠장의 수직간격은 1.5m 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 7
   fields:
     equipment: "1"
-    categoryId: 2
+    categoryId: 4
     title: "모든 첫 번째 띠장은 지상으로부터 수직간격 2m 이내로 설치되었는가"
 - model: work.InspectionItem
   pk: 8
   fields:
     equipment: "1"
-    categoryId: 2
+    categoryId: 4
     title: "띠장 겹침이음 시, 모든 띠장 간의 이격거리는 순간격 100mm 이내로 설치되었는가"
 - model: work.InspectionItem
   pk: 9
   fields:
     equipment: "1"
-    categoryId: 2
+    categoryId: 4
     title: "모든 띠장과 비계기둥의 교차부는 전용 철물을 사용하여 결속되었는가"
 - model: work.InspectionItem
   pk: 10
   fields:
     equipment: "1"
-    categoryId: 2
+    categoryId: 4
     title: "모든 띠장의 이음위치는 각 띠장끼리 최소 300mm 이상 엇갈리게 설치하였는가"
 - model: work.InspectionItem
   pk: 11
   fields:
     equipment: "1"
-    categoryId: 3
+    categoryId: 5
     title: "모든 장선은 비계의 내·외측 기둥 또는 띠장에 결속되었는가"
 - model: work.InspectionItem
   pk: 12
   fields:
     equipment: "1"
-    categoryId: 3
+    categoryId: 5
     title: "모든 장선의 간격은 1.5m 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 13
   fields:
     equipment: "1"
-    categoryId: 3
+    categoryId: 5
     title: "작업발판을 맞댐형식으로 설치하는 경우, 모든 장선은 작업 발판의 내민부분이 100mm~200mm의 범위가 되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 14
   fields:
     equipment: "1"
-    categoryId: 3
+    categoryId: 5
     title: "모든 장선의 여장길이는 띠장에서 50mm 이상 돌출하여 설치되었는가"
 - model: work.InspectionItem
   pk: 15
   fields:
     equipment: "1"
-    categoryId: 4
+    categoryId: 6
     title: "모든 가새는 비계 외측면에 40°~60° 방향으로 설치되었는가"
 - model: work.InspectionItem
   pk: 16
   fields:
     equipment: "1"
-    categoryId: 4
+    categoryId: 6
     title: "모든 가새의 배치간격은 약 10m 마다 교차하여 설치되었는가"
 - model: work.InspectionItem
   pk: 17
   fields:
     equipment: "1"
-    categoryId: 4
+    categoryId: 6
     title: "가새와 비계기둥의 모든 교차부는 전용 철물(회전형 클램프)을 사용하여 결속되었는가"
 - model: work.InspectionItem
   pk: 18
   fields:
     equipment: "1"
-    categoryId: 4
+    categoryId: 6
     title: "모든 수평 가새는 벽이음재를 부착한 높이에 각 스팬마다 설치하여 보강되었는가"
 - model: work.InspectionItem
   pk: 19
   fields:
     equipment: "1"
-    categoryId: 5
+    categoryId: 7
     title: "모든 벽이음재의 배치간격은 수직방향 5m 이하, 수평방향 5m 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 20
   fields:
     equipment: "1"
-    categoryId: 5
+    categoryId: 7
     title: "모든 비계기둥과 띠장의 결합부근에 벽이음재가 설치되었는가"
 - model: work.InspectionItem
   pk: 21
   fields:
     equipment: "1"
-    categoryId: 5
+    categoryId: 7
     title: "모든 비계의 최상단과 가장자리 끝부분에 벽이음재가 설치되었는가"
 - model: work.InspectionItem
   pk: 22
   fields:
     equipment: "1"
-    categoryId: 5
+    categoryId: 7
     title: "모든 벽이음재는 적절한 전용 철물을 사용하여 설치되었는가"
 - model: work.InspectionItem
   pk: 23
   fields:
     equipment: "1"
-    categoryId: 5
+    categoryId: 7
     title: "벽이음의 설치가 가능하지 않을 경우 버팀대를 적절히 설치하여 보강되었는가"
 - model: work.InspectionItem
   pk: 24
   fields:
     equipment: "1"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판은 2개 이상의 지지물에 고정되었는가"
 - model: work.InspectionItem
   pk: 25
   fields:
     equipment: "1"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 폭은 40cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 26
   fields:
     equipment: "1"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 틈새는 3cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 27
   fields:
     equipment: "1"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판의 돌출길이는 10cm 이상 20cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 28
   fields:
     equipment: "1"
-    categoryId: 6
+    categoryId: 8
     title: "작업발판의 최대적재하중이 표기된 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 29
   fields:
     equipment: "1"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대는 비계기둥 안쪽에 설치되었는가"
 - model: work.InspectionItem
   pk: 30
   fields:
     equipment: "1"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 상부 난간대는 바닥면으로부터 0.9m 이상, 1.2m 이하의 높이로 설치되었는가"
 - model: work.InspectionItem
   pk: 31
   fields:
     equipment: "1"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 중간 난간대는 상부 난간대와 바닥면의 중앙부에 설치되었는가"
 - model: work.InspectionItem
   pk: 32
   fields:
     equipment: "1"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 작업면으로부터 망의 설치지점까지 수직거리가 10m를 초과하지 않게 설치되었는가"
 - model: work.InspectionItem
   pk: 33
   fields:
     equipment: "1"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 수평으로 설치되고, 망의 처짐은 짧은 변 길이의 12% 이상이 되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 34
   fields:
     equipment: "1"
-    categoryId: 8
+    categoryId: 10
     title: "건축물의 바깥쪽으로 설치하는 경우 추락방호망의 내민 길이는 벽면으로부터 3m 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 35
   fields:
     equipment: "1"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)는 수평거리 30m마다 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 36
   fields:
     equipment: "1"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)의 높이 3m 이내마다 계단참이 설치되었는가"
 - model: work.InspectionItem
   pk: 37
   fields:
     equipment: "1"
-    categoryId: 9
+    categoryId: 11
     title: "가설 통로(사다리)는 적절히 고정되었는가"
 - model: work.InspectionItem
   pk: 38
   fields:
     equipment: "1"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로는 폭 90cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 39
   fields:
     equipment: "1"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로의 경사각은 30˚이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 40
   fields:
     equipment: "1"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로에 미끄럼막이가 적절한 간격으로 설치되었는가"
 - model: work.InspectionItem
   pk: 41
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "모든 강관 비계는 구조검토가 완료된 조립도에 따라 설치되었는가"
 - model: work.InspectionItem
   pk: 42
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 모든 작업자는 적절한 개인보호구(안전대, 안전모 등)를 착용하였는가"
 - model: work.InspectionItem
   pk: 43
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업지휘자는 적절히 배치되었는가"
 - model: work.InspectionItem
   pk: 44
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업상황 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 45
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "가설기자재 반입 및 반출, 작업공간에서 작업시 안전한 이격거리가 확보되었는가"
 - model: work.InspectionItem
   pk: 46
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "동일 수직면상 상하 동시작업이 없도록 적절한 조치가 이루어졌는가"
 - model: work.InspectionItem
   pk: 47
   fields:
     equipment: "1"
-    categoryId: 11
+    categoryId: 13
     title: "자재 낙하에 의한 위험 예방 조치가 이루어졌는가"
 - model: work.InspectionItem
   pk: 48
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재-수평재는 직교한가"
 - model: work.InspectionItem
   pk: 49
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재-수평재는 고정핀(전용철물)으로 흔들림 없이 결합되었는가"
 - model: work.InspectionItem
   pk: 50
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재-수직재의 연결부위는 탈락이나 꺾임이 없는가"
 - model: work.InspectionItem
   pk: 51
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "모든 최하부 수직재는 받침철물(잭 베이스)의 조절너트와 밀착되었는가"
 - model: work.InspectionItem
   pk: 52
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재와 받침철물의 겹침길이는 받침철물 전체길이의 3분의 1이상으로 설치되었는가"
 - model: work.InspectionItem 
   pk: 53
   fields:
     equipment: "2"
-    categoryId: 12
+    categoryId: 1
     title: "대각으로 설치하는 모든 가새는 외면으로 수평면에 대해 40~60° 방향으로 설치되었는가"
 - model: work.InspectionItem
   pk: 54
   fields:
     equipment: "2"
-    categoryId: 5
+    categoryId: 7
     title: "모든 벽이음재는 수직재와 수평재의 교차부에서 비계면에 대하여 직각인가"
 - model: work.InspectionItem
   pk: 55
   fields:
     equipment: "2"
-    categoryId: 5
+    categoryId: 7
     title: "모든 벽이음재는 구조물과 견고하게 연결되었는가"
 - model: work.InspectionItem
   pk: 56
   fields:
     equipment: "2"
-    categoryId: 5
+    categoryId: 7
     title: "벽이음의 설치가 가능하지 않을 경우 버팀대를 적절히 설치하여 보강되었는가"
 - model: work.InspectionItem
   pk: 57
   fields:
     equipment: "2"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판은 2개 이상의 지지물에 고정되었는가"
 - model: work.InspectionItem
   pk: 58
   fields:
     equipment: "2"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 폭은 40cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 59
   fields:
     equipment: "2"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 틈새는 3cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 60
   fields:
     equipment: "2"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판의 돌출길이는 10cm 이상 20cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 61
   fields:
     equipment: "2"
-    categoryId: 6
+    categoryId: 8
     title: "작업발판의 최대적재하중이 표기된 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 62
   fields:
     equipment: "2"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대는 비계기둥 안쪽에 설치되었는가"
 - model: work.InspectionItem
   pk: 63
   fields:
     equipment: "2"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 상부 난간대는 바닥면으로부터 0.9m 이상, 1.2m 이하의 높이로 설치되었는가"
 - model: work.InspectionItem
   pk: 64
   fields:
     equipment: "2"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 중간 난간대는 상부 난간대와 바닥면의 중앙부에 설치되었는가"
 - model: work.InspectionItem
   pk: 65
   fields:
     equipment: "2"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 작업면으로부터 망의 설치지점까지 수직거리가 10m를 초과하지 않게 설치되었는가"
 - model: work.InspectionItem
   pk: 66
   fields:
     equipment: "2"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 수평으로 설치되고, 망의 처짐은 짧은 변 길이의 12% 이상이 되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 67
   fields:
     equipment: "2"
-    categoryId: 8
+    categoryId: 10
     title: "건축물의 바깥쪽으로 설치하는 경우 추락방호망의 내민 길이는 벽면으로부터 3m 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 68
   fields:
     equipment: "2"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)는 수평거리 30m마다 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 69
   fields:
     equipment: "2"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)의 높이 3m 이내마다 계단참이 설치되었는가"
 - model: work.InspectionItem
   pk: 70
   fields:
     equipment: "2"
-    categoryId: 9
+    categoryId: 11
     title: "가설 통로(사다리)는 적절히 고정되었는가"
 - model: work.InspectionItem
   pk: 71
   fields:
     equipment: "2"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로는 폭 90cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 72
   fields:
     equipment: "2"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로의 경사각은 30˚이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 73
   fields:
     equipment: "2"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로에 미끄럼막이가 적절한 간격으로 설치되었는가"
 - model: work.InspectionItem
   pk: 74
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "모든 시스템 비계는 구조검토가 완료된 조립도에 따라 설치되었는가"
 - model: work.InspectionItem
   pk: 75
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 모든 작업자는 적절한 개인보호구(안전대, 안전모 등)를 착용하였는가"
 - model: work.InspectionItem
   pk: 76
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업지휘자는 적절히 배치되었는가"
 - model: work.InspectionItem
   pk: 77
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업상황 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 78
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "가설기자재 반입 및 반출, 작업공간에서 작업시 안전한 이격거리가 확보되었는가"
 - model: work.InspectionItem
   pk: 79
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "동일 수직면상 상하 동시작업이 없도록 적절한 조치가 이루어졌는가"
 - model: work.InspectionItem
   pk: 80
   fields:
     equipment: "2"
-    categoryId: 11
+    categoryId: 13
     title: "자재 낙하에 의한 위험 예방 조치가 이루어졌는가"
 - model: work.InspectionItem
   pk: 81
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재-수평재는 직교한가"
 - model: work.InspectionItem
   pk: 82
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재-수직재의 연결부위는 탈락이나 꺾임이 없는가"
 - model: work.InspectionItem
   pk: 83
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 가새재-수직재 또는 가새재-수평재의 연결부위는 탈락이나 꺾임이 없는가"
 - model: work.InspectionItem
   pk: 84
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 최상부 수직재는 U 헤드 잭과 밀착되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 85
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 최하부 수직재는 받침철물과 밀착되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 86
   fields:
     equipment: "3"
-    categoryId: 12
+    categoryId: 1
     title: "모든 수직재와 받침철물의 겹침길이는 받침철물 전체길이의 3분의 1이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 87
   fields:
     equipment: "3"
-    categoryId: 13
+    categoryId: 2
     title: "모든 멍에는 U 헤드의 중심에 설치되었는가"
 - model: work.InspectionItem
   pk: 88
   fields:
     equipment: "3"
-    categoryId: 13
+    categoryId: 2
     title: "모든 멍에는 U 헤드에서 이탈되지 않도록 고정되었는가"
 - model: work.InspectionItem
   pk: 89
   fields:
     equipment: "3"
-    categoryId: 13
+    categoryId: 2
     title: "경사면에 설치되는 모든 U 헤드는 쐐기 등의 보강 조치가 되었는가"
 - model: work.InspectionItem
   pk: 90
   fields:
     equipment: "3"
-    categoryId: 13
+    categoryId: 2
     title: "모든 U 헤드의 변형방지를 위해 수직재의 겹침길이는 120mm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 91
   fields:
     equipment: "3"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판은 2개 이상의 지지물에 고정되었는가"
 - model: work.InspectionItem
   pk: 92
   fields:
     equipment: "3"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 폭은 40cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 93
   fields:
     equipment: "3"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판 틈새는 3cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 94
   fields:
     equipment: "3"
-    categoryId: 6
+    categoryId: 8
     title: "모든 작업발판의 돌출길이는 10cm 이상 20cm 이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 95
   fields:
     equipment: "3"
-    categoryId: 6
+    categoryId: 8
     title: "작업발판의 최대적재하중이 표기된 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 96
   fields:
     equipment: "3"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대는 비계기둥 안쪽에 설치되었는가"
 - model: work.InspectionItem
   pk: 97
   fields:
     equipment: "3"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 상부 난간대는 바닥면으로부터 0.9m 이상, 1.2m 이하의 높이로 설치되었는가"
 - model: work.InspectionItem
   pk: 98
   fields:
     equipment: "3"
-    categoryId: 7
+    categoryId: 9
     title: "모든 안전난간대의 중간 난간대는 상부 난간대와 바닥면의 중앙부에 설치되었는가"
 - model: work.InspectionItem
   pk: 99
   fields:
     equipment: "3"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 작업면으로부터 망의 설치지점까지 수직거리가 10m를 초과하지 않게 설치되었는가"
 - model: work.InspectionItem
   pk: 100
   fields:
     equipment: "3"
-    categoryId: 8
+    categoryId: 10
     title: "모든 추락방호망은 수평으로 설치되고, 망의 처짐은 짧은 변 길이의 12% 이상이 되도록 설치되었는가"
 - model: work.InspectionItem
   pk: 101
   fields:
     equipment: "3"
-    categoryId: 8
+    categoryId: 10
     title: "건축물의 바깥쪽으로 설치하는 경우 추락방호망의 내민 길이는 벽면으로부터 3m 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 102
   fields:
     equipment: "3"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)는 수평거리 30m마다 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 103
   fields:
     equipment: "3"
-    categoryId: 9
+    categoryId: 11
     title: "가설통로(계단)의 높이 3m 이내마다 계단참이 설치되었는가"
 - model: work.InspectionItem
   pk: 104
   fields:
     equipment: "3"
-    categoryId: 9
+    categoryId: 11
     title: "가설 통로(사다리)는 적절히 고정되었는가"
 - model: work.InspectionItem
   pk: 105
   fields:
     equipment: "3"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로는 폭 90cm 이상으로 설치되었는가"
 - model: work.InspectionItem
   pk: 106
   fields:
     equipment: "3"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로의 경사각은 30˚이하로 설치되었는가"
 - model: work.InspectionItem
   pk: 107
   fields:
     equipment: "3"
-    categoryId: 10
+    categoryId: 12
     title: "모든 경사로에 미끄럼막이가 적절한 간격으로 설치되었는가"
 - model: work.InspectionItem
   pk: 108
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "모든 시스템 동바리는 구조검토가 완료된 조립도에 따라 설치되었는가"
 - model: work.InspectionItem
   pk: 109
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 모든 작업자는 적절한 개인보호구(안전대, 안전모 등)를 착용하였는가"
 - model: work.InspectionItem
   pk: 110
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업지휘자는 적절히 배치되었는가"
 - model: work.InspectionItem
   pk: 111
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "작업 중 작업상황 표지판은 적절히 설치되었는가"
 - model: work.InspectionItem
   pk: 112
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "가설기자재 반입 및 반출, 작업공간에서 작업시 안전한 이격거리가 확보되었는가"
 - model: work.InspectionItem
   pk: 113
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "동일 수직면상 상하 동시작업이 없도록 적절한 조치가 이루어졌는가"
 - model: work.InspectionItem
   pk: 114
   fields:
     equipment: "3"
-    categoryId: 11
+    categoryId: 13
     title: "자재 낙하에 의한 위험 예방 조치가 이루어졌는가"

@@ -18,4 +18,5 @@ urlpatterns = [
     path("register/user", views.registerUser, name="registerUser"),
     path("register/admin", views.registerAdmin, name="registerAdmin"),
     path("editUser/", views.editUser, name="editUser"),
+    path("id_check/", views.id_check, name="id_check"),
 ]
