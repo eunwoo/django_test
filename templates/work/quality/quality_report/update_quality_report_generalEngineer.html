@@ -96,44 +96,36 @@
       {% include 'base/messages.html' %}
     </section>
     <section>
-      <div class="container mt-3 mb-5" style="border: 1px solid rgb(210, 210, 210);">
-        <div class="row">
-          <div class="col-12 text-center my-4">
-            <label style="font-size: large;" for="">품질검사 성과 총괄표 신고서</label>
-          </div>
-        </div>
-        <div class="p-2 border row text-center">
-          <div class="col-2">
-            <label for="" class="col-12" style="color: black;">문서번호</label>
-          </div>
-          <div class="col-4">
-            품질검사 성과 총괄표 신고서-{{qty_report.docNum}}
-          </div>
-          <div class="col-2">
-            <label for="" class="col-12" style="color: black;">작성일자</label>
-          </div>
-          <div class="col-4">
-            {{qty_report.date}}
-          </div>
-        </div>
-        <div class="p-2 border row text-center">
-          <div class="col-2">
-            <label for="" class="col-12" style="color: black;">공사명</label>
-          </div>
-          <div class="col-4">
-            {{qty_report.fieldId.title}}
-          </div>
-          <div class="col-2">
-            <label for="" class="col-12" style="color: black;">공사기간</label>
-          </div>
-          <div class="col-4">
-            {{qty_report.fieldId.startDay}} ~ {{qty_report.fieldId.endDay}}
-          </div>
-        </div>
-        <div class="p-2 border row">
-          <div class="col-12">
-            <div class="row mt-3">
-              <div class="col-12">
+      <div class="container p-4 mb-5 text-center">
+        <table class="table">
+          <thead>
+            <th class="p-4" colspan="6">
+              <h1>품질검사 성과 총괄표 신고서</h1>
+            </th>
+          </thead>
+          <tbody class="align-middle">
+            <tr>
+              <td>문서번호</td>
+              <td colspan="2">
+                품질검사 성과 총괄표 신고서-{{qty_report.docNum}}
+              </td>
+              <td>작성일자</td>
+              <td colspan="2">
+                {{qty_report.date}}
+              </td>
+            </tr>
+            <tr>
+              <td>공사명</td>
+              <td colspan="2">
+                {{qty_report.fieldId.title}}
+              </td>
+              <td>공사기간</td>
+              <td colspan="2">
+                {{qty_report.fieldId.startDay}} ~ {{qty_report.fieldId.endDay}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
                 <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
                   <thead>
                     <tr>
@@ -202,21 +194,12 @@
                     {% endfor %}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-2 border row">
-          <div class="col-2 text-center justify-content-center align-items-center d-flex">
-            <label for="" class="col-12 fs-5 fw-bold" style="color: black;">붙임</label>
-          </div>
-          <div class="col-10">
-            <div class="row mt-2">
-              <div class="col-2">
-                <label for="">품질검사 성적서</label>
-              </div>
-              <div class="col">
+              </td>
+            </tr>
+            <tr>
+              <td>붙임</td>
+              <td>품질검사 성적서</td>
+              <td colspan="4">
                 <ul class="list-group">
                   {% for doc in qty_report.quality_performance_file.all %}
                   <li class="list-group-item">
@@ -224,64 +207,44 @@
                   </li>
                   {% endfor %}
                 </ul>
-              </div>
-            </div>
-            <div class="row mt-2">
-              <div class="col-2">
-              </div>
-              <div class="offset-1 col-8">
-                <div class="row mt-2">
-                  <div class='checkbox' id="uploadlist"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="p-2 border row">
-          <div class="col-2 text-center justify-content-center align-items-center d-flex">
-            <label for="" class="col-12 fs-5 fw-bold" style="color: black;">결재</label>
-          </div>
-          <div class="col-10">
-            <table style="border-collapse: collapse;" class="col-12">
-              <tr>
-                <td>
-                  <label for="">담당자</label>
-                </td>
-                <td>
-                  <label for="">현장대리인</label>
-                </td>
-                <td>
-                  <label for="">담당 건설사업관리기술인</label>
-                </td>
-                <td>
-                  <label for="">총괄 건설사업관리기술인
-                  </label>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="row">
-                    <div class="col-7">{{qty_report.writerId.name}}</div>
-                    <div class="col-5">
+              </td>
+            </tr>
+            <tr>
+              <td>결제</td>
+              <td colspan="5">
+                <table style="border-collapse: collapse;" class="col-12">
+                  <tr>
+                    <td colspan="2">
+                      담당자
+                    </td>
+                    <td colspan="2">
+                      현장대리인
+                    </td>
+                    <td colspan="2">
+                      담당 건설사업관리기술인
+                    </td>
+                    <td colspan="2">
+                      총괄 건설사업관리기술인
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {{qty_report.writerId.name}}
+                    </td>
+                    <td>
                       <img width="100%" alt="" src="{{qty_report.writerId.signImage.url}}" />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="row">
-                    <div class="col-7">{{qty_report.agentId.name}}</div>
-                    <div class="col-5">
+                    </td>
+                    <td>{{qty_report.agentId.name}}
+                    </td>
+                    <td>
                       <img width="100%" alt="" src="{{qty_report.agentId.signImage.url}}" />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="row">
-                    <div class="col-7">{{qty_report.generalEngineerId.name}}</div>
-                    <div class="col-5">
+                    </td>
+                    <td>{{qty_report.generalEngineerId.name}}
+                    </td>
+                    <td>
                       {% if qty_report.isSaveGeneralEngineer %}<img width="100%" alt=""
                         src="{{qty_report.generalEngineerId.signImage.url}}" />
-                      {% else %}(인)
+                      {% else %}
                       <!-- Button trigger modal -->
                       <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                         data-bs-target="#signModal">
@@ -313,26 +276,18 @@
                         </div>
                       </div>
                       {% endif %}
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="row">
-                    <div class="col-7">{{form.gcEng}}</div>
-                    <div class="col-5">
-                      {% if qty_report.isSuccess %}<img width="100%" alt=""
-                        src="{{qty_report.totalEngineer.signImage.url}}" />
-                      {% else %}
+                    </td>
+                    <td>
+                    </td>
+                    <td>
                       (인)
-                      {% endif %}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <br>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </div>
