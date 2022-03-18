@@ -111,7 +111,6 @@ class SafetyCheckList(models.Model):
 class MaterialSupplyReport(models.Model):
     docNum = models.AutoField(primary_key=True)
     date = models.DateField()  # 작성 일자
-    title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
 
