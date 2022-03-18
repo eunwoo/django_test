@@ -88,129 +88,95 @@
     <section id="safety" name='safety'>
       <form method="POST" id="form_safety">
         {% csrf_token %}
-        <div class="container border p-4 mb-5 text-center">
-          <div class="row m-1">
-            <h1>
-              구조 안전성 검토 신고서
-            </h1>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              문서번호
-            </div>
-            <div class="col-4 p-2">
-              구조 안전성 검토 신고서-{{safety.docNum}}
-            </div>
-            <div class="col-2 p-2">
-              작성일자
-            </div>
-            <div class="col-4 p-2">
-              {{safety.date}}
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              제목
-            </div>
-            <div class="col-10 p-2">
-              {{safety.title}}
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              공종
-            </div>
-            <div class="col-10 p-2">
-              {{safety.constructType}}
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              내용
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col p-2">
+        <div id="safety" class="container p-4 mb-5 text-center">
+          <table class="table">
+            <thead>
+              <th class="p-4" colspan="6">
+                <h1>구조 안전성 검토 신고서</h1>
+              </th>
+            </thead>
+            <tbody class="align-middle">
+              <tr>
+                <td>문서번호</td>
+                <td colspan="2">
+                  구조 안전성 검토
+                  신고서-{{safety.docNum}}
+                </td>
+                <td>작성일자</td>
+                <td colspan="2">
+                  {{safety.date}}
+                </td>
+              </tr>
+              <tr>
+                <td>제목</td>
+                <td colspan="5">
+                  {{safety.title}}
+                </td>
+              </tr>
+              <tr>
+                <td>공종</td>
+                <td colspan="5">
+                  {{safety.constructType}}
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3">내용</td>
+                <td colspan="5" class="p-4">
                   {{safety.text}}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-7"></div>
-                <div class="col">
-                  <div class="row">
-                    <div class="col-3 p-2">
-                      담당자
-                    </div>
-                    <div class="col-3 p-2">
-                      {{safety.writerId.name}}
-                    </div>
-                    <div class="col p-2">
-                      <img width="100%" alt="" src="{{safety.writerId.signImage.url}}" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-7"></div>
-                <div class="col">
-                  <div class="row">
-                    <div class="col-3 p-2">
-                      현장대리인
-                    </div>
-                    <div class="col-3 p-2">
-                      {% if safety.agentId %}
-                      {{safety.agentId.name}}
-                      {% endif %}
-                    </div>
-                    <div class="col p-2">
-                      {% if safety.isSaveAgent %}<img width="100%" alt="" src="{{safety.agentId.signImage.url}}" />
-                      {% else %}
-                      (인)
-                      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#signModal">
-                        서명
-                      </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">서명 요청</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                                <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                취소</button>
-                              <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                            </div>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2" colspan="2"></td>
+                <td>담당자</td>
+                <td>
+                  {{safety.writerId.name}}
+                </td>
+                <td>
+                  <img width="60%" alt="" src="{{safety.writerId.signImage.url}}" />
+                </td>
+              </tr>
+              <tr>
+                <td>현장대리인</td>
+                <td>
+                  {{safety.agentId.name}}
+                </td>
+                <td>
+                  {% if safety.isSaveAgent %}<img width="60%" alt="" src="{{safety.agentId.signImage.url}}" />
+                  {% else %}
+                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#signModal">
+                    서명
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">서명 요청</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
                           </div>
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            취소</button>
+                          <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                        </div>
                       </div>
-                      {% endif %}
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              붙임
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-3 p-2">
-                  구조계산서
-                </div>
-                <div class="col p-2">
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2">붙임</td>
+                <td>구조계산서</td>
+                <td colspan="4">
                   <ol class="list-group" id="구조계산서-ol">
                     {% for item in safety.docs.all %}
                     {% if '구조 계산서' in item.type %}
@@ -219,13 +185,11 @@
                     {% endif %}
                     {% endfor %}
                   </ol>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-3 p-2">
-                  시공상세도면
-                </div>
-                <div class="col p-2">
+                </td>
+              </tr>
+              <tr>
+                <td>시공상세도면</td>
+                <td colspan="4">
                   <ol class="list-group" id="시공상세도면-ol">
                     {% for item in safety.docs.all %}
                     {% if '시공상세도면' in item.type %}
@@ -233,96 +197,63 @@
                         download="{{item.filename}}">{{item.filename}}</a></li>
                     {% endif %}
                     {% endfor %}
-                  </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              회신일자
-            </div>
-            <div class="col-10 p-2">
-              <div class="col-4">
-                {% if safety.replyDate %}
-                {{safety.replyDate}}
-                {% endif %}
-              </div>
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              검토의견
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-2 p-2">
-                  담당자
-                </div>
-                <div class="col-10 p-2">
+                </td>
+              </tr>
+              <tr>
+                <td>회신일자</td>
+                <td colspan="5">
+                  {{safety.replyDate}}
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3">검토 의견</td>
+                <td>담당자</td>
+                <td colspan="4">
                   {% if safety.generalEngineerText %}
                   {{safety.generalEngineerText}}
                   {% endif %}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2 p-2">
-                  총괄관리자
-                </div>
-                <div class="col-10 p-2">
+                </td>
+              </tr>
+              <tr>
+                <td>총괄관리자</td>
+                <td colspan="4">
                   {% if safety.totalEngineerText %}
                   {{safety.totalEngineerText}}
                   {% endif %}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2 text-wrap p-2">
-                  구조안전성 검토<br>체크리스트
-                </div>
-                <div class="col-10 p-2">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              결과
-            </div>
-            <div class="col-10 p-2">
-              {% if safety.result %}
-              {{safety.result}}
-              {% endif %}
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              담당건설사업<br>관리기술인
-            </div>
-            <div class="col-2 p-2">
-              {% if safety.generalEngineerId %}
-              {{safety.generalEngineerId.name}}
-              {% endif %}
-            </div>
-            <div class="col-2 p-2">
-              {% if safety.totalEngineerId %}<img width="100%" alt=""
-                src="{{safety.generalEngineerId.signImage.url}}" />
-              {% else %}(인)
-              {% endif %}
-            </div>
-            <div class="col-2 p-2">
-              총괄건설사업<br>관리기술인
-            </div>
-            <div class="col-2 p-2">
-              {% if safety.totalEngineerId %}
-              {{safety.totalEngineerId.name}}
-              {% endif %}
-            </div>
-            <div class="col-2 p-2">
-              {% if safety.isSuccess %}<img width="100%" alt="" src="{{safety.totalEngineerId.signImage.url}}" />
-              {% else %}(인)
-              {% endif %}
-            </div>
-          </div>
+                </td>
+              </tr>
+              <tr>
+                <td>구조안전성 검토<br>체크리스트</td>
+                <td colspan="4">
+                </td>
+              </tr>
+              <tr>
+                <td>결과</td>
+                <td colspan="5">
+                  {% if safety.result %}
+                  {{safety.result}}
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td>담당건설사업<br>관리기술인</td>
+                <td>
+                  {% if safety.generalEngineerId %}
+                  {{safety.generalEngineerId.name}}
+                  {% endif %}
+                </td>
+                <td>
+                  (인)
+                </td>
+                <td>총괄건설사업<br>관리기술인</td>
+                <td>
+                </td>
+                <td>
+                  (인)
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </form>
     </section>
@@ -349,7 +280,7 @@
         signModal.modal('hide');
         signModal
           .parent()
-          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+          .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
       } else {
         Swal.fire({
           title: 'Error!',
