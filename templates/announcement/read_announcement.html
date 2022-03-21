@@ -41,14 +41,14 @@
           <div class="col-4 offset-8">
             <div class="row">
               <div class="col-6">
-                <a class="btn1 p-2 btn btn-light col-12" href="{% url 'announcement:announcement' %}"
-                  role="button">목록</a>
-              </div>
-              <div class="col-6">
                 {% if item.writer == request.user %}
                 <a class="btn1 p-2 btn btn-secondary col-12" href="{% url 'announcement:update_announcement' item.pk %}"
                   role="button">수정</a>
                 {% endif %}
+              </div>
+              <div class="col-6">
+                <a class="btn1 p-2 btn btn-light col-12" href="{% url 'announcement:announcement' %}"
+                  role="button">목록</a>
               </div>
             </div>
           </div>
@@ -57,36 +57,37 @@
     </section>
     <section>
       <div class="container">
-        <div class="row p-2 mb-3">
-          <div class="col-7">
-            <label class="form-label">글 제목</label>
-            <div class="border p-3">
-              {{item.title}}
-            </div>
-          </div>
-          <div class="row p-2 mb-3">
-            <div class="col-7">
-              <label class="form-label">내용</label>
-              <div class="border p-3 text-wrap" id="inner_content">
-                {{item.content|safe}}"
-              </div>
-            </div>
-          </div>
-          <div class="row p-2 mb-3">
-            <div class="col-7">
-              <label class="form-label">파일첨부</label>
-              {% if item.files.all %}
-              <ul class="list-group">
-                {% for file in item.files.all %}
-                <li class="list-group-item"><a href="{{file.file.url}}"
-                    class="link-primary">{{file.file.name|cut:"announcement/files/"}}</a>
-                </li>
-                {% endfor %}
-              </ul>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+        <table class="table">
+          <tbody class="align-middle">
+            <tr>
+              <th scope="row" style="width: 15%;">제목</th>
+              <td>
+                {{item.title}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">내용</th>
+              <td class="text-start">
+                {{item.content|safe}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">첨부파일</th>
+              <td>
+                {% if item.files.all %}
+                <ul class="list-group">
+                  {% for file in item.files.all %}
+                  <li class="list-group-item"><a href="{{file.file.url}}"
+                      class="link-primary">{{file.file.name|cut:"announcement/files/"}}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
   </div>
   <br><br><br><br><br>

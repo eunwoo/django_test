@@ -38,9 +38,9 @@
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-4 offset-8">
+          <div class="col-2 offset-10">
             <div class="row">
-              <div class="col-6">
+              <div class="col">
                 <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_post"
                   id="save_button">제출</button>
               </div>
@@ -53,23 +53,29 @@
       <div class="container">
         <form id="form_post" action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="row p-2 mb-3">
-            <div class="col-7">
-              <label class="form-label">글 제목</label>
-              <input type="text" class="form-control" name="title" placeholder="글 제목을 입력해주세요."
-                value="{{form.instance.title|default_if_none:''}}" />
-            </div>
-          </div>
-          <div class="row p-2 mb-3">
-            <label class="form-label">내용</label>
-            {{form.content|safe}}
-          </div>
-          <div class="row p-2 mb-3">
-            <div class="col-7">
-              <label class="form-label">파일첨부</label>
-              <input class="form-control" type="file" name="file_list" multiple>
-            </div>
-          </div>
+          <table class="table">
+            <tbody class="align-middle">
+              <tr>
+                <th scope="row" style="width: 15%;">제목</th>
+                <td>
+                  <input type="text" class="form-control" name="title" placeholder="글 제목을 입력해주세요."
+                    value="{{form.instance.title|default_if_none:''}}" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">내용</th>
+                <td>
+                  {{form.content|safe}}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">첨부파일</th>
+                <td>
+                  <input class="form-control" type="file" name="file_list" multiple>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </form>
       </div>
     </section>
