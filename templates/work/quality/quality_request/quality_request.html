@@ -54,7 +54,10 @@
                 <td style="width: 70%;">
                   문서
                 </td>
-                <td style="width: 30%;">
+                <td style="width: 10%;">
+                  작성자
+                </td>
+                <td style="width: 20%;">
                   작성 날짜
                 </td>
               </tr>
@@ -82,6 +85,9 @@
                     {% endif %}>품질검사
                     의뢰서-{{ i.docNum}}</a>
                   {% endif %}
+                </td>
+                <td>
+                  {{i.writerId.name}}
                 </td>
                 <td>
                   {{i.created_at|date:"Y-m-d"}}

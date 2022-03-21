@@ -51,15 +51,18 @@
                 <td style="width: 70%;">
                   문서
                 </td>
+                <td style="width: 10%;">
+                  작성자
+                </td>
                 {% if request.user.class2 == "일반 건설사업관리기술인" %}
                 <td style="width: 10%;">
                   체크리스트
                 </td>
-                <td style="width: 20%;">
+                <td style="width: 10%;">
                   작성 날짜
                 </td>
                 {% else %}
-                <td style="width: 30%;">
+                <td style="width: 20%;">
                   작성 날짜
                 </td>
                 {% endif %}
@@ -92,6 +95,9 @@
                     {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성 검토
                     신고서-{{ i.docNum}}</a>
                   {% endif %}
+                </td>
+                <td>
+                  {{i.writerId.name}}
                 </td>
                 {% if request.user.class2 == "일반 건설사업관리기술인" %}
                 <td>
