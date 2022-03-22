@@ -38,8 +38,11 @@
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-2 offset-10">
+          <div class="col-4 offset-8">
             <div class="row">
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="pre_save">임시저장</button>
+              </div>
               <div class="col">
                 <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_post"
                   id="save_button">제출</button>
@@ -48,6 +51,9 @@
           </div>
         </div>
       </div>
+    </section>
+    <section>
+      {% include 'base/messages.html' %}
     </section>
     <section>
       <div class="container">
@@ -84,3 +90,11 @@
 
 </main>
 {% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  $("#pre_save").click(function () {
+    $("#form_post").append('<input type="hidden" name="presave" value="1" />').submit();
+  });
+</script>
+{% endblock  %}

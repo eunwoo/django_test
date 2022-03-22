@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from . import forms, models
+from django.contrib import messages
 
 
 @login_required(login_url="/user/login/")
@@ -21,12 +22,21 @@ def create_views(request):
         if form.is_valid():
             law = form.save(commit=False)
             law.writer = request.user
+            if "presave" in request.POST:
+                law.preSave = True
             law.save()
             files = request.FILES.getlist("file_list")
             for file in files:
                 law.files.create(file=file)
+            if law.preSave == True:
+                messages.success(request, "임시저장이 완료되었습니다.")
+                return redirect("law:update_law", law.pk)
             return redirect("law:law")
     else:
+        pre_save_post = models.LawPost.objects.filter(preSave=True, writer=request.user)
+        if pre_save_post.count() > 0:
+            messages.success(request, "임시저장한 문서를 불러왔습니다.")
+            return redirect("law:update_law", pre_save_post[0].pk)
         form = forms.LawPostForm()
     return render(
         request,
@@ -43,12 +53,19 @@ def update_views(request, pk):
         if form.is_valid():
             law = form.save(commit=False)
             law.writer = request.user
+            if "presave" in request.POST:
+                law.preSave = True
+            else:
+                law.preSave = False
             law.save()
             files = request.FILES.getlist("file_list")
             if files:
                 law.files.all().delete()
             for file in files:
                 law.files.create(file=file)
+            if law.preSave == True:
+                messages.success(request, "임시저장이 완료되었습니다.")
+                return redirect("law:update_law", law.pk)
             return redirect("law:read_law", pk=pk)
     else:
         form = forms.LawPostForm(instance=instance)
