@@ -544,26 +544,6 @@ Material Check
     }
   })
 
-  // 파일 업로드 시 옆에 목록 출력
-  const value = "공급원승인문서"
-
-  const file_input_button = document.getElementById(value + "-button")
-  file_input_button.addEventListener("click", (e) => {
-    const target_div = document.getElementById(value)
-    const file_list = target_div.querySelectorAll("input")
-    const checked_files = Array.prototype.slice.call(file_list).filter((item) => {
-      return item.checked
-    })
-    const ul_div = document.getElementById("공급원ul")
-    ul_div.innerHTML = ""
-    checked_files.forEach(value => {
-      const li_div = document.createElement("li")
-      li_div.classList.add("list-group-item")
-      li_div.innerHTML = value.nextElementSibling.textContent
-      ul_div.appendChild(li_div)
-    })
-  })
-
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
     if (isChange === true || isSign === false) {
