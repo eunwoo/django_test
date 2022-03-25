@@ -379,21 +379,6 @@
                         </ul>
                       </td>
                     </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
-                      <td>
-                        {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}
-                      </td>
-                      <td colspan="4">
-                        <ul class="list-group" id="공급원ul">
-                          {% if material.docs %}
-                          {% for item in material.docs.all %}
-                          <li class="list-group-item">{{item.filename}}</li>
-                          {% endfor %}
-                          {% endif %}
-                        </ul>
-                      </td>
-                    </tr>
                   </table>
                 </div>
                 <div class="row mt-3">
@@ -614,26 +599,6 @@
       }
       return false;
     }
-  })
-
-  // 파일 업로드 시 옆에 목록 출력
-  const value = "공급원승인문서"
-
-  const file_input_button = document.getElementById(value + "-button")
-  file_input_button.addEventListener("click", (e) => {
-    const target_div = document.getElementById(value)
-    const file_list = target_div.querySelectorAll("input")
-    const checked_files = Array.prototype.slice.call(file_list).filter((item) => {
-      return item.checked
-    })
-    const ul_div = document.getElementById("공급원ul")
-    ul_div.innerHTML = ""
-    checked_files.forEach(value => {
-      const li_div = document.createElement("li")
-      li_div.classList.add("list-group-item")
-      li_div.innerHTML = value.nextElementSibling.textContent
-      ul_div.appendChild(li_div)
-    })
   })
 
   // 서명 요청 시 서명 목록 로드
