@@ -262,20 +262,6 @@ Material Check
                         {% endif %}
                       </td>
                     </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">가설기자재 공급원
-                        승인 문서</th>
-                      <td>
-                        <ul class="list-group">
-                          {% if material.docs %}
-                          {% for doc in material.docs.all %}
-                          <li class="list-group-item"><a href="{{doc.file.url}}"
-                              download="{{doc.filename}}">{{doc.filename}}</a></li>
-                          {% endfor %}
-                          {% endif %}
-                        </ul>
-                      </td>
-                    </tr>
                   </table>
                 </div>
                 <div class="row mt-3">
