@@ -1,4 +1,7 @@
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
+
+from user.models import CustomUser
 
 from . import forms
 from .utils import decodeDesignImage
@@ -87,3 +90,13 @@ def editUser(request):
         else:
             form = forms.UserForm(instance=user)
         return render(request, "auth/editUser.html", {"form": form})
+
+
+def id_check(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        if CustomUser.objects.filter(username=username).exists():
+            return JsonResponse({"result": "deny"})
+        else:
+            return JsonResponse({"result": "success"})
+    return Http404()

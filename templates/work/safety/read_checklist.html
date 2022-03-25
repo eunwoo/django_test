@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-Safety Check
+구조 안전성 검토 체크리스트
 {% endblock %}
 {% block style %}
 <style>
@@ -91,7 +91,7 @@ Safety Check
                 {% if forloop.counter0 == 0 %}
                 <th class="align-middle" rowspan="{{checkmenu|length}}">{{menu.safetyCheckMenuId.checkType.title}}</th>
                 {% endif %}
-                <td>{{menu.safetyCheckMenuId.content}}</td>
+                <td class="text-start">{{menu.safetyCheckMenuId.content}}</td>
                 <td>
                   {% if menu.result == "1" %}
                   <i class="bi bi-check"></i>

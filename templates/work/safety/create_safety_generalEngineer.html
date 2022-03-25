@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-Safety Check
+구조 안전성 검토 신고서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -425,6 +425,14 @@ Safety Check
       Swal.fire({
         title: 'Error!',
         text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    } else if ('{{safety.checklistDate}}' === 'None') {
+      Swal.fire({
+        title: 'Error!',
+        text: '체크리스트를 작성해주세요.',
         icon: 'error',
         confirmButtonText: '닫기'
       })

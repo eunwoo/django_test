@@ -1,96 +1,98 @@
 {% extends 'base/head.html' %}
 
 {% block title %}
-  User Agreement
+일반관리자 회원가입
 {% endblock %}
 
 {% block javascript %}
-  <script>
-    $(document).ready(function () {
-      $("#agree").on("click", function () {
-        if (($('#checkbox1').is(':checked')) && ($('#checkbox2').is(':checked'))) {
-          $("#next").attr("href", "{% url 'user:registerUser' %}")
-        } else {
-          $("#message").html("<div class='alert alert-danger mt-2'><strong>모든 확인란을 선택하십시오</strong>  <br></div>");
-        }
-      });
+<script>
+  $(document).ready(function () {
+    $("#agree").on("click", function () {
+      if (($('#checkbox1').is(':checked')) && ($('#checkbox2').is(':checked'))) {
+        $("#next").attr("href", "{% url 'user:registerUser' %}")
+      } else {
+        $("#message").html("<div class='alert alert-danger mt-2'><strong>모든 확인란을 선택하십시오</strong>  <br></div>");
+      }
     });
-  </script>
+  });
+</script>
 {% endblock %}
 
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 
 {% endblock %}
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      <section>
-        <br>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">회원가입</a>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    <section>
+      <br>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">회원가입
                 </li>
-                <li class="breadcrumb-item">회원 유형</a>
-              </li>
-              <li class="breadcrumb-item">이용 약관 동의</a>
-            </li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="row">
-      <div class="col-11 offset-1">
-        <input type="checkbox" class="checkbox1" id="checkbox1">
-        <label for="" class="col-12">시스템 이용 약관 동의 (필수)</label>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-11 offset-1 d-flex align-items-center justify-content-center" style="border: 1px solid black; height: 100px;">
-        <label for="">조립가설기자재 품질평가 관리 시스템 이용 약관</label>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-11 offset-1">
-        <input type="checkbox" class="checkbox2" id="checkbox2">
-        <label for="" class="col-12">개인정보 수집 및 이용 동의 (필수)</label>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-11 offset-1 d-flex align-items-center justify-content-center" style="border: 1px solid black; height: 100px;">
-        <label for="">개인정보 수집 및 이용 약관</label>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-5 offset-4 text-center" id='message'>
-        <div>
-          <p>모두 동의해야합니다</p>
+                <li class="breadcrumb-item">회원 유형
+                </li>
+                <li class="breadcrumb-item">이용 약관 동의
+                </li>
+              </ol>
+            </nav>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-11 offset-1 text-center">
-        <a href="#" id="next">
-          <button class="btn btn-primary" id="agree">확인</button>
-        </a>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-11 offset-1">
+            <input type="checkbox" class="checkbox1" id="checkbox1">
+            <label for="" class="col-12">시스템 이용 약관 동의 (필수)</label>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-11 offset-1 d-flex align-items-center justify-content-center"
+            style="border: 1px solid black; height: 100px;">
+            <label for="">조립가설기자재 품질평가 관리 시스템 이용 약관</label>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-11 offset-1">
+            <input type="checkbox" class="checkbox2" id="checkbox2">
+            <label for="" class="col-12">개인정보 수집 및 이용 동의 (필수)</label>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-11 offset-1 d-flex align-items-center justify-content-center"
+            style="border: 1px solid black; height: 100px;">
+            <label for="">개인정보 수집 및 이용 약관</label>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-5 offset-4 text-center" id='message'>
+            <div>
+              <p>모두 동의해야합니다</p>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-11 offset-1 text-center">
+            <a href="#" id="next">
+              <button class="btn btn-primary" id="agree">확인</button>
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
   </div>
-</div>
 </main>
 {% endblock %}
