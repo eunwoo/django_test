@@ -76,6 +76,10 @@ https://ssungkang.tistory.com/entry/Django-ChoiceField-%EC%82%AC%EC%9A%A9%ED%95%
 
 https://stackoverflow.com/questions/3429878/automatic-creation-date-for-django-model-form-objects
 
+# PDF 이어서 붙이기
+
+https://medium.com/nerd-for-tech/dynamically-create-and-merge-pdfs-in-angular-using-jspdf-and-pdf-lib-aa82ae35f1e3
+
 # 수정해야 할 사항
 
 - ~가입시 이미지 전송이 안됨 => 이전에는 되는 것처럼 보이게만 짜둠~ => 해결완료
