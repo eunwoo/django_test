@@ -273,7 +273,8 @@
                     <tr>
                       <th scope="row" class="text-success align-middle" style="width: 25%;">사업자등록증</th>
                       <td colspan="5" style="width: 75%;">
-                        <input class="form-control" type="file" id="businessLicenses" name="businessLicenses" multiple>
+                        <input class="form-control" type="file" id="businessLicenses" name="businessLicenses"
+                          accept=".pdf" multiple>
                         <ul class="list-group" id="businessLicenses_preview">
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
@@ -289,7 +290,7 @@
                       <th scope="row" class="text-success align-middle">납품실적증명서</th>
                       <td colspan="5">
                         <input class="form-control" type="file" id="deliveryPerformanceCertificate"
-                          name="deliveryPerformanceCertificate" multiple>
+                          name="deliveryPerformanceCertificate" accept=".pdf" multiple>
                         <ul class="list-group" id="deliveryPerformanceCertificate_preview">
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
@@ -305,7 +306,7 @@
                       <th scope="row" class="text-success align-middle">안전인증서</th>
                       <td colspan="5">
                         <input class="form-control" type="file" id="safetyCertificate" name="safetyCertificate"
-                          multiple>
+                          accept=".pdf" multiple>
                         <ul class="list-group" id="safetyCertificate_preview">
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
@@ -321,7 +322,7 @@
                       <th scope="row" class="text-success align-middle">품질시험성적서</th>
                       <td colspan="5">
                         <input class="form-control" type="file" id="qualityTestReport" name="qualityTestReport"
-                          multiple>
+                          accept=".pdf" multiple>
                         <ul class="list-group" id="qualityTestReport_preview">
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
@@ -337,7 +338,7 @@
                       <th scope="row" class="text-success align-middle">시험성과대비표</th>
                       <td colspan="5">
                         <input class="form-control" type="file" id="testPerformanceComparisonTable"
-                          name="testPerformanceComparisonTable" multiple>
+                          name="testPerformanceComparisonTable" accept=".pdf" multiple>
                         <ul class="list-group" id="testPerformanceComparisonTable_preview">
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}

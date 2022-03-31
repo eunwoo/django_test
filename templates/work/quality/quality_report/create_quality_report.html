@@ -276,7 +276,8 @@
                 <td>붙임</td>
                 <td>품질검사 성적서</td>
                 <td colspan="4" class="p-2">
-                  <input class="form-control" type="file" id="formFileMultiple" name="docs_files" multiple>
+                  <input class="form-control" type="file" id="formFileMultiple" name="docs_files" accept=".pdf"
+                    multiple>
                   <ul class="list-group" id="file_preview">
                     {% for file in doc.quality_performance_file.all %}
                     <li class="list-group-item">{{file.title}}</li>
