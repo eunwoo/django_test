@@ -43,10 +43,14 @@ def create_safety(request):
 @login_required(login_url="/user/login/")
 def read_safety(request, pk):
     safety = read_safety_service(request.user, pk)
+    safety_url = list(map(lambda x: x.file.url, safety.docs.all()))
     return render(
         request,
         "work/safety/read_safety.html",
-        {"safety": safety},
+        {
+            "safety": safety,
+            "safety_url": safety_url,
+        },
     )
 
 

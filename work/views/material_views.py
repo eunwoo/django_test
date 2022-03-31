@@ -59,10 +59,11 @@ def require_sign_material(request):
 @login_required(login_url="/user/login/")
 def read_material(request, pk):
     material = read_material_service(request.user, pk)
+    material_url = list(map(lambda x: x.file.url, material.material_docs.all()))
     return render(
         request,
         "work/material/read_material.html",
-        {"material": material},
+        {"material": material, "material_url": material_url},
     )
 
 
