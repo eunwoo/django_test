@@ -203,20 +203,6 @@
                       </ul>
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="row" class="text-success align-middle">가설기자재 공급원
-                      승인 문서</th>
-                    <td colspan="2">
-                      <ul class="list-group">
-                        {% if material.docs %}
-                        {% for doc in material.docs.all %}
-                        <li class="list-group-item"><a href="{{doc.file.url}}"
-                            download="{{doc.filename}}">{{doc.filename}}</a></li>
-                        {% endfor %}
-                        {% endif %}
-                      </ul>
-                    </td>
-                  </tr>
                 </table>
               </td>
             </tr>
@@ -286,6 +272,6 @@
 
 {% block javascript %}
 
-{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="material" file_name="자재 공급원 신고서" docNum=material.docNum %}
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="material" file_name="자재 공급원 신고서" docNum=material.docNum pdf_list=material_url %}
 
 {% endblock %}
