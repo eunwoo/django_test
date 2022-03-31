@@ -201,6 +201,6 @@
 
 {% block javascript %}
 
-{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="safety" file_name="구조 안전성 검토 신고서" docNum=safety.docNum %}
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="safety" file_name="구조 안전성 검토 신고서" docNum=safety.docNum pdf_list=safety_url %}
 
 {% endblock %}
