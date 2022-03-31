@@ -33,10 +33,16 @@ def quality_report(request):
 @login_required(login_url="/user/login/")
 def read_quality_report(request, pk):
     qty_report = read_qty_report_service(request.user, pk)
+    qty_report_file_url = list(
+        map(lambda x: x.doc.url, qty_report.quality_performance_file.all())
+    )
     return render(
         request,
         "work/quality/quality_report/read_quality_report.html",
-        {"qty_report": qty_report},
+        {
+            "qty_report": qty_report,
+            "qty_report_file_url": qty_report_file_url,
+        },
     )
 
 

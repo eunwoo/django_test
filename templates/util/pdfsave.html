@@ -1,11 +1,12 @@
 {% load static %}
 
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
 <script src="{% static '/js/html2canvas.min.js' %}"></script>
 <script src="{% static '/js/jspdf.min.js' %}"></script>
 <script>
   $(document).ready(function () {
     $('#{{save_btn}}').click(function () { // pdf저장 button id
-      html2canvas(document.getElementById('{{target_div}}')).then(function (canvas) { //저장 영역 div id
+      html2canvas(document.getElementById('{{target_div}}')).then(async function (canvas) { //저장 영역 div id
         // 캔버스를 이미지로 변환
         var imgData = canvas.toDataURL('image/png');
 
@@ -30,7 +31,36 @@
         }
 
         // 파일 저장
-        doc.save('{{file_name}}-{{docNum}}.pdf');
+        //doc.save('{{file_name}}-{{docNum}}.pdf');
+        let arrayB = doc.output('arraybuffer');
+
+        const pdfDoc = await PDFLib.PDFDocument.create();
+        const firstDoc = await PDFLib.PDFDocument.load(arrayB);
+
+        const firstPage = await pdfDoc.copyPages(firstDoc, firstDoc.getPageIndices());
+
+        firstPage.forEach(page => pdfDoc.addPage(page));
+
+        const pdf_origin = '{{pdf_list|join:","|default:""}}'
+        const pdf_files = pdf_origin !== '' ? pdf_origin.split(",") : [];
+        for (const pdf_url of pdf_files) {
+          const pdfBytes = await fetch(pdf_url).then(res => res.arrayBuffer());
+          const pdfOriginDoc = await PDFLib.PDFDocument.load(pdfBytes);
+          const pdfPage = await pdfDoc.copyPages(pdfOriginDoc, pdfOriginDoc.getPageIndices());
+          pdfPage.forEach(page => pdfDoc.addPage(page));
+        }
+
+        const pdfBytes = await pdfDoc.save();
+
+        const file = new Blob([pdfBytes], {
+          type: 'application/pdf'
+        });
+        const fileURL = URL.createObjectURL(file);
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = '{{file_name}}-{{docNum}}.pdf';
+        a.click();
+        URL.revokeObjectURL(fileURL);
       });
     });
   })

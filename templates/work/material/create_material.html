@@ -349,21 +349,6 @@
                         </ul>
                       </td>
                     </tr>
-                    <tr>
-                      <th scope="row" class="text-success align-middle">가설기자재 공급원 승인 문서</th>
-                      <td>
-                        {% include 'work/material/load_docs_modal.html' with title="공급원승인문서" contents=accept_docs %}
-                      </td>
-                      <td colspan="4">
-                        <ul class="list-group" id="공급원ul">
-                          {% if material.docs %}
-                          {% for item in material.docs.all %}
-                          <li class="list-group-item">{{item.filename}}</li>
-                          {% endfor %}
-                          {% endif %}
-                        </ul>
-                      </td>
-                    </tr>
                   </table>
                 </td>
               </tr>
