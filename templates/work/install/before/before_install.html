@@ -67,7 +67,7 @@
                   <a {% if i.isSuccess == False %}
                     href="{% url 'work:update_before_install_checklist' type=type pk=i.pk %}" class="link-primary"
                     {% else %} href="{% url 'work:read_before_checklist' type=type pk=i.pk %}" class="link-secondary"
-                    {% endif %}>{{type}} 설치작업 전 점검 체크리스트-{{i.pk}}</a>
+                    {% endif %}>{{type}} 설치작업 전 점검 체크리스트-{{i.pk}}-{{i.title}}</a>
                 </td>
                 <td>
                   {{i.created_at|date:"Y년 m월 d일"}}

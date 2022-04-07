@@ -229,6 +229,7 @@ class MaterialDocs(models.Model):
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=90)  # 제목
     goods_choice = [
         ("", "품명을 선택해 주세요"),
         ("1", "강관비계용 부재 (비계용 강관)"),
@@ -306,7 +307,7 @@ class QualityInspectionRequest(models.Model):
 class QualityPerformanceReport(models.Model):
     docNum = models.AutoField(primary_key=True)  # 문서번호
     date = models.DateField()  # 작성일자
-    title = models.CharField(max_length=60)  # 공사명
+    title = models.CharField(max_length=90)  # 제목
     fieldId = models.ForeignKey(
         Field,
         on_delete=models.SET_NULL,
@@ -400,6 +401,7 @@ class QualityPerformanceFile(models.Model):
 class BeforeInstallCheckList(models.Model):
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
+    title = models.CharField(max_length=90)  # 제목
     locateId = models.ForeignKey(
         InstallLocate,
         on_delete=models.SET_NULL,
@@ -463,6 +465,7 @@ class BeforeMeasure(models.Model):
 class InstallCheckList(models.Model):
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
+    title = models.CharField(max_length=90)  # 제목
     locateId = models.ForeignKey(
         InstallLocate,
         on_delete=models.SET_NULL,

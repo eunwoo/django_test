@@ -71,19 +71,19 @@
                     {% elif i.isCheckManager == False %} href="/work/update_quality_request/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_quality_request' i.docNum %}"
                     class="link-secondary" {% endif %}>품질검사
-                    의뢰서-{{ i.docNum}}</a>
+                    의뢰서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "현장 대리인" %}
                   <a {% if i.isCheckAgent == False and i.isSuccess == True %}
                     href="{% url 'work:read_quality_request' i.docNum %}" class="link-success"
                     {% elif i.isCheckAgent == False %} href="/work/update_quality_request/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_quality_request' i.docNum %}"
                     class="link-secondary" {% endif %}>품질검사
-                    의뢰서-{{ i.docNum}}</a>
+                    의뢰서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
                   <a {% if i.isSuccess == False %} href="/work/update_quality_request/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_quality_request' i.docNum %}" class="link-secondary"
                     {% endif %}>품질검사
-                    의뢰서-{{ i.docNum}}</a>
+                    의뢰서-{{ i.docNum}}-{{i.title}}</a>
                   {% endif %}
                 </td>
                 <td>
