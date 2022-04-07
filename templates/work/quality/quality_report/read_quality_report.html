@@ -51,14 +51,14 @@
         <table class="table">
           <thead>
             <th class="p-4" colspan="6">
-              <h1>품질검사 성과 총괄표 신고서</h1>
+              <h1>품질검사 성과 총괄표</h1>
             </th>
           </thead>
           <tbody class="align-middle">
             <tr>
               <td>문서번호</td>
               <td colspan="2">
-                품질검사 성과 총괄표 신고서-{{qty_report.docNum}}
+                품질검사 성과 총괄표-{{qty_report.docNum}}
               </td>
               <td>작성일자</td>
               <td colspan="2">
@@ -73,6 +73,12 @@
               <td>공사기간</td>
               <td colspan="2">
                 {{qty_report.fieldId.startDay}} ~ {{qty_report.fieldId.endDay}}
+              </td>
+            </tr>
+            <tr>
+              <td>제목</td>
+              <td colspan="5">
+                {{qty_report.title}}
               </td>
             </tr>
             <tr>
@@ -231,6 +237,6 @@
 
 {% block javascript %}
 
-{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="qty_report" file_name="품질검사 성과 총괄표 신고서" docNum=qty_report.docNum pdf_list=qty_report_file_url %}
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="qty_report" file_name="품질검사 성과 총괄표" docNum=qty_report.docNum pdf_list=qty_report_file_url %}
 
 {% endblock %}

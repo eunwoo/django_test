@@ -151,6 +151,13 @@
                 </div>
               </td>
             </tr>
+            <tr>
+              <td>제목</td>
+              <td colspan="3">
+                <input type="text" class="form-control" name="title" placeholder="제목을 입력해주세요."
+                  value="{{form.instance.title|default_if_none:''}}" required />
+              </td>
+            </tr>
           </table>
           <table class="table table-bordered text-break">
             <thead>

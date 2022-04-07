@@ -110,14 +110,14 @@
           <table class="table">
             <thead>
               <th class="p-4" colspan="6">
-                <h1>품질검사 성과 총괄표 신고서</h1>
+                <h1>품질검사 성과 총괄표</h1>
               </th>
             </thead>
             <tbody class="align-middle">
               <tr>
                 <td>문서번호</td>
                 <td colspan="2">
-                  품질검사 성과 총괄표 신고서-{{docNum}}
+                  품질검사 성과 총괄표-{{docNum}}
                 </td>
                 <td>작성일자</td>
                 <td colspan="2">
@@ -133,6 +133,13 @@
                 <td>공사기간</td>
                 <td colspan="2">
                   {{field.startDay}} ~ {{field.endDay}}
+                </td>
+              </tr>
+              <tr>
+                <td>제목</td>
+                <td colspan="5">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요."
+                    value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>

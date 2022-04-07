@@ -9,4 +9,5 @@ class BeforeInstallCheckListForm(forms.ModelForm):
         fields = [
             "date",
             "detailLocate",
+            "title",
         ]

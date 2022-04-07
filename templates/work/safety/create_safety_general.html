@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-구조 안전성 검토 신고서 작성
+구조 안전성 검토서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -31,7 +31,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토서</li>
               </ol>
             </nav>
           </div>
@@ -102,15 +102,15 @@
           <table class="table">
             <thead>
               <th class="p-4" colspan="6">
-                <h1>구조 안전성 검토 신고서</h1>
+                <h1>구조 안전성 검토서</h1>
               </th>
             </thead>
             <tbody class="align-middle">
               <tr>
                 <td>문서번호</td>
                 <td colspan="2">
-                  구조 안전성 검토
-                  신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
+                  구조 안전성
+                  검토서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
                 </td>
                 <td>작성일자</td>
                 <td colspan="2">
@@ -129,8 +129,8 @@
                 <td>공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect">
-                    <option value="">투입 공종을
-                      선택해주세요
+                    <option value="">
+                      투입 공종을 선택해주세요.
                     </option>
                     <option value="건축">
                       건축

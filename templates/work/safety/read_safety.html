@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-구조 안전성 검토 신고서
+구조 안전성 검토서
 {% endblock %}
 {% block style %}
 <style>
@@ -31,7 +31,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토서</li>
               </ol>
             </nav>
           </div>
@@ -44,13 +44,13 @@
         <table class="table">
           <thead>
             <th class="p-4" colspan="6">
-              <h1>구조 안전성 검토 신고서</h1>
+              <h1>구조 안전성 검토서</h1>
             </th>
           </thead>
           <tbody class="align-middle">
             <tr>
               <td>문서번호</td>
-              <td colspan="2">구조 안전성 검토 신고서-{{safety.docNum}}</td>
+              <td colspan="2">구조 안전성 검토서-{{safety.docNum}}</td>
               <td>작성일자</td>
               <td colspan="2">{{safety.date}}</td>
             </tr>
@@ -201,6 +201,6 @@
 
 {% block javascript %}
 
-{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="safety" file_name="구조 안전성 검토 신고서" docNum=safety.docNum pdf_list=safety_url %}
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="safety" file_name="구조 안전성 검토서" docNum=safety.docNum pdf_list=safety_url %}
 
 {% endblock %}

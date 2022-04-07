@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-자재 공급원 신고서 작성
+자재 공급원 문서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -29,7 +29,7 @@
                 <li class="breadcrumb-item" aria-current="page">
                   <a href="{% url 'work:material' %}">자재 반입</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">자재 공급원 문서</li>
               </ol>
             </nav>
           </div>
@@ -81,14 +81,14 @@
           <table class="table">
             <thead>
               <th class="p-4" colspan="6">
-                <h1>자재 공급원 신고서</h1>
+                <h1>자재 공급원 문서</h1>
               </th>
             </thead>
             <tbody class="align-middle">
               <tr>
                 <td>문서번호</td>
                 <td colspan="2">
-                  자재 공급원 신고서-{{material.docNum}}
+                  자재 공급원 문서-{{material.docNum}}
                 </td>
                 <td>작성일자</td>
                 <td colspan="2">
@@ -103,6 +103,14 @@
                 <td>자재명</td>
                 <td colspan="2">
                   가설기자재
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  제목
+                </td>
+                <td colspan="5">
+                  {{material.title}}
                 </td>
               </tr>
               <tr>

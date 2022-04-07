@@ -8,6 +8,7 @@ class GeneralManagerQualityInspectionRequestForm(forms.ModelForm):
         model = QualityInspectionRequest
         fields = [
             "goods",
+            "title",
             "size",
             "sampleQuentity",
             "sampleOrigin",
@@ -19,6 +20,9 @@ class GeneralManagerQualityInspectionRequestForm(forms.ModelForm):
             "isImportFacility",
         ]
         widgets = {
+            "title": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "제목을 입력해주세요"}
+            ),
             "goods": forms.Select(
                 attrs={"class": "form-select"},
                 choices=QualityInspectionRequest.goods_choice,
