@@ -128,6 +128,13 @@
                 </td>
               </tr>
               <tr>
+                <td>제목</td>
+                <td colspan="5">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목"
+                    value="{{form.instance.title|default_if_none:''}}" required />
+                </td>
+              </tr>
+              <tr>
                 <td>공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect" required>

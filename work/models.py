@@ -114,6 +114,7 @@ class MaterialSupplyReport(models.Model):
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
 
+    title = models.CharField(max_length=90)  # 제목
     replyDate = models.DateField(null=True)  # 회신 일자
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
