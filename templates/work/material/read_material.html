@@ -135,8 +135,8 @@
                         {% if material.material_docs %}
                         {% for item in material.material_docs.all %}
                         {% if item.type == 'businessLicenses' %}
-                        <li class="list-group-item"><a href="{{item.file.url}}"
-                            class="link-primary">{{item.filename}}</a></li>
+                        <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                            download="{{item.filename}}">{{item.filename}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -150,8 +150,8 @@
                         {% if material.material_docs %}
                         {% for item in material.material_docs.all %}
                         {% if item.type == 'deliveryPerformanceCertificate' %}
-                        <li class="list-group-item"><a href="{{item.file.url}}"
-                            class="link-primary">{{item.filename}}</a></li>
+                        <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                            download="{{item.filename}}">{{item.filename}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -165,8 +165,8 @@
                         {% if material.material_docs %}
                         {% for item in material.material_docs.all %}
                         {% if item.type == 'safetyCertificate' %}
-                        <li class="list-group-item"><a href="{{item.file.url}}"
-                            class="link-primary">{{item.filename}}</a></li>
+                        <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                            download="{{item.filename}}">{{item.filename}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -180,8 +180,8 @@
                         {% if material.material_docs %}
                         {% for item in material.material_docs.all %}
                         {% if item.type == 'qualityTestReport' %}
-                        <li class="list-group-item"><a href="{{item.file.url}}"
-                            class="link-primary">{{item.filename}}</a></li>
+                        <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                            download="{{item.filename}}">{{item.filename}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -195,8 +195,8 @@
                         {% if material.material_docs %}
                         {% for item in material.material_docs.all %}
                         {% if item.type == 'testPerformanceComparisonTable' %}
-                        <li class="list-group-item"><a href="{{item.file.url}}"
-                            class="link-primary">{{item.filename}}</a></li>
+                        <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                            download="{{item.filename}}">{{item.filename}}</a></li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
