@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import DocsFile, Field
@@ -240,3 +240,13 @@ def read_material_service(user, pk):
         material.isCheckGeneralEngineer = True
     material.save()
     return material
+
+
+def delete_materials_service(request):
+    if request.method == "POST":
+        safety_list = request.POST.getlist("delete_list[]")
+        for safety in safety_list:
+            safety = MaterialSupplyReport.objects.get(docNum=safety)
+            safety.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)
