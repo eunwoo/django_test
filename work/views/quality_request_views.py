@@ -8,6 +8,7 @@ from work.models import QualityInspectionRequest
 from ..services.quality_request_services import (
     assign_user_for_qty_request,
     create_quality_request_service,
+    delete_qty_requests_service,
     get_qty_request_list_by_user,
     read_qty_request_service,
     update_quality_request_service,
@@ -68,3 +69,8 @@ def require_sign_quality_request(request):
         )
         return redirect("work:quality_request")
     return Http404("잘못된 접근입니다.")
+
+
+@login_required(login_url="/user/login/")
+def delete_qty_requests(request):
+    return delete_qty_requests_service(request)

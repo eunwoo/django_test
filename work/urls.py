@@ -32,11 +32,20 @@ safety_url = [
     path(
         "read_checklist/<int:pk>/", safety_views.read_checklist, name="read_checklist"
     ),
+    path(
+        "delete_safeties/",
+        safety_views.delete_safeties,
+        name="delete_safeties",
+    ),
 ]
 
 material_url = [
     path("material/", material_views.material, name="material"),
-    path("create_material/", material_views.create_material, name="create_material"),
+    path(
+        "create_material/",
+        material_views.create_material,
+        name="create_material",
+    ),
     path(
         "update_material/<int:pk>/",
         material_views.update_material,
@@ -47,7 +56,16 @@ material_url = [
         material_views.require_sign_material,
         name="require_sign_material",
     ),
-    path("read_material/<int:pk>/", material_views.read_material, name="read_material"),
+    path(
+        "read_material/<int:pk>/",
+        material_views.read_material,
+        name="read_material",
+    ),
+    path(
+        "delete_materials/",
+        material_views.delete_materials,
+        name="delete_materials",
+    ),
 ]
 
 quality_request_url = [
@@ -76,6 +94,11 @@ quality_request_url = [
         quality_request_views.read_quality_request,
         name="read_quality_request",
     ),
+    path(
+        "delete_quality_requests/",
+        quality_request_views.delete_qty_requests,
+        name="delete_quality_requests",
+    ),
 ]
 
 quality_report_url = [
@@ -103,6 +126,11 @@ quality_report_url = [
         "read_quality_report/<int:pk>/",
         quality_report_views.read_quality_report,
         name="read_quality_report",
+    ),
+    path(
+        "delete_quality_reports/",
+        quality_report_views.delete_quality_report,
+        name="delete_quality_reports",
     ),
 ]
 
@@ -147,6 +175,11 @@ before_install_check_url = [
         before_install_views.read_before_checklist,
         name="read_before_checklist",
     ),
+    path(
+        "delete_before_install_checklists/",
+        before_install_views.before_install_checklists_delete_service,
+        name="delete_before_install_checklists",
+    ),
 ]
 
 install_check_url = [
@@ -174,6 +207,11 @@ install_check_url = [
         "required_cm_install/<str:type>/",
         install_views.required_cm,
         name="required_cm_install",
+    ),
+    path(
+        "delete_install_checklists/",
+        install_views.delete_install_checklists,
+        name="delete_install_checklists",
     ),
 ]
 

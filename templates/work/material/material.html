@@ -36,11 +36,14 @@
     <section>
       <div class="container">
         {% if request.user.class2 == '일반 관리자' %}
-        <div class="row">
+        <div class="row justify-content-between">
           <div class="col-3">
             <a href="{% url 'work:create_material' %}">
               <button class="btn mb-2">자재 공급원 문서 작성하기</button>
             </a>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-danger" onclick="delete_btn_click()">삭제</button>
           </div>
         </div>
         {% endif %}
@@ -48,9 +51,16 @@
           <div class="col-12">
             <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
               <tr>
+                {% if request.user.class2 == '일반 관리자' %}
+                <td style="width: 5%;"></td>
+                <td style="width: 65%;">
+                  문서
+                </td>
+                {% else %}
                 <td style="width: 70%;">
                   문서
                 </td>
+                {% endif %}
                 <td style="width: 10%;">
                   작성자
                 </td>
@@ -60,6 +70,11 @@
               </tr>
               {% for i in materialitems %}
               <tr>
+                {% if request.user.class2 == '일반 관리자' %}
+                <td>
+                  <input type="checkbox" value="{{i.docNum}}">
+                </td>
+                {% endif %}
                 <td>
                   <!--관리자 유형마다 확인이 다름-->
                   {% if request.user.class2 == "일반 관리자" %}
@@ -141,4 +156,39 @@
   </div>
   <br><br><br><br><br>
 </main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  const delete_btn_click = async () => {
+    const delete_nodes = document.querySelectorAll('input[type=checkbox]:checked');
+    const delete_list = Array.from(delete_nodes).map(node => node.value);
+    const result = (await $.ajax({
+      url: "{% url 'work:delete_materials' %}",
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        delete_list: delete_list
+      }
+    })).result;
+    if (result == "success") {
+      Swal.fire(
+        '완료!',
+        '삭제되었습니다.',
+        'success'
+      ).then(() => {
+        location.reload();
+      })
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: '삭제에 실패하였습니다.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+    }
+  }
+</script>
 {% endblock %}

@@ -7,6 +7,7 @@ from ..models import SafetyCheckMenu, SafetyReport
 from ..services.safety_services import (
     create_checklist_service,
     create_safety_service,
+    delete_safeties,
     get_sign_users,
     read_checklist_service,
     read_safety_service,
@@ -127,5 +128,5 @@ def read_checklist(request, pk):
 
 
 @login_required(login_url="/user/login/")
-def delete_safety(request, pk):
-    pass
+def delete_safety(request):
+    return delete_safeties(request)

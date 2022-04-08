@@ -11,6 +11,7 @@ from work.models import (
 from ..services.before_install_services import (
     assign_cm,
     before_install_checklist_service,
+    before_install_checklists_delete_service,
     get_require_users,
     update_before_checklist_service,
 )
@@ -78,6 +79,11 @@ def required_cm(request, type):
         assign_cm(request, type)
         return redirect("work:before_install", type)
     return Http404()
+
+
+@login_required(login_url="/user/login/")
+def delete_before_install_checklists(request):
+    return before_install_checklists_delete_service(request)
 
 
 def read_before_checklist(request, type, pk):
