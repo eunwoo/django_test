@@ -313,3 +313,9 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 # 웹에디터
 - https://blog.devgenius.io/best-free-wysiwyg-editor-python-django-admin-panel-integration-d9cb30da1dba
 - https://bookpark.github.io/2018-02-01/django-ckeditor
+
+# 아이디, 비밀번호 찾기 구현
+
+- DB 에 인증번호 저장, 만료 시간을 설정하기
+- DB에 저장할 목록 : 인증번호, IP Address, 만료시간
+- IP Address 받기 : https://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
