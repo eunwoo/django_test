@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import Field
@@ -212,3 +212,13 @@ def qty_report_success(docNum: int):
     qty_report.isCheckGeneralEngineer = False
     qty_report.save()
     return True
+
+
+def delete_qty_reports_service(request):
+    if request.method == "POST":
+        qty_report_list = request.POST.getlist("delete_list[]")
+        for qty_report in qty_report_list:
+            qty_report = QualityPerformance.objects.get(docNum=qty_report)
+            qty_report.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import Field
@@ -158,3 +158,13 @@ def read_qty_request_service(user, pk):
         qty_request.isCheckAgent = True
     qty_request.save()
     return qty_request
+
+
+def delete_qty_requests_service(request):
+    if request.method == "POST":
+        qty_request_list = request.POST.getlist("delete_list[]")
+        for qty_request in qty_request_list:
+            qty_request = QualityInspectionRequest.objects.get(docNum=qty_request)
+            qty_request.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

@@ -94,6 +94,11 @@ quality_request_url = [
         quality_request_views.read_quality_request,
         name="read_quality_request",
     ),
+    path(
+        "delete_quality_requests/",
+        quality_request_views.delete_qty_requests,
+        name="delete_quality_requests",
+    ),
 ]
 
 quality_report_url = [
@@ -121,6 +126,11 @@ quality_report_url = [
         "read_quality_report/<int:pk>/",
         quality_report_views.read_quality_report,
         name="read_quality_report",
+    ),
+    path(
+        "delete_quality_reports/",
+        quality_report_views.delete_quality_report,
+        name="delete_quality_reports",
     ),
 ]
 
