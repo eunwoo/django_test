@@ -175,6 +175,11 @@ before_install_check_url = [
         before_install_views.read_before_checklist,
         name="read_before_checklist",
     ),
+    path(
+        "delete_before_install_checklists/",
+        before_install_views.before_install_checklists_delete_service,
+        name="delete_before_install_checklists",
+    ),
 ]
 
 install_check_url = [
@@ -202,6 +207,11 @@ install_check_url = [
         "required_cm_install/<str:type>/",
         install_views.required_cm,
         name="required_cm_install",
+    ),
+    path(
+        "delete_install_checklists/",
+        install_views.delete_install_checklists,
+        name="delete_install_checklists",
     ),
 ]
 

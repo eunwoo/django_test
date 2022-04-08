@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from system_manager.models import InstallLocate
 from work.forms.before_install_form import BeforeInstallCheckListForm
@@ -162,3 +163,15 @@ def update_before_checklist_service(request, type, pk):
             "form": form,
         },
     )
+
+
+def before_install_checklists_delete_service(request):
+    if request.method == "POST":
+        before_install_checklist_list = request.POST.getlist("delete_list[]")
+        for before_install_checklist in before_install_checklist_list:
+            before_install_checklist = BeforeInstallCheckList.objects.get(
+                pk=before_install_checklist
+            )
+            before_install_checklist.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

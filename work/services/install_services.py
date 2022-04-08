@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from system_manager.models import ConstructManager, InstallLocate
 from work.forms.install_form import InstallCheckListForm
@@ -153,3 +154,13 @@ def assign_cm(request, type):
         )
     image_send(message_list, cm_phone)
     # 문자 전송 페이지 만들기
+
+
+def delete_install_checklists_service(request):
+    if request.method == "POST":
+        install_checklist_list = request.POST.getlist("delete_list[]")
+        for install_checklist in install_checklist_list:
+            install_checklist = InstallCheckList.objects.get(pk=install_checklist)
+            install_checklist.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)
