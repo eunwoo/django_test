@@ -32,11 +32,20 @@ safety_url = [
     path(
         "read_checklist/<int:pk>/", safety_views.read_checklist, name="read_checklist"
     ),
+    path(
+        "delete_safeties/",
+        safety_views.delete_safeties,
+        name="delete_safeties",
+    ),
 ]
 
 material_url = [
     path("material/", material_views.material, name="material"),
-    path("create_material/", material_views.create_material, name="create_material"),
+    path(
+        "create_material/",
+        material_views.create_material,
+        name="create_material",
+    ),
     path(
         "update_material/<int:pk>/",
         material_views.update_material,
@@ -47,7 +56,16 @@ material_url = [
         material_views.require_sign_material,
         name="require_sign_material",
     ),
-    path("read_material/<int:pk>/", material_views.read_material, name="read_material"),
+    path(
+        "read_material/<int:pk>/",
+        material_views.read_material,
+        name="read_material",
+    ),
+    path(
+        "delete_materials/",
+        material_views.delete_materials,
+        name="delete_materials",
+    ),
 ]
 
 quality_request_url = [

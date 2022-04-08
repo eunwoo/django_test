@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import DocsFile, EquipmentTypes
@@ -237,3 +238,13 @@ def create_checklist_service(request, pk):
         )
         checkitem.save()
     safety.save()
+
+
+def delete_safeties(request):
+    if request.method == "POST":
+        safety_list = request.POST.getlist("delete_list[]")
+        for safety in safety_list:
+            safety = SafetyReport.objects.get(docNum=safety)
+            safety.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)
