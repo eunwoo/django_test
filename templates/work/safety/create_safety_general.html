@@ -98,244 +98,186 @@
     <section id="safety" name='safety'>
       <form method="POST" id="form_safety">
         {% csrf_token %}
-        <div class="container border p-4 mb-5 text-center">
-          <div class="row m-1">
-            <h1>
-              구조 안전성 검토 신고서
-            </h1>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              문서번호
-            </div>
-            <div class="col-4 p-2">
-              구조 안전성 검토 신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}
-              {% else %}{{docNum}}
-              {% endif %}
-            </div>
-            <div class="col-2 p-2">
-              작성일자
-            </div>
-            <div class="col-4 p-2">
-              <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              제목
-            </div>
-            <div class="col-10 p-2">
-              <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
-                value="{{form.instance.title|default_if_none:''}}" />
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              공종
-            </div>
-            <div class="col-4">
-              <select class="form-select" aria-label="공종" id="constructTypeSelect">
-                <option value="">투입 공종을
-                  선택해주세요
-                </option>
-                <option value="건축">
-                  건축
-                </option>
-                <option value="토목">
-                  토목
-                </option>
-                <option value="기계">
-                  기계
-                </option>
-                <option value="직접입력">
-                  직접입력
-                </option>
-              </select>
-            </div>
-            <div class="col-4">
-              <input type="text" class="form-control" name="constructType" id="constructType"
-                value="{{form.instance.constructType|default_if_none:''}}" readonly required />
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              내용
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col p-2">
+        <div id="safety" class="container p-4 mb-5 text-center">
+          <table class="table">
+            <thead>
+              <th class="p-4" colspan="6">
+                <h1>구조 안전성 검토 신고서</h1>
+              </th>
+            </thead>
+            <tbody class="align-middle">
+              <tr>
+                <td>문서번호</td>
+                <td colspan="2">
+                  구조 안전성 검토
+                  신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
+                </td>
+                <td>작성일자</td>
+                <td colspan="2">
+                  <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+                </td>
+              </tr>
+              <tr>
+                <td>제목</td>
+                <td colspan="5">
+                  <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
+                    value="{{form.instance.title|default_if_none:''}}" />
+                </td>
+              </tr>
+              <tr>
+                <td>공종</td>
+                <td colspan="2">
+                  <select class="form-select" aria-label="공종" id="constructTypeSelect">
+                    <option value="">투입 공종을
+                      선택해주세요
+                    </option>
+                    <option value="건축">
+                      건축
+                    </option>
+                    <option value="토목">
+                      토목
+                    </option>
+                    <option value="기계">
+                      기계
+                    </option>
+                    <option value="직접입력">
+                      직접입력
+                    </option>
+                  </select>
+                </td>
+                <td colspan="3">
+                  <input type="text" class="form-control" name="constructType" id="constructType"
+                    value="{{form.instance.constructType|default_if_none:''}}" readonly required />
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3">내용</td>
+                <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
                     value="{{form.instance.text|default_if_none:''}}">{{form.instance.text|default_if_none:''}}</textarea>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-7"></div>
-                <div class="col">
-                  <div class="row">
-                    <div class="col-3 p-2">
-                      담당자
-                    </div>
-                    <div class="col-3 p-2">
-                      {% if form.instance.writerId != None %}{{form.instance.writerId.name}}
-                      {% else %}{{request.user.name}}
-                      {% endif %}
-                    </div>
-                    <div class="col p-2">
-                      {% if form.instance.writerId != None %}<img width="100%" alt=""
-                        src="{{form.instance.writerId.signImage.url}}" />
-                      {% else %}(인)
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#signModal">
-                        서명
-                      </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">서명 요청</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                                <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                취소</button>
-                              <button id="sign_button" type="button" class="btn btn-primary">서명</button>
-                            </div>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2" colspan="2"></td>
+                <td>담당자</td>
+                <td>
+                  {% if form.instance.writerId != None %}{{form.instance.writerId.name}}
+                  {% else %}{{request.user.name}}
+                  {% endif %}
+                </td>
+                <td>
+                  {% if form.instance.writerId != None %}<img width="100%" alt=""
+                    src="{{form.instance.writerId.signImage.url}}" />
+                  {% else %}
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#signModal">
+                    서명
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">서명 요청</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
                           </div>
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            취소</button>
+                          <button id="sign_button" type="button" class="btn btn-primary">서명</button>
+                        </div>
                       </div>
-                      {% endif %}
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-7"></div>
-                <div class="col">
-                  <div class="row">
-                    <div class="col-3 p-2">
-                      현장대리인
-                    </div>
-                    <div class="col-3 p-2">
-                    </div>
-                    <div class="col p-2">
-                      (인)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              붙임
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-2 p-2">
-                  구조계산서
-                </div>
-                <div class="col-2 p-2">
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <td>현장대리인</td>
+                <td>
+                </td>
+                <td>
+                  (인)
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2">붙임</td>
+                <td>구조계산서</td>
+                <td>
                   {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills equipment_list=equipment_list %}
-                </div>
-                <div class="col p-2">
+                </td>
+                <td colspan="3">
                   <ol class="list-group" id="구조계산서-ol">
                     {% for item in construct_bills_list %}
                     <li class="list-group-item">{{item.filename}}</li>
                     {% endfor %}
                   </ol>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2 p-2">
-                  시공상세도면
-                </div>
-                <div class="col-2 p-2">
+                </td>
+              </tr>
+              <tr>
+                <td>시공상세도면</td>
+                <td>
                   {% include 'work/safety/load_docs_modal.html' with title="시공상세도면" contents=detail_drawings equipment_list=equipment_list %}
-                </div>
-                <div class="col p-2">
+                </td>
+                <td colspan="3">
                   <ol class="list-group" id="시공상세도면-ol">
                     {% for item in detail_drawings_list %}
                     <li class="list-group-item">{{item.filename}}</li>
                     {% endfor %}
                   </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              회신일자
-            </div>
-            <div class="col-10 p-2">
-              <div class="col-4">
-              </div>
-            </div>
-          </div>
-          <div class="row align-items-center border">
-            <div class="col-2 p-2">
-              검토의견
-            </div>
-            <div class="col-10">
-              <div class="row">
-                <div class="col-2 p-2">
-                  담당자
-                </div>
-                <div class="col-10 p-2">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2 p-2">
-                  총괄관리자
-                </div>
-                <div class="col-10 p-2">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-2 text-wrap p-2">
-                  구조안전성 검토<br>체크리스트
-                </div>
-                <div class="col-10 p-2">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              결과
-            </div>
-            <div class="col-10 p-2">
-              결과를 선택해주세요
-            </div>
-          </div>
-          <div class="row border">
-            <div class="col-2 p-2">
-              담당건설사업<br>관리기술인
-            </div>
-            <div class="col-2 p-2">
-            </div>
-            <div class="col-2 p-2">
-              (인)
-            </div>
-            <div class="col-2 p-2">
-              총괄건설사업<br>관리기술인
-            </div>
-            <div class="col-2 p-2">
-            </div>
-            <div class="col-2 p-2">
-              (인)
-            </div>
-          </div>
+                </td>
+              </tr>
+              <tr>
+                <td>회신일자</td>
+                <td colspan="5">
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3">검토 의견</td>
+                <td>담당자</td>
+                <td colspan="4">
+                </td>
+              </tr>
+              <tr>
+                <td>총괄관리자</td>
+                <td colspan="4">
+                </td>
+              </tr>
+              <tr>
+                <td>구조안전성 검토<br>체크리스트</td>
+                <td colspan="4">
+                </td>
+              </tr>
+              <tr>
+                <td>결과</td>
+                <td colspan="5">
+                </td>
+              </tr>
+              <tr>
+                <td>담당건설사업<br>관리기술인</td>
+                <td>
+                </td>
+                <td>
+                  (인)
+                </td>
+                <td>총괄건설사업<br>관리기술인</td>
+                <td>
+                </td>
+                <td>
+                  (인)
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </form>
     </section>
@@ -379,7 +321,7 @@
         signModal.modal('hide');
         signModal
           .parent()
-          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+          .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
       } else {
         Swal.fire({
           title: 'Error!',

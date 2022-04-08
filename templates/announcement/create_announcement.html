@@ -1,0 +1,100 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+공지사항 작성
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'announcement:announcement' %}">공지사항</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">공지사항 작성</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8">
+            <div class="row">
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="pre_save">임시저장</button>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit" form="form_post"
+                  id="save_button">제출</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      {% include 'base/messages.html' %}
+    </section>
+    <section>
+      <div class="container">
+        <form id="form_post" action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table class="table">
+            <tbody class="align-middle">
+              <tr>
+                <th scope="row" style="width: 15%;">제목</th>
+                <td>
+                  <input type="text" class="form-control" name="title" placeholder="글 제목을 입력해주세요."
+                    value="{{form.instance.title|default_if_none:''}}" />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">내용</th>
+                <td>
+                  {{form.content|safe}}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">첨부파일</th>
+                <td>
+                  <input class="form-control" type="file" name="file_list" multiple>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
+
+</main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  $("#pre_save").click(function () {
+    $("#form_post").append('<input type="hidden" name="presave" value="1" />').submit();
+  });
+</script>
+{% endblock  %}

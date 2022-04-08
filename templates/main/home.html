@@ -82,10 +82,14 @@ TQEMS 메인
           </a>
         </div>
         <div class="col">
-          <button class="btn2 btn btn-outline-dark col-12">공지사항</button>
+          <a href="{% url 'announcement:announcement' %}">
+            <button class="btn2 btn btn-outline-dark col-12">공지사항</button>
+          </a>
         </div>
         <div class="col">
-          <button class="btn2 btn btn-outline-dark col-12">법령정보</button>
+          <a href="{% url 'law:law' %}">
+            <button class="btn2 btn btn-outline-dark col-12">법령정보</button>
+          </a>
         </div>
       </div>
     </div>
@@ -144,10 +148,14 @@ TQEMS 메인
           </a>
         </div>
         <div class="col">
-          <button class="btn2 btn col-md-12">공지사항</button>
+          <a href="{% url 'announcement:announcement' %}">
+            <button class="btn2 btn col-md-12">공지사항</button>
+          </a>
         </div>
         <div class="col">
-          <button class="btn2 btn col-md-12">법령정보</button>
+          <a href="{% url 'law:law' %}">
+            <button class="btn2 btn col-md-12">법령정보</button>
+          </a>
         </div>
       </div>
     </div>

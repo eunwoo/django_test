@@ -1,0 +1,95 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+법령정보
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'law:law' %}">법령정보</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">법령정보 작성</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-8">
+            <div class="row">
+              <div class="col-6">
+                {% if item.writer == request.user %}
+                <a class="btn1 p-2 btn btn-secondary col-12" href="{% url 'law:update_law' item.pk %}"
+                  role="button">수정</a>
+                {% endif %}
+              </div>
+              <div class="col-6">
+                <a class="btn1 p-2 btn btn-light col-12" href="{% url 'law:law' %}" role="button">목록</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <table class="table">
+          <tbody class="align-middle">
+            <tr>
+              <th scope="row" style="width: 15%;">제목</th>
+              <td>
+                {{item.title}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">내용</th>
+              <td class="text-start">
+                {{item.content|safe}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">첨부파일</th>
+              <td>
+                {% if item.files.all %}
+                <ul class="list-group">
+                  {% for file in item.files.all %}
+                  <li class="list-group-item"><a href="{{file.file.url}}"
+                      class="link-primary">{{file.file.name|cut:"law/files/"}}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
+
+</main>
+{% endblock %}
