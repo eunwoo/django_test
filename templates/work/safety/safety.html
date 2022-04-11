@@ -69,7 +69,7 @@
                   체크리스트
                 </td>
                 <td style="width: 10%;">
-                  작성 날짜
+                  승인 요청 날짜
                 </td>
                 {% else %}
                 <td style="width: 20%;">
@@ -122,9 +122,15 @@
                   {% endif %}
                 </td>
                 {% endif %}
+                {% if request.user.class2 == "일반 건설사업관리기술인" %}
+                <td>
+                  {{i.requested_at|date:"Y-m-d"}}
+                </td>
+                {% else %}
                 <td>
                   {{i.created_at|date:"Y-m-d"}}
                 </td>
+                {% endif %}
               </tr>
               {% endfor %}
             </table>
