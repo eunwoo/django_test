@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
@@ -83,6 +84,8 @@ def require_sign(request):
             if request.user.class2 != "총괄 건설사업관리기술인"
             else "/work/read_safety/"
         )
+        if request.user.class2 == "현장 대리인":
+            doc.requested_at = timezone.now()
         link = request.build_absolute_uri(base_link + str(doc.docNum))
         assign_user(
             request.user,
