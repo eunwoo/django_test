@@ -180,6 +180,11 @@ before_install_check_url = [
         before_install_views.before_install_checklists_delete_service,
         name="delete_before_install_checklists",
     ),
+    path(
+        "add_before_install_item/<str:type>/",
+        before_install_views.add_before_install_item,
+        name="add_before_install_item",
+    ),
 ]
 
 install_check_url = [
