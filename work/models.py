@@ -430,6 +430,7 @@ class BeforeInspectionItem(models.Model):
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+    init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
 class BeforeInspectionResult(models.Model):
@@ -503,6 +504,7 @@ class InspectionItem(models.Model):
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+    init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
 class InspectionResult(models.Model):
