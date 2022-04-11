@@ -70,6 +70,7 @@ class SafetyReport(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    requested_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return "구조 안전성 검토 신고서 - " + self.docNum
