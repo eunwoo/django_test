@@ -12,6 +12,7 @@ from ..services.before_install_services import (
     assign_cm,
     before_install_checklist_service,
     before_install_checklists_delete_service,
+    create_item,
     get_require_users,
     update_before_checklist_service,
 )
@@ -84,6 +85,15 @@ def required_cm(request, type):
 @login_required(login_url="/user/login/")
 def delete_before_install_checklists(request):
     return before_install_checklists_delete_service(request)
+
+
+@login_required(login_url="/user/login/")
+def add_before_install_item(request, type):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        pk = create_item(type, title)
+        return JsonResponse({"pk": pk})
+    return Http404()
 
 
 def read_before_checklist(request, type, pk):

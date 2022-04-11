@@ -46,6 +46,18 @@ def get_require_users():
     return users
 
 
+def create_item(type, title):
+    if type == "강관 비계":
+        equipment = "1"
+    elif type == "시스템 비계":
+        equipment = "2"
+    else:
+        equipment = "3"
+    new_item = BeforeInspectionItem(equipment=equipment, title=title)
+    new_item.save()
+    return new_item.pk
+
+
 def before_install_checklist_service(request, type: str):
     equipment = ""
     if type == "강관 비계":
@@ -86,7 +98,10 @@ def before_install_checklist_service(request, type: str):
             )
     else:
         form = BeforeInstallCheckListForm()
-    checklist = BeforeInspectionItem.objects.filter(equipment=equipment)
+    checklist = BeforeInspectionItem.objects.filter(
+        equipment=equipment,
+        init_item=True,
+    )
     last_doc = BeforeInstallCheckList.objects.last()
     if not last_doc:
         docNum = 1
