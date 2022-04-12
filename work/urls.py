@@ -218,6 +218,11 @@ install_check_url = [
         install_views.delete_install_checklists,
         name="delete_install_checklists",
     ),
+    path(
+        "add_install_item/<str:type>/",
+        install_views.add_install_item,
+        name="add_install_item",
+    ),
 ]
 
 urlpatterns = [

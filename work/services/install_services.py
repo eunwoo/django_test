@@ -6,12 +6,29 @@ from django.contrib import messages
 
 from work.models import (
     InspectionItem,
+    InspectionItemCategory,
     InspectionResult,
     InstallCheckList,
     Measure,
 )
 
 from ..services.common_services import image_send, sms_send
+
+
+def create_item(type, title, category):
+    if type == "강관 비계":
+        equipment = "1"
+    elif type == "시스템 비계":
+        equipment = "2"
+    else:
+        equipment = "3"
+    new_item = InspectionItem(
+        equipment=equipment,
+        title=title,
+        categoryId=InspectionItemCategory.objects.get(type=category),
+    )
+    new_item.save()
+    return new_item.pk
 
 
 def install_checklist_service(request, type: str):
@@ -54,9 +71,10 @@ def install_checklist_service(request, type: str):
             )
     else:
         form = InstallCheckListForm()
-    checklist = InspectionItem.objects.filter(equipment=equipment).order_by(
-        "categoryId__pk"
-    )
+    checklist = InspectionItem.objects.filter(
+        equipment=equipment,
+        init_item=True,
+    ).order_by("categoryId__pk")
     last_doc = InstallCheckList.objects.last()
     if not last_doc:
         docNum = 1

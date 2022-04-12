@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from work.models import InstallCheckList
 from ..services.install_services import (
     assign_cm,
+    create_item,
     delete_install_checklists_service,
     install_checklist_service,
     update_checklist_service,
@@ -54,6 +55,16 @@ def required_cm(request, type):
 @login_required(login_url="/user/login/")
 def delete_install_checklists(request):
     return delete_install_checklists_service(request)
+
+
+@login_required(login_url="/user/login/")
+def add_install_item(request, type):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        category = request.POST.get("category")
+        pk = create_item(type, title, category)
+        return JsonResponse({"pk": pk})
+    return Http404()
 
 
 def read_checklist(request, type, pk):

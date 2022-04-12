@@ -414,7 +414,7 @@
   const checklist_form = document.getElementById("form_checklist")
   checklist_form.addEventListener("submit", (e) => {
     for (const i of inadequate) {
-      if (!(i in input_belong)) {
+      if (!(input_belong.includes(i))) {
         e.preventDefault()
         Swal.fire({
           title: 'Error!',
