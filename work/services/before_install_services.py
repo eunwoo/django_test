@@ -82,11 +82,13 @@ def before_install_checklist_service(request, type: str):
                 result_item = BeforeInspectionResult(
                     result=request.POST[pk],
                     before_install_checklist_id=before_checklist,
-                    before_inspection_item_id=BeforeInspectionItem.objects.get(pk=pk),
+                    before_inspection_item_id=BeforeInspectionItem.objects.get(
+                        pk=pk,
+                    ),
                 )
                 result_item.content = request.POST[f"{pk}-belong"]
                 result_item.save()
-                if f"{pk}-images[]" in image_keys:
+                if f"{pk}-images[]" in image_keys and request.POST[pk] == "2":
                     images = request.FILES.getlist(f"{pk}-images[]")
                     for img in images:
                         result_item.measures.create(img=img)
