@@ -97,6 +97,8 @@ def update_checklist_service(request, type, pk):
     if request.method == "POST":
         form = InstallCheckListForm(request.POST, instance=instance)
         if form.is_valid():
+
+            # 기본 저장 영역
             doing_checklist = form.save(commit=False)
             doing_checklist.equipment = type
             if "locate" in request.POST.keys():
@@ -106,11 +108,26 @@ def update_checklist_service(request, type, pk):
             pk_checklist = request.POST.getlist("checklist-pk")
             image_keys = request.FILES.keys()
             doing_checklist.save()
+
+            # 삭제 영역
+            install_list = doing_checklist.inspection_result.all()
+            for install in install_list:
+                if str(install.inspection_item_id.pk) not in pk_checklist:
+                    install.delete()
+
+            # 수정 영역
             for pk_item in pk_checklist:
                 before_result_item = InspectionResult.objects.filter(
                     install_checklist_id=doing_checklist,
-                    inspection_item_id=InspectionItem.objects.get(pk=pk_item),
-                )[0]
+                    inspection_item_id=InspectionItem.objects.get(
+                        pk=pk_item,
+                    ),
+                )
+                delete_before = False
+                # 수정된 영역이면 해당 구문이 실행, 새로 생성된 영역은 패스
+                if before_result_item:
+                    before_result_item = before_result_item[0]
+                    delete_before = True
                 result_item = InspectionResult(
                     result=request.POST[pk_item],
                     install_checklist_id=doing_checklist,
@@ -132,7 +149,8 @@ def update_checklist_service(request, type, pk):
                     images = request.FILES.getlist(f"{pk_item}-images[]")
                     for img in images:
                         result_item.measures.create(img=img)
-                before_result_item.delete()
+                if delete_before:
+                    before_result_item.delete()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_install_checklist", type, pk)
     else:

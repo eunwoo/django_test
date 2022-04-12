@@ -196,7 +196,7 @@
               </tr>
               <tr class="accordion-collapse collapse" id="addition{{forloop.counter}}" data-bs-parent=".table">
                 <td colspan="7" style="padding: 0;">
-                  <table class="table table-bordered text-break">
+                  <table class="table table-bordered text-break checklist_table">
                     {% for checkmenu in categoryId.list %}
                     <tr id='{{checkmenu.inspection_item_id.pk}}-row'>
                       <td style="width: 5%">{{forloop.counter}}</td>
@@ -224,7 +224,7 @@
                         {% else %}
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                           id="modal-btn-{{checkmenu.inspection_item_id.pk}}"
-                          data-bs-target="#model{{checkmenu.inspection_item_id.pk}}">
+                          data-bs-target="#model{{checkmenu.inspection_item_id.pk}}" disabled>
                           입력
                         </button>
                         {% endif %}
@@ -259,13 +259,24 @@
                             </div>
                           </div>
                         </div>
-
                       </td>
                       <td style="width: 10%">
                         <input type="checkbox" id="{{checkmenu.inspection_item_id.pk}}-checkbox">
                       </td>
                     </tr>
                     {% endfor %}
+                    <tr>
+                      <td></td>
+                      <td colspan="4">
+                        <input type="text" class="form-control" placeholder="새 점검 항목을 입력해주세요.">
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-primary" onclick="add_button_event(this)">추가</button>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-danger" onclick="delete_button()">삭제</button>
+                      </td>
+                    </tr>
                   </table>
                 </td>
               </tr>
@@ -287,9 +298,54 @@
 {% include "work/install/doing/image_library.html" with checklist=checklist %}
 
 <script type="text/javascript">
+  // 미흡항목과 입력 설정
+  const inadequate = []
+  const input_belong = []
+  $('input[type=radio]').each((item) => {
+    if (item.value == "2") {
+      inadequate.push(item.name)
+      input_belong.push(item.name)
+    }
+  })
+
+
+  // 미흡항목이 입력 안돼있을 경우 요청 실패
+  let checklist_form = document.getElementById("checklist")
+  checklist_form.addEventListener("submit", (e) => {
+    for (const i of inadequate) {
+      if (!(input_belong.includes(i))) {
+        e.preventDefault()
+        Swal.fire({
+          title: 'Error!',
+          text: '미흡항목의 조치사항을 모두 입력해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+        return false;
+      }
+    }
+    return true;
+  });
+
+
+  // Radio 버튼 변경시 입력버튼 동작
+  $("input[type=radio]").change(function () {
+    const pk = this.value
+    const button_node = this.parentNode.parentNode.children[5].children[0]
+    if (pk === '2') {
+      inadequate.push(this.name)
+      button_node.disabled = false
+    } else {
+      if (inadequate.indexOf(this.name) !== -1) {
+        inadequate.splice(inadequate.indexOf(this.name), 1)
+      }
+      button_node.disabled = true
+    }
+  });
+
+
   // 변경 되었을 시 조치사항 발송이 안됨
   let isChange = false;
-  let checklist_form = document.getElementById("checklist")
   const input_list = checklist_form.querySelectorAll("input")
   const textarea_list = checklist_form.querySelectorAll("textarea")
   for (let input_item of input_list) {
@@ -299,18 +355,124 @@
       })
     }
   }
-
   for (let textarea_item of textarea_list) {
     textarea_item.addEventListener("change", function () {
       isChange = true;
     })
   }
+
+
   // 모달 완료시 입력 => 확인 버튼으로 변경
   const change_modal_btn_inner = (e) => {
     const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[3]
+    input_belong.push(targetNode.parentNode.previousElementSibling.children[0].name)
     targetNode.innerHTML = '확인'
     targetNode.classList.remove('btn-primary')
     targetNode.classList.add('btn-success')
+  }
+
+
+  // 삭제버튼 클릭시 체크된 리스트 삭제
+  const delete_button = () => {
+    const checklist_ids = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item => item.id
+      .split('-')[0]).map(pk => document.getElementById(`${pk}-row`)).forEach(item => item.remove())
+    onChangeTableNumbering()
+  }
+
+  // 점검 목록 추가
+  async function add_button_event(e) {
+    const input_text = e.parentNode.previousElementSibling.children[0].value
+    const category = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.previousElementSibling
+      .children[0].innerText
+    if (input_text === "") {
+      Swal.fire({
+        title: 'Error!',
+        text: '점검 항목을 입력해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+    } else {
+      e.parentNode.previousElementSibling.children[0].value = ""
+      const table = e.parentNode.parentNode.parentNode
+      const new_row = table.insertRow(table.rows.length - 1)
+      const pk = (await $.ajax({
+        url: "{% url 'work:add_install_item' type=type %}", // 여기 위치 바꾸기
+        type: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        data: {
+          'title': input_text,
+          'category': category,
+        }
+      })).pk
+      new_row.id = `${pk}-row`
+      const no_cell = new_row.insertCell(0)
+      const title_cell = new_row.insertCell(1)
+      title_cell.className = "text-start"
+      const result1_cell = new_row.insertCell(2)
+      const result2_cell = new_row.insertCell(3)
+      const result3_cell = new_row.insertCell(4)
+      const insert_cell = new_row.insertCell(5)
+      const delete_cell = new_row.insertCell(6)
+      title_cell.innerHTML = input_text
+      result1_cell.innerHTML = `<input type="radio" name="${pk}" value="1" required>`
+      result2_cell.innerHTML = `<input type="radio" name="${pk}" value="2" required>`
+      result3_cell.innerHTML = `<input type="radio" name="${pk}" value="3" required>`
+      insert_cell.innerHTML =
+        `<!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+          id="modal-btn-${pk}" data-bs-target="#model${pk}" disabled>
+          입력
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="model${pk}" tabindex="-1" role="dialog"
+          data-bs-backdrop="static" aria-labelledby="modelTitleId" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content" style="text-align: left;">
+              <div class="modal-header">
+                <h5 class="modal-title">조치사항 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label class="control-label">사진</label>
+                  <div class="input-images-${pk}"></div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">내용</label>
+                  <div>
+                    <input type="text" class="form-control input-lg" placeholder="조치사항을 입력해주세요"
+                      name="${pk}-belong" value="">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                  onclick="change_modal_btn_inner(this)">확인</button>
+                <input type="hidden" name="checklist-pk" value="${pk}">
+              </div>
+            </div>
+          </div>
+        </div>
+        `
+      $(`.input-images-${pk}`).imageUploader({
+        label: '여기를 클릭해 이미지를 추가하세요.',
+        imagesInputName: '{{checkmenu.pk}}-images',
+      });
+      delete_cell.innerHTML =
+        `<input type="checkbox" id="${pk}-checkbox">`
+      $(`input[name='${pk}']:radio`).change(function () {
+        const pk = this.value
+        const button_node = this.parentNode.parentNode.children[5].children[0]
+        if (pk === '2') {
+          button_node.disabled = false
+        } else {
+          button_node.disabled = true
+        }
+      });
+      onChangeTableNumbering()
+    }
   }
 
 
@@ -411,6 +573,20 @@
       }
     })
   })
+
+
+  // 테이블 넘버링 작업 => 삭제 및 추가시 계속 실행
+  const onChangeTableNumbering = () => {
+    const table_bodys = Array.from(document.querySelectorAll('.checklist_table'))
+    for (const table_body of table_bodys) {
+      const table_rows = table_body.getElementsByTagName("tr")
+      for (let i = 0; i < table_rows.length - 1; i++) {
+        const table_row = table_rows[i]
+        const table_cells = table_row.getElementsByTagName("td")
+        table_cells[0].innerHTML = i + 1
+      }
+    }
+  }
 
   // 서명 요청 후 알림창 띄우기
   $('#signRequestBtn').on('click', () => {
