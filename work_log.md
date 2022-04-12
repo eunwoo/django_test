@@ -319,3 +319,8 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 - DB 에 인증번호 저장, 만료 시간을 설정하기
 - DB에 저장할 목록 : 인증번호, IP Address, 만료시간
 - IP Address 받기 : https://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
+
+# 04/12
+- 미흡시 내용입력 확인하기
+- 수정 시 점검항목 입력부분 추가
+- 설치작업중 체크리스트 수정하기
