@@ -305,7 +305,7 @@
       signModal.modal('hide');
       signModal
         .parent()
-        .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+        .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
     } else {
       Swal.fire({
         title: 'Error!',
@@ -414,7 +414,7 @@
   const checklist_form = document.getElementById("form_checklist")
   checklist_form.addEventListener("submit", (e) => {
     for (const i of inadequate) {
-      if (!(i in input_belong)) {
+      if (!(input_belong.includes(i))) {
         e.preventDefault()
         Swal.fire({
           title: 'Error!',
@@ -442,7 +442,7 @@
 
   // 모달 완료시 입력 => 확인 버튼으로 변경
   const change_modal_btn_inner = (e) => {
-    const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[3]
+    const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.children[0]
     input_belong.push(targetNode.parentNode.previousElementSibling.children[0].name)
     targetNode.innerHTML = '확인'
     targetNode.classList.remove('btn-primary')
