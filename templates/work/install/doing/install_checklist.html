@@ -404,6 +404,14 @@
     });
   })();
 
-  // submit시 속성 추가하기
+  // 서명요청 미작동
+  const required_save = () => {
+    Swal.fire({
+      title: 'Error!',
+      text: '저장을 해주세요.',
+      icon: 'error',
+      confirmButtonText: '닫기'
+    })
+  }
 </script>
 {% endblock %}
