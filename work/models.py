@@ -86,6 +86,7 @@ class SafetyCheckType(models.Model):
 class SafetyCheckMenu(models.Model):
     content = models.TextField()
     checkType = models.ForeignKey(SafetyCheckType, on_delete=models.CASCADE)
+    initItem = models.BooleanField(default=False)
 
     def __str__(self):
         return self.content
