@@ -9,7 +9,12 @@ from ..forms.safety_forms import (
     GeneralManagerSafetyReportForm,
     TotalEngineerSafetyReportForm,
 )
-from ..models import SafetyReport, SafetyCheckMenu, SafetyCheckList
+from ..models import (
+    SafetyCheckType,
+    SafetyReport,
+    SafetyCheckMenu,
+    SafetyCheckList,
+)
 from django.contrib import messages
 
 
@@ -248,3 +253,12 @@ def delete_safeties(request):
             safety.delete()
         return JsonResponse({"result": "success"})
     return JsonResponse({"result": "fail"}, status=400)
+
+
+def create_checklist_item_service(type_pk, content):
+    new_item = SafetyCheckMenu(
+        content=content,
+        checkType=SafetyCheckType.objects.get(pk=type_pk),
+    )
+    new_item.save()
+    return new_item.pk

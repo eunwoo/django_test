@@ -133,3 +133,13 @@ def read_checklist(request, pk):
 @login_required(login_url="/user/login/")
 def delete_safety(request):
     return delete_safeties(request)
+
+
+@login_required(login_url="/user/login/")
+def create_checklist_item(request):
+    if request.method == "POST":
+        content = request.POST.get("content")
+        type_pk = request.POST.get("type_pk")
+        pk = create_checklist_service(type_pk, content)
+        return JsonResponse({"pk": pk})
+    return Http404()
