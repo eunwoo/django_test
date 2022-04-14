@@ -34,81 +34,97 @@
   pk: 1
   fields:
     checkType: 1
+    initItem: True
     content: "시공상세도면이 구조검토 관련 적용기준에 적합하게 작성되었는가"
 - model: work.SafetyCheckMenu
   pk: 2
   fields:
     checkType: 1
+    initItem: True
     content: "사용되는 재료의 규격 및 재질이 한국산업표준을 따르는가"
 - model: work.SafetyCheckMenu
   pk: 3
   fields:
     checkType: 1
+    initItem: True
     content: "한국기술사회에 등록된 구조기술사의 승인 도장이 있는가"
 - model: work.SafetyCheckMenu
   pk: 4
   fields:
     checkType: 2
+    initItem: True
     content: "구조검토에 적용된 연직하중은 시공상세도면 및 작업조건과 부합하는가"
 - model: work.SafetyCheckMenu
   pk: 5
   fields:
     checkType: 2
+    initItem: True
     content: "구조검토에 적용된 수평하중은 시공상세도면 및 작업조건과 부합하는가"
 - model: work.SafetyCheckMenu
   pk: 6
   fields:
     checkType: 2
+    initItem: True
     content: "구조검토에 적용된 풍하중은 시공상세도면 및 작업조건과 부합하는가"
 - model: work.SafetyCheckMenu
   pk: 7
   fields:
     checkType: 2
+    initItem: True
     content: "기타 추가적인 하중(장비하중 등)은 적절하게 적용되었는가"
 - model: work.SafetyCheckMenu
   pk: 8
   fields:
     checkType: 3
+    initItem: True
     content: "3차원 해석이 실시되었는가"
 - model: work.SafetyCheckMenu
   pk: 9
   fields:
     checkType: 3
+    initItem: True
     content: "시공상세도면과 3차원 해석모델이 일치하는가"
 - model: work.SafetyCheckMenu
   pk: 10
   fields:
     checkType: 3
+    initItem: True
     content: "수직재와 수평재의 접합 부위의 지점조건은 적합한가"
 - model: work.SafetyCheckMenu
   pk: 11
   fields:
     checkType: 3
+    initItem: True
     content: "수평하중에 의한 수평변위는 적합한가"
 - model: work.SafetyCheckMenu
   pk: 12
   fields:
     checkType: 3
+    initItem: True
     content: "가새재가 적절히 사용되었는가"
 - model: work.SafetyCheckMenu
   pk: 13
   fields:
     checkType: 3
+    initItem: True
     content: "벽이음재 설치시 설치 간격은 적정한가"
 - model: work.SafetyCheckMenu
   pk: 14
   fields:
     checkType: 4
+    initItem: True
     content: "각 부재 설계시 고려된 산정식은 적합한가"
 - model: work.SafetyCheckMenu
   pk: 15
   fields:
     checkType: 4
+    initItem: True
     content: "이론식에 따른 최대 산정하중은 실제 가설기자재 성능 시험검사의 최대허용하중과 비교하였는가"
 - model: work.SafetyCheckMenu
   pk: 16
   fields:
     checkType: 4
+    initItem: True
     content: "각 부재는 안전율을 만족하는가"
 # 설치 작업 전 체크리스트
 - model: work.BeforeInspectionItem
