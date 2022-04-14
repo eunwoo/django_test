@@ -99,8 +99,8 @@ def require_sign(request):
 
 @login_required(login_url="/user/login/")
 def create_checklist(request, pk):
-    # if request.user.class2 != "일반 건설사업관리기술인":
-    #     return Http404("잘못된 접근입니다.")
+    if request.user.class2 != "일반 건설사업관리기술인":
+        return Http404("잘못된 접근입니다.")
     if request.method == "POST":
         create_checklist_service(request, pk)
         return redirect("work:safety")
