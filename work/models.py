@@ -1,4 +1,3 @@
-from statistics import mode
 from django.db import models
 
 
@@ -38,7 +37,11 @@ class SafetyReport(models.Model):
     checklistDate = models.DateField(null=True)
     checklistConstructType = models.CharField(max_length=90, null=True)
 
-    docs = models.ManyToManyField(DocsFile, blank=True, related_name="safety_docs")
+    docs = models.ManyToManyField(
+        DocsFile,
+        blank=True,
+        related_name="safety_docs",
+    )
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -93,13 +96,25 @@ class SafetyCheckMenu(models.Model):
 
 
 class SafetyCheckList(models.Model):
-    result_choices = (("1", "예"), ("2", "아니요"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=60, choices=result_choices, default="1")
+    result_choices = (
+        ("1", "예"),
+        ("2", "아니요"),
+        ("3", "해당사항 없음"),
+    )
+    result = models.CharField(
+        max_length=60,
+        choices=result_choices,
+        default="1",
+    )
     safetyReportId = models.ForeignKey(
-        SafetyReport, on_delete=models.CASCADE, related_name="safety_check_list"
+        SafetyReport,
+        on_delete=models.CASCADE,
+        related_name="safety_check_list",
     )
     safetyCheckMenuId = models.ForeignKey(
-        SafetyCheckMenu, on_delete=models.CASCADE, related_name="safety_check_list"
+        SafetyCheckMenu,
+        on_delete=models.CASCADE,
+        related_name="safety_check_list",
     )
 
     def __str__(self):
@@ -132,10 +147,16 @@ class MaterialSupplyReport(models.Model):
         related_name="material_supply",
     )
     result = models.CharField(
-        max_length=10, choices=result_choices, blank=True
+        max_length=10,
+        choices=result_choices,
+        blank=True,
     )  # 결과 내용
 
-    docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
+    docs = models.ManyToManyField(
+        DocsFile,
+        blank=True,
+        related_name="material_docs",
+    )
 
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
@@ -148,19 +169,29 @@ class MaterialSupplyReport(models.Model):
     isSuccess = models.BooleanField(default=False)
 
     businessLicense = models.FileField(
-        upload_to="business_license", blank=True, null=True
+        upload_to="business_license",
+        blank=True,
+        null=True,
     )  # 사업자 등록증
     deliveryPerformanceCertificate = models.FileField(
-        upload_to="delivery_performance_certificate", blank=True, null=True
+        upload_to="delivery_performance_certificate",
+        blank=True,
+        null=True,
     )  # 납품실적증명서
     safetyCertificate = models.FileField(
-        upload_to="safety_certificate", blank=True, null=True
+        upload_to="safety_certificate",
+        blank=True,
+        null=True,
     )  # 안전인증서
     qualityTestReport = models.FileField(
-        upload_to="quality_test_report", blank=True, null=True
+        upload_to="quality_test_report",
+        blank=True,
+        null=True,
     )  # 품질시험성적서
     testPerformanceComparisonTable = models.FileField(
-        upload_to="test_performance_comparison_table", blank=True, null=True
+        upload_to="test_performance_comparison_table",
+        blank=True,
+        null=True,
     )  # 시험성과대비표
 
     writerId = models.ForeignKey(
@@ -204,7 +235,9 @@ class SupplyList(models.Model):
     size = models.CharField(max_length=60)  # 규격
     etc = models.TextField()  # 비고
     materialSupplyReportId = models.ForeignKey(
-        MaterialSupplyReport, on_delete=models.CASCADE, related_name="supply_list"
+        MaterialSupplyReport,
+        on_delete=models.CASCADE,
+        related_name="supply_list",
     )
 
     def __str__(self):
@@ -436,7 +469,11 @@ class BeforeInspectionItem(models.Model):
 
 class BeforeInspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=10, choices=result_choices, default="1")  # 결과
+    result = models.CharField(
+        max_length=10,
+        choices=result_choices,
+        default="1",
+    )  # 결과
     content = models.TextField(blank=True)  # 조치사항 확인 내용
     before_install_checklist_id = models.ForeignKey(
         BeforeInstallCheckList,
@@ -510,7 +547,11 @@ class InspectionItem(models.Model):
 
 class InspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=10, choices=result_choices, default="1")  # 결과
+    result = models.CharField(
+        max_length=10,
+        choices=result_choices,
+        default="1",
+    )  # 결과
     content = models.TextField()  # 조치사항 확인 내용
     install_checklist_id = models.ForeignKey(
         InstallCheckList,

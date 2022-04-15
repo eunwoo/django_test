@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from work.services.common_services import assign_user
 from ..models import SafetyCheckMenu, SafetyReport
 from ..services.safety_services import (
+    create_checklist_item_service,
     create_checklist_service,
     create_safety_service,
     delete_safeties,
@@ -29,7 +30,11 @@ def safety(request):
     paginator = Paginator(safety_list, 10)
     page_obj = paginator.get_page(page)
 
-    return render(request, "work/safety/safety.html", {"safetyitems": page_obj})
+    return render(
+        request,
+        "work/safety/safety.html",
+        {"safetyitems": page_obj},
+    )
 
 
 @login_required(login_url="/user/login/")
@@ -105,17 +110,32 @@ def create_checklist(request, pk):
         create_checklist_service(request, pk)
         return redirect("work:safety")
     # 구조 일반 사항
-    checklist1 = SafetyCheckMenu.objects.filter(checkType_id=1).order_by("pk")
+    checklist1 = SafetyCheckMenu.objects.filter(
+        checkType_id=1,
+        initItem=True,
+    ).order_by("pk")
     # 설계하중
-    checklist2 = SafetyCheckMenu.objects.filter(checkType_id=2).order_by("pk")
+    checklist2 = SafetyCheckMenu.objects.filter(
+        checkType_id=2,
+        initItem=True,
+    ).order_by("pk")
     # 구조해석
-    checklist3 = SafetyCheckMenu.objects.filter(checkType_id=3).order_by("pk")
+    checklist3 = SafetyCheckMenu.objects.filter(
+        checkType_id=3,
+        initItem=True,
+    ).order_by("pk")
     # 구조검토
-    checklist4 = SafetyCheckMenu.objects.filter(checkType_id=4).order_by("pk")
+    checklist4 = SafetyCheckMenu.objects.filter(
+        checkType_id=4,
+        initItem=True,
+    ).order_by("pk")
     return render(
         request,
         "work/safety/checklist.html",
-        {"checklist": [checklist1, checklist2, checklist3, checklist4], "docNum": pk},
+        {
+            "checklist": [checklist1, checklist2, checklist3, checklist4],
+            "docNum": pk,
+        },
     )
 
 
@@ -139,7 +159,7 @@ def delete_safety(request):
 def create_checklist_item(request):
     if request.method == "POST":
         content = request.POST.get("content")
-        type_pk = request.POST.get("type_pk")
-        pk = create_checklist_service(type_pk, content)
+        category = request.POST.get("category")
+        pk = create_checklist_item_service(category, content)
         return JsonResponse({"pk": pk})
     return Http404()
