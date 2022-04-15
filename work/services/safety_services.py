@@ -9,7 +9,12 @@ from ..forms.safety_forms import (
     GeneralManagerSafetyReportForm,
     TotalEngineerSafetyReportForm,
 )
-from ..models import SafetyReport, SafetyCheckMenu, SafetyCheckList
+from ..models import (
+    SafetyCheckType,
+    SafetyReport,
+    SafetyCheckMenu,
+    SafetyCheckList,
+)
 from django.contrib import messages
 
 
@@ -151,8 +156,16 @@ def update_safety_general(request, pk):
         {
             "docNum": pk,
             "form": form,
-            "construct_bills": [construct_bills1, construct_bills2, construct_bills3],
-            "detail_drawings": [detail_drawings1, detail_drawings2, detail_drawings3],
+            "construct_bills": [
+                construct_bills1,
+                construct_bills2,
+                construct_bills3,
+            ],
+            "detail_drawings": [
+                detail_drawings1,
+                detail_drawings2,
+                detail_drawings3,
+            ],
             "construct_bills_list": construct_bills_list,
             "detail_drawings_list": detail_drawings_list,
             "equipment_list": equipment_list,
@@ -248,3 +261,12 @@ def delete_safeties(request):
             safety.delete()
         return JsonResponse({"result": "success"})
     return JsonResponse({"result": "fail"}, status=400)
+
+
+def create_checklist_item_service(category, content):
+    new_item = SafetyCheckMenu(
+        content=content,
+        checkType=SafetyCheckType.objects.get(title=category),
+    )
+    new_item.save()
+    return new_item.pk

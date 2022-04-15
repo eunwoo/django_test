@@ -20,22 +20,37 @@ main_url = [
 safety_url = [
     path("safety/", safety_views.safety, name="safety"),
     path("create_safety/", safety_views.create_safety, name="create_safety"),
-    path("update_safety/<int:pk>/", safety_views.update_safety, name="update_safety"),
+    path(
+        "update_safety/<int:pk>/",
+        safety_views.update_safety,
+        name="update_safety",
+    ),
     path("get_users/", safety_views.get_users, name="get_users"),
     path("require_sign", safety_views.require_sign, name="require_sign"),
-    path("read_safety/<int:pk>/", safety_views.read_safety, name="read_safety"),
+    path(
+        "read_safety/<int:pk>/",
+        safety_views.read_safety,
+        name="read_safety",
+    ),
     path(
         "create_checklist/<int:pk>/",
         safety_views.create_checklist,
         name="create_checklist",
     ),
     path(
-        "read_checklist/<int:pk>/", safety_views.read_checklist, name="read_checklist"
+        "read_checklist/<int:pk>/",
+        safety_views.read_checklist,
+        name="read_checklist",
     ),
     path(
         "delete_safeties/",
         safety_views.delete_safeties,
         name="delete_safeties",
+    ),
+    path(
+        "create_checklist_item",
+        safety_views.create_checklist_item,
+        name="create_checklist_item",
     ),
 ]
 
