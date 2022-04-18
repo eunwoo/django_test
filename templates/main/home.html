@@ -46,12 +46,12 @@ TQEMS 메인
           </div>
           <div class="row">
             <div class="col-12 text-center">
-              <label for="">{{user.class1}} - {{user.class2}}</label>
+              <label for="">시스템 관리자 - {{user.class1}}</label>
             </div>
           </div>
           <div class="row ">
             <div class="col-12 text-center mb-1">
-              <label for="">{{user.class3}}</label>
+              <label for="">{{user.class2}}</label>
             </div>
           </div>
           <div class="row">
@@ -71,6 +71,11 @@ TQEMS 메인
         </div>
       </div>
       <div class="row mt-3">
+        <div class="col">
+          <a href="{% url 'work:index' %}">
+            <button class="btn2 btn col-md-12">업무</button>
+          </a>
+        </div>
         <div class="col">
           <a href="{% url 'system_manager:index' %}">
             <button class="btn2 btn btn-outline-dark col-12">기본정보 등록</button>
@@ -111,12 +116,12 @@ TQEMS 메인
           </div>
           <div class="row">
             <div class="col-md-12 text-center">
-              <label for="">{{ user.class1}} - {{ user.class2}}</label>
+              <label for="">일반 관리자 - {{ user.class1 }}</label>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 text-center mb-1">
-              <label for="">{{ user.class3}}</label>
+              <label for="">{{ user.class2 }}</label>
             </div>
           </div>
           <div class="row">
