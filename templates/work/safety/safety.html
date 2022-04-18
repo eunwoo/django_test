@@ -39,7 +39,7 @@
         <div class="row justify-content-between">
           <div class="col-3">
             <a href="{% url 'work:create_safety' %}">
-              <button class="btn mb-2">구조 안전성 검토서 작성하기</button>
+              <button class="btn mb-2">구조 안전성 검토 신고 및 승인서 작성하기</button>
             </a>
           </div>
           <div class="col-1">
@@ -64,18 +64,9 @@
                 <td style="width: 10%;">
                   작성자
                 </td>
-                {% if request.user.class2 == "일반 건설사업관리기술인" %}
-                <td style="width: 10%;">
-                  체크리스트
-                </td>
-                <td style="width: 10%;">
-                  승인 요청 날짜
-                </td>
-                {% else %}
                 <td style="width: 20%;">
                   작성 날짜
                 </td>
-                {% endif %}
               </tr>
               {% for i in safetyitems %}
               <tr>
@@ -91,46 +82,31 @@
                     href="{% url 'work:read_safety' i.docNum %}" class="link-success"
                     {% elif i.isCheckManager == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
-                    검토서-{{ i.docNum}}-{{i.title}}</a>
+                    검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "현장 대리인" %}
                   <a {% if i.isCheckAgent == False and i.isSuccess == True %}
                     href="{% url 'work:read_safety' i.docNum %}" class="link-success" {% elif i.isCheckAgent == False %}
                     href="/work/update_safety/{{i.docNum}}" class="link-primary" {% else %}
                     href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
-                    검토서-{{ i.docNum}}-{{i.title}}</a>
+                    검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
                   <a {% if i.isCheckGeneralEngineer == False and i.isSuccess == True %}
                     href="{% url 'work:read_safety' i.docNum %}" class="link-success"
                     {% elif i.isCheckGeneralEngineer == False %} href="/work/update_safety/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary"
-                    {% endif %}>구조 안전성 검토서-{{ i.docNum}}-{{i.title}}</a>
+                    {% endif %}>구조 안전성 검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
                   <a {% if i.isSuccess == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
-                    검토서-{{ i.docNum}}-{{i.title}}</a>
+                    검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% endif %}
                 </td>
                 <td>
                   {{i.writerId.name}}
                 </td>
-                {% if request.user.class2 == "일반 건설사업관리기술인" %}
-                <td>
-                  {% if i.checklistDate %}
-                  <button type="button" class="btn btn-secondary" disabled>작성완료</button>
-                  {% else %}
-                  <a class="btn btn-primary" href="{% url 'work:create_checklist' i.docNum %}" role="button">작성하기</a>
-                  {% endif %}
-                </td>
-                {% endif %}
-                {% if request.user.class2 == "일반 건설사업관리기술인" %}
-                <td>
-                  {{i.requested_at|date:"Y-m-d"}}
-                </td>
-                {% else %}
                 <td>
                   {{i.created_at|date:"Y-m-d"}}
                 </td>
-                {% endif %}
               </tr>
               {% endfor %}
             </table>
