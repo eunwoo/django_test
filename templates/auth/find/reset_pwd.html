@@ -1,0 +1,132 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+비밀번호 재설정
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+
+<main>
+  <div class="cont mt-4">
+    <section>
+      <br>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">아이디 / 비밀번호 찾기</a>
+                </li>
+                <li class="breadcrumb-item">비밀번호 재설정</a>
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <h1>비밀번호 재설정</h1>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-2">
+            <label for="" class="col-12 text-center">비밀번호</label>
+          </div>
+          <div class="col-lg-6">
+            <input type="password" class="col-12 text-center" id="password1">
+          </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+          <div class="col-lg-2">
+            <label for="" class="col-12 text-center">비밀번호 확인</label>
+          </div>
+          <div class="col-lg-6">
+            <input type="password" class="col-12 text-center" id="password2">
+          </div>
+        </div>
+        <div class="row mt-3 justify-content-center">
+          <div class="col-6 text-center">
+            <button class="btn btn-primary" onclick="resetPwd()">비밀번호 재설정</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  const code = '{{ code }}';
+  const userId = '{{ userId }}';
+
+  const resetPwd = () => {
+    const password1 = $('#password1').val();
+    const password2 = $('#password2').val();
+
+    if (password1 === '' || password2 === '') {
+      Swal.fire({
+        title: '비밀번호를 입력해주세요.',
+        icon: 'warning',
+        confirmButtonText: '확인'
+      });
+      return;
+    }
+
+    if (password1 !== password2) {
+      Swal.fire({
+        title: '비밀번호가 일치하지 않습니다.',
+        icon: 'warning',
+        confirmButtonText: '확인'
+      });
+      return;
+    }
+
+    $.ajax({
+      url: "{% url 'user:reset_pwd_confirm' %}",
+      type: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        code: code,
+        userId: userId,
+        password: password1,
+      },
+      success: (data) => {
+        if (data.result === 'success') {
+          Swal.fire({
+            title: '비밀번호가 성공적으로 변경되었습니다.',
+            icon: 'success',
+            confirmButtonText: '확인'
+          }).then(() => {
+            location.href = "{% url 'user:login' %}";
+          });
+        } else {
+          Swal.fire({
+            title: '비밀번호 변경에 실패했습니다.',
+            icon: 'error',
+            confirmButtonText: '확인'
+          });
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  };
+</script>
+{% endblock %}

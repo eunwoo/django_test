@@ -21,3 +21,10 @@ class CustomUser(AbstractUser):
     register = models.BooleanField(default=False)
     first_name = None
     last_name = None
+
+
+class ChangePwd(models.Model):
+    code = models.CharField(max_length=6)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    expired_time = models.DateTimeField(auto_now_add=True)
+    isSuccess = models.BooleanField(default=False)
