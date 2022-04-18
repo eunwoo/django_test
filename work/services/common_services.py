@@ -59,7 +59,7 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
         "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
-    # requests.post(send_url, data=sms_data)
+    requests.post(send_url, data=sms_data)
 
 
 def sms_content(link, sms_type: int = 0) -> str:
