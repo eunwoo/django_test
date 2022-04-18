@@ -108,7 +108,7 @@ def create_checklist(request, pk):
         return Http404("잘못된 접근입니다.")
     if request.method == "POST":
         create_checklist_service(request, pk)
-        return redirect("work:safety")
+        return redirect("work:update_safety", pk)
     # 구조 일반 사항
     checklist1 = SafetyCheckMenu.objects.filter(
         checkType_id=1,
