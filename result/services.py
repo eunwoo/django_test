@@ -25,7 +25,7 @@ def get_search_list(post_key, locate_value=0):
     union_list = list()
     if "safety" in post_key:
         add_query = (
-            SafetyReport.objects.all()
+            SafetyReport.objects.filter(isSuccess=True)
             .values("docNum", "created_at")
             .annotate(type=Value("safety", output_field=CharField()))
         )
@@ -33,7 +33,7 @@ def get_search_list(post_key, locate_value=0):
             union_list.append(add_item)
     if "material" in post_key:
         add_query = (
-            MaterialSupplyReport.objects.all()
+            MaterialSupplyReport.objects.filter(isSuccess=True)
             .values("docNum", "created_at")
             .annotate(type=Value("material", output_field=CharField()))
         )
@@ -41,11 +41,11 @@ def get_search_list(post_key, locate_value=0):
             union_list.append(add_item)
     if "quality" in post_key:
         add_query = (
-            QualityInspectionRequest.objects.all()
+            QualityInspectionRequest.objects.filter(isSuccess=True)
             .values("docNum", "created_at")
             .annotate(type=Value("qty_request", output_field=CharField()))
         ).union(
-            QualityPerformanceReport.objects.all()
+            QualityPerformanceReport.objects.filter(isSuccess=True)
             .values("docNum", "created_at")
             .annotate(type=Value("qty_report", output_field=CharField()))
         )
