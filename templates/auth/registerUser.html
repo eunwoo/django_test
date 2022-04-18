@@ -81,7 +81,7 @@
               </div>
               <div class="row mt-3">
                 <div class="col">
-                  <input type="text" id="class3_input" name="class3" class="col-12 text-center" required disabled>
+                  <input type="text" id="class3_input" name="class3" class="col-12 text-center" required readonly>
                 </div>
               </div>
             </div>
@@ -210,6 +210,16 @@
             </div>
           </div>
           <br>
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <strong>{{ field.label }}</strong>
+            {{ field.errors }}
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
           <div class="row mt-3">
             <div class="col-md-10 offset-2 text-center">
               <a href="{% url 'user:login' %}">
@@ -392,7 +402,7 @@
     const class2 = document.getElementById('id_class2');
     const class3_input = document.getElementById('class3_input');
     class3_input.value = '';
-    class3_input.disabled = true;
+    class3_input.readonly = true;
     if (value == '종합건설업체') {
       class2.innerHTML = `
     <option value="" selected>분류2</option>
@@ -416,7 +426,7 @@
     const class3 = document.getElementById('id_class3');
     const class3_input = document.getElementById('class3_input');
     class3_input.value = '';
-    class3_input.disabled = true;
+    class3_input.readonly = true;
     if (value == '일반 사용자') {
       class3.innerHTML = `
           <option value="" selected>분류3</option>
@@ -441,10 +451,10 @@
     const class3_input = document.getElementById('class3_input');
     if (value == '직접 입력') {
       class3_input.value = '';
-      class3_input.disabled = false;
+      class3_input.readonly = false;
     } else {
       class3_input.value = value;
-      class3_input.disabled = true;
+      class3_input.readonly = true;
     }
   })
 
