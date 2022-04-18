@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from system_manager.services import accept_send
 
 from user.models import CustomUser
 
@@ -8,8 +9,14 @@ from user.models import CustomUser
 def user_management(request):
     if not request.user.is_system_manager:  # 시스템 매니저만 접근 가능
         return redirect("main:home")
-    await_users = CustomUser.objects.filter(is_system_manager=False, register=False)
-    registered_users = CustomUser.objects.filter(is_system_manager=False, register=True)
+    await_users = CustomUser.objects.filter(
+        is_system_manager=False,
+        register=False,
+    )
+    registered_users = CustomUser.objects.filter(
+        is_system_manager=False,
+        register=True,
+    )
     return render(
         request,
         "system_manager/user_management.html",
@@ -35,6 +42,7 @@ def register_user(request, pk):
     if request.method == "POST":
         user = CustomUser.objects.get(pk=pk)
         user.register = True
+        accept_send(user.phone)
         user.save()
         return redirect("system_manager:user_management")
     return redirect("main:home")
