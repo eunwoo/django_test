@@ -238,8 +238,9 @@ def create_checklist_service(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     safety.checklistConstructType = request.POST.get("constructType")
     safety.checklistDate = request.POST.get("date")
+    safety.checklistTitle = request.POST.get("title")
     checklist = list(request.POST.keys())
-    delete_list = ["csrfmiddlewaretoken", "constructType", "date"]
+    delete_list = ["csrfmiddlewaretoken", "constructType", "date", "title"]
     for delete_item in delete_list:
         checklist.remove(delete_item)
     for item in checklist:

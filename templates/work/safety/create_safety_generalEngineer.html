@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-구조 안전성 검토서 작성
+구조 안전성 검토 신고 및 승인서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -31,7 +31,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토서</li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고 및 승인서</li>
               </ol>
             </nav>
           </div>
@@ -102,14 +102,14 @@
           <table class="table">
             <thead>
               <th class="p-4" colspan="6">
-                <h1>구조 안전성 검토서</h1>
+                <h1>구조 안전성 검토 신고서</h1>
               </th>
             </thead>
             <tbody class="align-middle">
               <tr>
                 <td>문서번호</td>
                 <td colspan="2">
-                  구조 안전성 검토서-{{safety.docNum}}
+                  구조 안전성 검토 신고 및 승인서-{{safety.docNum}}
                 </td>
                 <td>작성일자</td>
                 <td colspan="2">
@@ -179,6 +179,15 @@
                     {% endfor %}
                 </td>
               </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th class="p-4" colspan="6">
+                  <h1>구조 안전성 검토 승인서</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
               <tr>
                 <td>회신일자</td>
                 <td colspan="5">
@@ -208,8 +217,10 @@
                 <td colspan="4">
                   {% if safety.checklistDate %}
                   <a class="link-success" target="_blank" href="{% url 'work:read_checklist' safety.docNum %}">구조 안전성 검토
-                    체크리스트 -
-                    {{safety.docNum}}</a>
+                    체크리스트 {{safety.docNum}}-{{safety.checklistTitle}}</a>
+                  {% else %}
+                  <a class="btn btn-primary" href="{% url 'work:create_checklist' safety.docNum %}" role="button">체크리스트
+                    작성하기</a>
                   {% endif %}
                 </td>
               </tr>

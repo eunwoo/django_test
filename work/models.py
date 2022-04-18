@@ -36,6 +36,7 @@ class SafetyReport(models.Model):
     # 체크리스트 전용 속성
     checklistDate = models.DateField(null=True)
     checklistConstructType = models.CharField(max_length=90, null=True)
+    checklistTitle = models.CharField(max_length=90, null=True)
 
     docs = models.ManyToManyField(
         DocsFile,
