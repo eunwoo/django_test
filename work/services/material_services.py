@@ -13,7 +13,7 @@ from django.contrib import messages
 
 
 def get_material_list_by_user(user):
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         return MaterialSupplyReport.objects.filter(writerId=user).order_by(
             "isCheckManager", "-isSuccess", "-docNum"
         )
@@ -97,7 +97,7 @@ def create_material_service(request):
 
 
 def update_material_service(request, docNum):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_material_general(request, docNum)
     elif request.user.class2 == "현장 대리인":
         return update_material_agent(request, docNum)
@@ -232,7 +232,7 @@ def update_material_totalEngineer(request, docNum):
 
 def read_material_service(user, pk):
     material = MaterialSupplyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         material.isCheckManager = True
     elif user.class2 == "현장 대리인":
         material.isCheckAgent = True

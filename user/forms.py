@@ -38,8 +38,10 @@ class AdminForm(UserCreationForm):
             "username",
             "name",
             "company",
-            "phone",
+            "class1",
+            "class2",
             "class3",
+            "phone",
             "signImage",
         )
         widgets = {
@@ -100,9 +102,6 @@ class UserForm(AdminForm):
             ),
             "class2": forms.Select(
                 attrs={"class": "col-12 text-center"}, choices=roletype_choices
-            ),
-            "class3": forms.Select(
-                attrs={"class": "col-12 text-center"}, choices=role_choices
             ),
             "phone": forms.TextInput(
                 attrs={

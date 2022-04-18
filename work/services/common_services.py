@@ -4,7 +4,7 @@ import requests
 
 def assign_user(user, doc, user_pk: int, link):
     target_user = CustomUser.objects.get(pk=user_pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         doc.agentId = target_user
         doc.isCheckAgent = False
         doc.isCheckManager = True

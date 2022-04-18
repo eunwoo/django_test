@@ -58,7 +58,7 @@ def read_safety(request, pk):
 
 @login_required(login_url="/user/login/")
 def update_safety(request, pk):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_safety_general(request, pk)
     elif request.user.class2 == "현장 대리인":
         return update_safety_agent(request, pk)

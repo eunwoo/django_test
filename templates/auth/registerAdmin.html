@@ -47,167 +47,187 @@
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <section>
-        <form action="" method="POST">
-          {% csrf_token %}
-          <div class="container">
-            <div class="row">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">이름</label>
-              </div>
-              <div class="col-md-8">
-                {{form.name}}
-              </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">이름</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">소속</label>
+            <div class="col-md-8">
+              {{form.name}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">소속</label>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col">
+                  <select name="class1" class="col-12 text-center" maxlength="60" id="id_class1" required>
+                    <option value="" selected>분류1</option>
+                    <option value="종합건설업체">종합건설업체</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <select name="class2" class="col-12 text-center" required="required" id="id_class2" required>
+                    <option value="" selected>분류2</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <select class="col-12 text-center" maxlength="60" id="id_class3">
+                    <option value="" selected>분류3</option>
+                  </select>
+                </div>
               </div>
-              <div class="col-md-8">
-                <div class="row">
-                  <div class="col">
-                    <select name="class3" class="col-12 text-center" maxlength="60" id="id_class3">
-                      <option value="시공 관리자">시공 관리자</option>
-                      <option value="품질 관리자">품질 관리자</option>
-                      <option value="안전 관리자">안전 관리자</option>
-                      <option value="해당 사항 없음">해당 사항 없음</option>
-                    </select>
-                  </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <input type="text" id="class3_input" name="class3" class="col-12 text-center" required readonly>
                 </div>
               </div>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">회사</label>
-              </div>
-              <div class="col-md-8">
-                {{form.company}}
-              </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">회사</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">아이디</label>
-              </div>
-              <div class="col-md-6">
-                {{form.username}}
-                {% if form.username.errors %}
-                <div class="alert alert-danger mt-1 m-0">
-                  <strong>{{form.username.errors|striptags}}</strong>
-                </div>
-                {% endif %}
-              </div>
-              <div class="col-md-2">
-                <button type="button" class="btn btn-outline-primary btn-block" id="id_check">중복확인</button>
-              </div>
+            <div class="col-md-8">
+              {{form.company}}
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">비밀번호</label>
-              </div>
-              <div class="col-md-8">
-                {{form.password1}}
-                {% if form.password1.errors %}
-                <div class="alert alert-danger mt-1 m-0">
-                  {% for errors in form.password1.errors %}
-                  <strong>{{errors|striptags}}</strong><br>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">아이디</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">비밀번호 재확인</label>
+            <div class="col-md-6">
+              {{form.username}}
+              {% if form.username.errors %}
+              <div class="alert alert-danger mt-1 m-0">
+                <strong>{{form.username.errors|striptags}}</strong>
               </div>
-              <div class="col-md-8">
-                {{form.password2}}
-                {% if form.password2.errors %}
-                <div class="alert alert-danger mt-1">
-                  {% for errors in form.password2.errors %}
-                  <strong>{{errors|striptags}}</strong><br>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
+              {% endif %}
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">전화번호</label>
-              </div>
-              <div class="col-md-8">
-                {{form.phone}}
-              </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-outline-primary btn-block" id="id_check">중복확인</button>
             </div>
-            <div class="row mt-3">
-              <div class="col-md-2 offset-1">
-                <label for="" class="col-12">서명</label>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">비밀번호</label>
+            </div>
+            <div class="col-md-8">
+              {{form.password1}}
+              {% if form.password1.errors %}
+              <div class="alert alert-danger mt-1 m-0">
+                {% for errors in form.password1.errors %}
+                <strong>{{errors|striptags}}</strong><br>
+                {% endfor %}
               </div>
-              <div class="col-md-8" style="border: 1px solid black; height: 200px;">
-                <div class="row mt-3">
-                  <div class="col-md-2 offset-10">
-                    <button class="btnx" type="button" aria-label="Left Align" data-bs-toggle="modal"
-                      data-bs-target="#exampleModal">서명 등록</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-sm">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 등록</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="container-fluid text-center">
-                              <div style="border: 1px solid black; height: 120px;">
-                                <canvas id="sig-canvas">
-                                  Get a better browser, bro.
-                                </canvas>
-                              </div>
-                              <label for="" class="">서명을 그려주세요</label>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">비밀번호 재확인</label>
+            </div>
+            <div class="col-md-8">
+              {{form.password2}}
+              {% if form.password2.errors %}
+              <div class="alert alert-danger mt-1">
+                {% for errors in form.password2.errors %}
+                <strong>{{errors|striptags}}</strong><br>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">전화번호</label>
+            </div>
+            <div class="col-md-8">
+              {{form.phone}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-2 offset-1">
+              <label for="" class="col-12">서명</label>
+            </div>
+            <div class="col-md-8" style="border: 1px solid black; height: 200px;">
+              <div class="row mt-3">
+                <div class="col-md-2 offset-10">
+                  <button class="btnx" type="button" aria-label="Left Align" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">서명 등록</button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 style="margin: 0 auto;" class="modal-title fw-bold" id="exampleModalLabel">서명 등록</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container-fluid text-center">
+                            <div style="border: 1px solid black; height: 120px;">
+                              <canvas id="sig-canvas">
+                                Get a better browser, bro.
+                              </canvas>
                             </div>
+                            <label for="" class="">서명을 그려주세요</label>
                           </div>
-                          <div class="modal-footer" style="margin: 0 auto;">
-                            <button type="button" class="btn btn-primary" id="sig-submitBtn"
-                              data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">등록</button>
-                            <button class="btn btn-secondary" id="sig-clearBtn" type="button">삭제</button>
-                          </div>
+                        </div>
+                        <div class="modal-footer" style="margin: 0 auto;">
+                          <button type="button" class="btn btn-primary" id="sig-submitBtn"
+                            data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">등록</button>
+                          <button class="btn btn-secondary" id="sig-clearBtn" type="button">삭제</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row mt-3 mb-1 mx-1">
-                  <textarea id="sig-dataUrl" class="form-control" rows="5"
-                    hidden="hidden">Data URL for your signature will go here!</textarea>
-                  <div class="col-md-12 text-center">
-                    <img id="sig-image" src="" />
-                  </div>
-                </div>
               </div>
-            </div>
-            <div class="row mt-1">
-              <div class="offset-3 col-md-8">
-                <div class="d-none">
-                  <input type="text" name="signImage" id="id_signImage">
+              <div class="row mt-3 mb-1 mx-1">
+                <textarea id="sig-dataUrl" class="form-control" rows="5"
+                  hidden="hidden">Data URL for your signature will go here!</textarea>
+                <div class="col-md-12 text-center">
+                  <img id="sig-image" src="" />
                 </div>
-                {% if form.image.errors %}
-                <div class="alert alert-danger mt-1">
-                  {% for errors in form.image.errors %}
-                  <strong>{{errors|striptags}}</strong><br>
-                  {% endfor %}
-                </div>
-                {% endif %}
-              </div>
-            </div>
-            <br>
-            <div class="row mt-3">
-              <div class="col-md-10 offset-2 text-center">
-                <a href="{% url 'user:login' %}">
-                  <button type="submit" class="btn btn-primary">가입 신청 완료</button>
-                </a>
               </div>
             </div>
           </div>
-        </form>
+          <div class="row mt-1">
+            <div class="offset-3 col-md-8">
+              <div class="d-none">
+                <input type="text" name="signImage" id="id_signImage">
+              </div>
+              {% if form.image.errors %}
+              <div class="alert alert-danger mt-1">
+                {% for errors in form.image.errors %}
+                <strong>{{errors|striptags}}</strong><br>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <br>
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <strong>{{ field.label }}</strong>
+            {{ field.errors }}
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+          <div class="row mt-3">
+            <div class="col-md-10 offset-2 text-center">
+              <a href="{% url 'user:login' %}">
+                <button type="submit" class="btn btn-primary">등록 완료</button>
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
     </form>
     <br>
@@ -374,6 +394,63 @@
 
       image.value = dataUrl;
     }, false);
+  })
+
+  // SelectBox 선택시 이벤트
+  $('#id_class1').change(function (e) {
+    const value = e.target.value;
+    const class2 = document.getElementById('id_class2');
+    const class3_input = document.getElementById('class3_input');
+    class3_input.value = '';
+    class3_input.readonly = true;
+    if (value == '종합건설업체') {
+      class2.innerHTML = `
+    <option value="" selected>분류2</option>
+    <option value="일반 사용자">일반 사용자</option>
+    <option value="현장 대리인">현장 대리인</option>
+    `
+    } else {
+      class2.innerHTML = `
+    <option value="" selected>분류2</option>`
+    }
+    return;
+  })
+
+  $('#id_class2').change(e => {
+    const value = e.target.value;
+    const class3 = document.getElementById('id_class3');
+    const class3_input = document.getElementById('class3_input');
+    class3_input.value = '';
+    class3_input.readonly = true;
+    if (value == '일반 사용자') {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>
+          <option value="시공 관리자">시공 관리자</option>
+          <option value="품질 관리자">품질 관리자</option>
+          <option value="안전 관리자">안전 관리자</option>
+          <option value="해당 사항 없음">해당 사항 없음</option>
+          <option value="직접 입력">직접 입력</option>`
+    } else if (value == '') {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>`
+    } else {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>
+          <option value="해당 사항 없음">해당 사항 없음</option>`
+    }
+    return;
+  })
+
+  $('#id_class3').change(e => {
+    const value = e.target.value;
+    const class3_input = document.getElementById('class3_input');
+    if (value == '직접 입력') {
+      class3_input.value = '';
+      class3_input.readonly = false;
+    } else {
+      class3_input.value = value;
+      class3_input.readonly = true;
+    }
   })
 
   // 아이디 중복확인

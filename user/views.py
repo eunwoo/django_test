@@ -48,8 +48,6 @@ def registerAdmin(request):
             form.instance.register = True
             form.instance.is_system_manager = True
             sys_manager = form.save(commit=False)
-            sys_manager.class1 = "종합건설업체"
-            sys_manager.class2 = "시스템 관리자"
             image_file = decodeDesignImage(
                 request.POST["signImage"], form.instance.username
             )
