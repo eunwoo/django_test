@@ -159,14 +159,8 @@ def reset_pwd(request):
         if expired_time < timezone.now():
             return JsonResponse({"result": "deny"})
         request_log.isSuccess = True
-        return render(
-            request,
-            "auth/find/reset_pwd.html",
-            {
-                "userId": user.username,
-                "code": code,
-            },
-        )
+        request_log.save()
+        return JsonResponse({"result": "success"})
     return render(request, "auth/find/password.html")
 
 
@@ -188,4 +182,13 @@ def reset_pwd_success(request):
         user.set_password(new_password)
         user.save()
         return JsonResponse({"result": "success"})
-    return Http404()
+    userId = request.GET.get("userId")
+    code = request.GET.get("code")
+    return render(
+        request,
+        "auth/find/reset_pwd.html",
+        {
+            "userId": userId,
+            "code": code,
+        },
+    )
