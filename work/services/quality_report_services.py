@@ -13,7 +13,7 @@ from django.contrib import messages
 
 
 def get_qty_report_list_by_user(user):
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         return QualityPerformanceReport.objects.filter(writerId=user).order_by(
             "isCheckManager", "-isSuccess", "-docNum"
         )
@@ -33,7 +33,7 @@ def get_qty_report_list_by_user(user):
 
 def read_qty_report_service(user, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         qty_report.isCheckManager = True
     elif user.class2 == "현장 대리인":
         qty_report.isCheckAgent = True
@@ -76,7 +76,7 @@ def create_quality_report_service(request):
 
 
 def update_quality_report_service(request, pk):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_quality_report_general(request, pk)
     elif request.user.class2 == "현장 대리인":
         return update_quality_report_agent(request, pk)

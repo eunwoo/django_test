@@ -35,7 +35,7 @@
     </section>
     <section>
       <div class="container">
-        {% if request.user.class2 == '일반 관리자' %}
+        {% if request.user.class2 == '일반 사용자' %}
         <div class="row justify-content-between">
           <div class="col-3">
             <a href="{% url 'work:create_safety' %}">
@@ -51,7 +51,7 @@
           <div class="col-12">
             <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
               <tr>
-                {% if request.user.class2 == '일반 관리자' %}
+                {% if request.user.class2 == '일반 사용자' %}
                 <td style="width: 5%;"></td>
                 <td style="width: 65%;">
                   문서
@@ -79,14 +79,14 @@
               </tr>
               {% for i in safetyitems %}
               <tr>
-                {% if request.user.class2 == '일반 관리자' %}
+                {% if request.user.class2 == '일반 사용자' %}
                 <td>
                   <input type="checkbox" value="{{i.docNum}}">
                 </td>
                 {% endif %}
                 <td>
                   <!--관리자 유형마다 확인이 다름-->
-                  {% if request.user.class2 == "일반 관리자" %}
+                  {% if request.user.class2 == "일반 사용자" %}
                   <a {% if i.isCheckManager == False and i.isSuccess == True %}
                     href="{% url 'work:read_safety' i.docNum %}" class="link-success"
                     {% elif i.isCheckManager == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"

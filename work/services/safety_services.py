@@ -19,7 +19,7 @@ from django.contrib import messages
 
 
 def get_safety_list_by_user(user):
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         return SafetyReport.objects.filter(writerId=user).order_by(
             "isCheckManager", "-isSuccess", "-docNum"
         )
@@ -38,7 +38,7 @@ def get_safety_list_by_user(user):
 
 
 def get_sign_users(request):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         users = CustomUser.objects.filter(class2="현장 대리인", register=True)
     elif request.user.class2 == "현장 대리인":
         users = CustomUser.objects.filter(class2="일반 건설사업관리기술인", register=True)
@@ -49,7 +49,7 @@ def get_sign_users(request):
 
 def read_safety_service(user, pk):
     safety = SafetyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         safety.isCheckManager = True
     elif user.class2 == "현장 대리인":
         safety.isCheckAgent = True

@@ -17,7 +17,7 @@ from django.contrib import messages
 
 
 def get_qty_request_list_by_user(user):
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         return QualityInspectionRequest.objects.filter(writerId=user).order_by(
             "isCheckManager", "-isSuccess", "-docNum"
         )
@@ -58,7 +58,7 @@ def create_quality_request_service(request):
 
 
 def update_quality_request_service(request, docNum):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_quality_request_for_generalManager(request, docNum)
     elif request.user.class2 == "현장 대리인":
         return update_quality_request_for_agent(request, docNum)
@@ -124,7 +124,7 @@ def update_quality_request_for_generalEngineer(request, docNum):
 
 def assign_user_for_qty_request(user, doc, user_pk: int, link):
     target_user = CustomUser.objects.get(pk=user_pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         doc.agentId = target_user
         doc.isCheckAgent = False
         doc.isCheckManager = True
@@ -152,7 +152,7 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
 
 def read_qty_request_service(user, pk):
     qty_request = QualityInspectionRequest.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         qty_request.isCheckManager = True
     elif user.class2 == "현장 대리인":
         qty_request.isCheckAgent = True

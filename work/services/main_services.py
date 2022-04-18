@@ -11,7 +11,7 @@ from ..models import (
 
 def get_unread_docs_list(user):
     context = {}
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         context["workCount"] = SafetyReport.objects.filter(
             writerId=user, isCheckManager=False
         ).count()
@@ -71,7 +71,7 @@ def get_unread_docs_list(user):
 
 def get_unread_quality_docs(user):
     context = {}
-    if user.class2 == "일반 관리자":
+    if user.class2 == "일반 사용자":
         context["qtyItems"] = QualityInspectionRequest.objects.filter(
             writerId=user, isCheckManager=False
         ).count()
