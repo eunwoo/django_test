@@ -121,9 +121,43 @@
                 </td>
               </tr>
               <tr>
-                <td>품명</td>
+                <td>시료명</td>
                 <td colspan="2">
-                  {{form.goods}}
+                  <div class="row">
+                    <div class="col">
+                      <select class="form-select" id="id_goods">
+                        <option value="" selected>품명을 선택해주세요</option>
+                        <option value="1">
+                          강관비계용 부재 (비계용 강관)
+                        </option>
+                        <option value="2">
+                          강관비계용 부재 (강관 조인트)
+                        </option>
+                        <option value="3">
+                          조립형비계 및 동바리부재(수직재)
+                        </option>
+                        <option value="4">
+                          조립형비계 및 동바리부재(수평재)
+                        </option>
+                        <option value="5">
+                          조립형비계 및 동바리부재(가새재)
+                        </option>
+                        <option value="6">
+                          조립형비계 및 동바리부재(트러스재)
+                        </option>
+                        <option value="7">
+                          조립형비계 및 동바리부재(연결조인트)
+                        </option>
+                        <option value="8">
+                          직접 입력
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col">
+                      <input type="text" id="goods_input" name="goods" class="form-control"
+                        value="{{form.instance.goods|default_if_none:''}}" readOnly>
+                    </div>
+                  </div>
                 </td>
                 <td>규격</td>
                 <td colspan="2">
@@ -284,7 +318,10 @@
               </tr>
               <tr>
                 <td>시험 및 시방기준</td>
-                <td colspan="5" id="test_standard"></td>
+                <td colspan="5">
+                  <input type="text" class="form-control" id="test_standard" name="testStandard"
+                    value="{{form.instance.testStandard|default_if_none:''}}" readOnly>
+                </td>
               </tr>
               <tr>
                 <td>성과 이용 목적</td>
@@ -555,34 +592,38 @@
   });
 
   // 시험 및 시방기준 자동 입력
-  const test_standard_element = document.getElementById('test_standard')
+  const test_standard_input = document.getElementById('test_standard')
   const goods_select = document.getElementById('id_goods')
-  test_standard_element.innerHTML = ""
-  const goods_id = goods_select.value
-  const input_element = document.createElement("input")
-  input_element.type = "text"
-  input_element.name = "testStandard"
-  input_element.readOnly = true
-  if (goods_select.value === "1" || goods_select.value === '2') {
-    input_element.value = "KS F 8002"
-  } else {
-    input_element.value = "KS F 8021"
-  }
-  test_standard_element.appendChild(input_element)
-
   goods_select.addEventListener("change", function () {
-    test_standard_element.innerHTML = ""
     const goods_id = goods_select.value
-    const input_element = document.createElement("input")
-    input_element.type = "text"
-    input_element.name = "testStandard"
-    input_element.disabled = true
-    if (goods_id === "1" || goods_id === "2") {
-      input_element.value = "KS F 8002"
+
+    // 시료명 변경
+    const goods_input = document.getElementById('goods_input')
+    if (goods_id === '8') {
+      goods_input.value = ''
+      goods_input.readOnly = false
+    } else if (goods_id === '') {
+      goods_input.value = ''
+      goods_input.readOnly = true
     } else {
-      input_element.value = "KS F 8021"
+      goods_input.readOnly = true
+      goods_input.value = goods_select.options[goods_select.selectedIndex].text
     }
-    test_standard_element.appendChild(input_element)
+
+    // 시험 및 시방기준 변경
+    if (goods_id === '') {
+      test_standard_input.value = ""
+      test_standard_input.readOnly = true
+    } else if (goods_id === "1" || goods_id === "2") {
+      test_standard_input.value = "KS F 8002"
+      test_standard_input.readOnly = true
+    } else if (goods_id === "8") {
+      test_standard_input.value = ""
+      test_standard_input.readOnly = false
+    } else {
+      test_standard_input.value = "KS F 8021"
+      test_standard_input.readOnly = true
+    }
   });
 </script>
 {% endblock %}
