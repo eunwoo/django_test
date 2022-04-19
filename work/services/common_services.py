@@ -56,7 +56,7 @@ def sms_send(link, phone_list: list[str], sms_type: int = 0):
         "receiver": ",".join(phone_list),  # 수신번호 (,활용하여 1000명까지 추가 가능)
         "msg": content,  # 문자 내용
         "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
-        "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
+        "title": "[T-QEM 알림] T-QEM 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
     requests.post(send_url, data=sms_data)
@@ -77,7 +77,7 @@ def sms_content(link, sms_type: int = 0) -> str:
     elif sms_type == 3:
         context = "설치작업 중 점검 조치사항 알림"
         link_text = "조치사항 항목"
-    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(TQEMS) 내 {context}이 도착하여 안내드립니다.\n\n{link_text} 바로가기\n {link}"
+    return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(T-QEM) 내 {context}이 도착하여 안내드립니다.\n\n{link_text} 바로가기\n {link}"
 
 
 def image_send(message_list, user_phone):
@@ -92,7 +92,7 @@ def image_send(message_list, user_phone):
             "receiver": user_phone.replace("-", ""),  # 수신번호 (,활용하여 1000명까지 추가 가능)
             "msg": data["content"],  # 문자 내용
             "msg_type": "LMS",  # 메세지 타입 (SMS, LMS)
-            "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
+            "title": "[T-QEM 알림] T-QEM 알림 안내",  # 메세지 제목 (장문에 적용)
             # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
         }
 

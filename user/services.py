@@ -18,7 +18,7 @@ def code_send(code, phone):
         "receiver": phone,  # 수신번호 (,활용하여 1000명까지 추가 가능)
         "msg": f"인증번호는 [{code}] 입니다. 5분 내로 입력해주세요.",  # 문자 내용
         "msg_type": "SMS",  # 메세지 타입 (SMS, LMS)
-        "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
+        "title": "[T-QEM 알림] T-QEM 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
     requests.post(send_url, data=sms_data)

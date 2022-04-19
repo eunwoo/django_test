@@ -18,7 +18,7 @@ def accept_send(phone):
         "receiver": phone,  # 수신번호 (,활용하여 1000명까지 추가 가능)
         "msg": "조립 가설기자재 품질평가 및 관리 시스템 가입 승인이 완료되었습니다.",  # 문자 내용
         "msg_type": "SMS",  # 메세지 타입 (SMS, LMS)
-        "title": "[TQEMS 알림] TQEMS 알림 안내",  # 메세지 제목 (장문에 적용)
+        "title": "[T-QEM 알림] T-QEM 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
     requests.post(send_url, data=sms_data)
