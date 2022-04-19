@@ -58,7 +58,7 @@
                     {{safety.generalEngineerId.name}}
                   </div>
                   <div class="col">
-                    <img width="100%" alt="" src="{{safety.generalEngineerId.signImage.url}}" />
+                    <img width="60%" alt="" src="{{safety.generalEngineerId.signImage.url}}" />
                   </div>
                 </div>
               </td>
@@ -71,6 +71,12 @@
               <th scope="row" class="table-secondary align-middle">확인 일자</th>
               <td>
                 {{safety.checklistDate}}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="table-secondary align-middle">제목</th>
+              <td colspan="3">
+                {{safety.checklistTitle}}
               </td>
             </tr>
           </table>
