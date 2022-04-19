@@ -21,20 +21,22 @@ class GeneralManagerQualityInspectionRequestForm(forms.ModelForm):
         ]
         widgets = {
             "title": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "제목을 입력해주세요"}
-            ),
-            "goods": forms.Select(
-                attrs={"class": "form-select"},
-                choices=QualityInspectionRequest.goods_choice,
+                attrs={"class": "form-control", "placeholder": "제목을 입력해주세요."}
             ),
             "size": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "규격을 입력해주세요"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "규격을 입력해주세요. (여러 개 입력 가능)",
+                }
             ),
             "sampleQuentity": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "시료량을 입력해주세요"}
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "시료량을 입력해주세요. (여러 개 입력 가능)",
+                }
             ),
             "sampleOrigin": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "생산국을 입력해주세요"}
+                attrs={"class": "form-control", "placeholder": "생산국을 입력해주세요."}
             ),
             "testType_hweem": forms.CheckboxInput(),
             "testType_zip": forms.CheckboxInput(),
