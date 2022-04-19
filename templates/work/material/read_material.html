@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-자재 공급원 문서
+자재 공급원 신고 및 승인서
 {% endblock %}
 {% block style %}
 <style>
@@ -29,7 +29,7 @@
                 <li class="breadcrumb-item" aria-current="page">
                   <a href="{% url 'work:material' %}">자재 반입</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">자재 공급원 문서</li>
+                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고 및 승인서</li>
               </ol>
             </nav>
           </div>
@@ -42,14 +42,14 @@
         <table class="table">
           <thead>
             <th class="p-4" colspan="6">
-              <h1>자재 공급원 문서</h1>
+              <h1>자재 공급원 신고서</h1>
             </th>
           </thead>
           <tbody class="align-middle">
             <tr>
               <td>문서번호</td>
               <td colspan="2">
-                자재 공급원 문서-{{material.docNum}}
+                자재 공급원 신고 및 승인서-{{material.docNum}}
               </td>
               <td>작성일자</td>
               <td colspan="2">
@@ -89,6 +89,7 @@
                       <td>공급 업체명</td>
                       <td>품명</td>
                       <td>규격</td>
+                      <td>수량</td>
                       <td>비고</td>
                     </tr>
                   </thead>
@@ -98,6 +99,7 @@
                       <td>{{supply_origin.name}}</td>
                       <td>{{supply_origin.goods}}</td>
                       <td>{{supply_origin.size}}</td>
+                      <td>{{supply_origin.amount}}</td>
                       <td>{{supply_origin.etc}}</td>
                     </tr>
                     {% endfor %}
@@ -222,6 +224,15 @@
                 {{material.text}}
               </td>
             </tr>
+          </tbody>
+          <thead>
+            <tr>
+              <th class="p-4" colspan="6">
+                <h1>자재 공급원 승인서</h1>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
             <tr>
               <td>회신일자</td>
               <td colspan="5">
