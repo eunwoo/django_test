@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-자재 공급원 문서
+자재 공급원 신고 및 승인서
 {% endblock %}
 {% block style %}
 <style>
@@ -39,7 +39,7 @@
         <div class="row justify-content-between">
           <div class="col-3">
             <a href="{% url 'work:create_material' %}">
-              <button class="btn mb-2">자재 공급원 문서 작성하기</button>
+              <button class="btn mb-2">자재 공급원 신고 및 승인서 작성하기</button>
             </a>
           </div>
           <div class="col-1">
@@ -82,24 +82,24 @@
                     href="{% url 'work:read_material' i.docNum %}" class="link-success"
                     {% elif i.isCheckManager == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
-                    문서-{{ i.docNum}}-{{i.title}}</a>
+                    신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "현장 대리인" %}
                   <a {% if i.isCheckAgent == False and i.isSuccess == True %}
                     href="{% url 'work:read_material' i.docNum %}" class="link-success"
                     {% elif i.isCheckAgent == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
-                    문서-{{ i.docNum}}-{{i.title}}</a>
+                    신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
                   <a {% if i.isCheckGeneralEngineer == False and i.isSuccess == True %}
                     href="{% url 'work:read_material' i.docNum %}" class="link-success"
                     {% elif i.isCheckGeneralEngineer == False %} href="/work/update_material/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_material' i.docNum %}"
                     class="link-secondary" {% endif %}>자재 공급원
-                    문서-{{ i.docNum}}-{{i.title}}</a>
+                    신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
                   <a {% if i.isSuccess == False %} href="/work/update_material/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_material' i.docNum %}" class="link-secondary" {% endif %}>자재 공급원
-                    문서-{{ i.docNum}}-{{i.title}}</a>
+                    신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% endif %}
                 </td>
                 <td>

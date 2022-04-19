@@ -15,19 +15,26 @@ from django.contrib import messages
 def get_material_list_by_user(user):
     if user.class2 == "일반 사용자":
         return MaterialSupplyReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
+            "isCheckManager",
+            "-isSuccess",
+            "-docNum",
         )
     elif user.class2 == "현장 대리인":
         return MaterialSupplyReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
+            "isCheckAgent",
+            "-isSuccess",
+            "-docNum",
         )
     elif user.class2 == "일반 건설사업관리기술인":
         return MaterialSupplyReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
+            "isCheckGeneralEngineer",
+            "-isSuccess",
+            "-docNum",
         )
     else:
         return MaterialSupplyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
+            "isSuccess",
+            "-docNum",
         )
 
 
@@ -42,6 +49,7 @@ def create_material_service(request):
             supply_comp = request.POST.getlist("supply_comp[]")
             supply_type = request.POST.getlist("supply_type[]")
             supply_size = request.POST.getlist("supply_size[]")
+            supply_amount = request.POST.getlist("supply_amount[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.fieldId = field
             material.isSaveManager = True
@@ -54,6 +62,7 @@ def create_material_service(request):
                     name=supply_comp[index],
                     goods=supply_type[index],
                     size=supply_size[index],
+                    amount=supply_amount[index],
                     etc=supply_etc[index],
                     materialSupplyReportId=material,
                 )
@@ -124,6 +133,7 @@ def update_material_general(request, docNum):
             supply_comp = request.POST.getlist("supply_comp[]")
             supply_type = request.POST.getlist("supply_type[]")
             supply_size = request.POST.getlist("supply_size[]")
+            supply_amount = request.POST.getlist("supply_amount[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.save()
             if files:
@@ -137,6 +147,7 @@ def update_material_general(request, docNum):
                     name=supply_comp[index],
                     goods=supply_type[index],
                     size=supply_size[index],
+                    amount=supply_amount[index],
                     etc=supply_etc[index],
                     materialSupplyReportId=material,
                 )
@@ -188,14 +199,19 @@ def update_material_agent(request, docNum):
         material.save()
         messages.success(request, "저장이 완료되었습니다.")
     return render(
-        request, "work/material/update_material_agent.html", {"material": material}
+        request,
+        "work/material/update_material_agent.html",
+        {"material": material},
     )
 
 
 def update_material_generalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
-        form = GeneralEngineerMaterialSupplyReportForm(request.POST, instance=material)
+        form = GeneralEngineerMaterialSupplyReportForm(
+            request.POST,
+            instance=material,
+        )
         if form.is_valid():
             material = form.save(commit=False)
             material.isSaveGeneralEngineer = True
@@ -214,7 +230,10 @@ def update_material_generalEngineer(request, docNum):
 def update_material_totalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
-        form = TotalEngineerMaterialSupplyReportForm(request.POST, instance=material)
+        form = TotalEngineerMaterialSupplyReportForm(
+            request.POST,
+            instance=material,
+        )
         if form.is_valid():
             material = form.save(commit=False)
             material.isSuccess = True
