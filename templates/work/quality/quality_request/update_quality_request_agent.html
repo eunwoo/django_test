@@ -121,9 +121,9 @@
                 </td>
               </tr>
               <tr>
-                <td>품명</td>
+                <td>시료명</td>
                 <td colspan="2">
-                  {{ form.instance.get_goods_display }}
+                  {{ form.instance.goods }}
                 </td>
                 <td>규격</td>
                 <td colspan="2">
@@ -172,15 +172,15 @@
                 <td>시료 채취 장소</td>
                 <td colspan="5">
                   <div class="row">
-                    <div class="col-1">구분1</div>
+                    <div class="col-1">Level1</div>
                     <div class="col-3">
                       {{form.instance.locateId.class2.class1.class1}}
                     </div>
-                    <div class="col-1">구분2</div>
+                    <div class="col-1">Level2</div>
                     <div class="col-3">
                       {{form.instance.locateId.class2.class2}}
                     </div>
-                    <div class="col-1">구분3</div>
+                    <div class="col-1">Level3</div>
                     <div class="col-3">
                       {{form.instance.locateId.class3}}
                     </div>

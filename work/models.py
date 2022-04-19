@@ -267,17 +267,7 @@ class MaterialDocs(models.Model):
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)
     title = models.CharField(max_length=90)  # 제목
-    goods_choice = [
-        ("", "품명을 선택해 주세요"),
-        ("1", "강관비계용 부재 (비계용 강관)"),
-        ("2", "강관비계용 부재(강관조인트)"),
-        ("3", "조립형비계 및 동바리부재(수직재)"),
-        ("4", "조립형비계 및 동바리부재(수평재)"),
-        ("5", "조립형비계 및 동바리부재(가새재)"),
-        ("6", "조립형비계 및 동바리부재(트러스)"),
-        ("7", "립형비계 및 동바리부재(연결조인트)"),
-    ]
-    goods = models.CharField(max_length=60, choices=goods_choice)  # 품명
+    goods = models.CharField(max_length=60)  # 품명
     size = models.CharField(max_length=60)  # 규격
     sampleQuentity = models.TextField()  # 시료량
     sampleOrigin = models.TextField()  # 시료 또는 자제 생산국
