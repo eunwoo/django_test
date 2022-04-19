@@ -234,6 +234,7 @@ class SupplyList(models.Model):
     name = models.CharField(max_length=60)  # 공급업체명
     goods = models.CharField(max_length=60)  # 품명
     size = models.CharField(max_length=60)  # 규격
+    amount = models.CharField(max_length=60)  # 공급수량
     etc = models.TextField()  # 비고
     materialSupplyReportId = models.ForeignKey(
         MaterialSupplyReport,
