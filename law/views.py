@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -80,7 +81,7 @@ def update_views(request, pk):
 def get_laws(request):
     page = request.GET.get("page", 1)
 
-    law_list = models.LawPost.objects.all()
+    law_list = models.LawPost.objects.filter(preSave=False).order_by("-created_on")
 
     paginator = Paginator(law_list, 10)
     page_obj = paginator.get_page(page)
@@ -90,3 +91,12 @@ def get_laws(request):
         "law/law.html",
         {"lawitems": page_obj},
     )
+
+
+@login_required(login_url="/user/login/")
+def delete_laws(request):
+    if request.method == "POST":
+        law_list = request.POST.getlist("law_list[]")
+        models.LawPost.objects.filter(pk__in=law_list).delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)
