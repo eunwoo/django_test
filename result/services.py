@@ -21,11 +21,14 @@ def custom_redirect(url_name, *args, **kwargs):
     return HttpResponseRedirect(url + "?%s" % params)
 
 
-def get_search_list(post_key, locate_value=0):
+def get_search_list(post_key, locate_value=0, search=""):
     union_list = list()
     if "safety" in post_key:
         add_query = (
-            SafetyReport.objects.filter(isSuccess=True)
+            SafetyReport.objects.filter(
+                isSuccess=True,
+                title__icontains=search,
+            )
             .values("docNum", "created_at")
             .annotate(type=Value("safety", output_field=CharField()))
         )
@@ -33,7 +36,10 @@ def get_search_list(post_key, locate_value=0):
             union_list.append(add_item)
     if "material" in post_key:
         add_query = (
-            MaterialSupplyReport.objects.filter(isSuccess=True)
+            MaterialSupplyReport.objects.filter(
+                isSuccess=True,
+                title__icontains=search,
+            )
             .values("docNum", "created_at")
             .annotate(type=Value("material", output_field=CharField()))
         )
@@ -41,11 +47,17 @@ def get_search_list(post_key, locate_value=0):
             union_list.append(add_item)
     if "quality" in post_key:
         add_query = (
-            QualityInspectionRequest.objects.filter(isSuccess=True)
+            QualityInspectionRequest.objects.filter(
+                isSuccess=True,
+                title__icontains=search,
+            )
             .values("docNum", "created_at")
             .annotate(type=Value("qty_request", output_field=CharField()))
         ).union(
-            QualityPerformanceReport.objects.filter(isSuccess=True)
+            QualityPerformanceReport.objects.filter(
+                isSuccess=True,
+                title__icontains=search,
+            )
             .values("docNum", "created_at")
             .annotate(type=Value("qty_report", output_field=CharField()))
         )
@@ -64,6 +76,7 @@ def get_search_list(post_key, locate_value=0):
                 BeforeInstallCheckList.objects.filter(
                     equipment__in=type_list,
                     locateId=InstallLocate.objects.get(pk=locate_value),
+                    title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
                 .values("docNum", "created_at", "equipment")
@@ -73,6 +86,7 @@ def get_search_list(post_key, locate_value=0):
                 InstallCheckList.objects.filter(
                     equipment__in=type_list,
                     locateId=InstallLocate.objects.get(pk=locate_value),
+                    title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
                 .values("docNum", "created_at", "equipment")
@@ -82,6 +96,7 @@ def get_search_list(post_key, locate_value=0):
             before_install_query = (
                 BeforeInstallCheckList.objects.filter(
                     equipment__in=type_list,
+                    title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
                 .values("docNum", "created_at", "equipment")
@@ -90,6 +105,7 @@ def get_search_list(post_key, locate_value=0):
             install_query = (
                 InstallCheckList.objects.filter(
                     equipment__in=type_list,
+                    title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
                 .values("docNum", "created_at", "equipment")
