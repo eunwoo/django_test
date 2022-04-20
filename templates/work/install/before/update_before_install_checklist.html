@@ -163,8 +163,8 @@
             <thead>
               <tr class="table-primary">
                 <th scope="col" rowspan=2 style="width: 5%">NO</th>
-                <th scope="col" rowspan=2 style="width: 55%">점검 항목</th>
-                <th scope="col" colspan=3 style="width: 30%">점검 결과</th>
+                <th scope="col" rowspan=2 style="width: 65%">점검 항목</th>
+                <th scope="col" colspan=2 style="width: 20%">점검 결과</th>
                 <th scope="col" colspan=2 style="width: 20%">조치 사항</th>
               </tr>
               <tr class="table-primary">
@@ -173,9 +173,6 @@
                 </th>
                 <th>
                   미흡
-                </th>
-                <th>
-                  해당없음
                 </th>
                 <th>
                   내용
@@ -197,10 +194,6 @@
                 <td>
                   <input type="radio" name="{{checkmenu.before_inspection_item_id.pk}}" value="2" required
                     {% if checkmenu.result == "2" %}checked{% endif %}>
-                </td>
-                <td>
-                  <input type="radio" name="{{checkmenu.before_inspection_item_id.pk}}" value="3" required
-                    {% if checkmenu.result == "3" %}checked{% endif %}>
                 </td>
                 <td>
                   <!-- Button trigger modal -->
@@ -255,7 +248,7 @@
               {% endfor %}
               <tr>
                 <td></td>
-                <td colspan="4">
+                <td colspan="3">
                   <input type="text" class="form-control" placeholder="새 점검 항목을 입력해주세요." id="add_input">
                 </td>
                 <td>
@@ -386,13 +379,11 @@
       title_cell.className = "text-start"
       const result1_cell = new_row.insertCell(2)
       const result2_cell = new_row.insertCell(3)
-      const result3_cell = new_row.insertCell(4)
-      const insert_cell = new_row.insertCell(5)
-      const delete_cell = new_row.insertCell(6)
+      const insert_cell = new_row.insertCell(4)
+      const delete_cell = new_row.insertCell(5)
       title_cell.innerHTML = input_text
       result1_cell.innerHTML = `<input type="radio" name="${pk}" value="1" required>`
       result2_cell.innerHTML = `<input type="radio" name="${pk}" value="2" required>`
-      result3_cell.innerHTML = `<input type="radio" name="${pk}" value="3" required>`
       insert_cell.innerHTML =
         `<!-- Button trigger modal -->
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
