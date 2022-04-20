@@ -53,19 +53,22 @@
               <tr>
                 {% if request.user.class2 == '일반 사용자' %}
                 <td style="width: 5%;"></td>
-                <td style="width: 65%;">
+                <td style="width: 55%;">
                   문서
                 </td>
                 {% else %}
-                <td style="width: 70%;">
+                <td style="width: 60%;">
                   문서
                 </td>
                 {% endif %}
                 <td style="width: 10%;">
                   작성자
                 </td>
-                <td style="width: 20%;">
+                <td style="width: 15%;">
                   작성 날짜
+                </td>
+                <td style="width: 15%;">
+                  진행 상황
                 </td>
               </tr>
               {% for i in safetyitems %}
@@ -106,6 +109,34 @@
                 </td>
                 <td>
                   {{i.created_at|date:"Y-m-d"}}
+                </td>
+                <td>
+                  {% if i.isSuccess == True %}
+                  <span class="badge badge-success">승인완료</span>
+                  {% elif i.totalEngineerId %}
+                  총괄 건설사업관리기술인<br>
+                  {% if i.totalEngineerId == request.user %}
+                  <span class="badge bg-warning text-dark">서명요청</span>
+                  {% else %}
+                  <span class="badge bg-info text-dark">승인대기</span>
+                  {% endif %}
+                  {% elif i.generalEngineerId %}
+                  일반 건설사업관리기술인<br>
+                  {% if i.generalEngineerId == request.user %}
+                  <span class="badge bg-warning text-dark">서명요청</span>
+                  {% else %}
+                  <span class="badge bg-info text-dark">승인대기</span>
+                  {% endif %}
+                  {% elif i.agentId %}
+                  현장 대리인<br>
+                  {% if i.agentId == request.user %}
+                  <span class="badge bg-warning text-dark">서명요청</span>
+                  {% else %}
+                  <span class="badge bg-info text-dark">승인대기</span>
+                  {% endif %}
+                  {% else %}
+                  일반 사용자<br><span class="badge bg-secondary">작성중</span>
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}
