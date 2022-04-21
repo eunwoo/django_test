@@ -324,7 +324,7 @@
   // Radio 버튼 변경시 입력버튼 동작
   $("input[type=radio]").change(function () {
     const pk = this.value
-    const button_node = this.parentNode.parentNode.children[5].children[0]
+    const button_node = this.parentNode.parentNode.children[4].children[0]
     if (pk === '2') {
       inadequate.push(this.name)
       button_node.disabled = false
@@ -455,7 +455,7 @@
         `<input type="checkbox" id="${pk}-checkbox">`
       $(`input[name='${pk}']:radio`).change(function () {
         const pk = this.value
-        const button_node = this.parentNode.parentNode.children[5].children[0]
+        const button_node = this.parentNode.parentNode.children[4].children[0]
         if (pk === '2') {
           button_node.disabled = false
         } else {
