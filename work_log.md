@@ -17,6 +17,7 @@
 # 장고 쿼리셋
 
 https://gaussian37.github.io/python-django-django-query-set/
+https://brownbears.tistory.com/425 => OR 쿼리 사용법
 
 # 모델 초기 데이터
 
