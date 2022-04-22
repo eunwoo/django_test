@@ -352,3 +352,8 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 
 # 4/21
 - 체크리스트의 점검 결과에서 해당없음 칸 없애기 => 완료
+
+# 4/25
+- ERD 클라우드 데이터베이스 정리
+- sqlitebrowser.org 사용법 정리
+- 결과보고 코드 정리
