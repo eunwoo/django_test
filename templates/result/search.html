@@ -193,16 +193,34 @@
     });
   })();
 
-  // 설치작업 확인 체크시 동작
-  const install_check = document.getElementById('install')
-  install_check.onchange = function () {
-    if (install_check.checked) {
-      document.getElementById('type_div').classList.remove('d-none')
-      document.getElementById('locate_div').classList.remove('d-none')
-    } else {
-      document.getElementById('type_div').classList.add('d-none')
-      document.getElementById('locate_div').classList.add('d-none')
+
+  // 결과보고 체크리스트 점검
+  const onChangeClosure = () => {
+    let [safetyCheck, installCheck] = [false, false];
+    const change_div = [document.getElementById('type_div'), document.getElementById('locate_div')]
+    const changeSafetyCheck = () => {
+      safetyCheck = !!!safetyCheck;
+      changeDetailOption()
     }
+    const changeInstallCheck = () => {
+      installCheck = !!!installCheck;
+      changeDetailOption()
+    }
+    const changeDetailOption = () => {
+      if (!safetyCheck && !installCheck) {
+        change_div.forEach(div => div.classList.add('d-none'))
+      } else {
+        change_div.forEach(div => div.classList.remove('d-none'))
+      }
+    }
+    return [changeSafetyCheck, changeInstallCheck]
   }
+
+  // 설치작업 확인 체크시 동작
+  const safety_check = document.getElementById('safety')
+  const install_check = document.getElementById('install')
+  const changeEvent = onChangeClosure()
+  safety_check.onchange = changeEvent[0]
+  install_check.onchange = changeEvent[1]
 </script>
 {% endblock %}
