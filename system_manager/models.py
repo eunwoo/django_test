@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # 하나만 생성 가능
 # 현장 등록
 class Field(models.Model):
