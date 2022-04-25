@@ -1,4 +1,9 @@
-from django.db.models import CharField, Value, F
+from django.db.models import (
+    CharField,
+    Value,
+    F,
+    Q,
+)
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from urllib import parse
@@ -24,11 +29,12 @@ def custom_redirect(url_name, *args, **kwargs):
 def get_search_list(post_key, locate_value=0, search=""):
     union_list = list()
     if "safety" in post_key:
+        q = Q()
+        q.add(Q(isSuccess=True), Q.AND)
+        q.add(Q(title__icontains=search), Q.OR)
+        q.add(Q(checklistTitle__icontains=search), Q.OR)
         add_query = (
-            SafetyReport.objects.filter(
-                isSuccess=True,
-                title__icontains=search,
-            )
+            SafetyReport.objects.filter(q)
             .values("docNum", "created_at")
             .annotate(type=Value("safety", output_field=CharField()))
         )
