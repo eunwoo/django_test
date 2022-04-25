@@ -4,9 +4,8 @@ from django.db import models
 from user.models import CustomUser
 from system_manager.models import DocsFile, InstallLocate, Field
 
+
 # 구조 안전성 검토 신고서 관련 문서
-
-
 class SafetyReport(models.Model):
     docNum = models.AutoField(primary_key=True)
     date = models.DateField()  # 작성 일자
@@ -129,10 +128,10 @@ class SafetyCheckList(models.Model):
 class MaterialSupplyReport(models.Model):
     docNum = models.AutoField(primary_key=True)
     date = models.DateField()  # 작성 일자
+    title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
 
-    title = models.CharField(max_length=90)  # 제목
     replyDate = models.DateField(null=True)  # 회신 일자
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
@@ -168,32 +167,6 @@ class MaterialSupplyReport(models.Model):
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
-
-    businessLicense = models.FileField(
-        upload_to="business_license",
-        blank=True,
-        null=True,
-    )  # 사업자 등록증
-    deliveryPerformanceCertificate = models.FileField(
-        upload_to="delivery_performance_certificate",
-        blank=True,
-        null=True,
-    )  # 납품실적증명서
-    safetyCertificate = models.FileField(
-        upload_to="safety_certificate",
-        blank=True,
-        null=True,
-    )  # 안전인증서
-    qualityTestReport = models.FileField(
-        upload_to="quality_test_report",
-        blank=True,
-        null=True,
-    )  # 품질시험성적서
-    testPerformanceComparisonTable = models.FileField(
-        upload_to="test_performance_comparison_table",
-        blank=True,
-        null=True,
-    )  # 시험성과대비표
 
     writerId = models.ForeignKey(
         CustomUser,
