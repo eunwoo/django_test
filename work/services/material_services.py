@@ -236,7 +236,7 @@ def update_material_totalEngineer(request, docNum):
         )
         if form.is_valid():
             material = form.save(commit=False)
-            material.isSuccess = True
+            material.isSaveTotalEngineer = True
             material.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)

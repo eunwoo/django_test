@@ -212,7 +212,6 @@ def update_safety_totalEngineer(request, pk):
         if form.is_valid():
             safety = form.save(commit=False)
             safety.isSaveTotalEngineer = True
-            safety.isSuccess = True
             safety.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
