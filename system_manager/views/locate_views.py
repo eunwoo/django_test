@@ -68,12 +68,27 @@ def add_locate(request):
                 class1=request.POST.get("name"),
             )
             target_class.save()
+            second_class = InstallLocateClass2(
+                class1=target_class,
+                class2="해당사항 없음",
+            )
+            second_class.save()
+            third_class = InstallLocate(
+                class2=second_class,
+                class3="해당사항 없음",
+            )
+            third_class.save()
         elif class_type == 2:
             target_class = InstallLocateClass2(
                 class2=request.POST.get("name"),
                 class1=InstallLocateClass1.objects.get(pk=request.POST.get("class_id")),
             )
             target_class.save()
+            third_class = InstallLocate(
+                class2=target_class,
+                class3="해당사항 없음",
+            )
+            third_class.save()
         elif class_type == 3:
             target_class = InstallLocate(
                 class3=request.POST.get("name"),
