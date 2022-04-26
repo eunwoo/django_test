@@ -365,6 +365,7 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 - 결과보고에는 검토 완료된 문서만 표시되도록
 - 결과보고 필터링 알고리즘 구현
 - 설치작업 체크리스트 전체 수정
+- 구조 안전성 검토 설치위치 추가하기
 
 # 4/26
 - 각 업무에서 isSuccess와 isSaveTotalEngineer 확인하기
