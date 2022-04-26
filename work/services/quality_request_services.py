@@ -18,17 +18,26 @@ from django.contrib import messages
 
 def get_qty_request_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return QualityInspectionRequest.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
+        return QualityInspectionRequest.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by(
+            "isCheckManager",
+            "-docNum",
         )
     elif user.class2 == "현장 대리인":
-        return QualityInspectionRequest.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
+        return QualityInspectionRequest.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by(
+            "isCheckAgent",
+            "-docNum",
         )
     else:
-        return QualityInspectionRequest.objects.filter(generalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
-        )
+        return QualityInspectionRequest.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by("-docNum")
 
 
 def create_quality_request_service(request):
@@ -136,8 +145,6 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
         sms_send(link, [target_user.phone])
     else:
         doc.isSuccess = True
-        doc.isCheckManager = False
-        doc.isCheckAgent = False
         sms_send(
             link,
             [

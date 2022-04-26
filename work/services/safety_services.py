@@ -20,21 +20,25 @@ from django.contrib import messages
 
 def get_safety_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return SafetyReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by("isCheckManager", "-docNum")
     elif user.class2 == "현장 대리인":
-        return SafetyReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by("isCheckAgent", "-docNum")
     elif user.class2 == "일반 건설사업관리기술인":
-        return SafetyReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by("isCheckGeneralEngineer", "-docNum")
     else:
-        return SafetyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by("-docNum")
 
 
 def get_sign_users(request):

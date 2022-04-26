@@ -21,9 +21,6 @@ def assign_user(user, doc, user_pk: int, link):
         sms_send(link, [target_user.phone])
     else:
         doc.isSuccess = True
-        doc.isCheckManager = False
-        doc.isCheckAgent = False
-        doc.isCheckGeneralEngineer = False
         sms_send(
             link,
             [

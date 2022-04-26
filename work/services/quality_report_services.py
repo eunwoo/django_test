@@ -8,27 +8,33 @@ from ..models import (
     QualityPerformanceFile,
     QualityPerformance,
 )
-from ..forms.quality_report_forms import GeneralManagerQualityPerformanceReportForm
+from ..forms.quality_report_forms import (
+    GeneralManagerQualityPerformanceReportForm,
+)
 from django.contrib import messages
 
 
 def get_qty_report_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return QualityPerformanceReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by("isCheckManager", "-docNum")
     elif user.class2 == "현장 대리인":
-        return QualityPerformanceReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by("isCheckAgent", "-docNum")
     elif user.class2 == "일반 건설사업관리기술인":
-        return QualityPerformanceReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by("isCheckGeneralEngineer", "-docNum")
     else:
-        return QualityPerformanceReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by("-docNum")
 
 
 def read_qty_report_service(user, pk):

@@ -14,26 +14,34 @@ from django.contrib import messages
 
 def get_material_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return MaterialSupplyReport.objects.filter(writerId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckManager",
-            "-isSuccess",
             "-docNum",
         )
     elif user.class2 == "현장 대리인":
-        return MaterialSupplyReport.objects.filter(agentId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckAgent",
-            "-isSuccess",
             "-docNum",
         )
     elif user.class2 == "일반 건설사업관리기술인":
-        return MaterialSupplyReport.objects.filter(generalEngineerId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckGeneralEngineer",
-            "-isSuccess",
             "-docNum",
         )
     else:
-        return MaterialSupplyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess",
+        return MaterialSupplyReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
             "-docNum",
         )
 
