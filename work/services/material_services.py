@@ -259,13 +259,6 @@ def update_material_totalEngineer(request, docNum):
 
 def read_material_service(user, pk):
     material = MaterialSupplyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        material.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        material.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        material.isCheckGeneralEngineer = True
-    material.save()
     return material
 
 

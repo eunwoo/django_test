@@ -53,13 +53,6 @@ def get_sign_users(request):
 
 def read_safety_service(user, pk):
     safety = SafetyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        safety.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        safety.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        safety.isCheckGeneralEngineer = True
-    safety.save()
     return safety
 
 

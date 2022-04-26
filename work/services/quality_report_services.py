@@ -39,13 +39,6 @@ def get_qty_report_list_by_user(user):
 
 def read_qty_report_service(user, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        qty_report.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        qty_report.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        qty_report.isCheckGeneralEngineer = True
-    qty_report.save()
     return qty_report
 
 

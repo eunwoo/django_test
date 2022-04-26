@@ -159,11 +159,6 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
 
 def read_qty_request_service(user, pk):
     qty_request = QualityInspectionRequest.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        qty_request.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        qty_request.isCheckAgent = True
-    qty_request.save()
     return qty_request
 
 
