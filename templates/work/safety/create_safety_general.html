@@ -109,27 +109,27 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
                   구조 안전성
                   검토 신고 및
                   승인서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
                 </td>
-                <td>작성일자</td>
+                <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
                     value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
                     value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-primary">공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect">
                     <option value="">
@@ -155,7 +155,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td rowspan="3" class="table-primary">내용</td>
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
                     value="{{form.instance.text|default_if_none:''}}">{{form.instance.text|default_if_none:''}}</textarea>
@@ -163,7 +163,7 @@
               </tr>
               <tr>
                 <td rowspan="2" colspan="2"></td>
-                <td>담당자</td>
+                <td class="table-primary">담당자</td>
                 <td>
                   {% if form.instance.writerId != None %}{{form.instance.writerId.name}}
                   {% else %}{{request.user.name}}
@@ -205,7 +205,7 @@
                 </td>
               </tr>
               <tr>
-                <td>현장대리인</td>
+                <td class="table-secondary">현장대리인</td>
                 <td>
                 </td>
                 <td>
@@ -213,7 +213,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">붙임</td>
+                <td rowspan="2" class="table-primary">붙임</td>
                 <td>구조계산서</td>
                 <td>
                   {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills equipment_list=equipment_list %}
@@ -247,14 +247,14 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
               <tr>
-                <td>회신일자</td>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">검토 의견</td>
+                <td rowspan="3" class="table-secondary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                 </td>
@@ -270,18 +270,18 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-secondary">결과</td>
                 <td colspan="5">
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
                   (인)
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-secondary">총괄건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
