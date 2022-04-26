@@ -86,27 +86,27 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
                   자재 공급원 신고 및 승인서-{{material.docNum}}
                 </td>
-                <td>작성일자</td>
+                <td class="table-secondary">작성일자</td>
                 <td colspan="2">
                   {{material.date}}
                 </td>
               </tr>
               <tr>
-                <td>공사명</td>
+                <td class="table-secondary">공사명</td>
                 <td colspan="2">
                   {{material.fieldId.title}}
                 </td>
-                <td>자재명</td>
+                <td class="table-secondary">자재명</td>
                 <td colspan="2">
                   가설기자재
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="table-secondary">
                   제목
                 </td>
                 <td colspan="5">
@@ -114,13 +114,13 @@
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-secondary">공종</td>
                 <td colspan="5">
                   {{material.constructType}}
                 </td>
               </tr>
               <tr>
-                <td>공급원</td>
+                <td class="table-secondary">공급원</td>
                 <td colspan="5">
                   <table class="table table-bordered">
                     <thead>
@@ -147,7 +147,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td rowspan="3" class="table-secondary">내용</td>
                 <td colspan="5" class="p-4">
                   상기 업체로부터 해당 자재를 공급받아 당해 공사에 사용하는 사항에 대한 자재공급원을 신고합니다.
                 </td>
@@ -172,7 +172,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">붙임</td>
+                <td rowspan="3" class="table-secondary">붙임</td>
                 <td colspan="5">
                   <table class="table">
                     <tr>
@@ -182,8 +182,8 @@
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
                           {% if item.type == 'businessLicenses' %}
-                          <li class="list-group-item"><a href="{{item.file.url}}"
-                              class="link-primary">{{item.filename}}</a></li>
+                          <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                              target="_blank">{{item.filename}}</a></li>
                           {% endif %}
                           {% endfor %}
                           {% endif %}
@@ -197,8 +197,8 @@
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
                           {% if item.type == 'deliveryPerformanceCertificate' %}
-                          <li class="list-group-item"><a href="{{item.file.url}}"
-                              class="link-primary">{{item.filename}}</a></li>
+                          <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                              target="_blank">{{item.filename}}</a></li>
                           {% endif %}
                           {% endfor %}
                           {% endif %}
@@ -212,8 +212,8 @@
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
                           {% if item.type == 'safetyCertificate' %}
-                          <li class="list-group-item"><a href="{{item.file.url}}"
-                              class="link-primary">{{item.filename}}</a></li>
+                          <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                              target="_blank">{{item.filename}}</a></li>
                           {% endif %}
                           {% endfor %}
                           {% endif %}
@@ -227,8 +227,8 @@
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
                           {% if item.type == 'qualityTestReport' %}
-                          <li class="list-group-item"><a href="{{item.file.url}}"
-                              class="link-primary">{{item.filename}}</a></li>
+                          <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                              target="_blank">{{item.filename}}</a></li>
                           {% endif %}
                           {% endfor %}
                           {% endif %}
@@ -242,8 +242,8 @@
                           {% if material.material_docs %}
                           {% for item in material.material_docs.all %}
                           {% if item.type == 'testPerformanceComparisonTable' %}
-                          <li class="list-group-item"><a href="{{item.file.url}}"
-                              class="link-primary">{{item.filename}}</a></li>
+                          <li class="list-group-item"><a href="{{item.file.url}}" class="link-primary"
+                              target="_blank">{{item.filename}}</a></li>
                           {% endif %}
                           {% endfor %}
                           {% endif %}
@@ -269,16 +269,16 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
               <tr>
-                <td>회신일자</td>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                   <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="회신일자"
                     value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">검토 의견</td>
+                <td rowspan="2" class="table-primary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                   {{material.generalEngineerText}}
@@ -293,7 +293,7 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-primary">결과</td>
                 <td colspan="5">
                   <select class="form-select" aria-label="공종" name="result" id="result" required>
                     <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
@@ -311,14 +311,14 @@
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                   {{material.generalEngineerId.name}}
                 </td>
                 <td>
                   <img width="60%" alt="" src="{{material.generalEngineerId.signImage.url}}" />
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-primary">총괄건설사업<br>관리기술인</td>
                 <td>
                   {{material.totalEngineerId.name}}
                 </td>

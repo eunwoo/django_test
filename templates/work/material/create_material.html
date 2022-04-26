@@ -105,37 +105,37 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
                   자재 공급원 신고 및 승인서-{% if form.instance.docNum != None %}{{form.instance.docNum}}
                   {% else %}{{docNum}}
                   {% endif %}
                 </td>
-                <td>작성일자</td>
+                <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
                     value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td>공사명</td>
+                <td class="table-secondary">공사명</td>
                 <td colspan="2">
                   {{field.title}}
                 </td>
-                <td>자재명</td>
+                <td class="table-secondary">자재명</td>
                 <td colspan="2">
                   가설기자재
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" class="form-control" name="title" id="title" placeholder="제목"
                     value="{{form.instance.title|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-primary">공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect" required>
                     <option value="">투입 공종을
@@ -161,7 +161,7 @@
                 </td>
               </tr>
               <tr>
-                <td>공급원</td>
+                <td class="table-primary">공급원</td>
                 <td colspan="5">
                   <table class="table table-bordered">
                     <thead>
@@ -234,7 +234,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td rowspan="3" class="table-primary">내용</td>
                 <td colspan="5" class="p-4">
                   상기 업체로부터 해당 자재를 공급받아 당해 공사에 사용하는 사항에 대한 자재공급원을 신고합니다.
                 </td>
@@ -289,7 +289,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">붙임</td>
+                <td rowspan="3" class="table-primary">붙임</td>
                 <td colspan="5">
                   <table class="table">
                     <tr>
@@ -391,15 +391,15 @@
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
               <tr>
-                <td>회신일자</td>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                   {{form.replyDate}}
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">검토 의견</td>
+                <td rowspan="2" class="table-secondary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                 </td>
@@ -410,19 +410,19 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-secondary">결과</td>
                 <td colspan="5">
                   {{form.results}}
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
                   (인)
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-secondary">총괄건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
