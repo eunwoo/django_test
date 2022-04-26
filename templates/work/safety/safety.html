@@ -81,26 +81,19 @@
                 <td>
                   <!--관리자 유형마다 확인이 다름-->
                   {% if request.user.class2 == "일반 사용자" %}
-                  <a {% if i.isCheckManager == False and i.isSuccess == True %}
-                    href="{% url 'work:read_safety' i.docNum %}" class="link-success"
-                    {% elif i.isCheckManager == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
+                  <a {% if i.isCheckManager == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
                     {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
                     검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "현장 대리인" %}
-                  <a {% if i.isCheckAgent == False and i.isSuccess == True %}
-                    href="{% url 'work:read_safety' i.docNum %}" class="link-success" {% elif i.isCheckAgent == False %}
-                    href="/work/update_safety/{{i.docNum}}" class="link-primary" {% else %}
-                    href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
+                  <a {% if i.isCheckAgent == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
+                    {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
                     검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "일반 건설사업관리기술인"%}
-                  <a {% if i.isCheckGeneralEngineer == False and i.isSuccess == True %}
-                    href="{% url 'work:read_safety' i.docNum %}" class="link-success"
-                    {% elif i.isCheckGeneralEngineer == False %} href="/work/update_safety/{{i.docNum}}"
+                  <a {% if i.isCheckGeneralEngineer == False %} href="/work/update_safety/{{i.docNum}}"
                     class="link-primary" {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary"
                     {% endif %}>구조 안전성 검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% elif request.user.class2 == "총괄 건설사업관리기술인"%}
-                  <a {% if i.isSuccess == False %} href="/work/update_safety/{{i.docNum}}" class="link-primary"
-                    {% else %} href="{% url 'work:read_safety' i.docNum %}" class="link-secondary" {% endif %}>구조 안전성
+                  <a href="/work/update_safety/{{i.docNum}}" class="link-primary">구조 안전성
                     검토 신고 및 승인서-{{ i.docNum}}-{{i.title}}</a>
                   {% endif %}
                 </td>
