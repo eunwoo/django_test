@@ -12,6 +12,9 @@ class SafetyReport(models.Model):
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
+    locateId = models.ForeignKey(
+        InstallLocate, on_delete=models.SET_NULL, null=True
+    )  # 설치 위치
     replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (
         ("1", "승인-제출한 내용대로 진행"),
