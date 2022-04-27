@@ -2,7 +2,12 @@ from django.db import models
 
 
 from user.models import CustomUser
-from system_manager.models import DocsFile, InstallLocate, Field
+from system_manager.models import (
+    ConstructManager,
+    DocsFile,
+    InstallLocate,
+    Field,
+)
 
 
 # 구조 안전성 검토 신고서 관련 문서
@@ -421,9 +426,26 @@ class BeforeInstallCheckList(models.Model):
         related_name="before_install_checklist_writer",
         null=True,
     )
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="before_install_checklist",
+    )
+    urlCode = models.CharField(
+        max_length=60,
+        blank=True,
+        db_index=True,
+        unique=True,
+    )
+
     isSuccess = models.BooleanField(default=False)
+    isCheckWriter = models.BooleanField(default=False)
+    isCheckCM = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    expired_date = models.DateTimeField(blank=True, null=True)
 
 
 class BeforeInspectionItem(models.Model):
@@ -442,7 +464,6 @@ class BeforeInspectionResult(models.Model):
         choices=result_choices,
         default="1",
     )  # 결과
-    content = models.TextField(blank=True)  # 조치사항 확인 내용
     before_install_checklist_id = models.ForeignKey(
         BeforeInstallCheckList,
         on_delete=models.CASCADE,
@@ -457,11 +478,28 @@ class BeforeInspectionResult(models.Model):
 
 
 class BeforeMeasure(models.Model):
-    img = models.ImageField(upload_to="before_measure")
-    beforeInspectionResult = models.ForeignKey(
+    content = models.TextField(blank=True)  # 조치사항 확인 내용
+    isCM = models.BooleanField(default=False)  # CM 작성 여부
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="before_measure",
+    )
+    result = models.ForeignKey(
         BeforeInspectionResult,
         on_delete=models.CASCADE,
-        related_name="measures",
+        related_name="before_measure",
+    )
+
+
+class BeforeMeasureImg(models.Model):
+    img = models.ImageField(upload_to="before_measure")
+    beforeMeasure = models.ForeignKey(
+        BeforeMeasure,
+        on_delete=models.CASCADE,
+        related_name="before_measure_imgs",
         blank=True,
         null=True,
     )
