@@ -109,29 +109,29 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="5">
                   품질검사 의뢰서-{{ form.instance.docNum }}
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td class="table-secondary">제목</td>
                 <td colspan="5">
                   {{ form.instance.title }}
                 </td>
               </tr>
               <tr>
-                <td>시료명</td>
+                <td class="table-secondary">시료명</td>
                 <td colspan="2">
                   {{ form.instance.goods }}
                 </td>
-                <td>규격</td>
+                <td class="table-secondary">규격</td>
                 <td colspan="2">
                   {{form.instance.size}}
                 </td>
               </tr>
               <tr>
-                <td>시험ᆞ검사종목</td>
+                <td class="table-secondary">시험ᆞ검사종목</td>
                 <td colspan="5">
                   <div class="col-6">
                     <div class="row">
@@ -157,19 +157,19 @@
                 </td>
               </tr>
               <tr>
-                <td>시료량</td>
+                <td class="table-secondary">시료량</td>
                 <td colspan="5">
                   {{form.instance.sampleQuentity}}
                 </td>
               </tr>
               <tr>
-                <td>시료 또는 자재 생산국</td>
+                <td class="table-secondary">시료 또는 자재 생산국</td>
                 <td colspan="5">
                   {{form.instance.sampleOrigin}}
                 </td>
               </tr>
               <tr>
-                <td>시료 채취 장소</td>
+                <td class="table-secondary">시료 채취 장소</td>
                 <td colspan="5">
                   <div class="row">
                     <div class="col-1">Level1</div>
@@ -188,13 +188,13 @@
                 </td>
               </tr>
               <tr>
-                <td>시료 채취 일자</td>
+                <td class="table-secondary">시료 채취 일자</td>
                 <td colspan="5">
                   {{form.instance.sampleDate}}
                 </td>
               </tr>
               <tr>
-                <td>시료 채취자</td>
+                <td class="table-secondary">시료 채취자</td>
                 <td colspan="4">
                   <div class="row">
                     <div class="col-1">
@@ -222,7 +222,7 @@
                 </td>
               </tr>
               <tr>
-                <td>입회자</td>
+                <td class="table-secondary">입회자</td>
                 <td colspan="4">
                   <div class="row">
                     <div class="col-1">
@@ -250,17 +250,17 @@
                 </td>
               </tr>
               <tr>
-                <td>시험 및 시방기준</td>
+                <td class="table-secondary">시험 및 시방기준</td>
                 <td colspan="5" id="test_standard">
                   {{form.instance.testStandard}}
                 </td>
               </tr>
               <tr>
-                <td>성과 이용 목적</td>
+                <td class="table-secondary">성과 이용 목적</td>
                 <td colspan="5">품질 시험용</td>
               </tr>
               <tr>
-                <td rowspan="3">공사개요</td>
+                <td rowspan="3" class="table-secondary">공사개요</td>
                 <td>공사명</td>
                 <td colspan="4">
                   {{form.instance.fieldId.title}}
@@ -279,17 +279,17 @@
                 </td>
               </tr>
               <tr>
-                <td>발주자</td>
+                <td class="table-secondary">발주자</td>
                 <td colspan="2">
                   {{form.instance.fieldId.orderer}}
                 </td>
-                <td>시공자</td>
+                <td class="table-secondary">시공자</td>
                 <td colspan="2">
                   {{form.instance.fieldId.constructComp}}
                 </td>
               </tr>
               <tr>
-                <td>국가중요시설 여부</td>
+                <td class="table-secondary">국가중요시설 여부</td>
                 <td colspan="5" class="p-4">
                   {{form.instance.isImportFacility}}
                 </td>
@@ -300,16 +300,16 @@
                   의뢰합니다</td>
               </tr>
               <tr>
-                <td rowspan="3">의뢰일</td>
+                <td rowspan="3" class="table-primary">의뢰일</td>
                 <td rowspan="3">
                   <input type="date" class="form-control" name="orderDate" id="orderDate" placeholder="작성일자"
                     value="{{form.instance.orderDate|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
-                <td rowspan="3">의뢰인</td>
+                <td rowspan="3" class="table-secondary">의뢰인</td>
                 <td rowspan="3">
                   {{request.user.name}}
                 </td>
-                <td>서명</td>
+                <td class="table-primary">서명</td>
                 <td>
                   {% if form.instance.orderDate != None %}<img width="60%" alt=""
                     src="{{form.instance.agentId.signImage.url}}" />
@@ -346,13 +346,13 @@
                 </td>
               </tr>
               <tr>
-                <td>전화번호</td>
+                <td class="table-secondary">전화번호</td>
                 <td>
                   {{form.instance.fieldId.callNum}}
                 </td>
               </tr>
               <tr>
-                <td>주소</td>
+                <td class="table-secondary">주소</td>
                 <td>
                   {{form.instance.fieldId.address}}
                 </td>
@@ -413,7 +413,7 @@
         signModal.modal('hide');
         signModal
           .parent()
-          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+          .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
       } else {
         Swal.fire({
           title: 'Error!',

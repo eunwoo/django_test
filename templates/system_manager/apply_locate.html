@@ -159,6 +159,84 @@ System Information
     document.getElementById("class3-list").innerHTML = "";
   }
 
+
+
+  function Class2ChangeEvent() {
+    const class2_id = $(this).val();
+    $.ajax({
+      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 3),
+      type: "GET",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_id: class2_id,
+        class_accept: 0
+      },
+      success: function (data) {
+        const class3_list = document.getElementById("class3-list");
+        class3_list.innerHTML = ""
+        for (let item of data.install_locate) {
+          const class3_list_div = document.createElement("div");
+          class3_list_div.className = "row";
+          class3_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="checkbox" name="class3" id="class3_${item.id}"
+                value="${item.id}">
+              <label class="form-check-label" for="class3_${item.id}">
+                ${item.class3}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(3, this)"
+                id="class3btn_${item.id}"></button>
+            </div>`;
+          class3_list.appendChild(class3_list_div);
+        }
+      }
+    })
+  }
+
+  function Class1ChangeEvent() {
+    const class1_id = $(this).val();
+    clear2();
+    clear3();
+    $.ajax({
+      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 2),
+      type: "GET",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_id: class1_id
+      },
+      success: function (data) {
+        const class2_list = document.getElementById("class2-list");
+        for (let item of data.install_locate) {
+          const class2_list_div = document.createElement("div");
+          class2_list_div.className = "row";
+          class2_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="radio" name="class2" id="class2_${item.id}"
+                value="${item.id}">
+              <label class="form-check-label" for="class2_${item.id}">
+                ${item.class2}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(2, this)"
+                id="class2btn_${item.id}"></button>
+            </div>`;
+          class2_list.appendChild(class2_list_div);
+        }
+
+        // 구분 2 선택시 구분 3 설정
+        $("input[name=class2]:radio").change(Class2ChangeEvent)
+      }
+    })
+  }
+
+  // 설치 위치 추가 이벤트
   const add_locate = (class_type, e) => {
     const input_element = document.getElementById(`class${class_type}_input`);
     let parent_class_id = 0;
@@ -193,19 +271,22 @@ System Information
           let title, type;
           if (class_type === 1) {
             title = model.fields.class1;
+            changeEvent = "Class1ChangeEvent.call(this)";
             type = 'radio';
           } else if (class_type === 2) {
             title = model.fields.class2;
+            changeEvent = "Class2ChangeEvent.call(this)";
             type = 'radio'
           } else if (class_type === 3) {
             title = model.fields.class3;
+            changeEvent = "";
             type = 'checkbox'
           }
           class_list_div.className = "row";
           class_list_div.innerHTML = `
             <div class="col-10">
               <input class="form-check-input" type="${type}" name="class${class_type}" id="class${class_type}_${model.pk}"
-                value="${model.pk}">
+                value="${model.pk}" onchange="${changeEvent}">
               <label class="form-check-label" for="class${class_type}_${model.pk}">
                 ${title}
               </label>
@@ -237,83 +318,14 @@ System Information
     })
   }
 
-  // 구분 1 선택시 구분 2 설정
-  $("input[name=class1]:radio").change(function () {
-    const class1_id = $(this).val();
-    clear2();
-    clear3();
-    $.ajax({
-      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 2),
-      type: "GET",
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}'
-      },
-      data: {
-        class_id: class1_id
-      },
-      success: function (data) {
-        const class2_list = document.getElementById("class2-list");
-        for (let item of data.install_locate) {
-          const class2_list_div = document.createElement("div");
-          class2_list_div.className = "row";
-          class2_list_div.innerHTML = `
-            <div class="col-10">
-              <input class="form-check-input" type="radio" name="class2" id="class2_${item.id}"
-                value="${item.id}">
-              <label class="form-check-label" for="class2_${item.id}">
-                ${item.class2}
-              </label>
-            </div>
-            <div class="col-2">
-              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(2, this)"
-                id="class2btn_${item.id}"></button>
-            </div>`;
-          class2_list.appendChild(class2_list_div);
-        }
 
-        // 구분 2 선택시 구분 3 설정
-        $("input[name=class2]:radio").change(function () {
-          const class2_id = $(this).val();
-          $.ajax({
-            url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 3),
-            type: "GET",
-            headers: {
-              'X-CSRFToken': '{{ csrf_token }}'
-            },
-            data: {
-              class_id: class2_id,
-              class_accept: 0
-            },
-            success: function (data) {
-              const class3_list = document.getElementById("class3-list");
-              class3_list.innerHTML = ""
-              for (let item of data.install_locate) {
-                const class3_list_div = document.createElement("div");
-                class3_list_div.className = "row";
-                class3_list_div.innerHTML = `
-                  <div class="col-10">
-                    <input class="form-check-input" type="checkbox" name="class3" id="class3_${item.id}"
-                      value="${item.id}">
-                    <label class="form-check-label" for="class3_${item.id}">
-                      ${item.class3}
-                    </label>
-                  </div>
-                  <div class="col-2">
-                    <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(3, this)"
-                      id="class3btn_${item.id}"></button>
-                  </div>`;
-                class3_list.appendChild(class3_list_div);
-              }
-            }
-          })
-        })
-      }
-    })
-  })
+  // 구분 1 선택시 구분 2 설정
+  $("input[name=class1]:radio").change(Class1ChangeEvent)
 
   // 구분3 선택된 값 모두 불러오기
   const apply_locate = () => {
-    const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item.value);
+    const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item
+      .value);
     console.log(class3_ids)
     $.ajax({
       url: "{% url 'system_manager:accept_locate' %}",

@@ -14,26 +14,34 @@ from django.contrib import messages
 
 def get_material_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return MaterialSupplyReport.objects.filter(writerId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckManager",
-            "-isSuccess",
             "-docNum",
         )
     elif user.class2 == "현장 대리인":
-        return MaterialSupplyReport.objects.filter(agentId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckAgent",
-            "-isSuccess",
             "-docNum",
         )
     elif user.class2 == "일반 건설사업관리기술인":
-        return MaterialSupplyReport.objects.filter(generalEngineerId=user).order_by(
+        return MaterialSupplyReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
             "isCheckGeneralEngineer",
-            "-isSuccess",
             "-docNum",
         )
     else:
-        return MaterialSupplyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess",
+        return MaterialSupplyReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
             "-docNum",
         )
 
@@ -236,7 +244,7 @@ def update_material_totalEngineer(request, docNum):
         )
         if form.is_valid():
             material = form.save(commit=False)
-            material.isSuccess = True
+            material.isSaveTotalEngineer = True
             material.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)
@@ -251,13 +259,6 @@ def update_material_totalEngineer(request, docNum):
 
 def read_material_service(user, pk):
     material = MaterialSupplyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        material.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        material.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        material.isCheckGeneralEngineer = True
-    material.save()
     return material
 
 

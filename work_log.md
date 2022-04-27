@@ -358,3 +358,14 @@ https://getbootstrap.com/docs/5.1/forms/input-group/
 - ERD 클라우드 데이터베이스 정리
 - sqlitebrowser.org 사용법 정리
 - 결과보고 코드 정리
+
+# Todo
+- 각 업무 검색시 검토완료된 문서는 표시 안되도록
+- 각 업무에서 강조 표시 만들기
+- 결과보고에는 검토 완료된 문서만 표시되도록
+- 결과보고 필터링 알고리즘 구현
+- 설치작업 체크리스트 전체 수정
+- 구조 안전성 검토 설치위치 추가하기
+
+# 4/26
+- 각 업무에서 isSuccess와 isSaveTotalEngineer 확인하기

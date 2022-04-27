@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from system_manager.models import DocsFile, EquipmentTypes
+from system_manager.models import DocsFile, EquipmentTypes, InstallLocate
 from user.models import CustomUser
 
 from ..forms.safety_forms import (
@@ -20,21 +20,25 @@ from django.contrib import messages
 
 def get_safety_list_by_user(user):
     if user.class2 == "일반 사용자":
-        return SafetyReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by("isCheckManager", "-docNum")
     elif user.class2 == "현장 대리인":
-        return SafetyReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by("isCheckAgent", "-docNum")
     elif user.class2 == "일반 건설사업관리기술인":
-        return SafetyReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by("isCheckGeneralEngineer", "-docNum")
     else:
-        return SafetyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
-        )
+        return SafetyReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by("-docNum")
 
 
 def get_sign_users(request):
@@ -49,13 +53,6 @@ def get_sign_users(request):
 
 def read_safety_service(user, pk):
     safety = SafetyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 사용자":
-        safety.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        safety.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        safety.isCheckGeneralEngineer = True
-    safety.save()
     return safety
 
 
@@ -65,6 +62,9 @@ def create_safety_service(request):
         if form.is_valid():
             safety = form.save(commit=False)
             safety.writerId = request.user
+            safety.locateId = InstallLocate.objects.get(
+                pk=request.POST["locate"],
+            )
             files = request.POST.getlist("docs[]")
             safety.save()
             safety.docs.clear()
@@ -123,6 +123,10 @@ def update_safety_general(request, pk):
             safety = form.save(commit=False)
             safety.writerId = request.user
             files = request.POST.getlist("docs[]")
+            if "locate" in request.POST.keys():
+                safety.locateId = InstallLocate.objects.get(
+                    pk=request.POST["locate"],
+                )
             safety.save()
             if files:
                 safety.docs.clear()
@@ -212,7 +216,6 @@ def update_safety_totalEngineer(request, pk):
         if form.is_valid():
             safety = form.save(commit=False)
             safety.isSaveTotalEngineer = True
-            safety.isSuccess = True
             safety.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
