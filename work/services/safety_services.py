@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from system_manager.models import DocsFile, EquipmentTypes
+from system_manager.models import DocsFile, EquipmentTypes, InstallLocate
 from user.models import CustomUser
 
 from ..forms.safety_forms import (
@@ -62,6 +62,9 @@ def create_safety_service(request):
         if form.is_valid():
             safety = form.save(commit=False)
             safety.writerId = request.user
+            safety.locateId = InstallLocate.objects.get(
+                pk=request.POST["locate"],
+            )
             files = request.POST.getlist("docs[]")
             safety.save()
             safety.docs.clear()
@@ -120,6 +123,10 @@ def update_safety_general(request, pk):
             safety = form.save(commit=False)
             safety.writerId = request.user
             files = request.POST.getlist("docs[]")
+            if "locate" in request.POST.keys():
+                safety.locateId = InstallLocate.objects.get(
+                    pk=request.POST["locate"],
+                )
             safety.save()
             if files:
                 safety.docs.clear()
