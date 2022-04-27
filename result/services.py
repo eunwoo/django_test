@@ -29,13 +29,23 @@ def custom_redirect(url_name, *args, **kwargs):
 def get_search_list(post_key, locate_value=0, search=""):
     union_list = list()
     if "safety" in post_key:
+        type_list = []
+        if "type1" in post_key:
+            type_list.append("강관 비계")
+        if "type2" in post_key:
+            type_list.append("시스템 비계")
+        if "type3" in post_key:
+            type_list.append("시스템 동바리")
         q = Q()
-        q.add(Q(isSuccess=True), Q.AND)
-        q.add(Q(title__icontains=search), Q.OR)
         q.add(Q(checklistTitle__icontains=search), Q.OR)
+        q.add(Q(title__icontains=search), Q.OR)
+        q.add(Q(isSuccess=True), Q.AND)
+        q.add(Q(checklistConstructType__in=type_list), Q.AND)
+        if "locate" in post_key:
+            q.add(Q(locateId=InstallLocate.objects.get(pk=locate_value)), Q.AND)
         add_query = (
             SafetyReport.objects.filter(q)
-            .values("docNum", "created_at")
+            .values("docNum", "created_at", "title")
             .annotate(type=Value("safety", output_field=CharField()))
         )
         for add_item in add_query:
@@ -46,7 +56,7 @@ def get_search_list(post_key, locate_value=0, search=""):
                 isSuccess=True,
                 title__icontains=search,
             )
-            .values("docNum", "created_at")
+            .values("docNum", "created_at", "title")
             .annotate(type=Value("material", output_field=CharField()))
         )
         for add_item in add_query:
@@ -57,14 +67,14 @@ def get_search_list(post_key, locate_value=0, search=""):
                 isSuccess=True,
                 title__icontains=search,
             )
-            .values("docNum", "created_at")
+            .values("docNum", "created_at", "title")
             .annotate(type=Value("qty_request", output_field=CharField()))
         ).union(
             QualityPerformanceReport.objects.filter(
                 isSuccess=True,
                 title__icontains=search,
             )
-            .values("docNum", "created_at")
+            .values("docNum", "created_at", "title")
             .annotate(type=Value("qty_report", output_field=CharField()))
         )
         for add_item in add_query:
@@ -85,7 +95,7 @@ def get_search_list(post_key, locate_value=0, search=""):
                     title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at", "equipment")
+                .values("docNum", "created_at", "title", "equipment")
                 .annotate(type=Value("beforechecklist", output_field=CharField()))
             )
             install_query = (
@@ -95,7 +105,7 @@ def get_search_list(post_key, locate_value=0, search=""):
                     title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at", "equipment")
+                .values("docNum", "created_at", "title", "equipment")
                 .annotate(type=Value("beforechecklist", output_field=CharField()))
             )
         else:
@@ -105,7 +115,7 @@ def get_search_list(post_key, locate_value=0, search=""):
                     title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at", "equipment")
+                .values("docNum", "created_at", "title", "equipment")
                 .annotate(type=Value("beforechecklist", output_field=CharField()))
             )
             install_query = (
@@ -114,7 +124,7 @@ def get_search_list(post_key, locate_value=0, search=""):
                     title__icontains=search,
                 )
                 .annotate(docNum=F("pk"))
-                .values("docNum", "created_at", "equipment")
+                .values("docNum", "created_at", "title", "equipment")
                 .annotate(type=Value("checklist", output_field=CharField()))
             )
         for add_item in before_install_query:
