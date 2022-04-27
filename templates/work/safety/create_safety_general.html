@@ -118,14 +118,14 @@
                 <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
                 <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
-                    value="{{form.instance.title|default_if_none:''}}" />
+                    value="{{form.instance.title|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
@@ -155,10 +155,44 @@
                 </td>
               </tr>
               <tr>
+                <td class="table-primary">설치 위치</td>
+                <td colspan="5">
+                  {% if form.instance.locateId %}
+                  <div class="row">
+                    <div class="col">
+                      기존 위치: {{form.instance.locateId.class2.class1.class1}} -
+                      {{form.instance.locateId.class2.class2}} -
+                      {{form.instance.locateId.class3}}
+                    </div>
+                  </div>
+                  <br>
+                  {% endif %}
+                  <div class="row">
+                    <div class="col-1">Level1</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class1">
+                      </select>
+                    </div>
+                    <div class="col-1">Level2</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class2">
+                      </select>
+                    </div>
+                    <div class="col-1">Level3</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class3" name="locate"
+                        {% if not form.instance.locateId %}required{% endif %}>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td rowspan="3" class="table-primary">내용</td>
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
-                    value="{{form.instance.text|default_if_none:''}}">{{form.instance.text|default_if_none:''}}</textarea>
+                    value="{{form.instance.text|default_if_none:''}}"
+                    required>{{form.instance.text|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>
@@ -170,7 +204,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  {% if form.instance.writerId != None %}<img width="100%" alt=""
+                  {% if form.instance.writerId != None %}<img width="60%" alt=""
                     src="{{form.instance.writerId.signImage.url}}" />
                   {% else %}
                   <!-- Button trigger modal -->
@@ -444,5 +478,73 @@
       $("#constructType").val(value)
     }
   })
+
+
+  // 설치위치 받아오기
+  const [class1_select, class2_select, class3_select] = ['class1', 'class2', 'class3'].map(
+    (class_name) => document.getElementById(class_name)
+  )
+
+  const create_init_option = (select_element) => {
+    const option = document.createElement("option")
+    option.value = ''
+    option.text = '---------'
+    option.selected = true
+    select_element.appendChild(option)
+  }
+
+  $.get("{% url 'system_manager:get_locate' 1 %}", function (data) {
+    create_init_option(class1_select)
+    data['install_locate'].forEach(value => {
+      const option = document.createElement("option")
+      option.value = value.id
+      option.text = value.class1
+      class1_select.appendChild(option)
+    })
+  });
+
+  class1_select.addEventListener("change", function () {
+    const class1_id = class1_select.value
+    if (class1_id === '') {
+      class2_select.innerHTML = ""
+      class3_select.innerHTML = ""
+      create_init_option(class2_select)
+      create_init_option(class3_select)
+    } else {
+      $.get("{% url 'system_manager:get_locate' 2 %}", {
+        class_id: class1_id
+      }, function (data) {
+        class2_select.innerHTML = ""
+        create_init_option(class2_select)
+        data['install_locate'].forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.class2
+          class2_select.appendChild(option)
+        })
+      });
+    }
+  });
+
+  class2_select.addEventListener("change", function () {
+    const class2_id = class2_select.value
+    if (class2_id === '') {
+      class3_select.innerHTML = ""
+      create_init_option(class3_select)
+    } else {
+      $.get("{% url 'system_manager:get_locate' 3 %}", {
+        class_id: class2_id
+      }, function (data) {
+        class3_select.innerHTML = ""
+        create_init_option(class3_select)
+        data['install_locate'].forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.class3
+          class3_select.appendChild(option)
+        })
+      });
+    }
+  });
 </script>
 {% endblock %}
