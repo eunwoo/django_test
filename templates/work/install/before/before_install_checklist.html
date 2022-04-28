@@ -222,14 +222,13 @@
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                          <button type="button" class="btn btn-primary"
                             onclick="change_modal_btn_inner(this)">확인</button>
                           <input type="hidden" name="checklist-pk" value="{{checkmenu.pk}}">
                         </div>
                       </div>
                     </div>
                   </div>
-
                 </td>
                 <td>
                   <input type="checkbox" id="{{checkmenu.pk}}-checkbox">
@@ -276,6 +275,22 @@
   // 미흡항목과 입력 설정
   const inadequate = []
   const input_belong = []
+
+
+  // radio change 이벤트
+  function radioChange() {
+    const pk = this.value
+    const button_node = this.parentNode.parentNode.children[4].children[0]
+    if (pk === '2') {
+      inadequate.push(this.name)
+      button_node.disabled = false
+    } else {
+      if (inadequate.indexOf(this.name) !== -1) {
+        inadequate.splice(inadequate.indexOf(this.name), 1)
+      }
+      button_node.disabled = true
+    }
+  }
 
 
   // 삭제버튼 클릭시 체크된 리스트 삭제
@@ -344,8 +359,10 @@
       const insert_cell = new_row.insertCell(4)
       const delete_cell = new_row.insertCell(5)
       title_cell.innerHTML = input_text
-      result1_cell.innerHTML = `<input type="radio" name="${pk}" value="1" required>`
-      result2_cell.innerHTML = `<input type="radio" name="${pk}" value="2" required>`
+      result1_cell.innerHTML =
+        `<input type="radio" name="${pk}" value="1" onchange="radioChange.call(this)" required>`
+      result2_cell.innerHTML =
+        `<input type="radio" name="${pk}" value="2" onchange="radioChange.call(this)" required>`
       insert_cell.innerHTML =
         `<!-- Button trigger modal -->
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -375,8 +392,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                  onclick="change_modal_btn_inner(this)">확인</button>
+                <button type="button" class="btn btn-primary" onclick="change_modal_btn_inner(this)">확인</button>
                 <input type="hidden" name="checklist-pk" value="${pk}">
               </div>
             </div>
@@ -385,19 +401,10 @@
         `
       $(`.input-images-${pk}`).imageUploader({
         label: '여기를 클릭해 이미지를 추가하세요.',
-        imagesInputName: '{{checkmenu.pk}}-images',
+        imagesInputName: `${pk}-images`,
       });
       delete_cell.innerHTML =
         `<input type="checkbox" id="${pk}-checkbox">`
-      $(`input[name='${pk}']:radio`).change(function () {
-        const pk = this.value
-        const button_node = this.parentNode.parentNode.children[5].children[0]
-        if (pk === '2') {
-          button_node.disabled = false
-        } else {
-          button_node.disabled = true
-        }
-      });
       onChangeTableNumbering()
     }
   })
@@ -434,27 +441,30 @@
 
   // 모달 완료시 입력 => 확인 버튼으로 변경
   const change_modal_btn_inner = (e) => {
+    const modal_content = e.parentNode.parentNode;
+    const input_list = modal_content.querySelectorAll("input")
+    for (const i of input_list) {
+      if (i.value == "") {
+        Swal.fire({
+          title: 'Error!',
+          text: '조치사항을 모두 입력해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+        return false;
+      }
+    }
     const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.children[0]
+    const targetModalId = targetNode.nextElementSibling.id
     input_belong.push(targetNode.parentNode.previousElementSibling.children[0].name)
     targetNode.innerHTML = '확인'
     targetNode.classList.remove('btn-primary')
     targetNode.classList.add('btn-success')
+    $(`#${targetModalId}`).modal('hide')
   }
 
   // Radio 버튼 변경시 입력버튼 동작
-  $("input[type=radio]").change(function () {
-    const pk = this.value
-    const button_node = this.parentNode.parentNode.children[4].children[0]
-    if (pk === '2') {
-      inadequate.push(this.name)
-      button_node.disabled = false
-    } else {
-      if (inadequate.indexOf(this.name) !== -1) {
-        inadequate.splice(inadequate.indexOf(this.name), 1)
-      }
-      button_node.disabled = true
-    }
-  });
+  $("input[type=radio]").change(radioChange);
 
   // 설치위치 받아오기
   (() => {

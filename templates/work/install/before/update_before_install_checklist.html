@@ -77,8 +77,15 @@
                         <form method="POST" action="{% url 'work:required_cm' type=type %}" id="sign_form">
                           {% csrf_token %}
                           <input type='hidden' name="docNum" value="{{form.instance.pk}}" />
-                          <select class="form-select" name="sign" id="sign_select">
-                          </select>
+                          <div class="row">
+                            <label for="sign_select">관리자 선택</label>
+                            <select class="form-select" name="sign" id="sign_select" required>
+                            </select>
+                          </div>
+                          <div class="row mt-2">
+                            <label for="expired_date">만료 날짜</label>
+                            <input type="datetime-local" id="expired_date" name="expired_date" required>
+                          </div>
                         </form>
                       </div>
                       <div class="modal-footer">
@@ -228,12 +235,13 @@
                             <label class="control-label">내용</label>
                             <div>
                               <input type="text" class="form-control input-lg" placeholder="조치사항을 입력해주세요"
-                                name="{{checkmenu.before_inspection_item_id.pk}}-belong" value="{{checkmenu.content}}">
+                                name="{{checkmenu.before_inspection_item_id.pk}}-belong"
+                                value="{{checkmenu.before_measure.first.content}}">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                          <button type="button" class="btn btn-primary"
                             onclick="change_modal_btn_inner(this)">확인</button>
                           <input type="hidden" name="checklist-pk" value="{{checkmenu.before_inspection_item_id.pk}}">
                         </div>
@@ -275,6 +283,11 @@
 {% include "work/install/before/image_library.html" with checklist=checklist %}
 
 <script type="text/javascript">
+  // 조치사항 발송 날짜에 현재 시간 입력
+  const offset = new Date().getTimezoneOffset() * 60000
+  document.getElementById('expired_date').value = new Date(Date.now() - offset).toISOString().slice(0, 16);
+
+
   // 미흡항목과 입력 설정
   const inadequate = []
   const input_belong = []
@@ -307,11 +320,38 @@
 
   // 모달 완료시 입력 => 확인 버튼으로 변경
   const change_modal_btn_inner = (e) => {
+    const modal_content = e.parentNode.parentNode;
+    const input_list = modal_content.querySelectorAll("input")
+    if (input_list.length === 3) {
+      for (const i of input_list) {
+        if (i.value === "") {
+          Swal.fire({
+            title: 'Error!',
+            text: '조치사항을 모두 입력해주세요.',
+            icon: 'error',
+            confirmButtonText: '닫기'
+          })
+          return false;
+        }
+      }
+    } else {
+      if (input_list[input_list.length - 2].value === "") {
+        Swal.fire({
+          title: 'Error!',
+          text: '조치사항을 모두 입력해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+        return false;
+      }
+    }
     const targetNode = e.parentNode.parentNode.parentNode.parentNode.parentNode.children[0]
+    const targetModalId = targetNode.nextElementSibling.id
     input_belong.push(targetNode.parentNode.previousElementSibling.children[0].name)
     targetNode.innerHTML = '확인'
     targetNode.classList.remove('btn-primary')
     targetNode.classList.add('btn-success')
+    $(`#${targetModalId}`).modal('hide')
   }
 
 
@@ -333,8 +373,8 @@
     onChangeTableNumbering()
   }
 
-  // Radio 버튼 변경시 입력버튼 동작
-  $("input[type=radio]").change(function () {
+  // radio change 이벤트
+  function radioChange() {
     const pk = this.value
     const button_node = this.parentNode.parentNode.children[4].children[0]
     if (pk === '2') {
@@ -346,7 +386,11 @@
       }
       button_node.disabled = true
     }
-  });
+  }
+
+  // Radio 버튼 변경시 입력버튼 동작
+  $("input[type=radio]").change(radioChange);
+
 
   // 점검 목록 추가
   const add_button = document.getElementById("add_button")
@@ -382,8 +426,10 @@
       const insert_cell = new_row.insertCell(4)
       const delete_cell = new_row.insertCell(5)
       title_cell.innerHTML = input_text
-      result1_cell.innerHTML = `<input type="radio" name="${pk}" value="1" required>`
-      result2_cell.innerHTML = `<input type="radio" name="${pk}" value="2" required>`
+      result1_cell.innerHTML =
+        `<input type="radio" name="${pk}" value="1" onchange="radioChange.call(this)" required>`
+      result2_cell.innerHTML =
+        `<input type="radio" name="${pk}" value="2" onchange="radioChange.call(this)" required>`
       insert_cell.innerHTML =
         `<!-- Button trigger modal -->
         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -413,7 +459,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                <button type="button" class="btn btn-primary"
                   onclick="change_modal_btn_inner(this)">확인</button>
                 <input type="hidden" name="checklist-pk" value="${pk}">
               </div>
@@ -423,19 +469,10 @@
         `
       $(`.input-images-${pk}`).imageUploader({
         label: '여기를 클릭해 이미지를 추가하세요.',
-        imagesInputName: '{{checkmenu.pk}}-images',
+        imagesInputName: `${pk}-images`,
       });
       delete_cell.innerHTML =
         `<input type="checkbox" id="${pk}-checkbox">`
-      $(`input[name='${pk}']:radio`).change(function () {
-        const pk = this.value
-        const button_node = this.parentNode.parentNode.children[5].children[0]
-        if (pk === '2') {
-          button_node.disabled = false
-        } else {
-          button_node.disabled = true
-        }
-      });
       onChangeTableNumbering()
     }
   });
@@ -542,15 +579,17 @@
 
   // 서명 요청 후 알림창 띄우기
   $('#signRequestBtn').on('click', () => {
+    /* 이미지 전송 주석 처리
+    const sign_form = document.getElementById('sign_form')
+    Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item =>
+      item.id.split('-')[0]).forEach(pk => sign_form.innerHTML +=
+      `<input type="hidden" name="checklist_id" value="${pk}">`)
+    */
     Swal.fire(
       '완료!',
       '조치사항이 전송되었습니다!',
       'success'
     ).then(() => {
-      const sign_form = document.getElementById('sign_form')
-      Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(item =>
-        item.id.split('-')[0]).forEach(pk => sign_form.innerHTML +=
-        `<input type="hidden" name="checklist_id" value="${pk}">`)
       document.forms['sign_form'].submit()
     })
   })
