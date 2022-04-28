@@ -437,7 +437,6 @@ class BeforeInstallCheckList(models.Model):
         max_length=60,
         blank=True,
         db_index=True,
-        unique=True,
     )
 
     isSuccess = models.BooleanField(default=False)
