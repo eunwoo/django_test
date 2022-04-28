@@ -1,0 +1,210 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+설치작업 전 체크리스트
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static '/css/image-uploader.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    <section id="checklist">
+      <div class="container border">
+        <div class="row m-1">
+          <h1>
+            {{checklist.equipment}} 설치작업 전 점검 체크리스트
+          </h1>
+        </div>
+        <table class="table table-bordered align-middle">
+          <tr>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
+            <td class="align-middle" style="width: 35%">{{checklist.equipment}} 설치작업 전 점검 체크리스트-{{checklist.pk}}</td>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
+            <td style="width: 35%">
+              <div class="row">
+                <div class="col">
+                  {{checklist.locateId.class2.class1.class1}} - {{checklist.locateId.class2.class2}} -
+                  {{checklist.locateId.class3}}
+                </div>
+              </div>
+              <div class="row p-2">
+                <div class="col">
+                  {{checklist.detailLocate}}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">확인 일자</th>
+            <td>
+              {{checklist.date}}
+            </td>
+            <th scope="row" class="table-secondary align-middle">담당자</th>
+            <td class="align-middle">
+              <div class="row">
+                <div class="col">
+                  {{checklist.writerId.name}}
+                </div>
+                <div class="col">
+                  <img width='60%' alt='' src='{{checklist.writerId.signImage.url}}' />
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">제목</th>
+            <td colspan="3">
+              {{checklist.title}}
+            </td>
+          </tr>
+        </table>
+        <table class="table table-bordered text-break align-middle">
+          <thead>
+            <tr class="table-primary">
+              <th scope="col" rowspan=2 style="width: 5%">NO</th>
+              <th scope="col" rowspan=2 style="width: 65%">점검 항목</th>
+              <th scope="col" colspan=2 style="width: 20%">점검 결과</th>
+              <th scope="col" rowspan=2 style="width: 10%">조치 사항</th>
+            </tr>
+            <tr class="table-primary">
+              <th>
+                양호
+              </th>
+              <th>
+                미흡
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for checkmenu in checklist.before_inspection_result.all %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td class="text-start">{{checkmenu.before_inspection_item_id.title}}</td>
+              <td>
+                {% if checkmenu.result == "1" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "2" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "2" %}
+                <button type="button" class="btn btn-sm btn-primary"
+                  onclick="addMeasure.call(this, {{checkmenu.pk}})">입력</button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="row m-1">
+          <h3>조치 사항</h3>
+        </div>
+        <form action="" method="POST" id="form_checklist" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table class="table table-bordered text-break">
+            <thead>
+              <tr class="table-primary">
+                <th scope="col" style="width: 5%">NO</th>
+                <th scope="col" style="width: 10%">작성자</th>
+                <th scope="col" style="width: 40%">내용</th>
+                <th scope="col" style="width: 45%">사진</th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+              {% for checkmenu in checklist.before_inspection_result.all %}
+              {% if checkmenu.before_measure.first %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td colspan=3 style="padding: 0;">
+                  <table id="{{checkmenu.pk}}-table" class="table table-bordered text-break align-middle m-0">
+                    {% for measure in checkmenu.before_measure.all %}
+                    <tr>
+                      <td style="width: 10.526315789473685%">
+                        {% if measure.isCM %}
+                        {{measure.cm.name}}
+                        {% else %}
+                        {{checklist.writerId.name}}
+                        {% endif %}
+                      </td>
+                      <td style="width: 42.10526315789474%">
+                        {{measure.content}}
+                      </td>
+                      <td style="width: 47.36842105263158%">
+                        {% for image in measure.before_measure_imgs.all %}
+                        <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static '/js/image-uploader.min.js' %}"></script>
+
+<script>
+  function addMeasure(pk) {
+    const table = document.getElementById(`${pk}-table`);
+    const new_row = table.insertRow(table.rows.length);
+    const writer_cell = new_row.insertCell(0);
+    writer_cell.innerHTML = '{{checklist.cm.name}}';
+    const content_cell = new_row.insertCell(1);
+    content_cell.innerHTML =
+      `<input type="text" class="form-control" name="${pk}-content" placeholder="조치내용을 입력하세요." required>`;
+    const image_cell = new_row.insertCell(2);
+    image_cell.classList.add('p-0');
+    image_cell.innerHTML = `<div class="input-images-${pk}" style="text-align: left;"></div>`;
+    $(`.input-images-${pk}`).imageUploader({
+      imagesInputName: `${pk}-images`,
+      label: '여기를 클릭해 이미지를 추가하세요.',
+    });
+    this.classList.remove('btn-primary');
+    this.classList.add('btn-danger');
+    this.innerHTML = '취소';
+    this.onclick = () => {
+      deleteMeasure.call(this, pk)
+    };
+    new_row.scrollIntoView(true);
+  }
+
+  function deleteMeasure(pk) {
+    const table = document.getElementById(`${pk}-table`);
+    table.deleteRow(table.rows.length - 1);
+    this.classList.remove('btn-danger');
+    this.classList.add('btn-primary');
+    this.innerHTML = '입력';
+    this.onclick = () => {
+      addMeasure.call(this, pk)
+    };
+  }
+</script>
+
+{% endblock %}
