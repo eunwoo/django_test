@@ -14,6 +14,7 @@ from ..services.before_install_services import (
     before_install_checklists_delete_service,
     create_item,
     get_require_users,
+    measure_before_install_service,
     update_before_checklist_service,
 )
 
@@ -77,7 +78,7 @@ def get_users(request):
 @login_required(login_url="/user/login/")
 def required_cm(request, type):
     if request.method == "POST":
-        assign_cm(request, type)
+        assign_cm(request)
         return redirect("work:before_install", type)
     return Http404()
 
@@ -94,6 +95,10 @@ def add_before_install_item(request, type):
         pk = create_item(type, title)
         return JsonResponse({"pk": pk})
     return Http404()
+
+
+def measure_before_install(request, urlcode):
+    return measure_before_install_service(request, urlcode)
 
 
 def read_before_checklist(request, type, pk):
