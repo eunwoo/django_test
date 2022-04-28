@@ -200,6 +200,11 @@ before_install_check_url = [
         before_install_views.add_before_install_item,
         name="add_before_install_item",
     ),
+    path(
+        "measure_before_install/<str:urlcode>/",
+        before_install_views.measure_before_install,
+        name="measure_before_install",
+    ),
 ]
 
 install_check_url = [
