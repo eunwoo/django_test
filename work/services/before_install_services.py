@@ -1,6 +1,7 @@
 import string
 import random
 
+from django.utils import timezone
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from system_manager.models import InstallLocate
@@ -239,8 +240,45 @@ def before_install_checklists_delete_service(request):
     return JsonResponse({"result": "fail"}, status=400)
 
 
+def review_before_install_checklist_service(request, type, pk):
+    checklist = BeforeInstallCheckList.objects.get(pk=pk)
+    return render(
+        request,
+        "work/install/before/review_before_install_checklist.html",
+        {
+            "type": type,
+            "checklist": checklist,
+        },
+    )
+
+
 def measure_before_install_service(request, urlCode):
-    checklist = get_object_or_404(BeforeInstallCheckList, urlCode=urlCode)
+    checklist = get_object_or_404(
+        BeforeInstallCheckList,
+        urlCode=urlCode,
+        isCheckWriter=True,
+    )
+    if request.method == "POST":
+        form_key = list(request.POST.keys())
+        form_key.remove("csrfmiddlewaretoken")
+        for key in form_key:
+            pk = key.split("-")[0]
+            before_inspection_result = BeforeInspectionResult.objects.get(
+                pk=pk,
+            )
+            before_measure = before_inspection_result.before_measure.create(
+                isCM=True,
+                content=request.POST[pk + "-content"],
+                cm=checklist.cm,
+            )
+            for before_image in request.FILES.getlist(pk + "-images[]"):
+                before_measure.before_measure_imgs.create(img=before_image)
+        checklist.isCheckCM = True
+        checklist.isCheckWriter = False
+        checklist.save()
+        return redirect("main:home")
+    if checklist.expired_date < timezone.now():
+        return redirect("main:home")
     return render(
         request,
         "work/install/before/measure_checklist.html",
