@@ -205,6 +205,16 @@ before_install_check_url = [
         before_install_views.measure_before_install,
         name="measure_before_install",
     ),
+    path(
+        "review_before_install_checklist/<str:type>/<int:pk>/",
+        before_install_views.review_before_install_checklist,
+        name="review_before_install_checklist",
+    ),
+    path(
+        "success_before_install_checklist/",
+        before_install_views.success_before_checklist,
+        name="success_before_checklist",
+    ),
 ]
 
 install_check_url = [

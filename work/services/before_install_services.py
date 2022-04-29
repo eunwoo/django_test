@@ -21,11 +21,14 @@ from ..services.common_services import sms_send  # , image_send
 
 
 def assign_cm(request):
-    cm = ConstructManager.objects.get(pk=request.POST.get("sign"))
     doc = BeforeInstallCheckList.objects.get(pk=request.POST.get("docNum"))
     doc.isCheckWriter = True
     doc.isCheckCM = False
-    doc.cm = cm
+    if not doc.cm:
+        cm = ConstructManager.objects.get(pk=request.POST.get("sign"))
+        doc.cm = cm
+    else:
+        cm = doc.cm
     doc.expired_date = request.POST.get("expired_date")
     doc.urlCode = "".join(
         random.choices(
@@ -242,12 +245,40 @@ def before_install_checklists_delete_service(request):
 
 def review_before_install_checklist_service(request, type, pk):
     checklist = BeforeInstallCheckList.objects.get(pk=pk)
+    isSave = False
+    if request.method == "POST":
+        inspectionResults = checklist.before_inspection_result.filter(result="2")
+        for inspectionResult in inspectionResults:
+            lastMeasure = inspectionResult.before_measure.last()
+            if lastMeasure.isCM:
+                if f"{lastMeasure.content}-cm" in request.POST.keys():
+                    newMeasure = inspectionResult.before_measure.create(
+                        content=request.POST[f"{inspectionResult.pk}-content"],
+                    )
+                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                    for img in images:
+                        newMeasure.before_measure_imgs.create(img=img)
+            else:
+                lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
+                lastMeasure.save()
+                before_images = list(
+                    request.POST.getlist(f"{inspectionResult.pk}-images-preloaded[]")
+                )
+                for measure_img in lastMeasure.before_measure_imgs.all():
+                    if str(measure_img.pk) not in before_images:
+                        measure_img.delete()
+                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                for img in images:
+                    lastMeasure.before_measure_imgs.create(img=img)
+        messages.success(request, "저장이 완료되었습니다.")
+        isSave = True
     return render(
         request,
         "work/install/before/review_before_install_checklist.html",
         {
             "type": type,
             "checklist": checklist,
+            "isSave": isSave,
         },
     )
 
@@ -286,3 +317,12 @@ def measure_before_install_service(request, urlCode):
             "checklist": checklist,
         },
     )
+
+
+def success_before_install_checklist_service(pk):
+    checklist = get_object_or_404(BeforeInstallCheckList, pk=pk)
+    checklist.isSuccess = True
+    checklist.isCheckCM = True
+    checklist.isCheckWriter = True
+    checklist.save()
+    return JsonResponse({"result": "success"})

@@ -15,6 +15,8 @@ from ..services.before_install_services import (
     create_item,
     get_require_users,
     measure_before_install_service,
+    review_before_install_checklist_service,
+    success_before_install_checklist_service,
     update_before_checklist_service,
 )
 
@@ -39,9 +41,10 @@ def select_install(request, type: str):
 def before_install(request, type: str):
     page = request.GET.get("page", 1)
 
-    beforeInstallItems = BeforeInstallCheckList.objects.filter(equipment=type).order_by(
-        "isSuccess", "-pk"
-    )
+    beforeInstallItems = BeforeInstallCheckList.objects.filter(
+        equipment=type,
+        isSuccess=False,
+    ).order_by("isCheckWriter", "-pk")
 
     paginator = Paginator(beforeInstallItems, 10)
     page_obj = paginator.get_page(page)
@@ -94,6 +97,18 @@ def add_before_install_item(request, type):
         title = request.POST.get("title")
         pk = create_item(type, title)
         return JsonResponse({"pk": pk})
+    return Http404()
+
+
+@login_required(login_url="/user/login/")
+def review_before_install_checklist(request, type, pk):
+    return review_before_install_checklist_service(request, type, pk)
+
+
+@login_required(login_url="/user/login/")
+def success_before_checklist(request):
+    if request.method == "POST":
+        return success_before_install_checklist_service(request.POST["pk"])
     return Http404()
 
 
