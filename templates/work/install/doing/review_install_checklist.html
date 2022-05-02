@@ -1,0 +1,442 @@
+<!-- Safety form page -->
+{% extends 'base/head.html' %}
+{% load static %}
+{% block title %}
+설치작업 중 체크리스트
+{% endblock %}
+{% block style %}
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="{% static '/css/image-uploader.min.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:index' %}">업무</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:install_check' %}">설치작업 점검</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'work:select_install' type=type %}">{{type}}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  <a href="{% url 'work:install' type=type %}">설치작업 중</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  체크리스트 작성
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-6 offset-6 ">
+            <div class="row">
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" type="submit"
+                  form="form_checklist">저장</button>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="sign_modal_button">
+                  조치사항 발송
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="signRequestModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">조치사항 발송</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="{% url 'work:required_cm_install' type=type %}" id="sign_form">
+                          {% csrf_token %}
+                          <input type='hidden' name="docNum" value="{{checklist.pk}}" />
+                          <div class="row mt-2">
+                            <label for="expired_date">만료 날짜</label>
+                            <input type="datetime-local" id="expired_date" name="expired_date" required>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" id="signRequestBtn">요청</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <button class="btn1 p-2 btn btn-light col-12" aria-label="Left Align" id="successBtn">조치 완료</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      {% include 'base/messages.html' %}
+    </section>
+    <section id="checklist" name='checklist'>
+      <div class="container border">
+        <div class="row m-1">
+          <h1>
+            {{checklist.equipment}} 설치작업 중 점검 체크리스트
+          </h1>
+        </div>
+        <table class="table table-bordered">
+          <tr>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
+            <td class="align-middle" style="width: 35%">{{checklist.equipment}} 설치작업 중 점검 체크리스트-{{checklist.pk}}</td>
+            <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
+            <td style="width: 35%">
+              <div class="row">
+                <div class="col">
+                  {{checklist.locateId.class2.class1.class1}} - {{checklist.locateId.class2.class2}} -
+                  {{checklist.locateId.class3}}
+                </div>
+              </div>
+              <div class="row p-2">
+                <div class="col">
+                  {{checklist.detailLocate}}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">확인 일자</th>
+            <td>
+              {{checklist.date}}
+            </td>
+            <th scope="row" class="table-secondary align-middle">담당자</th>
+            <td class="align-middle">
+              <div class="row">
+                <div class="col">
+                  {{checklist.writerId.name}}
+                </div>
+                <div class="col">
+                  <img width='60%' alt='' src='{{checklist.writerId.signImage.url}}' />
+
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">제목</th>
+            <td colspan="3">
+              {{checklist.title}}
+            </td>
+          </tr>
+        </table>
+        <table class="table table-bordered text-break">
+          <thead>
+            <tr class="table-primary">
+              <th scope="col" rowspan=2 style="width: 5%">NO</th>
+              <th scope="col" rowspan=2 style="width: 65%">점검 항목</th>
+              <th scope="col" colspan=2 style="width: 20%">점검 결과</th>
+              <th scope="col" rowspan=2 style="width: 10%">조치 사항</th>
+            </tr>
+            <tr class="table-primary">
+              <th>
+                양호
+              </th>
+              <th>
+                미흡
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% regroup checklist_items by inspection_item_id.categoryId.type as new_checklist %}
+            {% for categoryId in new_checklist %}
+            <tr class="table-secondary">
+              <th colspan=5>
+                {{categoryId.grouper}}
+              </th>
+            </tr>
+            {% for checkmenu in categoryId.list %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td class="text-start">{{checkmenu.inspection_item_id.title}}</td>
+              <td>
+                {% if checkmenu.result == "1" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "2" %}
+                <i class="bi bi-check"></i>
+                {% endif %}
+              </td>
+              <td>
+                {% if checkmenu.result == "2" %}
+                {% if checkmenu.measure.last.isCM %}
+                <button type="button" class="btn btn-sm btn-primary"
+                  onclick="addMeasure.call(this, {{checkmenu.pk}})">입력</button>
+                {% else %}
+                <button type="button" class="btn btn-sm btn-danger"
+                  onclick="deleteMeasure.call(this, {{checkmenu.pk}})">취소</button>
+                {% endif %}
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-1">
+        <h2>조치 사항</h2>
+      </div>
+      <form action="" method="POST" id="form_checklist" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="table table-bordered text-break">
+          <thead>
+            <tr class="table-primary">
+              <th scope="col" style="width: 5%">NO</th>
+              <th scope="col" style="width: 10%">작성자</th>
+              <th scope="col" style="width: 40%">내용</th>
+              <th scope="col" style="width: 45%">사진</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle">
+            {% for categoryId in new_checklist %}
+            {% for checkmenu in categoryId.list %}
+            {% if checkmenu.measure.first %}
+            <tr>
+              <td>{{categoryId.grouper}}<br>{{forloop.counter}}</td>
+              <td colspan=3 style="padding: 0;">
+                <table id="{{checkmenu.pk}}-table" class="table table-bordered text-break align-middle m-0">
+                  {% for measure in checkmenu.measure.all %}
+                  <tr>
+                    <td style="width: 10.526315789473685%">
+                      {% if measure.isCM %}
+                      {{measure.cm.name}}
+                      {% else %}
+                      {{checklist.writerId.name}}
+                      {% endif %}
+                    </td>
+                    {% if measure == checkmenu.measure.last and not measure.isCM %}
+                    <td>
+                      <input type="text" class="form-control" name="{{measure.pk}}-content" placeholder="조치내용을 입력하세요."
+                        value="{{measure.content}}" required>
+                    </td>
+                    <td>
+                      <div class="input-images-{{measure.pk}}" style="text-align: left;"></div>
+                    </td>
+                    {% else %}
+                    <td style="width: 42.10526315789474%">
+                      {{measure.content}}
+                    </td>
+                    <td style="width: 47.36842105263158%">
+                      {% for image in measure.measure_imgs.all %}
+                      <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
+                      {% endfor %}
+                    </td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </table>
+              </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+    </section>
+  </div>
+  <br><br><br><br><br>
+</main>
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript" src="{% static '/js/image-uploader.min.js' %}"></script>
+
+{% for checkmenu in checklist.inspection_result.all %}
+{% if not checkmenu.measure.last.isCM %}
+{% include "work/install/doing/review_image_library.html" with measure=checkmenu.measure.last %}
+{% endif %}
+{% endfor %}
+
+<script>
+  let isSuccess = '{{isSave}}' === 'True' ? false : true;
+  let isSave = '{{isSave}}' === 'True' ? true : false;
+
+  $('input').change(function () {
+    isSave = false;
+    isSuccess = false;
+    $('input').off('change');
+  });
+
+  function addMeasure(pk) {
+    isSave = false;
+    isSuccess = false;
+    const table = document.getElementById(`${pk}-table`);
+    const new_row = table.insertRow(table.rows.length);
+    new_row.classList.add('input-tr');
+    const writer_cell = new_row.insertCell(0);
+    writer_cell.innerHTML = '{{checklist.writerId.name}}';
+    const content_cell = new_row.insertCell(1);
+    content_cell.innerHTML =
+      `<input type="text" class="form-control" name="${pk}-content" placeholder="조치내용을 입력하세요." required>`;
+    const image_cell = new_row.insertCell(2);
+    image_cell.classList.add('p-0');
+    image_cell.innerHTML = `<div class="input-images-${pk}" style="text-align: left;"></div>`;
+    $(`.input-images-${pk}`).imageUploader({
+      imagesInputName: `${pk}-images`,
+      label: '여기를 클릭해 이미지를 추가하세요.',
+    });
+    this.classList.remove('btn-primary');
+    this.classList.add('btn-danger');
+    this.innerHTML = '취소';
+    this.onclick = () => {
+      deleteMeasure.call(this, pk)
+    };
+    new_row.scrollIntoView(true);
+  }
+
+  function deleteMeasure(pk) {
+    isSave = false;
+    isSuccess = false;
+    const table = document.getElementById(`${pk}-table`);
+    table.deleteRow(table.rows.length - 1);
+    this.classList.remove('btn-danger');
+    this.classList.add('btn-primary');
+    this.innerHTML = '입력';
+    this.onclick = () => {
+      addMeasure.call(this, pk)
+    };
+  }
+
+
+  // Form submit
+  const form_element = document.getElementById('form_checklist');
+  form_element.onsubmit = function (e) {
+    e.preventDefault();
+    const input_tr_list = document.getElementsByClassName('input-tr');
+    for (let i = 0; i < input_tr_list.length; i++) {
+      const input_tr = input_tr_list[i];
+      const input_td_list = input_tr.getElementsByTagName('input');
+      if (input_td_list.length == 2) {
+        for (let j = 0; j < input_td_list.length; j++) {
+          const input_td = input_td_list[j];
+          if (input_td.value === '') {
+            Swal.fire({
+              title: '입력되지 않은 항목이 있습니다.',
+              text: '입력되지 않은 항목을 입력하세요.',
+              icon: 'error',
+              confirmButtonText: '확인'
+            });
+            return;
+          }
+        }
+      } else {
+        if (input_td_list[0].value === '') {
+          Swal.fire({
+            title: '입력되지 않은 항목이 있습니다.',
+            text: '입력되지 않은 항목을 입력하세요.',
+            icon: 'error',
+            confirmButtonText: '확인'
+          });
+          return;
+        }
+      }
+    }
+    form_element.submit();
+  };
+
+
+  // 조치사항 발송 버튼 클릭시
+  $('#sign_modal_button').on('click', () => {
+    if (isSave === false) {
+      Swal.fire({
+        title: 'Error!',
+        text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const offset = new Date().getTimezoneOffset() * 60000
+    document.getElementById('expired_date').value = new Date(Date.now() - offset).toISOString().slice(0, 16);
+    $('#signRequestModal').modal('show')
+  })
+
+
+  // 서명 요청 후 알림창 띄우기
+  $('#signRequestBtn').on('click', () => {
+    Swal.fire(
+      '완료!',
+      '조치사항이 전송되었습니다!',
+      'success'
+    ).then(() => {
+      document.forms['sign_form'].submit()
+    })
+  })
+
+
+  // 조치 완료 버튼 클릭시
+  $('#successBtn').on('click', async () => {
+    if (!!!isSuccess) {
+      Swal.fire({
+        title: 'Error!',
+        text: '조치사항 발송을 먼저 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    const result = await Swal.fire({
+      title: '조치 완료 확인',
+      showCancelButton: true,
+      text: '조치 완료 처리하시겠습니까?',
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+    })
+    if (!!!result.isConfirmed) return;
+    const response = await $.ajax({
+      url: "{% url 'work:success_install_checklist' %}",
+      type: 'POST',
+      headers: {
+        'X-CSRFToken': '{{csrf_token}}'
+      },
+      data: {
+        'pk': '{{checklist.pk}}',
+      }
+    })
+    if (response.result === "success") {
+      Swal.fire(
+        '완료!',
+        '조치 완료 처리되었습니다!',
+        'success'
+      ).then(() => {
+        window.location.href = "{% url 'work:install' type=type %}"
+      })
+    }
+  })
+</script>
+{% endblock %}
