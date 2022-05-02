@@ -246,18 +246,22 @@ def before_install_checklists_delete_service(request):
 def review_before_install_checklist_service(request, type, pk):
     checklist = BeforeInstallCheckList.objects.get(pk=pk)
     isSave = False
+    inspectionResults = checklist.before_inspection_result.filter(result="2")
+    for inspectionResult in inspectionResults:
+        if not inspectionResult.before_measure.last().isCM:
+            isSave = True
+            break
     if request.method == "POST":
         inspectionResults = checklist.before_inspection_result.filter(result="2")
         for inspectionResult in inspectionResults:
             lastMeasure = inspectionResult.before_measure.last()
             if lastMeasure.isCM:
-                if f"{lastMeasure.content}-cm" in request.POST.keys():
-                    newMeasure = inspectionResult.before_measure.create(
-                        content=request.POST[f"{inspectionResult.pk}-content"],
-                    )
-                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
-                    for img in images:
-                        newMeasure.before_measure_imgs.create(img=img)
+                newMeasure = inspectionResult.before_measure.create(
+                    content=request.POST[f"{inspectionResult.pk}-content"],
+                )
+                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                for img in images:
+                    newMeasure.before_measure_imgs.create(img=img)
             else:
                 lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
                 lastMeasure.save()
