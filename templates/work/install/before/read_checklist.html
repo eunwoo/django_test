@@ -157,15 +157,15 @@
             {% if checkmenu.before_measure.first %}
             <tr>
               <td>{{forloop.counter}}</td>
-              <td colspan=3>
-                <table>
+              <td colspan=3 style="padding: 0;">
+                <table id="{{checkmenu.pk}}-table" class="table table-bordered text-break align-middle m-0">
                   {% for measure in checkmenu.before_measure.all %}
                   <tr>
                     <td style="width: 10.526315789473685%">
-                      {% if isCM %}
-                      {{checklist.writerId.name}}
-                      {% else %}
+                      {% if measure.isCM %}
                       {{measure.cm.name}}
+                      {% else %}
+                      {{checklist.writerId.name}}
                       {% endif %}
                     </td>
                     <td style="width: 42.10526315789474%">

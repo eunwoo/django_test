@@ -392,6 +392,25 @@
   $("input[type=radio]").change(radioChange);
 
 
+  // 미흡항목이 입력 안돼있을 경우 요청 실패
+  let checklist_form = document.getElementById("checklist")
+  checklist_form.addEventListener("submit", (e) => {
+    for (const i of inadequate) {
+      if (!(input_belong.includes(i))) {
+        e.preventDefault()
+        Swal.fire({
+          title: 'Error!',
+          text: '미흡항목의 조치사항을 모두 입력해주세요.',
+          icon: 'error',
+          confirmButtonText: '닫기'
+        })
+        return false;
+      }
+    }
+    return true;
+  });
+
+
   // 점검 목록 추가
   const add_button = document.getElementById("add_button")
   add_button.addEventListener("click", async () => {
@@ -558,6 +577,8 @@
       })
       return false;
     }
+    const offset = new Date().getTimezoneOffset() * 60000
+    document.getElementById('expired_date').value = new Date(Date.now() - offset).toISOString().slice(0, 16);
     const select_form = document.getElementById('sign_select')
     select_form.innerHTML = ""
     $.ajax({
