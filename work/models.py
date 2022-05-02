@@ -527,9 +527,25 @@ class InstallCheckList(models.Model):
         related_name="install_checklist_writer",
         null=True,
     )
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="install_checklist",
+    )
+    urlCode = models.CharField(
+        max_length=60,
+        blank=True,
+        db_index=True,
+    )
+
     isSuccess = models.BooleanField(default=False)
+    isCheckWriter = models.BooleanField(default=False)
+    isCheckCM = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    expired_date = models.DateTimeField(blank=True, null=True)
 
 
 class InspectionItemCategory(models.Model):
@@ -557,7 +573,6 @@ class InspectionResult(models.Model):
         choices=result_choices,
         default="1",
     )  # 결과
-    content = models.TextField()  # 조치사항 확인 내용
     install_checklist_id = models.ForeignKey(
         InstallCheckList,
         on_delete=models.CASCADE,
@@ -572,11 +587,28 @@ class InspectionResult(models.Model):
 
 
 class Measure(models.Model):
-    img = models.ImageField(upload_to="measure")
-    inspectionResult = models.ForeignKey(
+    content = models.TextField(blank=True)  # 조치사항 확인 내용
+    isCM = models.BooleanField(default=False)  # CM 작성 여부
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="measure",
+    )
+    result = models.ForeignKey(
         InspectionResult,
         on_delete=models.CASCADE,
-        related_name="measures",
+        related_name="measure",
+    )
+
+
+class MeasureImg(models.Model):
+    img = models.ImageField(upload_to="measure")
+    measure = models.ForeignKey(
+        Measure,
+        on_delete=models.CASCADE,
+        related_name="measure_imgs",
         blank=True,
         null=True,
     )
