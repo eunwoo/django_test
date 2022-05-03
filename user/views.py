@@ -150,12 +150,12 @@ def reset_pwd(request):
         code = request.POST["code"]
         request_log = ChangePwd.objects.filter(user=user, code=code)
         if not request_log:
-            return JsonResponse({"result": "deny"})
+            return JsonResponse({"result": "incorrectCode"})
         else:
             request_log = request_log[0]
         expired_time = request_log.expired_time + timedelta(minutes=5)
         if expired_time < timezone.now():
-            return JsonResponse({"result": "deny"})
+            return JsonResponse({"result": "expired"})
         request_log.isSuccess = True
         request_log.save()
         return JsonResponse({"result": "success"})
