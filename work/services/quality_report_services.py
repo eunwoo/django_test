@@ -97,10 +97,11 @@ def update_quality_report_general(request, pk):
             qty_report = form.save(commit=False)
             qty_report.writerId = request.user
             qty_report.save()
-            qty_report.quality_performance_file.all().delete()
             qty_report.quality_performance.all().delete()
             create_quality_performance(request, qty_report)
             files = request.FILES.getlist("docs_files")
+            if files:
+                qty_report.quality_performance_file.all().delete()
             for file in files:
                 docs_file = QualityPerformanceFile.objects.create(
                     title=file.name, doc=file, quality_performance_report_id=qty_report
