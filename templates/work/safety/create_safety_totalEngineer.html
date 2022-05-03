@@ -312,8 +312,8 @@
   }
 
   // 서명 할 경우 변경
-  let isSign = '{{form.instance.isSuccess}}' === "False" ? false : true;
-  if ('{{form.instance.isSuccess}}' === "False") {
+  let isSign = '{{form.instance.isSaveTotalEngineer}}' === "False" ? false : true;
+  if ('{{form.instance.isSaveTotalEngineer}}' === "False") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document

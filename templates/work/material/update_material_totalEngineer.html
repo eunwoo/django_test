@@ -323,7 +323,8 @@
                   {{material.totalEngineerId.name}}
                 </td>
                 <td>
-                  {% if material.isSuccess %}<img width="60%" alt="" src="{{material.totalEngineerId.signImage.url}}" />
+                  {% if material.isSaveTotalEngineer %}<img width="60%" alt=""
+                    src="{{material.totalEngineerId.signImage.url}}" />
                   {% else %}
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -393,8 +394,8 @@
   }
 
   // 서명 할 경우 변경
-  let isSign = '{{form.instance.isSuccess}}' === "False" ? false : true;
-  if ('{{form.instance.isSuccess}}' === "False") {
+  let isSign = '{{form.instance.isSaveTotalEngineer}}' === "False" ? false : true;
+  if ('{{form.instance.isSaveTotalEngineer}}' === "False") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document
