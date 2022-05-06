@@ -108,10 +108,10 @@ System Information
                   Level1
                 </th>
                 <th style="width: 30%;">
-                  구분2
+                  Level2
                 </th>
                 <th style="width: 35%;">
-                  구분3
+                  Level3
                 </th>
                 <th style="width: 10%;">
                   삭제
@@ -230,7 +230,7 @@ System Information
           class2_list.appendChild(class2_list_div);
         }
 
-        // 구분 2 선택시 구분 3 설정
+        // Level 2 선택시 Level 3 설정
         $("input[name=class2]:radio").change(Class2ChangeEvent)
       }
     })
@@ -242,7 +242,7 @@ System Information
     let parent_class_id = 0;
     if (class_type !== 1) {
       if (document.querySelectorAll(`input[name="class${class_type-1}"]:checked`).length < 1) {
-        alert(`구분${class_type-1}을 선택해주세요.`);
+        alert(`Level${class_type-1}을 선택해주세요.`);
         return false;
       }
       parent_class_id = document.querySelector(`input[name="class${class_type-1}"]:checked`).value;
@@ -319,10 +319,10 @@ System Information
   }
 
 
-  // 구분 1 선택시 구분 2 설정
+  // Level 1 선택시 Level 2 설정
   $("input[name=class1]:radio").change(Class1ChangeEvent)
 
-  // 구분3 선택된 값 모두 불러오기
+  // Level3 선택된 값 모두 불러오기
   const apply_locate = () => {
     const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item
       .value);
