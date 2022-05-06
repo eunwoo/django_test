@@ -393,7 +393,6 @@
 
 
   // 미흡항목이 입력 안돼있을 경우 요청 실패
-  let checklist_form = document.getElementById("checklist")
   checklist_form.addEventListener("submit", (e) => {
     for (const i of inadequate) {
       if (!(input_belong.includes(i))) {
