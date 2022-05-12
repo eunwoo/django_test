@@ -1,119 +1,186 @@
 {% extends 'base/head.html' %}
 {% block title %}
-  System Information
+System Information
 {% endblock %}
 {% block style %}
-  <style>
-    main {
-      width: 70%;
-      min-width: 1200px;
-      margin: 20px auto;
-    }
-  </style>
+<style>
+  main {
+    width: 70%;
+    min-width: 1200px;
+    margin: 20px auto;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-  {% include 'base/header.html' %}
-  <main>
-    <div class="cont mt-4">
-      {% include 'base/navbar_main.html' %}
-      <section>
-        <div class="container">
-          <div class="row ml-0">
-            <div class="col">
-              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="{% url 'system_manager:manage_field' %}">
-                      현장 관리
-                    </a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    현장 등록 및 수정
-                  </li>
-                </ol>
-              </nav>
-            </div>
+{% include 'base/header.html' %}
+<main>
+  <div class="cont mt-4">
+    {% include 'base/navbar_main.html' %}
+    <section>
+      <div class="container">
+        <div class="row ml-0">
+          <div class="col">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'system_manager:index' %}">기본정보 등록</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'system_manager:manage_field' %}">
+                    현장 관리
+                  </a>
+                </li>
+                <li class="breadcrumb-item">
+                  현장 등록 및 수정
+                </li>
+              </ol>
+            </nav>
           </div>
         </div>
-      </section>
-      <section>
-        <div class="container">
-          <form action="" id="sysform" method="POST">
-            {% csrf_token %}
-            <div class="row">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">공사명</label>
-              </div>
-              <div class="col-8">
-                {{form.title}}
-              </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <form action="" id="sysform" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">공사명</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">현장 전화번호</label>
-              </div>
-              <div class="col-8">
-                {{form.callNum}}
-              </div>
+            <div class="col-8">
+              {{form.title}}
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">현장 주소</label>
-              </div>
-              <div class="col-8">
-                {{form.address}}
-              </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">현장 전화번호</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">발주자명</label>
-              </div>
-              <div class="col-8">
-                {{form.orderer}}
-              </div>
+            <div class="col-8">
+              {{form.callNum}}
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">종합건설업체명</label>
-              </div>
-              <div class="col-8">
-                {{form.constructComp}}
-              </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">현장 주소</label>
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">감리 및 CM 업체명</label>
-              </div>
-              <div class="col-8">
-                {{form.supervision}}
-              </div>
+            <div class="col-8">
+              {{form.address}}
             </div>
-            <div class="row mt-3">
-              <div class="col-2 offset-1">
-                <label for="" class="col-12">공사 기간</label>
-              </div>
-              <div class="col-4">
-                {{form.startDay}}
-              </div>
-              <div class="col-4">
-                {{form.endDay}}
-              </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">발주자명</label>
             </div>
-            <div class="row mt-3 justify-content-end">
-              <div class="col-2">
-                <button type="submit" class="btn btn-primary">저장</button>
-              </div>
+            <div class="col-8">
+              {{form.orderer}}
             </div>
-          </form>
-          <br>
-        </div>
-      </section>
-    </div>
-    <br><br><br><br><br>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">종합건설업체명</label>
+            </div>
+            <div class="col-8">
+              {{form.constructComp}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">감리 및 CM 업체명</label>
+            </div>
+            <div class="col-8">
+              {{form.supervision}}
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2 offset-1">
+              <label for="" class="col-12">공사 기간</label>
+            </div>
+            <div class="col-4">
+              {{form.startDay}}
+            </div>
+            <div class="col-4">
+              {{form.endDay}}
+            </div>
+          </div>
+          <div class="row mt-3 justify-content-end">
+            <div class="col-2">
+              <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+          </div>
+        </form>
+        <br>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br>
 
-  </main>
+</main>
+{% endblock %}
+{% block javascript %}
+<script>
+  // 전화번호 입력방식
+  function autoHypenTel(str) {
+    str = str.replace(/[^0-9]/g, '');
+    var tmp = '';
+
+    if (str.substring(0, 2) == 02) {
+      // 서울 전화번호일 경우 10자리까지만 나타나고 그 이상의 자리수는 자동삭제
+      if (str.length < 3) {
+        return str;
+      } else if (str.length < 6) {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2);
+        return tmp;
+      } else if (str.length < 10) {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2, 3);
+        tmp += '-';
+        tmp += str.substr(5);
+        return tmp;
+      } else {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2, 4);
+        tmp += '-';
+        tmp += str.substr(6, 4);
+        return tmp;
+      }
+    } else {
+      // 핸드폰 및 다른 지역 전화번호 일 경우
+      if (str.length < 4) {
+        return str;
+      } else if (str.length < 7) {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3);
+        return tmp;
+      } else if (str.length < 11) {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 3);
+        tmp += '-';
+        tmp += str.substr(6);
+        return tmp;
+      } else {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 4);
+        tmp += '-';
+        tmp += str.substr(7);
+        return tmp;
+      }
+    }
+
+    return str;
+  };
+
+  $('#id_callNum').keyup(function (event) {
+    event = event || window.event;
+    var _val = this.value.trim();
+    this.value = autoHypenTel(_val);
+  });
+</script>
 {% endblock %}

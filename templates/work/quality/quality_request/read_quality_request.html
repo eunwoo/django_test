@@ -51,23 +51,29 @@
           </thead>
           <tbody class="align-middle">
             <tr>
-              <td>문서번호</td>
+              <td class="table-secondary">문서번호</td>
               <td colspan="5">
                 품질검사 의뢰서-{{ qty_request.docNum }}
               </td>
             </tr>
             <tr>
-              <td>품명</td>
-              <td colspan="2">
-                {{ qty_request.get_goods_display }}
+              <td class="table-secondary">제목</td>
+              <td colspan="5">
+                {{ qty_request.title }}
               </td>
-              <td>규격</td>
+            </tr>
+            <tr>
+              <td class="table-secondary">시료명</td>
+              <td colspan="2">
+                {{ qty_request.goods }}
+              </td>
+              <td class="table-secondary">규격</td>
               <td colspan="2">
                 {{qty_request.size}}
               </td>
             </tr>
             <tr>
-              <td>시험ᆞ검사종목</td>
+              <td class="table-secondary">시험ᆞ검사종목</td>
               <td colspan="5">
                 <div class="col-6">
                   <div class="row">
@@ -91,30 +97,30 @@
               </td>
             </tr>
             <tr>
-              <td>시료량</td>
+              <td class="table-secondary">시료량</td>
               <td colspan="5">
                 {{qty_request.sampleQuentity}}
               </td>
             </tr>
             <tr>
-              <td>시료 또는 자재 생산국</td>
+              <td class="table-secondary">시료 또는 자재 생산국</td>
               <td colspan="5">
                 {{qty_request.sampleOrigin}}
               </td>
             </tr>
             <tr>
-              <td>시료 채취 장소</td>
+              <td class="table-secondary">시료 채취 장소</td>
               <td colspan="5">
                 <div class="row">
-                  <div class="col-1">구분1</div>
+                  <div class="col-1">Level1</div>
                   <div class="col-3">
                     {{qty_request.locateId.class2.class1.class1}}
                   </div>
-                  <div class="col-1">구분2</div>
+                  <div class="col-1">Level2</div>
                   <div class="col-3">
                     {{qty_request.locateId.class2.class2}}
                   </div>
-                  <div class="col-1">구분3</div>
+                  <div class="col-1">Level3</div>
                   <div class="col-3">
                     {{qty_request.locateId.class3}}
                   </div>
@@ -122,13 +128,13 @@
               </td>
             </tr>
             <tr>
-              <td>시료 채취 일자</td>
+              <td class="table-secondary">시료 채취 일자</td>
               <td colspan="5">
                 {{qty_request.sampleDate}}
               </td>
             </tr>
             <tr>
-              <td>시료 채취자</td>
+              <td class="table-secondary">시료 채취자</td>
               <td colspan="4">
                 <div class="row">
                   <div class="col-1">
@@ -160,7 +166,7 @@
               </td>
             </tr>
             <tr>
-              <td>입회자</td>
+              <td class="table-secondary">입회자</td>
               <td colspan="4">
                 <div class="row">
                   <div class="col-1">
@@ -192,15 +198,15 @@
               </td>
             </tr>
             <tr>
-              <td>시험 및 시방기준</td>
+              <td class="table-secondary">시험 및 시방기준</td>
               <td colspan="5">{{qty_request.testStandard}}</td>
             </tr>
             <tr>
-              <td>성과 이용 목적</td>
+              <td class="table-secondary">성과 이용 목적</td>
               <td colspan="5">품질 시험용</td>
             </tr>
             <tr>
-              <td rowspan="3">공사개요</td>
+              <td rowspan="3" class="table-secondary">공사개요</td>
               <td>공사명</td>
               <td colspan="4">{{qty_request.fieldId.title}}</td>
             </tr>
@@ -213,13 +219,13 @@
               <td colspan="4">{{qty_request.fieldId.endDay}}</td>
             </tr>
             <tr>
-              <td>발주자</td>
+              <td class="table-secondary">발주자</td>
               <td colspan="2">{{qty_request.fieldId.orderer}}</td>
-              <td>시공자</td>
+              <td class="table-secondary">시공자</td>
               <td colspan="2">{{qty_request.fieldId.constructComp}}</td>
             </tr>
             <tr>
-              <td>국가중요시설 여부</td>
+              <td class="table-secondary">국가중요시설 여부</td>
               <td colspan="5" class="p-4">
                 {{qty_request.isImportFacility}}
               </td>
@@ -230,11 +236,11 @@
                 의뢰합니다</td>
             </tr>
             <tr>
-              <td rowspan="3">의뢰일</td>
+              <td rowspan="3" class="table-secondary">의뢰일</td>
               <td rowspan="3">{{qty_request.orderDate|default:''}}</td>
-              <td rowspan="3">의뢰인</td>
+              <td rowspan="3" class="table-secondary">의뢰인</td>
               <td rowspan="3">{{qty_request.agentId.name}}</td>
-              <td>서명</td>
+              <td class="table-secondary">서명</td>
               <td>
                 {% if qty_request.generalEngineerId %}
                 <img width="60%" alt="" src="{{qty_request.agentId.signImage.url}}" />
@@ -244,11 +250,11 @@
               </td>
             </tr>
             <tr>
-              <td>전화번호</td>
+              <td class="table-secondary">전화번호</td>
               <td>{{qty_request.fieldId.callNum}}</td>
             </tr>
             <tr>
-              <td>주소</td>
+              <td class="table-secondary">주소</td>
               <td>{{qty_request.fieldId.address}}</td>
             </tr>
           </tbody>

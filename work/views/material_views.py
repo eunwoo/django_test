@@ -8,6 +8,7 @@ from work.services.common_services import assign_user
 
 from ..services.material_services import (
     create_material_service,
+    delete_materials_service,
     get_material_list_by_user,
     read_material_service,
     update_material_service,
@@ -68,5 +69,5 @@ def read_material(request, pk):
 
 
 @login_required(login_url="/user/login/")
-def delete_material(request, pk):
-    pass
+def delete_materials(request):
+    return delete_materials_service(request)

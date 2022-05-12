@@ -32,18 +32,22 @@
     </section>
     <section>
       <div class="container">
-        <div class="row">
+        <div class="row justify-content-between">
           <div class="col-3">
             <a href="{% url 'announcement:create_announcement' %}">
               <button class="btn mb-2">공지사항 작성하기</button>
             </a>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-danger" onclick="delete_btn_click()">삭제</button>
           </div>
         </div>
         <div class="row mt-2">
           <div class="col-12">
             <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
               <tr>
-                <td style="width: 70%;">
+                <td style="width: 5%;"></td>
+                <td style="width: 65%;">
                   문서
                 </td>
                 <td style="width: 10%;">
@@ -55,6 +59,11 @@
               </tr>
               {% for i in announcementitems %}
               <tr>
+                {% if request.user == i.writer %}
+                <td>
+                  <input type="checkbox" value="{{i.pk}}">
+                </td>
+                {% endif %}
                 <td>
                   <a href="{% url 'announcement:read_announcement' i.pk %}" class="link-primary">
                     {{i.title}}
@@ -115,4 +124,39 @@
   <br><br><br><br><br>
 
 </main>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  const delete_btn_click = async () => {
+    const delete_nodes = document.querySelectorAll('input[type=checkbox]:checked');
+    const delete_list = Array.from(delete_nodes).map(node => node.value);
+    const result = (await $.ajax({
+      url: "{% url 'announcement:delete_announcement' %}",
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        announcement_list: delete_list
+      }
+    })).result;
+    if (result == "success") {
+      Swal.fire(
+        '완료!',
+        '삭제되었습니다.',
+        'success'
+      ).then(() => {
+        location.reload();
+      })
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: '삭제에 실패하였습니다.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+    }
+  }
+</script>
 {% endblock %}

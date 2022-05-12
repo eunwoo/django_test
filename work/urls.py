@@ -20,23 +20,47 @@ main_url = [
 safety_url = [
     path("safety/", safety_views.safety, name="safety"),
     path("create_safety/", safety_views.create_safety, name="create_safety"),
-    path("update_safety/<int:pk>/", safety_views.update_safety, name="update_safety"),
+    path(
+        "update_safety/<int:pk>/",
+        safety_views.update_safety,
+        name="update_safety",
+    ),
     path("get_users/", safety_views.get_users, name="get_users"),
     path("require_sign", safety_views.require_sign, name="require_sign"),
-    path("read_safety/<int:pk>/", safety_views.read_safety, name="read_safety"),
+    path(
+        "read_safety/<int:pk>/",
+        safety_views.read_safety,
+        name="read_safety",
+    ),
     path(
         "create_checklist/<int:pk>/",
         safety_views.create_checklist,
         name="create_checklist",
     ),
     path(
-        "read_checklist/<int:pk>/", safety_views.read_checklist, name="read_checklist"
+        "read_checklist/<int:pk>/",
+        safety_views.read_checklist,
+        name="read_checklist",
+    ),
+    path(
+        "delete_safeties/",
+        safety_views.delete_safeties,
+        name="delete_safeties",
+    ),
+    path(
+        "create_checklist_item",
+        safety_views.create_checklist_item,
+        name="create_checklist_item",
     ),
 ]
 
 material_url = [
     path("material/", material_views.material, name="material"),
-    path("create_material/", material_views.create_material, name="create_material"),
+    path(
+        "create_material/",
+        material_views.create_material,
+        name="create_material",
+    ),
     path(
         "update_material/<int:pk>/",
         material_views.update_material,
@@ -47,7 +71,16 @@ material_url = [
         material_views.require_sign_material,
         name="require_sign_material",
     ),
-    path("read_material/<int:pk>/", material_views.read_material, name="read_material"),
+    path(
+        "read_material/<int:pk>/",
+        material_views.read_material,
+        name="read_material",
+    ),
+    path(
+        "delete_materials/",
+        material_views.delete_materials,
+        name="delete_materials",
+    ),
 ]
 
 quality_request_url = [
@@ -76,6 +109,11 @@ quality_request_url = [
         quality_request_views.read_quality_request,
         name="read_quality_request",
     ),
+    path(
+        "delete_quality_requests/",
+        quality_request_views.delete_qty_requests,
+        name="delete_quality_requests",
+    ),
 ]
 
 quality_report_url = [
@@ -103,6 +141,11 @@ quality_report_url = [
         "read_quality_report/<int:pk>/",
         quality_report_views.read_quality_report,
         name="read_quality_report",
+    ),
+    path(
+        "delete_quality_reports/",
+        quality_report_views.delete_quality_report,
+        name="delete_quality_reports",
     ),
 ]
 
@@ -147,6 +190,31 @@ before_install_check_url = [
         before_install_views.read_before_checklist,
         name="read_before_checklist",
     ),
+    path(
+        "delete_before_install_checklists/",
+        before_install_views.before_install_checklists_delete_service,
+        name="delete_before_install_checklists",
+    ),
+    path(
+        "add_before_install_item/<str:type>/",
+        before_install_views.add_before_install_item,
+        name="add_before_install_item",
+    ),
+    path(
+        "measure_before_install/<str:urlcode>/",
+        before_install_views.measure_before_install,
+        name="measure_before_install",
+    ),
+    path(
+        "review_before_install_checklist/<str:type>/<int:pk>/",
+        before_install_views.review_before_install_checklist,
+        name="review_before_install_checklist",
+    ),
+    path(
+        "success_before_install_checklist/",
+        before_install_views.success_before_checklist,
+        name="success_before_checklist",
+    ),
 ]
 
 install_check_url = [
@@ -174,6 +242,31 @@ install_check_url = [
         "required_cm_install/<str:type>/",
         install_views.required_cm,
         name="required_cm_install",
+    ),
+    path(
+        "delete_install_checklists/",
+        install_views.delete_install_checklists,
+        name="delete_install_checklists",
+    ),
+    path(
+        "add_install_item/<str:type>/",
+        install_views.add_install_item,
+        name="add_install_item",
+    ),
+    path(
+        "measure_install/<str:urlcode>/",
+        install_views.measure_install,
+        name="measure_install",
+    ),
+    path(
+        "review_install_checklist/<str:type>/<int:pk>/",
+        install_views.review_install_checklist,
+        name="review_install_checklist",
+    ),
+    path(
+        "success_install_checklist/",
+        install_views.success_install_checklist,
+        name="success_install_checklist",
     ),
 ]
 

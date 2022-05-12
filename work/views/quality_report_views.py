@@ -8,6 +8,7 @@ from work.services.common_services import assign_user
 
 from ..services.quality_report_services import (
     create_quality_report_service,
+    delete_qty_reports_service,
     get_qty_report_list_by_user,
     qty_report_success,
     read_qty_report_service,
@@ -57,8 +58,8 @@ def update_quality_report(request, pk):
 
 
 @login_required(login_url="/user/login/")
-def delete_quality_report(request, pk):
-    pass
+def delete_quality_report(request):
+    return delete_qty_reports_service(request)
 
 
 @login_required(login_url="/user/login/")

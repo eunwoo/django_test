@@ -38,7 +38,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:quality_report' %}">품질검사 성과보고</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">품질검사 성과보고서 작성</li>
+                <li class="breadcrumb-item active" aria-current="page">품질검사 성과 총괄표 신고 및 승인서 작성</li>
               </ol>
             </nav>
           </div>
@@ -110,29 +110,36 @@
           <table class="table">
             <thead>
               <th class="p-4" colspan="6">
-                <h1>품질검사 성과 총괄표 신고서</h1>
+                <h1>품질검사 성과 총괄표 신고 및 승인서</h1>
               </th>
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
-                  품질검사 성과 총괄표 신고서-{{docNum}}
+                  품질검사 성과 총괄표 신고 및 승인서-{{docNum}}
                 </td>
-                <td>작성일자</td>
+                <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
                     value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
-                <td>공사명</td>
+                <td class="table-secondary">공사명</td>
                 <td colspan="2">
                   {{field.title}}
                 </td>
-                <td>공사기간</td>
+                <td class="table-secondary">공사기간</td>
                 <td colspan="2">
                   {{field.startDay}} ~ {{field.endDay}}
+                </td>
+              </tr>
+              <tr>
+                <td class="table-primary">제목</td>
+                <td colspan="5">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요."
+                    value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
@@ -140,7 +147,7 @@
                   <table style="border-collapse: collapse;" class="col-12" border="1" id="table">
                     <thead>
                       <tr>
-                        <td rowspan="2" style="width: 15%;">품명</td>
+                        <td rowspan="2" style="width: 15%;">시료명</td>
                         <td rowspan="2" style="width: 15%;">규격</td>
                         <td colspan="3" style="width: 15%;">시험ᆞ검사 종목
                         </td>
@@ -149,7 +156,6 @@
                         <td rowspan="2" style="width: 10%;">
                         </td>
                       </tr>
-
                       <tr>
                         <td>
                           휨하중
@@ -178,19 +184,26 @@
                       </tr>
                       <tr id="goods_list">
                         <td>
-                          <select class="form-select" aria-label="품명 선택">
-                            <option value selected>품명을 선택해주세요</option>
-                            <option value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
-                            <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
-                            <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
-                            <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
-                            <option value="조립형비계 및 동바리부재(가새재)">조립형비계 및 동바리부재(가새재)</option>
-                            <option value="조립형비계 및 동바리부재(트러스)">조립형비계 및 동바리부재(트러스)</option>
-                            <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
-                          </select>
+                          <div class="row">
+                            <select class="form-select" aria-label="품명 선택" id="goods_select">
+                              <option value selected>품명을 선택해주세요</option>
+                              <option value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
+                              <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
+                              <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
+                              <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
+                              <option value="조립형비계 및 동바리부재(가새재)">조립형비계 및 동바리부재(가새재)</option>
+                              <option value="조립형비계 및 동바리부재(트러스)">조립형비계 및 동바리부재(트러스)</option>
+                              <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
+                              <option value="직접 입력">직접 입력</option>
+                            </select>
+                          </div>
+                          <div class="row">
+                            <input type="text" class="form-control" id="supply_goods" readOnly />
+                          </div>
                         </td>
                         <td>
-                          <input type="text" class="form-control" id="supply_size" /></td>
+                          <input type="text" class="form-control" id="supply_size" />
+                        </td>
                         <td>
                           <input type="checkbox" value="" id="hweem_check" />
                         </td>
@@ -273,7 +286,7 @@
                 </td>
               </tr>
               <tr>
-                <td>붙임</td>
+                <td class="table-primary">붙임</td>
                 <td>품질검사 성적서</td>
                 <td colspan="4" class="p-2">
                   <input class="form-control" type="file" id="formFileMultiple" name="docs_files" accept=".pdf"
@@ -286,20 +299,20 @@
                 </td>
               </tr>
               <tr>
-                <td>결제</td>
+                <td class="table-secondary">결제</td>
                 <td colspan="5">
                   <table style="border-collapse: collapse;" class="col-12">
                     <tr>
-                      <td colspan="2">
+                      <td colspan="2" style="background-color: #cfe2ff;">
                         담당자
                       </td>
-                      <td colspan="2">
+                      <td colspan="2" style="background-color: #e2e3e5;">
                         현장대리인
                       </td>
-                      <td colspan="2">
+                      <td colspan="2" style="background-color: #e2e3e5;">
                         담당 건설사업관리기술인
                       </td>
-                      <td colspan="2">
+                      <td colspan="2" style="background-color: #e2e3e5;">
                         총괄 건설사업관리기술인
                       </td>
                     </tr>
@@ -372,6 +385,22 @@
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">
+  // 품명 선택
+  const goods_input = document.getElementById('supply_goods')
+
+  $('#goods_select').change(function () {
+    const goods = $(this).val();
+    goods_input.value = goods;
+    if (goods === '직접 입력') {
+      goods_input.value = '';
+      goods_input.readOnly = false;
+    } else {
+      goods_input.readOnly = true;
+    }
+  });
+
+
+
   // 공급원 추가 버튼
 
   const goods_add = document.querySelector('#goods_add');
@@ -380,16 +409,9 @@
     // 입력된 값을 불러온다
     const goods_table = document.querySelector('#goods_list');
     const goods_input = goods_table.querySelectorAll('input');
-    const goods_value = [goods_table.querySelector('select').value]
-    if (goods_value[0] === '') {
-      Swal.fire({
-        title: '품명이 선택되지 않았습니다.',
-        text: '품명을 선택해주세요.',
-        icon: 'error',
-        confirmButtonText: '확인'
-      });
-      return false;
-    }
+    const goods_value = []
+    const goods_select = document.getElementById('goods_select');
+    goods_select.selectedIndex = 0;
     for (let v of goods_input) {
       if (v.type === "checkbox") {
         goods_value.push(v.checked);

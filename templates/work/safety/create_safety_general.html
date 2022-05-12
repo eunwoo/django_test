@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-구조 안전성 검토 신고서 작성
+구조 안전성 검토 신고 및 승인서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -31,7 +31,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고 및 승인서</li>
               </ol>
             </nav>
           </div>
@@ -101,45 +101,48 @@
         <div id="safety" class="container p-4 mb-5 text-center">
           <table class="table">
             <thead>
-              <th class="p-4" colspan="6">
-                <h1>구조 안전성 검토 신고서</h1>
-              </th>
+              <tr>
+                <th class="p-4" colspan="6">
+                  <h1>구조 안전성 검토 신고서</h1>
+                </th>
+              </tr>
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
-                  구조 안전성 검토
-                  신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
+                  구조 안전성
+                  검토 신고 및
+                  승인서-{% if form.instance.docNum != None %}{{form.instance.docNum}}{% else %}{{docNum}}{% endif %}
                 </td>
-                <td>작성일자</td>
+                <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
-                    value="{{form.instance.title|default_if_none:''}}" />
+                    value="{{form.instance.title|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-primary">공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect">
-                    <option value="">투입 공종을
-                      선택해주세요
+                    <option value="">
+                      투입 공종을 선택해주세요.
                     </option>
-                    <option value="건축">
-                      건축
+                    <option value="전기">
+                      전기
                     </option>
-                    <option value="토목">
-                      토목
+                    <option value="소방">
+                      소방
                     </option>
-                    <option value="기계">
-                      기계
+                    <option value="통신">
+                      통신
                     </option>
                     <option value="직접입력">
                       직접입력
@@ -152,22 +155,56 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td class="table-primary">설치 위치</td>
+                <td colspan="5">
+                  {% if form.instance.locateId %}
+                  <div class="row">
+                    <div class="col">
+                      기존 위치: {{form.instance.locateId.class2.class1.class1}} -
+                      {{form.instance.locateId.class2.class2}} -
+                      {{form.instance.locateId.class3}}
+                    </div>
+                  </div>
+                  <br>
+                  {% endif %}
+                  <div class="row">
+                    <div class="col-1">Level1</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class1">
+                      </select>
+                    </div>
+                    <div class="col-1">Level2</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class2">
+                      </select>
+                    </div>
+                    <div class="col-1">Level3</div>
+                    <div class="col-3">
+                      <select class="form-select" id="class3" name="locate"
+                        {% if not form.instance.locateId %}required{% endif %}>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3" class="table-primary">내용</td>
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
-                    value="{{form.instance.text|default_if_none:''}}">{{form.instance.text|default_if_none:''}}</textarea>
+                    value="{{form.instance.text|default_if_none:''}}"
+                    required>{{form.instance.text|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>
                 <td rowspan="2" colspan="2"></td>
-                <td>담당자</td>
+                <td class="table-primary">담당자</td>
                 <td>
                   {% if form.instance.writerId != None %}{{form.instance.writerId.name}}
                   {% else %}{{request.user.name}}
                   {% endif %}
                 </td>
                 <td>
-                  {% if form.instance.writerId != None %}<img width="100%" alt=""
+                  {% if form.instance.writerId != None %}<img width="60%" alt=""
                     src="{{form.instance.writerId.signImage.url}}" />
                   {% else %}
                   <!-- Button trigger modal -->
@@ -202,7 +239,7 @@
                 </td>
               </tr>
               <tr>
-                <td>현장대리인</td>
+                <td class="table-secondary">현장대리인</td>
                 <td>
                 </td>
                 <td>
@@ -210,7 +247,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">붙임</td>
+                <td rowspan="2" class="table-primary">붙임</td>
                 <td>구조계산서</td>
                 <td>
                   {% include 'work/safety/load_docs_modal.html' with title="구조계산서" contents=construct_bills equipment_list=equipment_list %}
@@ -236,13 +273,22 @@
                   </ol>
                 </td>
               </tr>
+            </tbody>
+            <thead>
               <tr>
-                <td>회신일자</td>
+                <th class="p-4" colspan="6">
+                  <h1>구조 안전성 검토 승인서</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+              <tr>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">검토 의견</td>
+                <td rowspan="3" class="table-secondary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                 </td>
@@ -258,18 +304,18 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-secondary">결과</td>
                 <td colspan="5">
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
                   (인)
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-secondary">총괄건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
@@ -432,5 +478,73 @@
       $("#constructType").val(value)
     }
   })
+
+
+  // 설치위치 받아오기
+  const [class1_select, class2_select, class3_select] = ['class1', 'class2', 'class3'].map(
+    (class_name) => document.getElementById(class_name)
+  )
+
+  const create_init_option = (select_element) => {
+    const option = document.createElement("option")
+    option.value = ''
+    option.text = '---------'
+    option.selected = true
+    select_element.appendChild(option)
+  }
+
+  $.get("{% url 'system_manager:get_locate' 1 %}", function (data) {
+    create_init_option(class1_select)
+    data['install_locate'].forEach(value => {
+      const option = document.createElement("option")
+      option.value = value.id
+      option.text = value.class1
+      class1_select.appendChild(option)
+    })
+  });
+
+  class1_select.addEventListener("change", function () {
+    const class1_id = class1_select.value
+    if (class1_id === '') {
+      class2_select.innerHTML = ""
+      class3_select.innerHTML = ""
+      create_init_option(class2_select)
+      create_init_option(class3_select)
+    } else {
+      $.get("{% url 'system_manager:get_locate' 2 %}", {
+        class_id: class1_id
+      }, function (data) {
+        class2_select.innerHTML = ""
+        create_init_option(class2_select)
+        data['install_locate'].forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.class2
+          class2_select.appendChild(option)
+        })
+      });
+    }
+  });
+
+  class2_select.addEventListener("change", function () {
+    const class2_id = class2_select.value
+    if (class2_id === '') {
+      class3_select.innerHTML = ""
+      create_init_option(class3_select)
+    } else {
+      $.get("{% url 'system_manager:get_locate' 3 %}", {
+        class_id: class2_id
+      }, function (data) {
+        class3_select.innerHTML = ""
+        create_init_option(class3_select)
+        data['install_locate'].forEach(value => {
+          const option = document.createElement("option")
+          option.value = value.id
+          option.text = value.class3
+          class3_select.appendChild(option)
+        })
+      });
+    }
+  });
 </script>
 {% endblock %}

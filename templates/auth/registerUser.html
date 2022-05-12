@@ -30,11 +30,11 @@
           <div class="col">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item">회원가입</a>
+                <li class="breadcrumb-item">사용자 등록
                 </li>
-                <li class="breadcrumb-item">일반 회원</a>
+                <li class="breadcrumb-item">사용자 유형
                 </li>
-                <li class="breadcrumb-item">개인정보 입력</a>
+                <li class="breadcrumb-item">개인정보 입력
                 </li>
               </ol>
             </nav>
@@ -57,29 +57,31 @@
           </div>
           <div class="row mt-3">
             <div class="col-md-2 offset-1">
-              <label for="" class="col-12">소속</label>
+              <label for="" class="col-12">소속 및 직책</label>
             </div>
             <div class="col-md-8">
               <div class="row">
                 <div class="col">
-                  <select name="class1" class="col-12 text-center" maxlength="60" id="id_class1">
+                  <select name="class1" class="col-12 text-center" maxlength="60" id="id_class1" required>
+                    <option value="" selected>분류1</option>
                     <option value="종합건설업체">종합건설업체</option>
                     <option value="감리 및 CM 업체">감리 및 CM 업체</option>
                   </select>
                 </div>
                 <div class="col">
-                  <select name="class2" class="col-12 text-center" required="required" id="id_class2">
-                    <option value="일반 관리자">일반 관리자</option>
-                    <option value="현장 대리인">현장 대리인</option>
+                  <select name="class2" class="col-12 text-center" required="required" id="id_class2" required>
+                    <option value="" selected>분류2</option>
                   </select>
                 </div>
                 <div class="col">
-                  <select name="class3" class="col-12 text-center" maxlength="60" id="id_class3">
-                    <option value="시공 관리자">시공 관리자</option>
-                    <option value="품질 관리자">품질 관리자</option>
-                    <option value="안전 관리자">안전 관리자</option>
-                    <option value="해당 사항 없음">해당 사항 없음</option>
+                  <select class="col-12 text-center" maxlength="60" id="id_class3">
+                    <option value="" selected>분류3</option>
                   </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <input type="text" id="class3_input" name="class3" class="col-12 text-center" required readonly>
                 </div>
               </div>
             </div>
@@ -187,7 +189,7 @@
               <div class="row mt-3 mb-1 mx-1">
                 <textarea id="sig-dataUrl" class="form-control" rows="5"
                   hidden="hidden">Data URL for your signature will go here!</textarea>
-                <div class="col-md-12 text-center " style="border: 1px solid black; height: 120px;">
+                <div class="col-md-12 text-center">
                   <img id="sig-image" src="" />
                 </div>
               </div>
@@ -208,10 +210,20 @@
             </div>
           </div>
           <br>
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+            {% if field.errors %}
+            <strong>{{ field.label }}</strong>
+            {{ field.errors }}
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
           <div class="row mt-3">
             <div class="col-md-10 offset-2 text-center">
               <a href="{% url 'user:login' %}">
-                <button type="submit" class="btn btn-primary">가입 신청 완료</button>
+                <button type="submit" class="btn btn-primary">등록 완료</button>
               </a>
             </div>
           </div>
@@ -385,21 +397,65 @@
   })
 
   // SelectBox 선택시 이벤트
-
   $('#id_class1').change(function (e) {
     const value = e.target.value;
     const class2 = document.getElementById('id_class2');
+    const class3_input = document.getElementById('class3_input');
+    class3_input.value = '';
+    class3_input.readonly = true;
     if (value == '종합건설업체') {
       class2.innerHTML = `
-    <option value="일반 관리자">일반 관리자</option>
+    <option value="" selected>분류2</option>
+    <option value="일반 사용자">일반 사용자</option>
     <option value="현장 대리인">현장 대리인</option>
     `
-    } else {
+    } else if (value == "감리 및 CM 업체") {
       class2.innerHTML = `
+    <option value="" selected>분류2</option>
     <option value="일반 건설사업관리기술인">일반 건설사업관리기술인</option>
     <option value="총괄 건설사업관리기술인">총괄 건설사업관리기술인</option>`
+    } else {
+      class2.innerHTML = `
+    <option value="" selected>분류2</option>`
     }
-    return
+    return;
+  })
+
+  $('#id_class2').change(e => {
+    const value = e.target.value;
+    const class3 = document.getElementById('id_class3');
+    const class3_input = document.getElementById('class3_input');
+    class3_input.value = '';
+    class3_input.readonly = true;
+    if (value == '일반 사용자') {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>
+          <option value="시공 관리자">시공 관리자</option>
+          <option value="품질 관리자">품질 관리자</option>
+          <option value="안전 관리자">안전 관리자</option>
+          <option value="해당 사항 없음">해당 사항 없음</option>
+          <option value="직접 입력">직접 입력</option>`
+    } else if (value == '') {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>`
+    } else {
+      class3.innerHTML = `
+          <option value="" selected>분류3</option>
+          <option value="해당 사항 없음">해당 사항 없음</option>`
+    }
+    return;
+  })
+
+  $('#id_class3').change(e => {
+    const value = e.target.value;
+    const class3_input = document.getElementById('class3_input');
+    if (value == '직접 입력') {
+      class3_input.value = '';
+      class3_input.readOnly = false;
+    } else {
+      class3_input.value = value;
+      class3_input.readOnly = true;
+    }
   })
 
   // 아이디 중복확인
@@ -445,5 +501,69 @@
       }
     })
   })
+
+  // 전화번호 입력방식
+  function autoHypenTel(str) {
+    str = str.replace(/[^0-9]/g, '');
+    var tmp = '';
+
+    if (str.substring(0, 2) == 02) {
+      // 서울 전화번호일 경우 10자리까지만 나타나고 그 이상의 자리수는 자동삭제
+      if (str.length < 3) {
+        return str;
+      } else if (str.length < 6) {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2);
+        return tmp;
+      } else if (str.length < 10) {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2, 3);
+        tmp += '-';
+        tmp += str.substr(5);
+        return tmp;
+      } else {
+        tmp += str.substr(0, 2);
+        tmp += '-';
+        tmp += str.substr(2, 4);
+        tmp += '-';
+        tmp += str.substr(6, 4);
+        return tmp;
+      }
+    } else {
+      // 핸드폰 및 다른 지역 전화번호 일 경우
+      if (str.length < 4) {
+        return str;
+      } else if (str.length < 7) {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3);
+        return tmp;
+      } else if (str.length < 11) {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 3);
+        tmp += '-';
+        tmp += str.substr(6);
+        return tmp;
+      } else {
+        tmp += str.substr(0, 3);
+        tmp += '-';
+        tmp += str.substr(3, 4);
+        tmp += '-';
+        tmp += str.substr(7);
+        return tmp;
+      }
+    }
+
+    return str;
+  };
+
+  $('#id_phone').keyup(function (event) {
+    event = event || window.event;
+    var _val = this.value.trim();
+    this.value = autoHypenTel(_val);
+  });
 </script>
 {% endblock %}

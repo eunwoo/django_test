@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import DocsFile, Field
@@ -13,21 +13,36 @@ from django.contrib import messages
 
 
 def get_material_list_by_user(user):
-    if user.class2 == "일반 관리자":
-        return MaterialSupplyReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
+    if user.class2 == "일반 사용자":
+        return MaterialSupplyReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by(
+            "isCheckManager",
+            "-docNum",
         )
     elif user.class2 == "현장 대리인":
-        return MaterialSupplyReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
+        return MaterialSupplyReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by(
+            "isCheckAgent",
+            "-docNum",
         )
     elif user.class2 == "일반 건설사업관리기술인":
-        return MaterialSupplyReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
+        return MaterialSupplyReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
+            "isCheckGeneralEngineer",
+            "-docNum",
         )
     else:
-        return MaterialSupplyReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
+        return MaterialSupplyReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by(
+            "-docNum",
         )
 
 
@@ -42,6 +57,7 @@ def create_material_service(request):
             supply_comp = request.POST.getlist("supply_comp[]")
             supply_type = request.POST.getlist("supply_type[]")
             supply_size = request.POST.getlist("supply_size[]")
+            supply_amount = request.POST.getlist("supply_amount[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.fieldId = field
             material.isSaveManager = True
@@ -54,6 +70,7 @@ def create_material_service(request):
                     name=supply_comp[index],
                     goods=supply_type[index],
                     size=supply_size[index],
+                    amount=supply_amount[index],
                     etc=supply_etc[index],
                     materialSupplyReportId=material,
                 )
@@ -97,7 +114,7 @@ def create_material_service(request):
 
 
 def update_material_service(request, docNum):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_material_general(request, docNum)
     elif request.user.class2 == "현장 대리인":
         return update_material_agent(request, docNum)
@@ -124,6 +141,7 @@ def update_material_general(request, docNum):
             supply_comp = request.POST.getlist("supply_comp[]")
             supply_type = request.POST.getlist("supply_type[]")
             supply_size = request.POST.getlist("supply_size[]")
+            supply_amount = request.POST.getlist("supply_amount[]")
             supply_etc = request.POST.getlist("supply_etc[]")
             material.save()
             if files:
@@ -137,6 +155,7 @@ def update_material_general(request, docNum):
                     name=supply_comp[index],
                     goods=supply_type[index],
                     size=supply_size[index],
+                    amount=supply_amount[index],
                     etc=supply_etc[index],
                     materialSupplyReportId=material,
                 )
@@ -188,14 +207,19 @@ def update_material_agent(request, docNum):
         material.save()
         messages.success(request, "저장이 완료되었습니다.")
     return render(
-        request, "work/material/update_material_agent.html", {"material": material}
+        request,
+        "work/material/update_material_agent.html",
+        {"material": material},
     )
 
 
 def update_material_generalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
-        form = GeneralEngineerMaterialSupplyReportForm(request.POST, instance=material)
+        form = GeneralEngineerMaterialSupplyReportForm(
+            request.POST,
+            instance=material,
+        )
         if form.is_valid():
             material = form.save(commit=False)
             material.isSaveGeneralEngineer = True
@@ -214,10 +238,13 @@ def update_material_generalEngineer(request, docNum):
 def update_material_totalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
-        form = TotalEngineerMaterialSupplyReportForm(request.POST, instance=material)
+        form = TotalEngineerMaterialSupplyReportForm(
+            request.POST,
+            instance=material,
+        )
         if form.is_valid():
             material = form.save(commit=False)
-            material.isSuccess = True
+            material.isSaveTotalEngineer = True
             material.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)
@@ -232,11 +259,14 @@ def update_material_totalEngineer(request, docNum):
 
 def read_material_service(user, pk):
     material = MaterialSupplyReport.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
-        material.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        material.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        material.isCheckGeneralEngineer = True
-    material.save()
     return material
+
+
+def delete_materials_service(request):
+    if request.method == "POST":
+        safety_list = request.POST.getlist("delete_list[]")
+        for safety in safety_list:
+            safety = MaterialSupplyReport.objects.get(docNum=safety)
+            safety.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

@@ -1,19 +1,25 @@
-from statistics import mode
 from django.db import models
 
 
 from user.models import CustomUser
-from system_manager.models import DocsFile, InstallLocate, Field
+from system_manager.models import (
+    ConstructManager,
+    DocsFile,
+    InstallLocate,
+    Field,
+)
+
 
 # 구조 안전성 검토 신고서 관련 문서
-
-
 class SafetyReport(models.Model):
     docNum = models.AutoField(primary_key=True)
     date = models.DateField()  # 작성 일자
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
+    locateId = models.ForeignKey(
+        InstallLocate, on_delete=models.SET_NULL, null=True
+    )  # 설치 위치
     replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (
         ("1", "승인-제출한 내용대로 진행"),
@@ -37,8 +43,13 @@ class SafetyReport(models.Model):
     # 체크리스트 전용 속성
     checklistDate = models.DateField(null=True)
     checklistConstructType = models.CharField(max_length=90, null=True)
+    checklistTitle = models.CharField(max_length=90, null=True)
 
-    docs = models.ManyToManyField(DocsFile, blank=True, related_name="safety_docs")
+    docs = models.ManyToManyField(
+        DocsFile,
+        blank=True,
+        related_name="safety_docs",
+    )
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -70,6 +81,7 @@ class SafetyReport(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    requested_at = models.DateTimeField(null=True)
 
     def __str__(self):
         return "구조 안전성 검토 신고서 - " + self.docNum
@@ -85,19 +97,32 @@ class SafetyCheckType(models.Model):
 class SafetyCheckMenu(models.Model):
     content = models.TextField()
     checkType = models.ForeignKey(SafetyCheckType, on_delete=models.CASCADE)
+    initItem = models.BooleanField(default=False)
 
     def __str__(self):
         return self.content
 
 
 class SafetyCheckList(models.Model):
-    result_choices = (("1", "예"), ("2", "아니요"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=60, choices=result_choices, default="1")
+    result_choices = (
+        ("1", "예"),
+        ("2", "아니요"),
+        ("3", "해당사항 없음"),
+    )
+    result = models.CharField(
+        max_length=60,
+        choices=result_choices,
+        default="1",
+    )
     safetyReportId = models.ForeignKey(
-        SafetyReport, on_delete=models.CASCADE, related_name="safety_check_list"
+        SafetyReport,
+        on_delete=models.CASCADE,
+        related_name="safety_check_list",
     )
     safetyCheckMenuId = models.ForeignKey(
-        SafetyCheckMenu, on_delete=models.CASCADE, related_name="safety_check_list"
+        SafetyCheckMenu,
+        on_delete=models.CASCADE,
+        related_name="safety_check_list",
     )
 
     def __str__(self):
@@ -111,6 +136,7 @@ class SafetyCheckList(models.Model):
 class MaterialSupplyReport(models.Model):
     docNum = models.AutoField(primary_key=True)
     date = models.DateField()  # 작성 일자
+    title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 기타사항
 
@@ -129,10 +155,16 @@ class MaterialSupplyReport(models.Model):
         related_name="material_supply",
     )
     result = models.CharField(
-        max_length=10, choices=result_choices, blank=True
+        max_length=10,
+        choices=result_choices,
+        blank=True,
     )  # 결과 내용
 
-    docs = models.ManyToManyField(DocsFile, blank=True, related_name="material_docs")
+    docs = models.ManyToManyField(
+        DocsFile,
+        blank=True,
+        related_name="material_docs",
+    )
 
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
@@ -143,22 +175,6 @@ class MaterialSupplyReport(models.Model):
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
-
-    businessLicense = models.FileField(
-        upload_to="business_license", blank=True, null=True
-    )  # 사업자 등록증
-    deliveryPerformanceCertificate = models.FileField(
-        upload_to="delivery_performance_certificate", blank=True, null=True
-    )  # 납품실적증명서
-    safetyCertificate = models.FileField(
-        upload_to="safety_certificate", blank=True, null=True
-    )  # 안전인증서
-    qualityTestReport = models.FileField(
-        upload_to="quality_test_report", blank=True, null=True
-    )  # 품질시험성적서
-    testPerformanceComparisonTable = models.FileField(
-        upload_to="test_performance_comparison_table", blank=True, null=True
-    )  # 시험성과대비표
 
     writerId = models.ForeignKey(
         CustomUser,
@@ -199,9 +215,12 @@ class SupplyList(models.Model):
     name = models.CharField(max_length=60)  # 공급업체명
     goods = models.CharField(max_length=60)  # 품명
     size = models.CharField(max_length=60)  # 규격
+    amount = models.CharField(max_length=60)  # 공급수량
     etc = models.TextField()  # 비고
     materialSupplyReportId = models.ForeignKey(
-        MaterialSupplyReport, on_delete=models.CASCADE, related_name="supply_list"
+        MaterialSupplyReport,
+        on_delete=models.CASCADE,
+        related_name="supply_list",
     )
 
     def __str__(self):
@@ -228,17 +247,8 @@ class MaterialDocs(models.Model):
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)
-    goods_choice = [
-        ("", "품명을 선택해 주세요"),
-        ("1", "강관비계용 부재 (비계용 강관)"),
-        ("2", "강관비계용 부재(강관조인트)"),
-        ("3", "조립형비계 및 동바리부재(수직재)"),
-        ("4", "조립형비계 및 동바리부재(수평재)"),
-        ("5", "조립형비계 및 동바리부재(가새재)"),
-        ("6", "조립형비계 및 동바리부재(트러스)"),
-        ("7", "립형비계 및 동바리부재(연결조인트)"),
-    ]
-    goods = models.CharField(max_length=60, choices=goods_choice)  # 품명
+    title = models.CharField(max_length=90)  # 제목
+    goods = models.CharField(max_length=60)  # 품명
     size = models.CharField(max_length=60)  # 규격
     sampleQuentity = models.TextField()  # 시료량
     sampleOrigin = models.TextField()  # 시료 또는 자제 생산국
@@ -305,7 +315,7 @@ class QualityInspectionRequest(models.Model):
 class QualityPerformanceReport(models.Model):
     docNum = models.AutoField(primary_key=True)  # 문서번호
     date = models.DateField()  # 작성일자
-    title = models.CharField(max_length=60)  # 공사명
+    title = models.CharField(max_length=90)  # 제목
     fieldId = models.ForeignKey(
         Field,
         on_delete=models.SET_NULL,
@@ -399,6 +409,7 @@ class QualityPerformanceFile(models.Model):
 class BeforeInstallCheckList(models.Model):
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
+    title = models.CharField(max_length=90)  # 제목
     locateId = models.ForeignKey(
         InstallLocate,
         on_delete=models.SET_NULL,
@@ -415,9 +426,25 @@ class BeforeInstallCheckList(models.Model):
         related_name="before_install_checklist_writer",
         null=True,
     )
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="before_install_checklist",
+    )
+    urlCode = models.CharField(
+        max_length=60,
+        blank=True,
+        db_index=True,
+    )
+
     isSuccess = models.BooleanField(default=False)
+    isCheckWriter = models.BooleanField(default=False)
+    isCheckCM = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    expired_date = models.DateTimeField(blank=True, null=True)
 
 
 class BeforeInspectionItem(models.Model):
@@ -426,12 +453,16 @@ class BeforeInspectionItem(models.Model):
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+    init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
 class BeforeInspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=10, choices=result_choices, default="1")  # 결과
-    content = models.TextField(blank=True)  # 조치사항 확인 내용
+    result = models.CharField(
+        max_length=10,
+        choices=result_choices,
+        default="1",
+    )  # 결과
     before_install_checklist_id = models.ForeignKey(
         BeforeInstallCheckList,
         on_delete=models.CASCADE,
@@ -446,11 +477,28 @@ class BeforeInspectionResult(models.Model):
 
 
 class BeforeMeasure(models.Model):
-    img = models.ImageField(upload_to="before_measure")
-    beforeInspectionResult = models.ForeignKey(
+    content = models.TextField(blank=True)  # 조치사항 확인 내용
+    isCM = models.BooleanField(default=False)  # CM 작성 여부
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="before_measure",
+    )
+    result = models.ForeignKey(
         BeforeInspectionResult,
         on_delete=models.CASCADE,
-        related_name="measures",
+        related_name="before_measure",
+    )
+
+
+class BeforeMeasureImg(models.Model):
+    img = models.ImageField(upload_to="before_measure")
+    beforeMeasure = models.ForeignKey(
+        BeforeMeasure,
+        on_delete=models.CASCADE,
+        related_name="before_measure_imgs",
         blank=True,
         null=True,
     )
@@ -462,6 +510,7 @@ class BeforeMeasure(models.Model):
 class InstallCheckList(models.Model):
     # docNum <= 중간 삭제가 없으므로 생략해도 될듯
     date = models.DateField()  # 확인 일자
+    title = models.CharField(max_length=90)  # 제목
     locateId = models.ForeignKey(
         InstallLocate,
         on_delete=models.SET_NULL,
@@ -478,9 +527,25 @@ class InstallCheckList(models.Model):
         related_name="install_checklist_writer",
         null=True,
     )
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="install_checklist",
+    )
+    urlCode = models.CharField(
+        max_length=60,
+        blank=True,
+        db_index=True,
+    )
+
     isSuccess = models.BooleanField(default=False)
+    isCheckWriter = models.BooleanField(default=False)
+    isCheckCM = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    expired_date = models.DateTimeField(blank=True, null=True)
 
 
 class InspectionItemCategory(models.Model):
@@ -498,12 +563,16 @@ class InspectionItem(models.Model):
     equipment = models.CharField(
         max_length=60, choices=equipment_choices
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+    init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
 class InspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
-    result = models.CharField(max_length=10, choices=result_choices, default="1")  # 결과
-    content = models.TextField()  # 조치사항 확인 내용
+    result = models.CharField(
+        max_length=10,
+        choices=result_choices,
+        default="1",
+    )  # 결과
     install_checklist_id = models.ForeignKey(
         InstallCheckList,
         on_delete=models.CASCADE,
@@ -518,11 +587,28 @@ class InspectionResult(models.Model):
 
 
 class Measure(models.Model):
-    img = models.ImageField(upload_to="measure")
-    inspectionResult = models.ForeignKey(
+    content = models.TextField(blank=True)  # 조치사항 확인 내용
+    isCM = models.BooleanField(default=False)  # CM 작성 여부
+    cm = models.ForeignKey(
+        ConstructManager,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="measure",
+    )
+    result = models.ForeignKey(
         InspectionResult,
         on_delete=models.CASCADE,
-        related_name="measures",
+        related_name="measure",
+    )
+
+
+class MeasureImg(models.Model):
+    img = models.ImageField(upload_to="measure")
+    measure = models.ForeignKey(
+        Measure,
+        on_delete=models.CASCADE,
+        related_name="measure_imgs",
         blank=True,
         null=True,
     )

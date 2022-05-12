@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
@@ -5,8 +6,10 @@ from django.core.paginator import Paginator
 from work.services.common_services import assign_user
 from ..models import SafetyCheckMenu, SafetyReport
 from ..services.safety_services import (
+    create_checklist_item_service,
     create_checklist_service,
     create_safety_service,
+    delete_safeties,
     get_sign_users,
     read_checklist_service,
     read_safety_service,
@@ -27,7 +30,11 @@ def safety(request):
     paginator = Paginator(safety_list, 10)
     page_obj = paginator.get_page(page)
 
-    return render(request, "work/safety/safety.html", {"safetyitems": page_obj})
+    return render(
+        request,
+        "work/safety/safety.html",
+        {"safetyitems": page_obj},
+    )
 
 
 @login_required(login_url="/user/login/")
@@ -51,7 +58,7 @@ def read_safety(request, pk):
 
 @login_required(login_url="/user/login/")
 def update_safety(request, pk):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_safety_general(request, pk)
     elif request.user.class2 == "현장 대리인":
         return update_safety_agent(request, pk)
@@ -82,6 +89,8 @@ def require_sign(request):
             if request.user.class2 != "총괄 건설사업관리기술인"
             else "/work/read_safety/"
         )
+        if request.user.class2 == "현장 대리인":
+            doc.requested_at = timezone.now()
         link = request.build_absolute_uri(base_link + str(doc.docNum))
         assign_user(
             request.user,
@@ -99,19 +108,34 @@ def create_checklist(request, pk):
         return Http404("잘못된 접근입니다.")
     if request.method == "POST":
         create_checklist_service(request, pk)
-        return redirect("work:safety")
+        return redirect("work:update_safety", pk)
     # 구조 일반 사항
-    checklist1 = SafetyCheckMenu.objects.filter(checkType_id=1).order_by("pk")
+    checklist1 = SafetyCheckMenu.objects.filter(
+        checkType_id=1,
+        initItem=True,
+    ).order_by("pk")
     # 설계하중
-    checklist2 = SafetyCheckMenu.objects.filter(checkType_id=2).order_by("pk")
+    checklist2 = SafetyCheckMenu.objects.filter(
+        checkType_id=2,
+        initItem=True,
+    ).order_by("pk")
     # 구조해석
-    checklist3 = SafetyCheckMenu.objects.filter(checkType_id=3).order_by("pk")
+    checklist3 = SafetyCheckMenu.objects.filter(
+        checkType_id=3,
+        initItem=True,
+    ).order_by("pk")
     # 구조검토
-    checklist4 = SafetyCheckMenu.objects.filter(checkType_id=4).order_by("pk")
+    checklist4 = SafetyCheckMenu.objects.filter(
+        checkType_id=4,
+        initItem=True,
+    ).order_by("pk")
     return render(
         request,
         "work/safety/checklist.html",
-        {"checklist": [checklist1, checklist2, checklist3, checklist4], "docNum": pk},
+        {
+            "checklist": [checklist1, checklist2, checklist3, checklist4],
+            "docNum": pk,
+        },
     )
 
 
@@ -127,5 +151,15 @@ def read_checklist(request, pk):
 
 
 @login_required(login_url="/user/login/")
-def delete_safety(request, pk):
-    pass
+def delete_safety(request):
+    return delete_safeties(request)
+
+
+@login_required(login_url="/user/login/")
+def create_checklist_item(request):
+    if request.method == "POST":
+        content = request.POST.get("content")
+        category = request.POST.get("category")
+        pk = create_checklist_item_service(category, content)
+        return JsonResponse({"pk": pk})
+    return Http404()

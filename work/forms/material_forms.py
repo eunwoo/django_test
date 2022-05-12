@@ -10,6 +10,7 @@ class GeneralManagerMaterialSupplyReportForm(forms.ModelForm):
             "date",
             "constructType",
             "text",
+            "title",
         ]
         widgets = {
             "text": forms.Textarea(

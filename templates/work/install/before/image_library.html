@@ -4,7 +4,7 @@
   $('.input-images-{{checkmenu.before_inspection_item_id.pk}}').imageUploader({
     label: '여기를 클릭해 이미지를 추가하세요.',
     preloaded: [
-      {% for image in checkmenu.measures.all %} {
+      {% for image in checkmenu.before_measure.first.before_measure_imgs.all %} {
         id: {{image.pk}},
         src: '{{image.img.url}}',
         alt: '{{image.img.name}}',

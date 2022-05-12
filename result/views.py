@@ -15,6 +15,7 @@ def search(request):
             "result:search_result",
             query=request.GET.getlist("query"),
             locate=request.GET.get("locate", 0),
+            search=request.GET.get("search", ""),
         )
     return render(
         request,
@@ -27,7 +28,9 @@ def search_result(request):
     page = request.GET.get("page", 1)
 
     result_list = get_search_list(
-        request.GET.getlist("query"), request.GET.get("locate", 0)
+        request.GET.getlist("query"),
+        request.GET.get("locate", 0),
+        request.GET.get("search", ""),
     )
 
     paginator = Paginator(result_list, 10)
@@ -37,6 +40,7 @@ def search_result(request):
         {
             "query": request.GET.getlist("query"),
             "locate": request.GET.get("locate", 0),
+            "search": request.GET.get("search", ""),
         },
         True,  # True 설정시 ?query=[1,2,3,4]가 아닌 ?query=1&query=2&query=3&query=4 으로 인코딩됨
     )

@@ -1,6 +1,6 @@
 {% extends 'base/head.html' %}
 {% block title %}
-자재 공급원 신고서 작성
+자재 공급원 신고 및 승인서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -29,7 +29,7 @@
                 <li class="breadcrumb-item" aria-current="page">
                   <a href="{% url 'work:material' %}">자재 반입</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">자재 공급원 신고 및 승인서</li>
               </ol>
             </nav>
           </div>
@@ -105,30 +105,37 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
-                  자재 공급원 신고서-{% if form.instance.docNum != None %}{{form.instance.docNum}}
+                  자재 공급원 신고 및 승인서-{% if form.instance.docNum != None %}{{form.instance.docNum}}
                   {% else %}{{docNum}}
                   {% endif %}
                 </td>
-                <td>작성일자</td>
+                <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
                     value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
-                <td>공사명</td>
+                <td class="table-secondary">공사명</td>
                 <td colspan="2">
                   {{field.title}}
                 </td>
-                <td>자재명</td>
+                <td class="table-secondary">자재명</td>
                 <td colspan="2">
                   가설기자재
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-primary">제목</td>
+                <td colspan="5">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목"
+                    value="{{form.instance.title|default_if_none:''}}" required />
+                </td>
+              </tr>
+              <tr>
+                <td class="table-primary">공종</td>
                 <td colspan="2">
                   <select class="form-select" aria-label="공종" id="constructTypeSelect" required>
                     <option value="">투입 공종을
@@ -154,37 +161,50 @@
                 </td>
               </tr>
               <tr>
-                <td>공급원</td>
+                <td class="table-primary">공급원</td>
                 <td colspan="5">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
                         <td style="width: 15%;">공급 업체명</td>
                         <td style="width: 40%;">품명</td>
-                        <td style="width: 15%;">규격</td>
-                        <td style="width: 20%;">비고</td>
+                        <td style="width: 10%;">규격</td>
+                        <td style="width: 10%;">수량</td>
+                        <td style="width: 15%;">비고</td>
                         <td style="width: 10%;"></td>
                       </tr>
                       <tr id="supply_table">
                         <td>
-                          <input type="text" id="supply_comp" />
+                          <input type="text" id="supply_comp" class="form-control" />
                         </td>
                         <td>
-                          <select class="form-select" aria-label="품명 선택">
-                            <option selected value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
-                            <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
-                            <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
-                            <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
-                            <option value="조립형비계 및 동바리부재(가새재)">조립형비계 및 동바리부재(가새재)</option>
-                            <option value="조립형비계 및 동바리부재(트러스)">조립형비계 및 동바리부재(트러스)</option>
-                            <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
-                          </select>
+                          <div class="row">
+                            <div class="col">
+                              <select class="form-select" aria-label="품명 선택" id="select_type">
+                                <option selected value="">선택하세요</option>
+                                <option value="강관비계용 부재(비계용 강관)">강관비계용 부재(비계용 강관)</option>
+                                <option value="강관비계용 부재(강관조인트)">강관비계용 부재(강관조인트)</option>
+                                <option value="조립형비계 및 동바리부재(수직재)">조립형비계 및 동바리부재(수직재)</option>
+                                <option value="조립형비계 및 동바리부재(수평재)">조립형비계 및 동바리부재(수평재)</option>
+                                <option value="조립형비계 및 동바리부재(가새재)">조립형비계 및 동바리부재(가새재)</option>
+                                <option value="조립형비계 및 동바리부재(트러스)">조립형비계 및 동바리부재(트러스)</option>
+                                <option value="조립형비계 및 동바리부재(연결조인트)">조립형비계 및 동바리부재(연결조인트)</option>
+                                <option value="직접 입력">직접 입력</option>
+                              </select>
+                            </div>
+                            <div class="col">
+                              <input type="text" id="supply_type" class="form-control" readonly>
+                            </div>
+                          </div>
                         </td>
                         <td>
-                          <input type="text" id="supply_size" />
+                          <input type="text" id="supply_size" class="form-control" />
                         </td>
                         <td>
-                          <input type="text" id="supply_etc" />
+                          <input type="text" id="supply_amount" class="form-control" />
+                        </td>
+                        <td>
+                          <input type="text" id="supply_etc" class="form-control" />
                         </td>
                         <td>
                           <button class="btn btn-primary" type="button" id="supply_add">추가</button>
@@ -197,12 +217,14 @@
                         <td>{{supply_origin.name}}</td>
                         <td>{{supply_origin.goods}}</td>
                         <td>{{supply_origin.size}}</td>
+                        <td>{{supply_origin.amount}}</td>
                         <td>{{supply_origin.etc}}</td>
                         <td>
                           <button class="btn btn-danger btn-sm" type="button" onclick="delete_button()">삭제</button>
                           <input type="hidden" name="supply_comp[]" value="{{supply_origin.name}}">
                           <input type="hidden" name="supply_type[]" value="{{supply_origin.goods}}">
                           <input type="hidden" name="supply_size[]" value="{{supply_origin.size}}">
+                          <input type="hidden" name="supply_amount[]" value="{{supply_origin.amount}}">
                           <input type="hidden" name="supply_etc[]" value="{{supply_origin.etc}}">
                         </td>
                       </tr>
@@ -212,7 +234,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td rowspan="3" class="table-primary">내용</td>
                 <td colspan="5" class="p-4">
                   상기 업체로부터 해당 자재를 공급받아 당해 공사에 사용하는 사항에 대한 자재공급원을 신고합니다.
                 </td>
@@ -267,7 +289,7 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">붙임</td>
+                <td rowspan="3" class="table-primary">붙임</td>
                 <td colspan="5">
                   <table class="table">
                     <tr>
@@ -361,14 +383,23 @@
                   {{form.text}}
                 </td>
               </tr>
+            </tbody>
+            <thead>
               <tr>
-                <td>회신일자</td>
+                <th class="p-4" colspan="6">
+                  <h1>자재 공급원 승인서</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+              <tr>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                   {{form.replyDate}}
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">검토 의견</td>
+                <td rowspan="2" class="table-secondary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                 </td>
@@ -379,19 +410,19 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-secondary">결과</td>
                 <td colspan="5">
                   {{form.results}}
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
                   (인)
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-secondary">총괄건설사업<br>관리기술인</td>
                 <td>
                 </td>
                 <td>
@@ -409,8 +440,21 @@
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">
-  // 공급원 추가 버튼
+  // 공급원 품명 직접입력
+  const supply_type_select = document.getElementById('select_type');
+  supply_type_select.addEventListener('change', function () {
+    const supply_type = document.getElementById('select_type').value;
+    const input_supply_type = document.getElementById('supply_type');
+    if (supply_type == '직접 입력') {
+      input_supply_type.readOnly = false;
+      input_supply_type.value = '';
+    } else {
+      input_supply_type.readOnly = true;
+      input_supply_type.value = supply_type;
+    }
+  });
 
+  // 공급원 추가 버튼
   const supply_add = document.querySelector('#supply_add');
 
   supply_add.onclick = () => {
@@ -422,12 +466,17 @@
       supply_value.push(v.value);
       v.value = "";
     }
-    supply_value.splice(1, 0, supply_table.querySelector('select').value);
+    const supply_type_select = document.getElementById('select_type');
+    const input_supply_type = document.getElementById('supply_type');
+
+    supply_type_select.selectedIndex = 0;
+    input_supply_type.readOnly = true;
+    input_supply_type.value = '';
 
     // 테이블에 추가
     const supply_body = document.getElementById('supply_body');
     const supply_tr = document.createElement('tr');
-    const form_name = ['supply_comp[]', 'supply_type[]', 'supply_size[]', 'supply_etc[]'];
+    const form_name = ['supply_comp[]', 'supply_type[]', 'supply_size[]', 'supply_amount[]', 'supply_etc[]'];
     supply_td = supply_value.map(v => {
       const td = document.createElement('td');
       td.innerHTML = v;
@@ -440,6 +489,8 @@
       input.setAttribute('value', v);
       return input;
     });
+
+    // 삭제 버튼 추가
     const td = document.createElement('td');
     delete_button = document.createElement('button');
     delete_button.innerHTML = '삭제';

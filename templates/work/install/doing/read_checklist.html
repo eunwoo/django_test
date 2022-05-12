@@ -87,10 +87,16 @@
                   {{checklist.writerId.name}}
                 </div>
                 <div class="col">
-                  <img width='100%' alt='' src='{{checklist.writerId.signImage.url}}' />
+                  <img width='60%' alt='' src='{{checklist.writerId.signImage.url}}' />
 
                 </div>
               </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">제목</th>
+            <td colspan="3">
+              {{checklist.title}}
             </td>
           </tr>
         </table>
@@ -98,8 +104,8 @@
           <thead>
             <tr class="table-primary">
               <th scope="col" rowspan=2 style="width: 5%">NO</th>
-              <th scope="col" rowspan=2 style="width: 55%">점검 항목</th>
-              <th scope="col" colspan=3 style="width: 30%">점검 결과</th>
+              <th scope="col" rowspan=2 style="width: 65%">점검 항목</th>
+              <th scope="col" colspan=2 style="width: 20%">점검 결과</th>
               <th scope="col" rowspan=2 style="width: 10%">조치 사항</th>
             </tr>
             <tr class="table-primary">
@@ -109,16 +115,13 @@
               <th>
                 미흡
               </th>
-              <th>
-                해당없음
-              </th>
             </tr>
           </thead>
           <tbody>
             {% regroup checklist_items by inspection_item_id.categoryId.type as new_checklist %}
             {% for categoryId in new_checklist %}
             <tr class="table-secondary">
-              <th colspan=6>
+              <th colspan=5>
                 {{categoryId.grouper}}
               </th>
             </tr>
@@ -133,11 +136,6 @@
               </td>
               <td>
                 {% if checkmenu.result == "2" %}
-                <i class="bi bi-check"></i>
-                {% endif %}
-              </td>
-              <td>
-                {% if checkmenu.result == "3" %}
                 <i class="bi bi-check"></i>
                 {% endif %}
               </td>

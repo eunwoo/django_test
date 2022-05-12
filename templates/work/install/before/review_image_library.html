@@ -1,0 +1,16 @@
+<script type="text/javascript">
+  $(`.input-images-{{measure.pk}}`).imageUploader({
+    label: '여기를 클릭해 이미지를 추가하세요.',
+    preloaded: [
+    {% for image in measure.before_measure_imgs.all %}
+      {
+        id: {{image.pk}},
+        src: '{{image.img.url}}',
+        alt: '{{image.img.name}}'
+      },
+    {% endfor %}
+    ],
+    imagesInputName: '{{measure.pk}}-images',
+    preloadedInputName: '{{measure.pk}}-images-preloaded',
+  });
+</script>

@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -82,7 +83,9 @@ def update_views(request, pk):
 def get_announcements(request):
     page = request.GET.get("page", 1)
 
-    announcement_list = models.AnnouncePost.objects.all()
+    announcement_list = models.AnnouncePost.objects.filter(preSave=False).order_by(
+        "-created_on"
+    )
 
     paginator = Paginator(announcement_list, 10)
     page_obj = paginator.get_page(page)
@@ -92,3 +95,12 @@ def get_announcements(request):
         "announcement/announcement.html",
         {"announcementitems": page_obj},
     )
+
+
+@login_required(login_url="/user/login/")
+def delete_announcements(request):
+    if request.method == "POST":
+        announcement_list = request.POST.getlist("announcement_list[]")
+        models.AnnouncePost.objects.filter(pk__in=announcement_list).delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

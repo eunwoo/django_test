@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 
 from system_manager.models import Field
@@ -8,38 +8,37 @@ from ..models import (
     QualityPerformanceFile,
     QualityPerformance,
 )
-from ..forms.quality_report_forms import GeneralManagerQualityPerformanceReportForm
+from ..forms.quality_report_forms import (
+    GeneralManagerQualityPerformanceReportForm,
+)
 from django.contrib import messages
 
 
 def get_qty_report_list_by_user(user):
-    if user.class2 == "일반 관리자":
-        return QualityPerformanceReport.objects.filter(writerId=user).order_by(
-            "isCheckManager", "-isSuccess", "-docNum"
-        )
+    if user.class2 == "일반 사용자":
+        return QualityPerformanceReport.objects.filter(
+            writerId=user,
+            isSuccess=False,
+        ).order_by("isCheckManager", "-docNum")
     elif user.class2 == "현장 대리인":
-        return QualityPerformanceReport.objects.filter(agentId=user).order_by(
-            "isCheckAgent", "-isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            agentId=user,
+            isSuccess=False,
+        ).order_by("isCheckAgent", "-docNum")
     elif user.class2 == "일반 건설사업관리기술인":
-        return QualityPerformanceReport.objects.filter(generalEngineerId=user).order_by(
-            "isCheckGeneralEngineer", "-isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            generalEngineerId=user,
+            isSuccess=False,
+        ).order_by("isCheckGeneralEngineer", "-docNum")
     else:
-        return QualityPerformanceReport.objects.filter(totalEngineerId=user).order_by(
-            "isSuccess", "-docNum"
-        )
+        return QualityPerformanceReport.objects.filter(
+            totalEngineerId=user,
+            isSuccess=False,
+        ).order_by("-docNum")
 
 
 def read_qty_report_service(user, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
-    if user.class2 == "일반 관리자":
-        qty_report.isCheckManager = True
-    elif user.class2 == "현장 대리인":
-        qty_report.isCheckAgent = True
-    elif user.class2 == "일반 건설사업관리기술인":
-        qty_report.isCheckGeneralEngineer = True
-    qty_report.save()
     return qty_report
 
 
@@ -76,7 +75,7 @@ def create_quality_report_service(request):
 
 
 def update_quality_report_service(request, pk):
-    if request.user.class2 == "일반 관리자":
+    if request.user.class2 == "일반 사용자":
         return update_quality_report_general(request, pk)
     elif request.user.class2 == "현장 대리인":
         return update_quality_report_agent(request, pk)
@@ -98,10 +97,11 @@ def update_quality_report_general(request, pk):
             qty_report = form.save(commit=False)
             qty_report.writerId = request.user
             qty_report.save()
-            qty_report.quality_performance_file.all().delete()
             qty_report.quality_performance.all().delete()
             create_quality_performance(request, qty_report)
             files = request.FILES.getlist("docs_files")
+            if files:
+                qty_report.quality_performance_file.all().delete()
             for file in files:
                 docs_file = QualityPerformanceFile.objects.create(
                     title=file.name, doc=file, quality_performance_report_id=qty_report
@@ -212,3 +212,13 @@ def qty_report_success(docNum: int):
     qty_report.isCheckGeneralEngineer = False
     qty_report.save()
     return True
+
+
+def delete_qty_reports_service(request):
+    if request.method == "POST":
+        qty_report_list = request.POST.getlist("delete_list[]")
+        for qty_report in qty_report_list:
+            qty_report = QualityPerformance.objects.get(docNum=qty_report)
+            qty_report.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)

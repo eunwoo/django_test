@@ -53,13 +53,13 @@
       <div class="container border">
         <div class="row m-1">
           <h1>
-            {{type}} 설치작업 전 점검 체크리스트
+            {{checklist.equipment}} 설치작업 전 점검 체크리스트
           </h1>
         </div>
         <table class="table table-bordered">
           <tr>
             <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
-            <td class="align-middle" style="width: 35%">{{type}} 설치작업 전 점검 체크리스트-{{checklist.pk}}</td>
+            <td class="align-middle" style="width: 35%">{{checklist.equipment}} 설치작업 전 점검 체크리스트-{{checklist.pk}}</td>
             <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
             <td style="width: 35%">
               <div class="row">
@@ -87,10 +87,15 @@
                   {{checklist.writerId.name}}
                 </div>
                 <div class="col">
-                  <img width='100%' alt='' src='{{checklist.writerId.signImage.url}}' />
-
+                  <img width='60%' alt='' src='{{checklist.writerId.signImage.url}}' />
                 </div>
               </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-secondary align-middle">제목</th>
+            <td colspan="3">
+              {{checklist.title}}
             </td>
           </tr>
         </table>
@@ -98,8 +103,8 @@
           <thead>
             <tr class="table-primary">
               <th scope="col" rowspan=2 style="width: 5%">NO</th>
-              <th scope="col" rowspan=2 style="width: 55%">점검 항목</th>
-              <th scope="col" colspan=3 style="width: 30%">점검 결과</th>
+              <th scope="col" rowspan=2 style="width: 65%">점검 항목</th>
+              <th scope="col" colspan=2 style="width: 20%">점검 결과</th>
               <th scope="col" rowspan=2 style="width: 10%">조치 사항</th>
             </tr>
             <tr class="table-primary">
@@ -108,9 +113,6 @@
               </th>
               <th>
                 미흡
-              </th>
-              <th>
-                해당없음
               </th>
             </tr>
           </thead>
@@ -130,11 +132,6 @@
                 {% endif %}
               </td>
               <td>
-                {% if checkmenu.result == "3" %}
-                <i class="bi bi-check"></i>
-                {% endif %}
-              </td>
-              <td>
                 {% if checkmenu.content %}
                 <i class="bi bi-circle"></i>
                 {% endif %}
@@ -150,22 +147,38 @@
           <thead>
             <tr class="table-primary">
               <th scope="col" style="width: 5%">NO</th>
-              <th scope="col" style="width: 45%">내용</th>
-              <th scope="col" style="width: 50%">사진</th>
+              <th scope="col" style="width: 10%">작성자</th>
+              <th scope="col" style="width: 40%">내용</th>
+              <th scope="col" style="width: 45%">사진</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="align-middle">
             {% for checkmenu in checklist.before_inspection_result.all %}
-            {% if checkmenu.content %}
+            {% if checkmenu.before_measure.first %}
             <tr>
-              <td class="align-middle">{{forloop.counter}}</td>
-              <td class="align-middle">
-                {{checkmenu.content}}
-              </td>
-              <td>
-                {% for image in checkmenu.measures.all %}
-                <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
-                {% endfor %}
+              <td>{{forloop.counter}}</td>
+              <td colspan=3 style="padding: 0;">
+                <table id="{{checkmenu.pk}}-table" class="table table-bordered text-break align-middle m-0">
+                  {% for measure in checkmenu.before_measure.all %}
+                  <tr>
+                    <td style="width: 10.526315789473685%">
+                      {% if measure.isCM %}
+                      {{measure.cm.name}}
+                      {% else %}
+                      {{checklist.writerId.name}}
+                      {% endif %}
+                    </td>
+                    <td style="width: 42.10526315789474%">
+                      {{measure.content}}
+                    </td>
+                    <td style="width: 47.36842105263158%">
+                      {% for image in measure.before_measure_imgs.all %}
+                      <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
+                      {% endfor %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
               </td>
             </tr>
             {% endif %}
@@ -181,6 +194,6 @@
 
 {% block javascript %}
 
-{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="checklist" file_name=type|add:"설치작업 전 체크리스트" docNum=checklist.pk %}
+{% include 'util/pdfsave.html' with save_btn="save_btn" target_div="checklist" file_name=checklist.equipment|add:"설치작업 전 체크리스트" docNum=checklist.pk %}
 
 {% endblock %}

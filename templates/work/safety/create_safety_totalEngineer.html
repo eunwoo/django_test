@@ -2,7 +2,7 @@
 {% extends 'base/head.html' %}
 {% load static %}
 {% block title %}
-구조 안전성 검토 신고서 작성
+구조 안전성 검토 신고 및 승인서 작성
 {% endblock %}
 {% block style %}
 <style>
@@ -31,7 +31,7 @@
                 <li class="breadcrumb-item active" aria-current="page">
                   <a href="{% url 'work:safety' %}">구조 안전성 검토</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고서</li>
+                <li class="breadcrumb-item active" aria-current="page">구조 안전성 검토 신고 및 승인서</li>
               </ol>
             </nav>
           </div>
@@ -87,37 +87,55 @@
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td>문서번호</td>
+                <td class="table-secondary">문서번호</td>
                 <td colspan="2">
-                  구조 안전성 검토
-                  신고서-{{safety.docNum}}
+                  구조 안전성 검토 신고 및 승인서-{{safety.docNum}}
                 </td>
-                <td>작성일자</td>
+                <td class="table-secondary">작성일자</td>
                 <td colspan="2">
                   {{safety.date}}
                 </td>
               </tr>
               <tr>
-                <td>제목</td>
+                <td class="table-secondary">제목</td>
                 <td colspan="5">
                   {{safety.title}}
                 </td>
               </tr>
               <tr>
-                <td>공종</td>
+                <td class="table-secondary">공종</td>
                 <td colspan="5">
                   {{safety.constructType}}
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">내용</td>
+                <td class="table-secondary">설치 위치</td>
+                <td colspan="5">
+                  <div class="row">
+                    <div class="col-1">Level1</div>
+                    <div class="col-3">
+                      {{safety.locateId.class2.class1.class1}}
+                    </div>
+                    <div class="col-1">Level2</div>
+                    <div class="col-3">
+                      {{safety.locateId.class2.class2}}
+                    </div>
+                    <div class="col-1">Level3</div>
+                    <div class="col-3">
+                      {{safety.locateId.class3}}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="3" class="table-secondary">내용</td>
                 <td colspan="5" class="p-4">
                   {{safety.text}}
                 </td>
               </tr>
               <tr>
                 <td rowspan="2" colspan="2"></td>
-                <td>담당자</td>
+                <td class="table-secondary">담당자</td>
                 <td>
                   {{safety.writerId.name}}
                 </td>
@@ -126,7 +144,7 @@
                 </td>
               </tr>
               <tr>
-                <td>현장대리인</td>
+                <td class="table-secondary">현장대리인</td>
                 <td>
                   {{safety.agentId.name}}
                 </td>
@@ -135,14 +153,13 @@
                 </td>
               </tr>
               <tr>
-                <td rowspan="2">붙임</td>
+                <td rowspan="2" class="table-secondary">붙임</td>
                 <td>구조계산서</td>
                 <td colspan="4">
                   <ol class="list-group" id="구조계산서-ol">
                     {% for item in safety.docs.all %}
                     {% if '구조 계산서' in item.type %}
-                    <li class="list-group-item"><a href="{{item.file.url}}"
-                        download="{{item.filename}}">{{item.filename}}</a></li>
+                    <li class="list-group-item"><a href="{{item.file.url}}" target="_blank">{{item.filename}}</a></li>
                     {% endif %}
                     {% endfor %}
                   </ol>
@@ -154,20 +171,28 @@
                   <ol class="list-group" id="시공상세도면-ol">
                     {% for item in safety.docs.all %}
                     {% if '시공상세도면' in item.type %}
-                    <li class="list-group-item"><a href="{{item.file.url}}"
-                        download="{{item.filename}}">{{item.filename}}</a></li>
+                    <li class="list-group-item"><a href="{{item.file.url}}" target="_blank">{{item.filename}}</a></li>
                     {% endif %}
                     {% endfor %}
                 </td>
               </tr>
+            </tbody>
+            <thead>
               <tr>
-                <td>회신일자</td>
+                <th class="p-4" colspan="6">
+                  <h1>구조 안전성 검토 승인서</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+              <tr>
+                <td class="table-secondary">회신일자</td>
                 <td colspan="5">
                   {{safety.replyDate}}
                 </td>
               </tr>
               <tr>
-                <td rowspan="3">검토 의견</td>
+                <td rowspan="3" class="table-primary">검토 의견</td>
                 <td>담당자</td>
                 <td colspan="4">
                   {{safety.generalEngineerText}}
@@ -192,7 +217,7 @@
                 </td>
               </tr>
               <tr>
-                <td>결과</td>
+                <td class="table-primary">결과</td>
                 <td colspan="5">
                   <select class="form-select" aria-label="공종" name="result" id="result" required>
                     <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
@@ -210,19 +235,20 @@
                 </td>
               </tr>
               <tr>
-                <td>담당건설사업<br>관리기술인</td>
+                <td class="table-secondary">담당건설사업<br>관리기술인</td>
                 <td>
                   {{safety.generalEngineerId.name}}
                 </td>
                 <td>
                   <img width="60%" alt="" src="{{safety.generalEngineerId.signImage.url}}" />
                 </td>
-                <td>총괄건설사업<br>관리기술인</td>
+                <td class="table-primary">총괄건설사업<br>관리기술인</td>
                 <td>
                   {{safety.totalEngineerId.name}}
                 </td>
                 <td>
-                  {% if safety.isSuccess %}<img width="100%" alt="" src="{{safety.totalEngineerId.signImage.url}}" />
+                  {% if safety.isSaveTotalEngineer %}<img width="60%" alt=""
+                    src="{{safety.totalEngineerId.signImage.url}}" />
                   {% else %}
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -286,8 +312,8 @@
   }
 
   // 서명 할 경우 변경
-  let isSign = '{{form.instance.isSuccess}}' === "False" ? false : true;
-  if ('{{form.instance.isSuccess}}' === "False") {
+  let isSign = '{{form.instance.isSaveTotalEngineer}}' === "False" ? false : true;
+  if ('{{form.instance.isSaveTotalEngineer}}' === "False") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
       const id_input = document
@@ -300,7 +326,7 @@
         signModal.modal('hide');
         signModal
           .parent()
-          .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+          .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
       } else {
         Swal.fire({
           title: 'Error!',

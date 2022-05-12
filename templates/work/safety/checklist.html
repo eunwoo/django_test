@@ -124,36 +124,68 @@
                 <input type="date" class="form-control" name="date" id="date" placeholder="확인 일자" required />
               </td>
             </tr>
+            <tr>
+              <th scope="row" class="table-secondary align-middle">제목</th>
+              <td colspan="3">
+                <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요." required />
+              </td>
+            </tr>
           </table>
           <table class="table table-bordered text-break">
             <thead>
               <tr class="table-primary">
-                <th scope="col" style="width: 15%">구분</th>
+                <th scope="col" style="width: 5%">구분</th>
                 <th scope="col" style="width: 55%">점검항목</th>
                 <th scope="col" style="width: 10%">예</th>
                 <th scope="col" style="width: 10%">아니요</th>
                 <th scope="col" style="width: 10%">해당없음</th>
+                <th scope="col" style="width: 10%">선택</th>
               </tr>
             </thead>
             <tbody>
               {% for checkmenu in checklist %}
-              {% for menu in checkmenu %}
-              <tr>
-                {% if forloop.counter0 == 0 %}
-                <th class="align-middle" rowspan="{{checkmenu.count}}">{{menu.checkType.title}}</th>
-                {% endif %}
-                <td class="text-start">{{menu.content}}</td>
-                <td>
-                  <input type="radio" name="{{menu.pk}}" value="1" required>
-                </td>
-                <td>
-                  <input type="radio" name="{{menu.pk}}" value="2">
-                </td>
-                <td>
-                  <input type="radio" name="{{menu.pk}}" value="3">
+              <tr class="table-secondary">
+                <th colspan=6 data-bs-toggle="collapse" data-bs-target="#addition{{forloop.counter}}"
+                  data-mdb-ripple-color="light">
+                  {{checkmenu.0.checkType.title}}
+                </th>
+              </tr>
+              <tr class="accordion-collapse collapse" id="addition{{forloop.counter}}" data-bs-parent=".table">
+                <td colspan="7" style="padding: 0;">
+                  <table class="table table-bordered text-break checklist_table">
+                    {% for menu in checkmenu %}
+                    <tr>
+                      <td style="width: 5%">{{forloop.counter}}</td>
+                      <td style="width: 55%" class="text-start">{{menu.content}}</td>
+                      <td style="width: 10%">
+                        <input type="radio" name="{{menu.pk}}" value="1" required>
+                      </td>
+                      <td style="width: 10%">
+                        <input type="radio" name="{{menu.pk}}" value="2">
+                      </td>
+                      <td style="width: 10%">
+                        <input type="radio" name="{{menu.pk}}" value="3">
+                      </td>
+                      <td style="width: 10%">
+                        <input type="checkbox">
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                      <td></td>
+                      <td colspan="3">
+                        <input type="text" class="form-control" placeholder="새 점검 항목을 입력해주세요.">
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-primary" onclick="add_button_event(this)">추가</button>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-danger" onclick="delete_button()">삭제</button>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
-              {% endfor %}
               {% endfor %}
             </tbody>
           </table>
@@ -182,7 +214,7 @@
       signModal.modal('hide');
       signModal
         .parent()
-        .html("<img width='100%' alt='' src='{{request.user.signImage.url}}'/>")
+        .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
     } else {
       Swal.fire({
         title: 'Error!',
@@ -209,5 +241,69 @@
       return false;
     }
   })
+
+  // 삭제버튼 클릭시 체크된 리스트 삭제
+  const delete_button = () => {
+    Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).forEach(item => {
+      item.parentNode.parentNode.remove()
+    })
+    onChangeTableNumbering()
+  }
+
+  // 점검 목록 추가
+  async function add_button_event(e) {
+    const input_text = e.parentNode.previousElementSibling.children[0].value
+    const category = e.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.previousElementSibling
+      .children[0].innerText
+    if (input_text === "") {
+      Swal.fire({
+        title: 'Error!',
+        text: '점검 항목을 입력해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+    } else {
+      e.parentNode.previousElementSibling.children[0].value = ""
+      const table = e.parentNode.parentNode.parentNode
+      const new_row = table.insertRow(table.rows.length - 1)
+      const pk = (await $.ajax({
+        url: "{% url 'work:create_checklist_item' %}", // 여기 위치 바꾸기
+        type: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        data: {
+          'content': input_text,
+          'category': category,
+        },
+      })).pk
+      const no_cell = new_row.insertCell(0)
+      const title_cell = new_row.insertCell(1)
+      title_cell.className = "text-start"
+      const result1_cell = new_row.insertCell(2)
+      const result2_cell = new_row.insertCell(3)
+      const result3_cell = new_row.insertCell(4)
+      const delete_cell = new_row.insertCell(5)
+      title_cell.innerHTML = input_text
+      result1_cell.innerHTML = `<input type="radio" name="${pk}" value="1" required>`
+      result2_cell.innerHTML = `<input type="radio" name="${pk}" value="2">`
+      result3_cell.innerHTML = `<input type="radio" name="${pk}" value="3">`
+      delete_cell.innerHTML = `<input type="checkbox">`
+      onChangeTableNumbering()
+    }
+  }
+
+  // 테이블 넘버링 작업 => 삭제 및 추가시 계속 실행
+  const onChangeTableNumbering = () => {
+    const table_bodys = Array.from(document.querySelectorAll('.checklist_table'))
+    for (const table_body of table_bodys) {
+      const table_rows = table_body.getElementsByTagName("tr")
+      for (let i = 0; i < table_rows.length - 1; i++) {
+        const table_row = table_rows[i]
+        const table_cells = table_row.getElementsByTagName("td")
+        table_cells[0].innerHTML = i + 1
+      }
+    }
+  }
 </script>
 {% endblock %}

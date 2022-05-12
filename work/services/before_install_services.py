@@ -1,4 +1,9 @@
-from django.shortcuts import render, redirect
+import string
+import random
+
+from django.utils import timezone
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from system_manager.models import InstallLocate
 from work.forms.before_install_form import BeforeInstallCheckListForm
 from django.contrib import messages
@@ -7,42 +12,79 @@ from work.models import (
     BeforeInspectionItem,
     BeforeInspectionResult,
     BeforeInstallCheckList,
-    BeforeMeasure,
+    BeforeMeasureImg,
 )
 
 from system_manager.models import ConstructManager
 
-from ..services.common_services import image_send, sms_send
+from ..services.common_services import sms_send  # , image_send
 
 
-def assign_cm(request, type):
-    cm = ConstructManager.objects.get(pk=request.POST.get("sign"))
+def assign_cm(request):
     doc = BeforeInstallCheckList.objects.get(pk=request.POST.get("docNum"))
-    doc.isSuccess = True
+    doc.isCheckWriter = True
+    doc.isCheckCM = False
+    if not doc.cm:
+        cm = ConstructManager.objects.get(pk=request.POST.get("sign"))
+        doc.cm = cm
+    else:
+        cm = doc.cm
+    doc.expired_date = request.POST.get("expired_date")
+    doc.urlCode = "".join(
+        random.choices(
+            string.ascii_letters + string.digits,
+            k=12,
+        )
+    )
     doc.save()
-    link = request.build_absolute_uri(f"/work/read_before_install/{type}/{doc.pk}/")
+    link = request.build_absolute_uri(
+        f"/work/measure_before_install/{doc.urlCode}/",
+    )
     cm_phone = cm.phone
     sms_send(link, [cm_phone], 2)
-    checklist_ids = request.POST.getlist("checklist_id")
-    message_list = []
-    for checklist_id in checklist_ids:
-        target = BeforeInspectionResult.objects.get(
-            before_install_checklist_id=doc,
-            before_inspection_item_id=BeforeInspectionItem.objects.get(pk=checklist_id),
-        )
-        message_list.append(
-            {
-                "content": target.content,
-                "img": list(map(lambda x: x.img, list(target.measures.all()))),
-            }
-        )
-    image_send(message_list, cm_phone)
+    # checklist_ids = request.POST.getlist("checklist_id")
+    # message_list = []
+    # for checklist_id in checklist_ids:
+    #     target = BeforeInspectionResult.objects.get(
+    #         before_install_checklist_id=doc,
+    #         before_inspection_item_id=BeforeInspectionItem.objects.get(
+    #             pk=checklist_id,
+    #         ),
+    #     )
+    #     measure = target.before_measure.last()
+    #     if measure.isCM:
+    #         message_list.append(
+    #             {
+    #                 "content": measure.content,
+    #                 "img": list(
+    #                     map(
+    #                         lambda x: x.img,
+    #                         list(
+    #                             measure.before_measure_imgs.all(),
+    #                         ),
+    #                     )
+    #                 ),
+    #             }
+    #         )
+    # image_send(message_list, cm_phone)
     # 문자 전송 페이지 만들기
 
 
 def get_require_users():
     users = ConstructManager.objects.all()
     return users
+
+
+def create_item(type, title):
+    if type == "강관 비계":
+        equipment = "1"
+    elif type == "시스템 비계":
+        equipment = "2"
+    else:
+        equipment = "3"
+    new_item = BeforeInspectionItem(equipment=equipment, title=title)
+    new_item.save()
+    return new_item.pk
 
 
 def before_install_checklist_service(request, type: str):
@@ -63,20 +105,23 @@ def before_install_checklist_service(request, type: str):
                 pk=request.POST["locate"]
             )
             pk_checklist = request.POST.getlist("checklist-pk")
-            image_keys = request.FILES.keys()
             before_checklist.save()
             for pk in pk_checklist:
                 result_item = BeforeInspectionResult(
                     result=request.POST[pk],
                     before_install_checklist_id=before_checklist,
-                    before_inspection_item_id=BeforeInspectionItem.objects.get(pk=pk),
+                    before_inspection_item_id=BeforeInspectionItem.objects.get(
+                        pk=pk,
+                    ),
                 )
-                result_item.content = request.POST[f"{pk}-belong"]
                 result_item.save()
-                if f"{pk}-images[]" in image_keys:
+                if request.POST[pk] == "2":
+                    result_measure = result_item.before_measure.create(
+                        content=request.POST[f"{pk}-belong"],
+                    )
                     images = request.FILES.getlist(f"{pk}-images[]")
                     for img in images:
-                        result_item.measures.create(img=img)
+                        result_measure.before_measure_imgs.create(img=img)
             messages.success(request, "저장이 완료되었습니다.")
             return redirect(
                 "work:update_before_install_checklist",
@@ -85,7 +130,10 @@ def before_install_checklist_service(request, type: str):
             )
     else:
         form = BeforeInstallCheckListForm()
-    checklist = BeforeInspectionItem.objects.filter(equipment=equipment)
+    checklist = BeforeInspectionItem.objects.filter(
+        equipment=equipment,
+        init_item=True,
+    )
     last_doc = BeforeInstallCheckList.objects.last()
     if not last_doc:
         docNum = 1
@@ -108,6 +156,8 @@ def update_before_checklist_service(request, type, pk):
     if request.method == "POST":
         form = BeforeInstallCheckListForm(request.POST, instance=instance)
         if form.is_valid():
+
+            # 기본 저장 영역
             before_checklist = form.save(commit=False)
             before_checklist.equipment = type
             if "locate" in request.POST.keys():
@@ -115,39 +165,56 @@ def update_before_checklist_service(request, type, pk):
                     pk=request.POST["locate"]
                 )
             pk_checklist = request.POST.getlist("checklist-pk")
-            image_keys = request.FILES.keys()
             before_checklist.save()
+
+            # 삭제 영역
+            before_list = before_checklist.before_inspection_result.all()
+            for before in before_list:
+                if str(before.before_inspection_item_id.pk) not in pk_checklist:
+                    before.delete()
+
+            # 수정 영역
             for pk_item in pk_checklist:
                 before_result_item = BeforeInspectionResult.objects.filter(
                     before_install_checklist_id=before_checklist,
                     before_inspection_item_id=BeforeInspectionItem.objects.get(
                         pk=pk_item
                     ),
-                )[0]
+                )
+                delete_before = False
+                # 수정된 영역이면 해당 구문이 실행, 새로 생성된 영역은 패스
+                if before_result_item:
+                    before_result_item = before_result_item[0]
+                    delete_before = True
                 result_item = BeforeInspectionResult(
                     result=request.POST[pk_item],
                     before_install_checklist_id=before_checklist,
-                    content=request.POST[f"{pk_item}-belong"],
                     before_inspection_item_id=BeforeInspectionItem.objects.get(
                         pk=pk_item
                     ),
                 )
                 result_item.save()
-                before_image_ids = request.POST.getlist(f"{pk_item}-images-preloaded[]")
-                for before_image_id in before_image_ids:
-                    before_image = BeforeMeasure.objects.filter(
-                        pk=before_image_id,
-                        beforeInspectionResult=before_result_item,
+                if request.POST[pk_item] == "2":
+                    result_measure = result_item.before_measure.create(
+                        content=request.POST[f"{pk_item}-belong"],
                     )
-                    if before_image:
-                        before_image = before_image[0]
-                        before_image.beforeInspectionResult = result_item
-                        before_image.save()
-                if f"{pk_item}-images[]" in image_keys:
+                    before_image_ids = request.POST.getlist(
+                        f"{pk_item}-images-preloaded[]"
+                    )
+                    for before_image_id in before_image_ids:
+                        before_image = BeforeMeasureImg.objects.filter(
+                            pk=before_image_id,
+                            beforeMeasure=before_result_item.before_measure.first(),
+                        )
+                        if before_image:
+                            before_image = before_image[0]
+                            before_image.beforeMeasure = result_measure
+                            before_image.save()
                     images = request.FILES.getlist(f"{pk_item}-images[]")
                     for img in images:
-                        result_item.measures.create(img=img)
-                before_result_item.delete()
+                        result_measure.before_measure_imgs.create(img=img)
+                if delete_before:
+                    before_result_item.delete()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_before_install_checklist", type, pk)
     else:
@@ -162,3 +229,104 @@ def update_before_checklist_service(request, type, pk):
             "form": form,
         },
     )
+
+
+def before_install_checklists_delete_service(request):
+    if request.method == "POST":
+        before_install_checklist_list = request.POST.getlist("delete_list[]")
+        for before_install_checklist in before_install_checklist_list:
+            before_install_checklist = BeforeInstallCheckList.objects.get(
+                pk=before_install_checklist
+            )
+            before_install_checklist.delete()
+        return JsonResponse({"result": "success"})
+    return JsonResponse({"result": "fail"}, status=400)
+
+
+def review_before_install_checklist_service(request, type, pk):
+    checklist = BeforeInstallCheckList.objects.get(pk=pk)
+    isSave = False
+    inspectionResults = checklist.before_inspection_result.filter(result="2")
+    for inspectionResult in inspectionResults:
+        if not inspectionResult.before_measure.last().isCM:
+            isSave = True
+            break
+    if request.method == "POST":
+        inspectionResults = checklist.before_inspection_result.filter(result="2")
+        for inspectionResult in inspectionResults:
+            lastMeasure = inspectionResult.before_measure.last()
+            if lastMeasure.isCM:
+                newMeasure = inspectionResult.before_measure.create(
+                    content=request.POST[f"{inspectionResult.pk}-content"],
+                )
+                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                for img in images:
+                    newMeasure.before_measure_imgs.create(img=img)
+            else:
+                lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
+                lastMeasure.save()
+                before_images = list(
+                    request.POST.getlist(f"{inspectionResult.pk}-images-preloaded[]")
+                )
+                for measure_img in lastMeasure.before_measure_imgs.all():
+                    if str(measure_img.pk) not in before_images:
+                        measure_img.delete()
+                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                for img in images:
+                    lastMeasure.before_measure_imgs.create(img=img)
+        messages.success(request, "저장이 완료되었습니다.")
+        isSave = True
+    return render(
+        request,
+        "work/install/before/review_before_install_checklist.html",
+        {
+            "type": type,
+            "checklist": checklist,
+            "isSave": isSave,
+        },
+    )
+
+
+def measure_before_install_service(request, urlCode):
+    checklist = get_object_or_404(
+        BeforeInstallCheckList,
+        urlCode=urlCode,
+        isCheckWriter=True,
+    )
+    if request.method == "POST":
+        form_key = list(request.POST.keys())
+        form_key.remove("csrfmiddlewaretoken")
+        for key in form_key:
+            pk = key.split("-")[0]
+            before_inspection_result = BeforeInspectionResult.objects.get(
+                pk=pk,
+            )
+            before_measure = before_inspection_result.before_measure.create(
+                isCM=True,
+                content=request.POST[pk + "-content"],
+                cm=checklist.cm,
+            )
+            for before_image in request.FILES.getlist(pk + "-images[]"):
+                before_measure.before_measure_imgs.create(img=before_image)
+        checklist.isCheckCM = True
+        checklist.isCheckWriter = False
+        checklist.save()
+        return redirect("main:home")
+    if checklist.expired_date < timezone.now():
+        return redirect("main:home")
+    return render(
+        request,
+        "work/install/before/measure_checklist.html",
+        {
+            "checklist": checklist,
+        },
+    )
+
+
+def success_before_install_checklist_service(pk):
+    checklist = get_object_or_404(BeforeInstallCheckList, pk=pk)
+    checklist.isSuccess = True
+    checklist.isCheckCM = True
+    checklist.isCheckWriter = True
+    checklist.save()
+    return JsonResponse({"result": "success"})
