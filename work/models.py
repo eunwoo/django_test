@@ -17,8 +17,8 @@ class SafetyReport(models.Model):
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
-    locateId = models.ForeignKey(
-        InstallLocate, on_delete=models.SET_NULL, null=True
+    locateId = models.ManyToManyField(
+        InstallLocate, null=True, related_name="safetyReport_locateId"
     )  # 설치 위치
     replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (
@@ -82,9 +82,6 @@ class SafetyReport(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     requested_at = models.DateTimeField(null=True)
-
-    def __str__(self):
-        return "구조 안전성 검토 신고서 - " + self.docNum
 
 
 class SafetyCheckType(models.Model):
@@ -303,9 +300,6 @@ class QualityInspectionRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return "품질검사 의뢰서 - " + self.docNum
-
 
 # =============================================================================
 
@@ -363,9 +357,6 @@ class QualityPerformanceReport(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return "품질검사 성과 총괄표 신고서 - " + self.docNum
 
 
 class QualityPerformance(models.Model):  # 품질검사 성과 총괄표

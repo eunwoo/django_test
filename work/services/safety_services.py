@@ -62,10 +62,13 @@ def create_safety_service(request):
         if form.is_valid():
             safety = form.save(commit=False)
             safety.writerId = request.user
-            safety.locateId = InstallLocate.objects.get(
-                pk=request.POST["locate"],
-            )
+            locates = request.POST.getlist("locate[]")
             files = request.POST.getlist("docs[]")
+            safety.save()
+            safety.locateId.clear()
+            for locate_id in locates:
+                locate = InstallLocate.objects.get(pk=int(locate_id))
+                safety.locateId.add(locate)
             safety.save()
             safety.docs.clear()
             for file_id in files:
@@ -123,16 +126,18 @@ def update_safety_general(request, pk):
             safety = form.save(commit=False)
             safety.writerId = request.user
             files = request.POST.getlist("docs[]")
-            if "locate" in request.POST.keys():
-                safety.locateId = InstallLocate.objects.get(
-                    pk=request.POST["locate"],
-                )
+            locates = request.POST.getlist("locate[]")
             safety.save()
+            if locates:
+                safety.locateId.clear()
+                for locate_id in locates:
+                    locate = InstallLocate.objects.get(pk=int(locate_id))
+                    safety.locateId.add(locate)
             if files:
                 safety.docs.clear()
-            for file_id in files:
-                doc_file = DocsFile.objects.get(pk=int(file_id))
-                safety.docs.add(doc_file)
+                for file_id in files:
+                    doc_file = DocsFile.objects.get(pk=int(file_id))
+                    safety.docs.add(doc_file)
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_safety", safety.docNum)
     else:
@@ -160,6 +165,7 @@ def update_safety_general(request, pk):
         {
             "docNum": pk,
             "form": form,
+            "safety_locate": instance.locateId.all(),
             "construct_bills": [
                 construct_bills1,
                 construct_bills2,
