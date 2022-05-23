@@ -18,7 +18,7 @@ class SafetyReport(models.Model):
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
     locateId = models.ManyToManyField(
-        InstallLocate, null=True, related_name="safetyReport_locateId"
+        InstallLocate, blank=True, related_name="safetyReport_locateId"
     )  # 설치 위치
     replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (
