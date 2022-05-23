@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         source $HOME/.poetry/env
-        poetry install
+        poetry install && poetry update
     - name: Run Tests
       run: |
         source $HOME/.poetry/env
