@@ -1,16 +1,17 @@
 from user.models import CustomUser
 from django.core.files.images import ImageFile
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium import webdriver
+from selenium.webdriver import FirefoxOptions
 
 
 class MySeleniumTests(StaticLiveServerTestCase):
-    fixtures = ["user-data.json"]
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = WebDriver()
+        opts = FirefoxOptions()
+        opts.add_argument("--headless")
+        cls.selenium = webdriver.Firefox(options=opts)
         cls.selenium.implicitly_wait(10)
         cls.init_db()
 
@@ -36,11 +37,28 @@ class MySeleniumTests(StaticLiveServerTestCase):
         )
 
     def test_login(self):
+        # 로그인 실패
         self.selenium.get("%s%s" % (self.live_server_url, "/user/login/"))
-        # username_input = self.selenium.find_element_by_name("username")
-        # username_input.send_keys("testuser")
-        # password_input = self.selenium.find_element_by_name("password")
-        # password_input.send_keys("testpassword2@")
-        # self.selenium.find_element_by_xpath(
-        #     "/html/body/main/section/div/form/div/div[2]/button"
-        # ).click()
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys("testuser")
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys("testpassword2")
+        self.selenium.find_element_by_xpath(
+            "/html/body/main/section/div/form/div/div[2]/button"
+        ).click()
+        self.assertEqual(
+            self.selenium.current_url,
+            self.live_server_url + "/user/login/",
+            "로그인 실패 테스트",
+        )
+
+        # 로그인 성공
+        self.selenium.get("%s%s" % (self.live_server_url, "/user/login/"))
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys("testuser")
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys("testpassword2@")
+        self.selenium.find_element_by_xpath(
+            "/html/body/main/section/div/form/div/div[2]/button"
+        ).click()
+        self.assertEqual(self.selenium.current_url, self.live_server_url + "/")

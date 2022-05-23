@@ -140,7 +140,7 @@
                 {% endif %}
               </td>
               <td>
-                {% if checkmenu.content %}
+                {% if checkmenu.measure.all %}
                 <i class="bi bi-circle"></i>
                 {% endif %}
               </td>
@@ -163,17 +163,19 @@
         </thead>
         <tbody>
           {% for checkmenu in checklist.inspection_result.all %}
-          {% if checkmenu.content %}
+          {% if checkmenu.measure.all %}
           <tr>
             <td class="align-middle">{{forloop.counter}}</td>
+            {% for checkitem in checkmenu.measure.all %}
             <td class="align-middle">
-              {{checkmenu.content}}
+              {{checkitem.content}}
             </td>
             <td>
-              {% for image in checkmenu.measures.all %}
+              {% for image in checkitem.measure_imgs.all %}
               <img class="m-4" width='85%' alt='' src='{{image.img.url}}' />
               {% endfor %}
             </td>
+            {% endfor %}
           </tr>
           {% endif %}
           {% endfor %}
