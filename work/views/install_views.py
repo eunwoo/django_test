@@ -79,7 +79,7 @@ def review_install_checklist(request, type, pk):
 @login_required(login_url="/user/login/")
 def success_install_checklist(request):
     if request.method == "POST":
-        return success_install_checklist_service(request.POST["pk"])
+        return success_install_checklist_service(request, request.POST["pk"])
     return Http404()
 
 
