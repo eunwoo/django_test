@@ -77,7 +77,14 @@
               <tr>
                 <th scope="row">첨부파일</th>
                 <td>
-                  <input class="form-control" type="file" name="file_list" multiple>
+                  <input class="form-control" id="file_list" type="file" name="file_list" multiple>
+                  <ul class="list-group" id="file_list_preview">
+                    {% if form.instance.files.all %}
+                    {% for item in form.instance.files.all %}
+                    <li class="list-group-item">{{item.file}}</li>
+                    {% endfor %}
+                    {% endif %}
+                  </ul>
                 </td>
               </tr>
             </tbody>
@@ -96,5 +103,37 @@
   $("#pre_save").click(function () {
     $("#form_post").append('<input type="hidden" name="presave" value="1" />').submit();
   });
+
+  const v = "file_list"
+  const fileInput = document.getElementById(v)
+  const preview = document.getElementById(`${v}_preview`)
+  fileInput.addEventListener('change', function () {
+    const files = Array.from(this.files)
+    preview.innerHTML = ''
+    files.forEach(file => {
+      const li = document.createElement('li')
+      li.classList.add('list-group-item')
+      li.id = file.lastModified
+      li.innerHTML = file.name
+      const delete_button = document.createElement('button')
+      delete_button.innerHTML = '삭제'
+      delete_button.classList.add('btn', 'btn-danger', 'btn-sm')
+      delete_button.type = 'button'
+      delete_button.onclick = function () {
+        const modify = this.parentNode.id;
+        const dataTranster = new DataTransfer();
+        const current_files = document.getElementById(v).files;
+        Array.from(current_files).forEach(file => {
+          if (file.lastModified !== +modify) {
+            dataTranster.items.add(file)
+          }
+        })
+        document.getElementById(v).files = dataTranster.files;
+        this.parentNode.remove()
+      }
+      li.append(delete_button)
+      preview.append(li)
+    })
+  })
 </script>
 {% endblock  %}
