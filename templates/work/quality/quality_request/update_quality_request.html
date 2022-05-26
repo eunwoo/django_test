@@ -115,9 +115,10 @@
                 </td>
               </tr>
               <tr>
-                <td class="table-secondary">제목</td>
+                <td class="table-primary">제목</td>
                 <td colspan="5">
-                  {{ form.instance.title }}
+                  <input type="text" name="title" class="form-control"
+                    value="{{form.instance.title|default_if_none:''}}">
                 </td>
               </tr>
               <tr>
@@ -199,30 +200,38 @@
               <tr>
                 <td class="table-primary">시료 채취 장소</td>
                 <td colspan="5">
-                  <div class="row">
-                    <div class="col">
-                      기존 위치: {{form.instance.locateId.class2.class1.class1}} -
-                      {{form.instance.locateId.class2.class2}} -
-                      {{form.instance.locateId.class3}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-1">구분1</div>
+                  <div class="row" id="locate_table">
+                    <div class="col-1">Level1</div>
                     <div class="col-3">
                       <select class="form-select" id="class1">
                       </select>
                     </div>
-                    <div class="col-1">구분2</div>
+                    <div class="col-1">Level2</div>
                     <div class="col-3">
                       <select class="form-select" id="class2">
                       </select>
                     </div>
-                    <div class="col-1">구분3</div>
+                    <div class="col-1">Level3</div>
                     <div class="col-3">
-                      <select class="form-select" id="class3" name="locate">
+                      <select class="form-select" id="class3">
                       </select>
                     </div>
                   </div>
+                  {% if form.instance.locateId.all %}
+                  {% for locate in form.instance.locateId.all %}
+                  <div class="row p-2 border">
+                    <input type="hidden" name="locate[]" value="{{locate.pk}}">
+                    <div class="col-10">
+                      {{locate.class2.class1.class1}} -
+                      {{locate.class2.class2}} -
+                      {{locate.class3}}
+                    </div>
+                    <div class="col-2">
+                      <button type="button" class="btn btn-danger btn-sm" onclick="delete_locate(this)">삭제</button>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
                 </td>
               </tr>
               <tr>
@@ -590,6 +599,44 @@
       });
     }
   });
+
+  function insertAfter(referenceNode, newNode) {
+    if (!!referenceNode.nextSibling) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    } else {
+      referenceNode.parentNode.appendChild(newNode);
+    }
+  }
+
+  class3_select.addEventListener("change", function () {
+    const class3_id = class3_select.value
+    if (class3_id === '') return;
+    const locate_list = document.getElementsByName('locate[]')
+    for (const locate_element of locate_list) {
+      if (locate_element.value === class3_id) {
+        return;
+      }
+    }
+    const locate_div = document.createElement("div")
+    locate_div.classList.add("row", "p-2", "border")
+    locate_div.innerHTML = `<input type="hidden" name="locate[]" value="${class3_id}">
+      <div class="col-10">
+        ${class1_select.options[class1_select.selectedIndex].text} -
+        ${class2_select.options[class2_select.selectedIndex].text} -
+        ${class3_select.options[class3_select.selectedIndex].text}
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-danger btn-sm" onclick="delete_locate(this)">삭제</button>
+      </div>`
+    const [locate_table, select_locate] = ['locate_table', 'select_locate'].map(
+      (class_name) => document.getElementById(class_name)
+    )
+    insertAfter(locate_table, locate_div)
+  });
+
+  function delete_locate(e) {
+    e.parentElement.parentElement.remove()
+  }
 
   // 시험 및 시방기준 자동 입력
   const test_standard_input = document.getElementById('test_standard')
