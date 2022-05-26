@@ -160,6 +160,7 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 
 SUMMERNOTE_CONFIG = {
     "summernote": {
+        "width": "100%",
         "fontNames": [
             "맑은 고딕",
             "굴림",
@@ -175,4 +176,5 @@ SUMMERNOTE_CONFIG = {
         ],
         "lang": "ko-KR",
     },
+    "attachment_filesize_limit": 20 * 1024 * 1024,
 }
