@@ -57,15 +57,15 @@
         {% include "auth/form_errors.html" %}
       </form>
       <div class="row mt-4 mx-4">
-        <div class="col-5 offset-2">
+        <div class="col">
           <a href="{% url 'user:find' %}">
-            <button class="btn btn-outline-dark col-12" style="overflow: hidden;" aria-label="Left Align"
-              data-bs-toggle="modal" data-bs-target="#exampleModal1">아이디/비밀번호 찾기</button>
+            <button class="btn btn-outline-dark col-12" aria-label="Left Align" data-bs-toggle="modal"
+              data-bs-target="#exampleModal1">아이디/비밀번호 찾기</button>
           </a>
         </div>
-        <div class="col-4">
+        <div class="col">
           <a href="{% url 'user:usertype' %}">
-            <button class="btn btn-outline-dark col-12" style="overflow: hidden;">사용자 등록</button>
+            <button class="btn btn-outline-dark col-12">사용자 등록</button>
           </a>
         </div>
       </div>
