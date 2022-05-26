@@ -1,5 +1,6 @@
 import random
 import string
+import datetime
 
 from django.utils import timezone
 from django.http import JsonResponse
@@ -189,24 +190,13 @@ def assign_cm(request, type):
         )
     )
     doc.save()
-    link = request.build_absolute_uri(f"/work/read_install/{type}/{doc.pk}/")
+    link = request.build_absolute_uri(f"/work/measure_install/{doc.urlCode}")
     cm_phone = cm.phone
-    sms_send(link, [cm_phone], 3)
-    # checklist_ids = request.POST.getlist("checklist_id")
-    # message_list = []
-    # for checklist_id in checklist_ids:
-    #     target = InspectionResult.objects.get(
-    #         install_checklist_id=doc,
-    #         inspection_item_id=InspectionItem.objects.get(pk=checklist_id),
-    #     )
-    #     message_list.append(
-    #         {
-    #             "content": target.content,
-    #             "img": list(map(lambda x: x.img, list(target.measures.all()))),
-    #         }
-    #     )
-    # image_send(message_list, cm_phone)
-    # 문자 전송 페이지 만들기
+    due_date = datetime.datetime.strptime(
+        request.POST.get("expired_date"), "%Y-%m-%dT%H:%M"
+    )
+
+    sms_send(link, [cm_phone], 3, due_date.strftime("%Y년 %m월 %d일 %I:%M %p"))
 
 
 def delete_install_checklists_service(request):
@@ -267,25 +257,28 @@ def review_install_checklist_service(request, type, pk):
     if request.method == "POST":
         for inspectionResult in inspectionResults:
             lastMeasure = inspectionResult.measure.last()
-            if lastMeasure.isCM:
-                newMeasure = inspectionResult.measure.create(
-                    content=request.POST[f"{inspectionResult.pk}-content"],
-                )
-                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
-                for img in images:
-                    newMeasure.measure_imgs.create(img=img)
-            else:
-                lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
-                lastMeasure.save()
-                before_images = list(
-                    request.POST.getlist(f"{inspectionResult.pk}-images-preloaded[]")
-                )
-                for measure_img in lastMeasure.measure_imgs.all():
-                    if str(measure_img.pk) not in before_images:
-                        measure_img.delete()
-                images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
-                for img in images:
-                    lastMeasure.measure_imgs.create(img=img)
+            if f"{inspectionResult.pk}-belong" in request.POST.keys():
+                if lastMeasure.isCM:
+                    newMeasure = inspectionResult.measure.create(
+                        content=request.POST[f"{inspectionResult.pk}-content"],
+                    )
+                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                    for img in images:
+                        newMeasure.measure_imgs.create(img=img)
+                else:
+                    lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
+                    lastMeasure.save()
+                    before_images = list(
+                        request.POST.getlist(
+                            f"{inspectionResult.pk}-images-preloaded[]"
+                        )
+                    )
+                    for measure_img in lastMeasure.measure_imgs.all():
+                        if str(measure_img.pk) not in before_images:
+                            measure_img.delete()
+                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                    for img in images:
+                        lastMeasure.measure_imgs.create(img=img)
         messages.success(request, "저장이 완료되었습니다.")
         isSave = True
     return render(
@@ -300,10 +293,14 @@ def review_install_checklist_service(request, type, pk):
     )
 
 
-def success_install_checklist_service(pk):
+def success_install_checklist_service(request, pk):
     checklist = get_object_or_404(InstallCheckList, pk=pk)
     checklist.isSuccess = True
     checklist.isCheckCM = True
     checklist.isCheckWriter = True
+    link = request.build_absolute_uri(
+        f"/work/read_install/{checklist.equipment}/{pk}",
+    )
+    sms_send(link, [checklist.cm.phone], 5)
     checklist.save()
     return JsonResponse({"result": "success"})
