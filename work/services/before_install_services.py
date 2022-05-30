@@ -326,6 +326,7 @@ def measure_apply_before_install(request, urlCode):
     )
     checklist.isCheckCM = True
     checklist.isCheckWriter = False
+    checklist.save()
     return redirect("main:home")
 
 

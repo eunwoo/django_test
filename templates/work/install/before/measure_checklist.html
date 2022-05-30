@@ -267,7 +267,6 @@
 
   // 조치 완료 버튼 클릭시
   $('#successBtn').on('click', async () => {
-    const input_list = form_element.getElementsByTagName('input');
     if (!!!isSave) {
       Swal.fire({
         title: 'Error!',
@@ -303,7 +302,7 @@
           icon: 'success',
           confirmButtonText: '확인'
         }).then(() => {
-          form_element.submit();
+          window.location.href = "{% url 'work:measure_success_before' checklist.urlCode %}";
         })
       }
     })
