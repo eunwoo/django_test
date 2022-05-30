@@ -275,34 +275,58 @@ def measure_before_install_service(request, urlCode):
         urlCode=urlCode,
         isCheckWriter=True,
     )
-    if request.method == "POST":
-        form_key = list(request.POST.keys())
-        form_key.remove("csrfmiddlewaretoken")
-        for key in form_key:
-            pk = key.split("-")[0]
-            before_inspection_result = BeforeInspectionResult.objects.get(
-                pk=pk,
-            )
-            before_measure = before_inspection_result.before_measure.create(
-                isCM=True,
-                content=request.POST[pk + "-content"],
-                cm=checklist.cm,
-            )
-            for before_image in request.FILES.getlist(pk + "-images[]"):
-                before_measure.before_measure_imgs.create(img=before_image)
-        checklist.isCheckCM = True
-        checklist.isCheckWriter = False
-        checklist.save()
-        return redirect("main:home")
     if checklist.expired_date < timezone.now():
         return redirect("main:home")
+    isSave = False
+    if request.method == "POST":
+        inspectionResults = checklist.before_inspection_result.filter(result="2")
+        for inspectionResult in inspectionResults:
+            lastMeasure = inspectionResult.before_measure.last()
+            if f"{inspectionResult.pk}-content" in request.POST.keys():
+                if not lastMeasure.isCM:
+                    newMeasure = inspectionResult.before_measure.create(
+                        content=request.POST[f"{inspectionResult.pk}-content"],
+                        isCM=True,
+                        cm=checklist.cm,
+                    )
+                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                    for img in images:
+                        newMeasure.before_measure_imgs.create(img=img)
+                else:
+                    lastMeasure.content = request.POST[f"{inspectionResult.pk}-content"]
+                    lastMeasure.save()
+                    before_images = list(
+                        request.POST.getlist(
+                            f"{inspectionResult.pk}-images-preloaded[]"
+                        )
+                    )
+                    for measure_img in lastMeasure.before_measure_imgs.all():
+                        if str(measure_img.pk) not in before_images:
+                            measure_img.delete()
+                    images = request.FILES.getlist(f"{inspectionResult.pk}-images[]")
+                    for img in images:
+                        lastMeasure.before_measure_imgs.create(img=img)
+        messages.success(request, "저장이 완료되었습니다.")
+        isSave = True
     return render(
         request,
         "work/install/before/measure_checklist.html",
         {
             "checklist": checklist,
+            "isSave": isSave,
         },
     )
+
+
+def measure_apply_before_install(request, urlCode):
+    checklist = get_object_or_404(
+        BeforeInstallCheckList,
+        urlCode=urlCode,
+        isCheckWriter=True,
+    )
+    checklist.isCheckCM = True
+    checklist.isCheckWriter = False
+    return redirect("main:home")
 
 
 def success_before_install_checklist_service(request, pk):
