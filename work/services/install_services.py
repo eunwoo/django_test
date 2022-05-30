@@ -272,7 +272,7 @@ def review_install_checklist_service(request, type, pk):
     if request.method == "POST":
         for inspectionResult in inspectionResults:
             lastMeasure = inspectionResult.measure.last()
-            if f"{inspectionResult.pk}-belong" in request.POST.keys():
+            if f"{inspectionResult.pk}-content" in request.POST.keys():
                 if lastMeasure.isCM:
                     newMeasure = inspectionResult.measure.create(
                         content=request.POST[f"{inspectionResult.pk}-content"],
@@ -319,3 +319,15 @@ def success_install_checklist_service(request, pk):
     sms_send(link, [checklist.cm.phone], 5)
     checklist.save()
     return JsonResponse({"result": "success"})
+
+
+def measure_apply_install(request, urlCode):
+    checklist = get_object_or_404(
+        InstallCheckList,
+        urlCode=urlCode,
+        isCheckWriter=True,
+    )
+    checklist.isCheckCM = True
+    checklist.isCheckWriter = False
+    checklist.save()
+    return redirect("main:home")

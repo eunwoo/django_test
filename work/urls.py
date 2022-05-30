@@ -273,6 +273,11 @@ install_check_url = [
         install_views.success_install_checklist,
         name="success_install_checklist",
     ),
+    path(
+        "measure_success/<str:urlcode>/",
+        install_views.measure_success,
+        name="measure_success",
+    ),
 ]
 
 urlpatterns = [
