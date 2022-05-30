@@ -229,7 +229,11 @@
               <td colspan=3 style="padding: 0;">
                 <table id="{{checkmenu.pk}}-table" class="table table-bordered text-break align-middle m-0">
                   {% for measure in checkmenu.measure.all %}
+                  {% if measure == checkmenu.measure.last and not measure.isCM %}
+                  <tr class="input-tr">
+                    {% else %}
                   <tr>
+                    {% endif %}
                     <td style="width: 10.526315789473685%">
                       {% if measure.isCM %}
                       {{measure.cm.name}}
@@ -239,11 +243,11 @@
                     </td>
                     {% if measure == checkmenu.measure.last and not measure.isCM %}
                     <td>
-                      <input type="text" class="form-control" name="{{measure.pk}}-content" placeholder="조치내용을 입력하세요."
+                      <input type="text" class="form-control" name="{{checkmenu.pk}}-content" placeholder="조치내용을 입력하세요."
                         value="{{measure.content}}" required>
                     </td>
                     <td>
-                      <div class="input-images-{{measure.pk}}" style="text-align: left;"></div>
+                      <div class="input-images-{{checkmenu.pk}}" style="text-align: left;"></div>
                     </td>
                     {% else %}
                     <td style="width: 42.10526315789474%">
@@ -278,7 +282,7 @@
 
 {% for checkmenu in checklist.inspection_result.all %}
 {% if not checkmenu.measure.last.isCM %}
-{% include "work/install/doing/review_image_library.html" with measure=checkmenu.measure.last %}
+{% include "work/install/doing/review_image_library.html" with checkmenu=checkmenu measure=checkmenu.measure.last %}
 {% endif %}
 {% endfor %}
 

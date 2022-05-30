@@ -312,7 +312,7 @@
           icon: 'success',
           confirmButtonText: '확인'
         }).then(() => {
-          window.location.href = "";
+          window.location.href = "{% url 'work:measure_success' checklist.urlCode %}";
         })
       }
     })
