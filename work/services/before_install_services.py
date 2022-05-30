@@ -231,7 +231,6 @@ def review_before_install_checklist_service(request, type, pk):
             isSave = True
             break
     if request.method == "POST":
-        inspectionResults = checklist.before_inspection_result.filter(result="2")
         for inspectionResult in inspectionResults:
             lastMeasure = inspectionResult.before_measure.last()
             if f"{inspectionResult.pk}-content" in request.POST.keys():
