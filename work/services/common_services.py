@@ -83,6 +83,12 @@ def sms_content(link, sms_type: int = 0, due_date: str = None) -> str:
     elif sms_type == 5:
         context = "설치작업 중 점검 조치사항 완료 알림"
         link_text = "조치사항 항목"
+    elif sms_type == 6:
+        context = "설치작업 전 점검 조치사항 반영 알림"
+        link_text = "조치사항 항목"
+    elif sms_type == 7:
+        context = "설치작업 중 점검 조치사항 반영 알림"
+        link_text = "조치사항 항목"
     if due_date is not None:
         expired_date = "결재 만료일 : " + due_date + " 까지\n\n"
     return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(T-QEMS) 내 {context}이 도착하여 안내드립니다.\n\n{expired_date}{link_text} 바로가기\n {link}"

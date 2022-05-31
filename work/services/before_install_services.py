@@ -325,7 +325,11 @@ def measure_apply_before_install(request, urlCode):
     )
     checklist.isCheckCM = True
     checklist.isCheckWriter = False
+    link = request.build_absolute_uri(
+        f"/work/review_before_install_checklist/{checklist.equipment}/{checklist.pk}"
+    )
     checklist.save()
+    sms_send(link, [checklist.cm.phone], 6)
     return redirect("main:home")
 
 

@@ -329,5 +329,9 @@ def measure_apply_install(request, urlCode):
     )
     checklist.isCheckCM = True
     checklist.isCheckWriter = False
+    link = request.build_absolute_uri(
+        f"/work/review_install_checklist/{checklist.equipment}/{checklist.pk}"
+    )
     checklist.save()
+    sms_send(link, [checklist.cm.phone], 7)
     return redirect("main:home")
