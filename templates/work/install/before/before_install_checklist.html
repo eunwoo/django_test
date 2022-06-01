@@ -83,7 +83,7 @@
             <tr>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
               <td class="align-middle" style="width: 35%">{{type}} 설치작업 전 점검 체크리스트-{{docNum}}</td>
-              <th scope="row" class="table-secondary align-middle" style="width: 15%">설치 위치</th>
+              <th scope="row" class="table-primary align-middle" style="width: 15%">설치 위치</th>
               <td style="width: 35%">
                 <div class="row">
                   <div class="col-4">
@@ -106,12 +106,12 @@
               </td>
             </tr>
             <tr>
-              <th scope="row" class="table-secondary align-middle">확인 일자</th>
+              <th scope="row" class="table-primary align-middle">확인 일자</th>
               <td>
                 <input type="date" class="form-control" name="date" id="date" placeholder="확인 일자"
                   value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
               </td>
-              <th scope="row" class="table-secondary align-middle">담당자</th>
+              <th scope="row" class="table-primary align-middle">담당자</th>
               <td>
                 <div class="row">
                   <div class="col">
@@ -152,7 +152,7 @@
               </td>
             </tr>
             <tr>
-              <th scope="row" class="table-secondary align-middle">제목</th>
+              <th scope="row" class="table-primary align-middle">제목</th>
               <td colspan="3">
                 <input type="text" class="form-control" name="title" placeholder="제목을 입력해주세요."
                   value="{{form.instance.title|default_if_none:''}}" required />
