@@ -61,4 +61,6 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.selenium.find_element_by_xpath(
             "/html/body/main/section/div/form/div/div[2]/button"
         ).click()
-        self.assertEqual(self.selenium.current_url, self.live_server_url + "/")
+        self.assertEqual(
+            self.selenium.current_url, self.live_server_url + "/", "로그인 성공"
+        )
