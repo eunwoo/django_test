@@ -14,6 +14,7 @@ from ..services.before_install_services import (
     before_install_checklists_delete_service,
     create_item,
     get_require_users,
+    measure_apply_before_install,
     measure_before_install_service,
     review_before_install_checklist_service,
     success_before_install_checklist_service,
@@ -108,12 +109,16 @@ def review_before_install_checklist(request, type, pk):
 @login_required(login_url="/user/login/")
 def success_before_checklist(request):
     if request.method == "POST":
-        return success_before_install_checklist_service(request.POST["pk"])
+        return success_before_install_checklist_service(request, request.POST["pk"])
     return Http404()
 
 
 def measure_before_install(request, urlcode):
     return measure_before_install_service(request, urlcode)
+
+
+def measure_success_before(request, urlcode):
+    return measure_apply_before_install(request, urlcode)
 
 
 def read_before_checklist(request, type, pk):

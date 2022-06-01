@@ -60,6 +60,11 @@
               {% for i in lawitems %}
               <tr>
                 <td>
+                  {% if request.user == i.writer %}
+                  <input type="checkbox" value="{{i.pk}}">
+                  {% endif %}
+                </td>
+                <td>
                   <a href="{% url 'law:read_law' i.pk %}" class="link-primary">
                     {{i.title}}
                   </a>

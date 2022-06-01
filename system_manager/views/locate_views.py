@@ -76,6 +76,7 @@ def add_locate(request):
             third_class = InstallLocate(
                 class2=second_class,
                 class3="해당사항 없음",
+                isApply=True,
             )
             third_class.save()
         elif class_type == 2:
@@ -87,6 +88,7 @@ def add_locate(request):
             third_class = InstallLocate(
                 class2=target_class,
                 class3="해당사항 없음",
+                isApply=True,
             )
             third_class.save()
         elif class_type == 3:

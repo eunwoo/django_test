@@ -9,6 +9,7 @@ from ..services.install_services import (
     create_item,
     delete_install_checklists_service,
     install_checklist_service,
+    measure_apply_install,
     measure_install_service,
     review_install_checklist_service,
     success_install_checklist_service,
@@ -79,7 +80,7 @@ def review_install_checklist(request, type, pk):
 @login_required(login_url="/user/login/")
 def success_install_checklist(request):
     if request.method == "POST":
-        return success_install_checklist_service(request.POST["pk"])
+        return success_install_checklist_service(request, request.POST["pk"])
     return Http404()
 
 
@@ -98,3 +99,7 @@ def read_checklist(request, type, pk):
 
 def measure_install(request, urlcode):
     return measure_install_service(request, urlcode)
+
+
+def measure_success(request, urlcode):
+    return measure_apply_install(request, urlcode)

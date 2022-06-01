@@ -76,8 +76,8 @@
                 <td>
                   <a {% if i.isCheckWriter == False and i.isCheckCM == False %}
                     href="{% url 'work:update_before_install_checklist' type=type pk=i.pk %}" class="link-primary"
-                    {% elif i.isCheckCM == False %} href="{% url 'work:read_before_checklist' type=type pk=i.pk %}"
-                    class="link-secondary" {% else %}
+                    {% elif i.isCheckCM == False and not i.is_past_due %}
+                    href="{% url 'work:read_before_checklist' type=type pk=i.pk %}" class="link-secondary" {% else %}
                     href="{% url 'work:review_before_install_checklist' type=type pk=i.pk %}" class="link-primary"
                     {% endif %}>{{type}} 설치작업 전 점검 체크리스트-{{i.pk}}-{{i.title}}</a>
                 </td>

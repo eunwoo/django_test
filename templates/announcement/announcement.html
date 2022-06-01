@@ -59,11 +59,11 @@
               </tr>
               {% for i in announcementitems %}
               <tr>
-                {% if request.user == i.writer %}
                 <td>
+                  {% if request.user == i.writer %}
                   <input type="checkbox" value="{{i.pk}}">
+                  {% endif %}
                 </td>
-                {% endif %}
                 <td>
                   <a href="{% url 'announcement:read_announcement' i.pk %}" class="link-primary">
                     {{i.title}}

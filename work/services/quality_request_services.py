@@ -48,8 +48,11 @@ def create_quality_request_service(request):
             qty_req = form.save(commit=False)
             qty_req.writerId = request.user
             qty_req.fieldId = field
-            qty_req.locateId = InstallLocate.objects.get(pk=request.POST["locate"])
             qty_req.save()
+            locates = request.POST.getlist("locate[]")
+            for locate_id in locates:
+                locate = InstallLocate.objects.get(pk=int(locate_id))
+                qty_req.locateId.add(locate)
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_request", qty_req.docNum)
     else:
@@ -85,9 +88,12 @@ def update_quality_request_for_generalManager(request, docNum):
         if form.is_valid():
             qty_req = form.save(commit=False)
             qty_req.writerId = request.user
-            if "locate" in request.POST.keys():
-                qty_req.locateId = InstallLocate.objects.get(pk=request.POST["locate"])
             qty_req.save()
+            qty_req.locateId.clear()
+            locates = request.POST.getlist("locate[]")
+            for locate_id in locates:
+                locate = InstallLocate.objects.get(pk=int(locate_id))
+                qty_req.locateId.add(locate)
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_request", qty_req.docNum)
     else:

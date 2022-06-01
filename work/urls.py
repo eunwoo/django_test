@@ -215,6 +215,11 @@ before_install_check_url = [
         before_install_views.success_before_checklist,
         name="success_before_checklist",
     ),
+    path(
+        "measure_success_before/<str:urlcode>/",
+        before_install_views.measure_success_before,
+        name="measure_success_before",
+    ),
 ]
 
 install_check_url = [
@@ -267,6 +272,11 @@ install_check_url = [
         "success_install_checklist/",
         install_views.success_install_checklist,
         name="success_install_checklist",
+    ),
+    path(
+        "measure_success/<str:urlcode>/",
+        install_views.measure_success,
+        name="measure_success",
     ),
 ]
 

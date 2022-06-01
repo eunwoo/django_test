@@ -233,11 +233,11 @@
                       </td>
                       {% if measure == checkmenu.before_measure.last and not measure.isCM %}
                       <td>
-                        <input type="text" class="form-control" name="{{measure.pk}}-content" placeholder="조치내용을 입력하세요."
-                          value="{{measure.content}}" required>
+                        <input type="text" class="form-control" name="{{checkmenu.pk}}-content"
+                          placeholder="조치내용을 입력하세요." value="{{measure.content}}" required>
                       </td>
                       <td>
-                        <div class="input-images-{{measure.pk}}" style="text-align: left;"></div>
+                        <div class="input-images-{{checkmenu.pk}}" style="text-align: left;"></div>
                       </td>
                       {% else %}
                       <td style="width: 42.10526315789474%">
@@ -270,7 +270,7 @@
 <script type="text/javascript" src="{% static '/js/image-uploader.min.js' %}"></script>
 {% for checkmenu in checklist.before_inspection_result.all %}
 {% if not checkmenu.before_measure.last.isCM %}
-{% include "work/install/before/review_image_library.html" with measure=checkmenu.before_measure.last %}
+{% include "work/install/before/review_image_library.html" with checkmenu=checkmenu measure=checkmenu.before_measure.last %}
 {% endif %}
 {% endfor %}
 

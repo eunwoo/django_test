@@ -209,7 +209,7 @@
                 <ul class="list-group">
                   {% for doc in qty_report.quality_performance_file.all %}
                   <li class="list-group-item">
-                    <a href="{{doc.doc.url}}" download="{{doc.title}}">{{doc.title}}</a>
+                    <a href="{{doc.doc.url}}" target="_blank" download="{{doc.title}}">{{doc.title}}</a>
                   </li>
                   {% endfor %}
                 </ul>

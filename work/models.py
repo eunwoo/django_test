@@ -1,6 +1,6 @@
 from django.db import models
 
-
+from django.utils import timezone
 from user.models import CustomUser
 from system_manager.models import (
     ConstructManager,
@@ -18,7 +18,7 @@ class SafetyReport(models.Model):
     constructType = models.CharField(max_length=90)  # 공증
     text = models.TextField()  # 내용
     locateId = models.ManyToManyField(
-        InstallLocate, null=True, related_name="safetyReport_locateId"
+        InstallLocate, blank=True, related_name="safetyReport_locateId"
     )  # 설치 위치
     replyDate = models.DateField(null=True)  # 회신 일자
     result_choices = (
@@ -252,8 +252,8 @@ class QualityInspectionRequest(models.Model):
     testType_hweem = models.BooleanField(default=False)  # 시험검사종목 - 휨하중
     testType_zip = models.BooleanField(default=False)  # 시험검사종목 - 압축하중
     testType_tensile = models.BooleanField(default=False)  # 시험검사종목 - 인장하중
-    locateId = models.ForeignKey(
-        InstallLocate, on_delete=models.SET_NULL, null=True
+    locateId = models.ManyToManyField(
+        InstallLocate, blank=True, related_name="quality_inspection_locateId"
     )  # 시료 채취 장소
     sampleDate = models.DateField()  # 시료 채취 일자
     testStandard = models.CharField(max_length=60)  # 시험 및 시방 기준
@@ -437,6 +437,10 @@ class BeforeInstallCheckList(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     expired_date = models.DateTimeField(blank=True, null=True)
 
+    @property
+    def is_past_due(self):
+        return self.expired_date < timezone.now()
+
 
 class BeforeInspectionItem(models.Model):
     title = models.CharField(max_length=60)  # 점검 항목
@@ -537,6 +541,10 @@ class InstallCheckList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     expired_date = models.DateTimeField(blank=True, null=True)
+
+    @property
+    def is_past_due(self):
+        return self.expired_date < timezone.now()
 
 
 class InspectionItemCategory(models.Model):
