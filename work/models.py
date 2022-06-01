@@ -30,11 +30,13 @@ class SafetyReport(models.Model):
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
 
+    # 저장여부 확인
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
     isSaveGeneralEngineer = models.BooleanField(default=False)
     isSaveTotalEngineer = models.BooleanField(default=False)
 
+    # 승인여부 확인
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
@@ -45,12 +47,14 @@ class SafetyReport(models.Model):
     checklistConstructType = models.CharField(max_length=90, null=True)
     checklistTitle = models.CharField(max_length=90, null=True)
 
+    # 구조안전성 검토 첨부문서
     docs = models.ManyToManyField(
         DocsFile,
         blank=True,
         related_name="safety_docs",
     )
 
+    # 각 작업자 아이디
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -304,8 +308,6 @@ class QualityInspectionRequest(models.Model):
 # =============================================================================
 
 # 품질검사 성과 총괄표 신고서
-
-
 class QualityPerformanceReport(models.Model):
     docNum = models.AutoField(primary_key=True)  # 문서번호
     date = models.DateField()  # 작성일자
