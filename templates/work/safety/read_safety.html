@@ -65,20 +65,15 @@
             <tr>
               <td class="table-secondary">설치 위치</td>
               <td colspan="5">
+                {% for locate in safety.locateId.all %}
                 <div class="row">
-                  <div class="col-1">Level1</div>
-                  <div class="col-3">
-                    {{safety.locateId.class2.class1.class1}}
-                  </div>
-                  <div class="col-1">Level2</div>
-                  <div class="col-3">
-                    {{safety.locateId.class2.class2}}
-                  </div>
-                  <div class="col-1">Level3</div>
-                  <div class="col-3">
-                    {{safety.locateId.class3}}
+                  <div class="col">
+                    {{locate.class2.class1.class1}} -
+                    {{locate.class2.class2}} -
+                    {{locate.class3}}
                   </div>
                 </div>
+                {% endfor %}
               </td>
             </tr>
             <tr>
