@@ -18,6 +18,7 @@ from ..models import (
 from django.contrib import messages
 
 
+# 구조 안전성 검토 문서 목록 로드
 def get_safety_list_by_user(user):
     if user.class2 == "일반 사용자":
         return SafetyReport.objects.filter(
@@ -41,6 +42,7 @@ def get_safety_list_by_user(user):
         ).order_by("-docNum")
 
 
+# 요청자에 따른 유저 목록 로드
 def get_sign_users(request):
     if request.user.class2 == "일반 사용자":
         users = CustomUser.objects.filter(class2="현장 대리인", register=True)
@@ -51,11 +53,13 @@ def get_sign_users(request):
     return users
 
 
-def read_safety_service(user, pk):
+# 구조 안전성 검토 문서 로드
+def read_safety_service(pk):
     safety = SafetyReport.objects.get(docNum=pk)
     return safety
 
 
+# 구조 안전성 검토 문서 생성
 def create_safety_service(request):
     if request.method == "POST":
         form = GeneralManagerSafetyReportForm(request.POST)
@@ -118,6 +122,7 @@ def create_safety_service(request):
     )
 
 
+# 구조 안전성 검토 문서 수정
 def update_safety_general(request, pk):
     instance = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -183,6 +188,7 @@ def update_safety_general(request, pk):
     )
 
 
+# 구조 안전성 신고서 현장대리인
 def update_safety_agent(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -197,6 +203,7 @@ def update_safety_agent(request, pk):
     )
 
 
+# 구조 안전성 신고서 일반건설사업기술인
 def update_safety_generalEngineer(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -215,6 +222,7 @@ def update_safety_generalEngineer(request, pk):
     )
 
 
+# 구조 안전성 신고서 총괄건설사업기술인
 def update_safety_totalEngineer(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -234,6 +242,7 @@ def update_safety_totalEngineer(request, pk):
     )
 
 
+# 구조 안전성 신고서 체크리스트 조회
 def read_checklist_service(safety):
     safety_checklist = safety.safety_check_list.all()
     checklist = [[], [], [], []]
@@ -243,6 +252,7 @@ def read_checklist_service(safety):
     return checklist
 
 
+# 구조 안전성 신고서 체크리스트 제작
 def create_checklist_service(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     safety.checklistConstructType = request.POST.get("constructType")
@@ -263,6 +273,7 @@ def create_checklist_service(request, pk):
     safety.save()
 
 
+# 구조 안전성 신고서 삭제
 def delete_safeties(request):
     if request.method == "POST":
         safety_list = request.POST.getlist("delete_list[]")
@@ -273,6 +284,7 @@ def delete_safeties(request):
     return JsonResponse({"result": "fail"}, status=400)
 
 
+# 구조 안전성 신고서 체크리스트 항목 추가
 def create_checklist_item_service(category, content):
     new_item = SafetyCheckMenu(
         content=content,

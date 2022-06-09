@@ -47,7 +47,7 @@ def create_safety(request):
 # 구조 안전성 검토 신고서 조회
 @login_required(login_url="/user/login/")
 def read_safety(request, pk):
-    safety = read_safety_service(request.user, pk)
+    safety = read_safety_service(pk)
     safety_url = list(map(lambda x: x.file.url, safety.docs.all()))
     return render(
         request,
