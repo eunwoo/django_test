@@ -12,6 +12,7 @@ from ..forms.material_forms import (
 from django.contrib import messages
 
 
+# 유저별로 자재 공급원 신고서 목록 로드
 def get_material_list_by_user(user):
     if user.class2 == "일반 사용자":
         return MaterialSupplyReport.objects.filter(
@@ -46,6 +47,7 @@ def get_material_list_by_user(user):
         )
 
 
+# 자재 공급원 신고서 작성
 def create_material_service(request):
     field = Field.objects.get(pk=1)
     if request.method == "POST":
@@ -113,6 +115,7 @@ def create_material_service(request):
     )
 
 
+# 자재 공급원 신고서 수정
 def update_material_service(request, docNum):
     if request.user.class2 == "일반 사용자":
         return update_material_general(request, docNum)
@@ -126,6 +129,7 @@ def update_material_service(request, docNum):
         return Http404()
 
 
+# 일반관리자 자재 공급원 신고서 작성
 def update_material_general(request, docNum):
     instance = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -200,6 +204,7 @@ def update_material_general(request, docNum):
     )
 
 
+# 현장대리인 자재 공급원 신고서 작성
 def update_material_agent(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -213,6 +218,7 @@ def update_material_agent(request, docNum):
     )
 
 
+# 일반 건설사업관리기술인 자재 공급원 신고서 작성
 def update_material_generalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -235,6 +241,7 @@ def update_material_generalEngineer(request, docNum):
     )
 
 
+# 총괄 건설사업관리기술인 자재 공급원 신고서 작성
 def update_material_totalEngineer(request, docNum):
     material = MaterialSupplyReport.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -257,11 +264,13 @@ def update_material_totalEngineer(request, docNum):
     )
 
 
-def read_material_service(user, pk):
+# 자재 공급원 신고서 조회
+def read_material_service(pk):
     material = MaterialSupplyReport.objects.get(docNum=pk)
     return material
 
 
+# 자재 공급원 신고서 삭제
 def delete_materials_service(request):
     if request.method == "POST":
         safety_list = request.POST.getlist("delete_list[]")
