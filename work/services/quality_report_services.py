@@ -14,6 +14,7 @@ from ..forms.quality_report_forms import (
 from django.contrib import messages
 
 
+# 품질검사 성과 보고서 작성
 def get_qty_report_list_by_user(user):
     if user.class2 == "일반 사용자":
         return QualityPerformanceReport.objects.filter(
@@ -37,11 +38,13 @@ def get_qty_report_list_by_user(user):
         ).order_by("-docNum")
 
 
-def read_qty_report_service(user, pk):
+# 품질검사 성과 보고서 조회
+def read_qty_report_service(pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
     return qty_report
 
 
+# 품질검사 성과 보고서 작성
 def create_quality_report_service(request):
     field = Field.objects.get(pk=1)  # 현장 관리는 하나만 있음
     last_doc = QualityPerformanceReport.objects.last()
@@ -74,6 +77,7 @@ def create_quality_report_service(request):
     )
 
 
+# 품질검사 성과 보고서 수정
 def update_quality_report_service(request, pk):
     if request.user.class2 == "일반 사용자":
         return update_quality_report_general(request, pk)
@@ -87,6 +91,7 @@ def update_quality_report_service(request, pk):
         return Http404()
 
 
+# 일반관리자 품질검사 성과 보고서 수정
 def update_quality_report_general(request, pk):
     instance = QualityPerformanceReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -123,6 +128,7 @@ def update_quality_report_general(request, pk):
     )
 
 
+# 현장대리인 품질검사 성과 보고서 수정
 def update_quality_report_agent(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -137,6 +143,7 @@ def update_quality_report_agent(request, pk):
     )
 
 
+# 일반 건설사업관리기술인 품질검사 성과 보고서 수정
 def update_quality_report_generalEngineer(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -151,6 +158,7 @@ def update_quality_report_generalEngineer(request, pk):
     )
 
 
+# 총괄 건설사업관리기술인 품질검사 성과 보고서 수정
 def update_quality_report_totalEngineer(request, pk):
     qty_report = QualityPerformanceReport.objects.get(docNum=pk)
     if request.method == "POST":
@@ -165,6 +173,7 @@ def update_quality_report_totalEngineer(request, pk):
     )
 
 
+# 품질검사 성과보고서 성과 목록 추가
 def create_quality_performance(request, qty_report):
     form_list = [
         "goods",
@@ -204,16 +213,7 @@ def create_quality_performance(request, qty_report):
         performance.save()
 
 
-def qty_report_success(docNum: int):
-    qty_report = QualityPerformanceReport.objects.get(docNum=docNum)
-    qty_report.isSuccess = True
-    qty_report.isCheckManager = False
-    qty_report.isCheckAgent = False
-    qty_report.isCheckGeneralEngineer = False
-    qty_report.save()
-    return True
-
-
+# 품질검사 성과보고서 삭제
 def delete_qty_reports_service(request):
     if request.method == "POST":
         qty_report_list = request.POST.getlist("delete_list[]")
