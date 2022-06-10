@@ -2,6 +2,7 @@ from django.db import models
 from user.models import CustomUser
 
 
+# 법률정보
 class LawPost(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
@@ -17,6 +18,7 @@ class LawPost(models.Model):
         return self.title
 
 
+# 법률정보 첨부파일
 class LawPostFile(models.Model):
     file = models.FileField(upload_to="law/files/")
     Law_post = models.ForeignKey(
