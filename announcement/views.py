@@ -6,6 +6,7 @@ from . import forms, models
 from django.contrib import messages
 
 
+# 공지사항 조회
 @login_required(login_url="/user/login/")
 def read_views(request, pk):
     item = get_object_or_404(models.AnnouncePost, pk=pk)
@@ -16,6 +17,7 @@ def read_views(request, pk):
     )
 
 
+# 공지사항 작성
 @login_required(login_url="/user/login/")
 def create_views(request):
     if request.method == "POST":
@@ -31,7 +33,10 @@ def create_views(request):
                 announce.files.create(file=file)
             if announce.preSave == True:
                 messages.success(request, "임시저장이 완료되었습니다.")
-                return redirect("announcement:update_announcement", announce.pk)
+                return redirect(
+                    "announcement:update_announcement",
+                    announce.pk,
+                )
             return redirect("announcement:announcement")
     else:
         pre_save_post = models.AnnouncePost.objects.filter(
@@ -48,9 +53,14 @@ def create_views(request):
     )
 
 
+# 공지사항 수정
 @login_required(login_url="/user/login/")
 def update_views(request, pk):
-    instance = get_object_or_404(models.AnnouncePost, pk=pk, writer=request.user)
+    instance = get_object_or_404(
+        models.AnnouncePost,
+        pk=pk,
+        writer=request.user,
+    )
     if request.method == "POST":
         form = forms.AnnouncePostForm(request.POST, instance=instance)
         if form.is_valid():
@@ -79,6 +89,7 @@ def update_views(request, pk):
     )
 
 
+# 공지사항 조회
 @login_required(login_url="/user/login/")
 def get_announcements(request):
     page = request.GET.get("page", 1)
@@ -97,6 +108,7 @@ def get_announcements(request):
     )
 
 
+# 공지사항 삭제
 @login_required(login_url="/user/login/")
 def delete_announcements(request):
     if request.method == "POST":
