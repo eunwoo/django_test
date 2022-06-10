@@ -12,14 +12,17 @@ from .utils import decodeDesignImage
 from django.contrib import messages
 
 
+# 일반사용자/시스템관리자 선택 페이지
 def usertype(request):
     return render(request, "auth/usertype.html")
 
 
+# 일반사용자 이용약관
 def agreeForUser(request):
     return render(request, "auth/agreeForUser.html")
 
 
+# 일반사용자 회원가입
 def registerUser(request):
     if request.method == "POST":
         form = forms.UserForm(request.POST)
@@ -37,10 +40,12 @@ def registerUser(request):
     return render(request, "auth/registerUser.html", {"form": form})
 
 
+# 시스템관리자 이용약관
 def agreeForAdmin(request):
     return render(request, "auth/agreeForAdmin.html")
 
 
+# 시스템관리자 회원가입
 def registerAdmin(request):
     if request.method == "POST":
         form = forms.AdminForm(request.POST)
@@ -60,6 +65,7 @@ def registerAdmin(request):
     return render(request, "auth/registerAdmin.html", {"form": form})
 
 
+# 유저 및 시스템관리자 개인정보 수정
 def editUser(request):
     user = request.user
     if user.is_system_manager:
@@ -94,6 +100,7 @@ def editUser(request):
         return render(request, "auth/editUser.html", {"form": form})
 
 
+# 아이디 중복 검사
 def id_check(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -104,10 +111,12 @@ def id_check(request):
     return Http404()
 
 
+# 아이디 및 비밀번호 찾기 메뉴
 def find_menu(request):
     return render(request, "auth/find/menu.html")
 
 
+# 아이디 찾기
 def find_id(request):
     if request.method == "POST":
         name = request.POST["name"]
@@ -120,6 +129,7 @@ def find_id(request):
     return render(request, "auth/find/id.html")
 
 
+# 인증번호 전송
 def require_code(request):
     if request.method == "POST":
         id = request.POST["id"]
@@ -137,6 +147,7 @@ def require_code(request):
     return Http404()
 
 
+# 비밀번호 초기화
 def reset_pwd(request):
     if request.method == "POST":
         id = request.POST["id"]
@@ -162,6 +173,7 @@ def reset_pwd(request):
     return render(request, "auth/find/password.html")
 
 
+# 비밀번호 초기화 완료
 def reset_pwd_success(request):
     if request.method == "POST":
         code = request.POST["code"]

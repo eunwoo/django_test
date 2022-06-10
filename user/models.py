@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-# Create model for user registration
+# 유저 모델
 class CustomUser(AbstractUser):
     name = models.CharField(max_length=30)
     class1 = models.CharField(max_length=60)
@@ -23,6 +23,7 @@ class CustomUser(AbstractUser):
     last_name = None
 
 
+# 비밀번호 초기화 승인코드
 class ChangePwd(models.Model):
     code = models.CharField(max_length=6)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
