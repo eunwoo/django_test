@@ -195,13 +195,13 @@ def create_quality_performance(request, qty_report):
             standard=request.POST.getlist(form_list[1])[index],
             testType_hweem=True
             if request.POST.getlist(form_list[2])[index] == "on"
-            else False,
+            else False,  # 휨 하중 체크여부
             testType_zip=True
             if request.POST.getlist(form_list[3])[index] == "on"
-            else False,
+            else False,  # 압축 하중 체크여부
             testType_tensile=True
             if request.POST.getlist(form_list[4])[index] == "on"
-            else False,
+            else False,  # 인장 하중 체크여부
             plan=request.POST.getlist(form_list[5])[index],
             conducted=request.POST.getlist(form_list[6])[index],
             acceptance=request.POST.getlist(form_list[7])[index],

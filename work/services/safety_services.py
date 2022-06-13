@@ -59,7 +59,7 @@ def read_safety_service(pk):
     return safety
 
 
-# 구조 안전성 검토 문서 생성
+# 일반관리자 구조 안전성 검토 문서 생성
 def create_safety_service(request):
     if request.method == "POST":
         form = GeneralManagerSafetyReportForm(request.POST)
@@ -70,12 +70,11 @@ def create_safety_service(request):
             files = request.POST.getlist("docs[]")
             safety.save()
             safety.locateId.clear()
-            for locate_id in locates:
+            for locate_id in locates:  # 설치위치 등록
                 locate = InstallLocate.objects.get(pk=int(locate_id))
                 safety.locateId.add(locate)
-            safety.save()
             safety.docs.clear()
-            for file_id in files:
+            for file_id in files:  # 첨부파일 등록
                 doc_file = DocsFile.objects.get(pk=int(file_id))
                 safety.docs.add(doc_file)
             messages.success(request, "저장이 완료되었습니다.")
@@ -85,7 +84,7 @@ def create_safety_service(request):
 
     # 문서 번호 로드
     last_doc = SafetyReport.objects.last()
-    if not last_doc:
+    if not last_doc:  # 처음 작성할 문서의 경우
         docNum = 1
     else:
         docNum = last_doc.docNum + 1
@@ -122,7 +121,7 @@ def create_safety_service(request):
     )
 
 
-# 구조 안전성 검토 문서 수정
+# 일반관리자 구조 안전성 검토 문서 수정
 def update_safety_general(request, pk):
     instance = SafetyReport.objects.get(docNum=pk)
     if request.method == "POST":
