@@ -10,12 +10,12 @@ from ..services.quality_report_services import (
     create_quality_report_service,
     delete_qty_reports_service,
     get_qty_report_list_by_user,
-    qty_report_success,
     read_qty_report_service,
     update_quality_report_service,
 )
 
 
+# 품질검사 성과 보고서 목록
 @login_required(login_url="/user/login/")
 def quality_report(request):
     page = request.GET.get("page", 1)
@@ -31,9 +31,10 @@ def quality_report(request):
     )
 
 
+# 품질검사 성과 보고서 조회
 @login_required(login_url="/user/login/")
 def read_quality_report(request, pk):
-    qty_report = read_qty_report_service(request.user, pk)
+    qty_report = read_qty_report_service(pk)
     qty_report_file_url = list(
         map(lambda x: x.doc.url, qty_report.quality_performance_file.all())
     )
@@ -47,21 +48,25 @@ def read_quality_report(request, pk):
     )
 
 
+# 품질검사 성과 보고서 작성
 @login_required(login_url="/user/login/")
 def create_quality_report(request):
     return create_quality_report_service(request)
 
 
+# 품질검사 성과 보고서 수정
 @login_required(login_url="/user/login/")
 def update_quality_report(request, pk):
     return update_quality_report_service(request, pk)
 
 
+# 품질검사 성과 보고서 삭제
 @login_required(login_url="/user/login/")
 def delete_quality_report(request):
     return delete_qty_reports_service(request)
 
 
+# 품질검사 성과 보고서 서명요청
 @login_required(login_url="/user/login/")
 def require_sign_quality_report(request):
     if request.method == "POST":

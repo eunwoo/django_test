@@ -1,6 +1,7 @@
 import requests
 
 
+# 비밀번호 찾기 인증 문자 발송
 def code_send(code, phone):
     send_url = "https://apis.aligo.in/send/"  # 요청을 던지는 URL, 현재는 문자보내기
     sender = "01025093834"  # 보내는 번호 => 현재 지영님 폰 번호만 인증이 되어서 다른 번호는 사용 불가

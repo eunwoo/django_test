@@ -20,14 +20,17 @@ from work.models import (
 from system_manager.models import InstallLocate
 
 
+# 리다이렉트 URL 설정
 def custom_redirect(url_name, *args, **kwargs):
     url = reverse(url_name, args=args)
     params = parse.urlencode(kwargs, True)
     return HttpResponseRedirect(url + "?%s" % params)
 
 
+# 결과보고 검색
 def get_search_list(post_key, locate_value=0, search=""):
     union_list = list()
+    # 구조 안전성 검토 결과
     if "safety" in post_key:
         type_list = []
         if "type1" in post_key:
@@ -50,6 +53,7 @@ def get_search_list(post_key, locate_value=0, search=""):
         )
         for add_item in add_query:
             union_list.append(add_item)
+    # 자재 공급 결과
     if "material" in post_key:
         add_query = (
             MaterialSupplyReport.objects.filter(
@@ -61,6 +65,7 @@ def get_search_list(post_key, locate_value=0, search=""):
         )
         for add_item in add_query:
             union_list.append(add_item)
+    # 품질 검사 결과
     if "quality" in post_key:
         add_query = (
             QualityInspectionRequest.objects.filter(
@@ -79,6 +84,7 @@ def get_search_list(post_key, locate_value=0, search=""):
         )
         for add_item in add_query:
             union_list.append(add_item)
+    # 설치작업 결과
     if "install" in post_key:
         type_list = []
         if "type1" in post_key:

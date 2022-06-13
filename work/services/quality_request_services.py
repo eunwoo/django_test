@@ -16,6 +16,7 @@ from ..services.common_services import sms_send
 from django.contrib import messages
 
 
+# 품질검사 의뢰서 목록 조회
 def get_qty_request_list_by_user(user):
     if user.class2 == "일반 사용자":
         return QualityInspectionRequest.objects.filter(
@@ -40,6 +41,7 @@ def get_qty_request_list_by_user(user):
         ).order_by("-docNum")
 
 
+# 품질검사 의뢰서 생성
 def create_quality_request_service(request):
     field = Field.objects.get(pk=1)  # 현장 관리는 하나만 있음
     if request.method == "POST":
@@ -69,6 +71,7 @@ def create_quality_request_service(request):
     )
 
 
+# 품질검사 의뢰서 수정
 def update_quality_request_service(request, docNum):
     if request.user.class2 == "일반 사용자":
         return update_quality_request_for_generalManager(request, docNum)
@@ -79,6 +82,7 @@ def update_quality_request_service(request, docNum):
     return Http404()
 
 
+# 일반관리자 품질검사 의뢰서 수정
 def update_quality_request_for_generalManager(request, docNum):
     qty_req = QualityInspectionRequest.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -106,6 +110,7 @@ def update_quality_request_for_generalManager(request, docNum):
     )
 
 
+# 현장대리인 품질검사 의뢰서 수정
 def update_quality_request_for_agent(request, docNum):
     qty_req = QualityInspectionRequest.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -123,6 +128,7 @@ def update_quality_request_for_agent(request, docNum):
     )
 
 
+# 일반건설사업관리기술인 품질검사 의뢰서 수정
 def update_quality_request_for_generalEngineer(request, docNum):
     qty_request = QualityInspectionRequest.objects.get(docNum=docNum)
     if request.method == "POST":
@@ -137,6 +143,7 @@ def update_quality_request_for_generalEngineer(request, docNum):
     )
 
 
+# 품질검사 의뢰서 유저 할당
 def assign_user_for_qty_request(user, doc, user_pk: int, link):
     target_user = CustomUser.objects.get(pk=user_pk)
     if user.class2 == "일반 사용자":
@@ -163,11 +170,13 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
     return True
 
 
-def read_qty_request_service(user, pk):
+# 품질검사 의뢰서 조회
+def read_qty_request_service(pk):
     qty_request = QualityInspectionRequest.objects.get(docNum=pk)
     return qty_request
 
 
+# 품질검사 의뢰서 삭제
 def delete_qty_requests_service(request):
     if request.method == "POST":
         qty_request_list = request.POST.getlist("delete_list[]")

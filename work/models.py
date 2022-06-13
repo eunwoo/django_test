@@ -12,7 +12,7 @@ from system_manager.models import (
 
 # 구조 안전성 검토 신고서 관련 문서
 class SafetyReport(models.Model):
-    docNum = models.AutoField(primary_key=True)
+    docNum = models.AutoField(primary_key=True)  # 문서 번호
     date = models.DateField()  # 작성 일자
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
@@ -25,7 +25,7 @@ class SafetyReport(models.Model):
         ("1", "승인-제출한 내용대로 진행"),
         ("2", "조건부 승인-의견반영 후 진행"),
         ("3", "승인 불가"),
-    )
+    )  # 결과 목록
     result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
@@ -43,9 +43,9 @@ class SafetyReport(models.Model):
     isSuccess = models.BooleanField(default=False)
 
     # 체크리스트 전용 속성
-    checklistDate = models.DateField(null=True)
-    checklistConstructType = models.CharField(max_length=90, null=True)
-    checklistTitle = models.CharField(max_length=90, null=True)
+    checklistDate = models.DateField(null=True)  # 체크리스트 작성 날짜
+    checklistConstructType = models.CharField(max_length=90, null=True)  # 체크리스트 타입
+    checklistTitle = models.CharField(max_length=90, null=True)  # 체크리스트 제목
 
     # 구조안전성 검토 첨부문서
     docs = models.ManyToManyField(
@@ -88,6 +88,7 @@ class SafetyReport(models.Model):
     requested_at = models.DateTimeField(null=True)
 
 
+# 구조 안전성 검토 체크리스트 대분류
 class SafetyCheckType(models.Model):
     title = models.CharField(max_length=30)
 
@@ -95,36 +96,40 @@ class SafetyCheckType(models.Model):
         return self.title
 
 
+# 구조 안전성 검토 체크리스트 목록
 class SafetyCheckMenu(models.Model):
-    content = models.TextField()
-    checkType = models.ForeignKey(SafetyCheckType, on_delete=models.CASCADE)
-    initItem = models.BooleanField(default=False)
+    content = models.TextField()  # 체크리스트 항목
+    checkType = models.ForeignKey(
+        SafetyCheckType, on_delete=models.CASCADE
+    )  # 체크리스트 대분류
+    initItem = models.BooleanField(default=False)  # 초기 아이템 여부
 
     def __str__(self):
         return self.content
 
 
+# 구조 안전성 검토 체크리스트 응답
 class SafetyCheckList(models.Model):
     result_choices = (
         ("1", "예"),
         ("2", "아니요"),
         ("3", "해당사항 없음"),
-    )
+    )  # 체크리스트 응답 목록
     result = models.CharField(
         max_length=60,
         choices=result_choices,
         default="1",
-    )
+    )  # 체크리스트 응답
     safetyReportId = models.ForeignKey(
         SafetyReport,
         on_delete=models.CASCADE,
         related_name="safety_check_list",
-    )
+    )  # 구조 안전성 신고서
     safetyCheckMenuId = models.ForeignKey(
         SafetyCheckMenu,
         on_delete=models.CASCADE,
         related_name="safety_check_list",
-    )
+    )  # 체크리스트 목록
 
     def __str__(self):
         return str(self.result)
@@ -135,7 +140,7 @@ class SafetyCheckList(models.Model):
 
 # 자재 공급원 신고서 관련 문서
 class MaterialSupplyReport(models.Model):
-    docNum = models.AutoField(primary_key=True)
+    docNum = models.AutoField(primary_key=True)  # 신고서 번호
     date = models.DateField()  # 작성 일자
     title = models.CharField(max_length=90)  # 제목
     constructType = models.CharField(max_length=90)  # 공증
@@ -148,13 +153,13 @@ class MaterialSupplyReport(models.Model):
         ("1", "승인-제출한 내용대로 진행"),
         ("2", "조건부 승인-의견반영 후 진행"),
         ("3", "승인 불가"),
-    )
+    )  # 신고서 응답 목록
     fieldId = models.ForeignKey(
         Field,
         on_delete=models.SET_NULL,
         null=True,
         related_name="material_supply",
-    )
+    )  # 작업 현장
     result = models.CharField(
         max_length=10,
         choices=result_choices,
@@ -165,18 +170,21 @@ class MaterialSupplyReport(models.Model):
         DocsFile,
         blank=True,
         related_name="material_docs",
-    )
+    )  # 첨부 문서 목록
 
+    # 저장여부 확인
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
     isSaveGeneralEngineer = models.BooleanField(default=False)
     isSaveTotalEngineer = models.BooleanField(default=False)
 
+    # 확인여부 확인
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
 
+    # 연결된 관리자
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -212,6 +220,7 @@ class MaterialSupplyReport(models.Model):
         return "자재 공급원 신고서 - " + self.docNum
 
 
+# 자재 공급원 신고서 공급 목록
 class SupplyList(models.Model):
     name = models.CharField(max_length=60)  # 공급업체명
     goods = models.CharField(max_length=60)  # 품명
@@ -247,7 +256,7 @@ class MaterialDocs(models.Model):
 
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
-    docNum = models.AutoField(primary_key=True)
+    docNum = models.AutoField(primary_key=True)  # 의뢰서 번호
     title = models.CharField(max_length=90)  # 제목
     goods = models.CharField(max_length=60)  # 품명
     size = models.CharField(max_length=60)  # 규격
@@ -267,19 +276,22 @@ class QualityInspectionRequest(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="quality_inspection_request",
-    )
+    )  # 현장
     isImportFacility = models.TextField()  # 국가 중요시설 여부
 
     orderDate = models.DateField(null=True)  # 의뢰일
 
+    # 저장여부 확인
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
     isSaveGeneralEngineer = models.BooleanField(default=False)
 
+    # 확인여부 확인
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)  # 성공 여부
 
+    # 연결된 관리자
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -319,16 +331,19 @@ class QualityPerformanceReport(models.Model):
         related_name="quality_performance_report",
     )  # 현장등록
 
+    # 저장여부 확인
     isSaveManager = models.BooleanField(default=False)
     isSaveAgent = models.BooleanField(default=False)
     isSaveGeneralEngineer = models.BooleanField(default=False)
     isSaveTotalEngineer = models.BooleanField(default=False)
 
+    # 확인여부 확인
     isCheckManager = models.BooleanField(default=False)
     isCheckAgent = models.BooleanField(default=False)
     isCheckGeneralEngineer = models.BooleanField(default=False)
     isSuccess = models.BooleanField(default=False)
 
+    # 연결된 관리자
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -377,7 +392,7 @@ class QualityPerformance(models.Model):  # 품질검사 성과 총괄표
         QualityPerformanceReport,
         on_delete=models.CASCADE,
         related_name="quality_performance",
-    )
+    )  # 품질검사 성과 총괄표
 
     def __str__(self):
         return self.goods
@@ -390,7 +405,7 @@ class QualityPerformanceFile(models.Model):
         QualityPerformanceReport,
         on_delete=models.CASCADE,
         related_name="quality_performance_file",
-    )
+    )  # 품질검사 성과 총괄표
 
     def __str__(self):
         return self.title
@@ -413,6 +428,8 @@ class BeforeInstallCheckList(models.Model):
     equipment = models.CharField(
         max_length=60,
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+
+    # 연관된 관리자
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -426,15 +443,17 @@ class BeforeInstallCheckList(models.Model):
         blank=True,
         related_name="before_install_checklist",
     )
+
+    # 미로그인 유저 접속 코드
     urlCode = models.CharField(
         max_length=60,
         blank=True,
         db_index=True,
     )
 
-    isSuccess = models.BooleanField(default=False)
-    isCheckWriter = models.BooleanField(default=False)
-    isCheckCM = models.BooleanField(default=False)
+    isSuccess = models.BooleanField(default=False)  # 완료 여부
+    isCheckWriter = models.BooleanField(default=False)  # 작성자 확인 여부
+    isCheckCM = models.BooleanField(default=False)  # 관리담당자 확인 여부
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     expired_date = models.DateTimeField(blank=True, null=True)
@@ -444,6 +463,7 @@ class BeforeInstallCheckList(models.Model):
         return self.expired_date < timezone.now()
 
 
+# 설치작업 전 체크리스트 점검 항목
 class BeforeInspectionItem(models.Model):
     title = models.CharField(max_length=60)  # 점검 항목
     equipment_choices = (("1", "강관 비계"), ("2", "시스템 비계"), ("3", "시스템 동바리"))
@@ -453,6 +473,7 @@ class BeforeInspectionItem(models.Model):
     init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
+# 설치작업 전 체크리스트 체크 결과
 class BeforeInspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
     result = models.CharField(
@@ -464,15 +485,16 @@ class BeforeInspectionResult(models.Model):
         BeforeInstallCheckList,
         on_delete=models.CASCADE,
         related_name="before_inspection_result",
-    )
+    )  # 설치작업 전 체크리스트
     before_inspection_item_id = models.ForeignKey(
         BeforeInspectionItem,
         on_delete=models.SET_NULL,
         null=True,
         related_name="before_inspection_result",
-    )
+    )  # 설치작업 전 체크리스트 점검 항목
 
 
+# 설치작업 전 체크리스트 조치사항
 class BeforeMeasure(models.Model):
     content = models.TextField(blank=True)  # 조치사항 확인 내용
     isCM = models.BooleanField(default=False)  # CM 작성 여부
@@ -482,14 +504,15 @@ class BeforeMeasure(models.Model):
         null=True,
         blank=True,
         related_name="before_measure",
-    )
+    )  # CM
     result = models.ForeignKey(
         BeforeInspectionResult,
         on_delete=models.CASCADE,
         related_name="before_measure",
-    )
+    )  # 설치작업 전 체크리스트 점검 항목
 
 
+# 설치작업 전 체크리스트 조치사항 이미지 파일
 class BeforeMeasureImg(models.Model):
     img = models.ImageField(upload_to="before_measure")
     beforeMeasure = models.ForeignKey(
@@ -518,6 +541,8 @@ class InstallCheckList(models.Model):
     equipment = models.CharField(
         max_length=60,
     )  # 강관 비계, 시스템 동바리, 시스템 비계 택1
+
+    # 연관된 관리자
     writerId = models.ForeignKey(
         CustomUser,
         on_delete=models.SET_NULL,
@@ -531,15 +556,18 @@ class InstallCheckList(models.Model):
         blank=True,
         related_name="install_checklist",
     )
+
+    # 미로그인 유저 접속 코드
     urlCode = models.CharField(
         max_length=60,
         blank=True,
         db_index=True,
     )
 
-    isSuccess = models.BooleanField(default=False)
-    isCheckWriter = models.BooleanField(default=False)
-    isCheckCM = models.BooleanField(default=False)
+    isSuccess = models.BooleanField(default=False)  # 설치작업 완료 여부
+    isCheckWriter = models.BooleanField(default=False)  # 작성자 확인 여부
+    isCheckCM = models.BooleanField(default=False)  # CM 확인 여부
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     expired_date = models.DateTimeField(blank=True, null=True)
@@ -549,10 +577,12 @@ class InstallCheckList(models.Model):
         return self.expired_date < timezone.now()
 
 
+# 설치작업 중 체크리스트 점검 항목 대분류
 class InspectionItemCategory(models.Model):
     type = models.CharField(max_length=60)  # 점검 항목 대분류
 
 
+# 설치작업 중 체크리스트 점검 항목
 class InspectionItem(models.Model):
     title = models.CharField(max_length=60)  # 점검 항목
     categoryId = models.ForeignKey(
@@ -567,6 +597,7 @@ class InspectionItem(models.Model):
     init_item = models.BooleanField(default=False)  # 초기 점검 항목인지 여부
 
 
+# 설치작업 중 체크리스트 점검 항목 조치
 class InspectionResult(models.Model):
     result_choices = (("1", "양호"), ("2", "미흡"), ("3", "해당사항 없음"))
     result = models.CharField(
@@ -587,6 +618,7 @@ class InspectionResult(models.Model):
     )
 
 
+# 설치작업 중 체크리스트 점검 항목 조치사항
 class Measure(models.Model):
     content = models.TextField(blank=True)  # 조치사항 확인 내용
     isCM = models.BooleanField(default=False)  # CM 작성 여부
@@ -604,6 +636,7 @@ class Measure(models.Model):
     )
 
 
+# 설치작업 중 체크리스트 점검 항목 조치사항 이미지
 class MeasureImg(models.Model):
     img = models.ImageField(upload_to="measure")
     measure = models.ForeignKey(

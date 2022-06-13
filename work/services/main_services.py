@@ -9,6 +9,7 @@ from ..models import (
 )
 
 
+# 읽지 않은 업무 목록 갯수
 def get_unread_docs_list(user):
     context = {}
     if user.class2 == "일반 사용자":
@@ -69,6 +70,7 @@ def get_unread_docs_list(user):
     return context
 
 
+# 읽지 않은 품질 검사 갯수
 def get_unread_quality_docs(user):
     context = {}
     if user.class2 == "일반 사용자":

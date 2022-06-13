@@ -21,6 +21,7 @@ from ..services.safety_services import (
 )
 
 
+# 구조 안전성 검토 목록
 @login_required(login_url="/user/login/")
 def safety(request):
     page = request.GET.get("page", 1)
@@ -37,14 +38,16 @@ def safety(request):
     )
 
 
+# 구조 안전성 검토 신고서 작성
 @login_required(login_url="/user/login/")
 def create_safety(request):
     return create_safety_service(request)
 
 
+# 구조 안전성 검토 신고서 조회
 @login_required(login_url="/user/login/")
 def read_safety(request, pk):
-    safety = read_safety_service(request.user, pk)
+    safety = read_safety_service(pk)
     safety_url = list(map(lambda x: x.file.url, safety.docs.all()))
     return render(
         request,
@@ -56,6 +59,7 @@ def read_safety(request, pk):
     )
 
 
+# 구조 안전성 검토 신고서 수정
 @login_required(login_url="/user/login/")
 def update_safety(request, pk):
     if request.user.class2 == "일반 사용자":
@@ -70,6 +74,7 @@ def update_safety(request, pk):
     return Http404("잘못된 접근입니다.")
 
 
+# 유저 목록 로드
 @login_required(login_url="/user/login/")
 def get_users(request):
     users = get_sign_users(request)
@@ -79,7 +84,7 @@ def get_users(request):
     )
 
 
-# 메일 전송 및 문자 전송
+# 문자 전송
 @login_required(login_url="/user/login/")
 def require_sign(request):
     if request.method == "POST":
@@ -102,6 +107,7 @@ def require_sign(request):
     return Http404("잘못된 접근입니다.")
 
 
+# 구조 안전성 검토 체크리스트 작성
 @login_required(login_url="/user/login/")
 def create_checklist(request, pk):
     if request.user.class2 != "일반 건설사업관리기술인":
@@ -139,6 +145,7 @@ def create_checklist(request, pk):
     )
 
 
+# 구조 안전성 검토 체크리스트 조회
 @login_required(login_url="/user/login/")
 def read_checklist(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
@@ -150,11 +157,13 @@ def read_checklist(request, pk):
     )
 
 
+# 구조 안전성 검토 체크리스트 삭제
 @login_required(login_url="/user/login/")
 def delete_safety(request):
     return delete_safeties(request)
 
 
+# 구조 안전성 검토 체크리스트 항목 추가
 @login_required(login_url="/user/login/")
 def create_checklist_item(request):
     if request.method == "POST":

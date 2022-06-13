@@ -2,6 +2,7 @@ from user.models import CustomUser
 import requests
 
 
+# 유저 할당
 def assign_user(user, doc, user_pk: int, link):
     target_user = CustomUser.objects.get(pk=user_pk)
     if user.class2 == "일반 사용자":
@@ -34,6 +35,7 @@ def assign_user(user, doc, user_pk: int, link):
     return True
 
 
+# SMS 전송
 def sms_send(
     link, phone_list: list[str], sms_type: int = 0, due_date: str = None
 ) -> bool:
@@ -61,6 +63,7 @@ def sms_send(
     requests.post(send_url, data=sms_data)
 
 
+# SMS 컨텐츠 작성
 def sms_content(link, sms_type: int = 0, due_date: str = None) -> str:
     context = ""
     link_text = ""
@@ -94,6 +97,7 @@ def sms_content(link, sms_type: int = 0, due_date: str = None) -> str:
     return f"안녕하세요. 조립가설기자재 품질평가 및 관리시스템(T-QEMS) 내 {context}이 도착하여 안내드립니다.\n\n{expired_date}{link_text} 바로가기\n {link}"
 
 
+# 이미지 전송
 def image_send(message_list, user_phone):
     send_url = "https://apis.aligo.in/send/"  # 요청을 던지는 URL, 현재는 문자보내기
     sender = "01025093834"  # 보내는 번호 => 현재 지영님 폰 번호만 인증이 되어서 다른 번호는 사용 불가
