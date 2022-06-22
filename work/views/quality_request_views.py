@@ -15,6 +15,7 @@ from ..services.quality_request_services import (
 )
 
 
+# 품질검사 의뢰서 목록
 @login_required(login_url="/user/login/")
 def quality_request(request):
     page = request.GET.get("page", 1)
@@ -31,19 +32,22 @@ def quality_request(request):
     )
 
 
+# 품질검사 의뢰서 작성
 @login_required(login_url="/user/login/")
 def create_quality_request(request):
     return create_quality_request_service(request)
 
 
+# 품질검사 의뢰서 수정
 @login_required(login_url="/user/login/")
 def update_quality_request(request, pk):
     return update_quality_request_service(request, pk)
 
 
+# 품질검사 의뢰서 조회
 @login_required(login_url="/user/login/")
 def read_quality_request(request, pk):
-    qty_request = read_qty_request_service(request.user, pk)
+    qty_request = read_qty_request_service(pk)
     return render(
         request,
         "work/quality/quality_request/read_quality_request.html",
@@ -51,6 +55,7 @@ def read_quality_request(request, pk):
     )
 
 
+# 품질검사 의뢰서 서명 요청
 @login_required(login_url="/user/login/")
 def require_sign_quality_request(request):
     if request.method == "POST":
@@ -71,6 +76,7 @@ def require_sign_quality_request(request):
     return Http404("잘못된 접근입니다.")
 
 
+# 품질검사 의뢰서 삭제
 @login_required(login_url="/user/login/")
 def delete_qty_requests(request):
     return delete_qty_requests_service(request)

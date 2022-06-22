@@ -3,11 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from urllib import parse
 
-# Create your views here.
-
 from .services import get_search_list, custom_redirect
 
 
+# 결과보고 검색
 @login_required(login_url="/user/login/")
 def search(request):
     if request.GET.getlist("query"):
@@ -23,6 +22,7 @@ def search(request):
     )
 
 
+# 결과보고 검색 결과
 @login_required(login_url="/user/login/")
 def search_result(request):
     page = request.GET.get("page", 1)

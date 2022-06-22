@@ -3,7 +3,7 @@ from django.db import models
 from user.models import CustomUser
 
 
-# Create your models here.
+# 공지사항
 class AnnouncePost(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
@@ -19,6 +19,7 @@ class AnnouncePost(models.Model):
         return self.title
 
 
+# 공지사항 첨부파일
 class AnnouncePostFile(models.Model):
     file = models.FileField(upload_to="announcement/files/")
     announce_post = models.ForeignKey(

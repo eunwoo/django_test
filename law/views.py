@@ -6,6 +6,7 @@ from . import forms, models
 from django.contrib import messages
 
 
+# 법률정보 조회
 @login_required(login_url="/user/login/")
 def read_views(request, pk):
     item = get_object_or_404(models.LawPost, pk=pk)
@@ -16,6 +17,7 @@ def read_views(request, pk):
     )
 
 
+# 법률정보 작성
 @login_required(login_url="/user/login/")
 def create_views(request):
     if request.method == "POST":
@@ -46,6 +48,7 @@ def create_views(request):
     )
 
 
+# 법률정보 수정
 @login_required(login_url="/user/login/")
 def update_views(request, pk):
     instance = get_object_or_404(models.LawPost, pk=pk, writer=request.user)
@@ -77,6 +80,7 @@ def update_views(request, pk):
     )
 
 
+# 법률정보 목록
 @login_required(login_url="/user/login/")
 def get_laws(request):
     page = request.GET.get("page", 1)
@@ -93,6 +97,7 @@ def get_laws(request):
     )
 
 
+# 법률정보 삭제
 @login_required(login_url="/user/login/")
 def delete_laws(request):
     if request.method == "POST":

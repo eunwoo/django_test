@@ -10,15 +10,22 @@ from .views import (
 
 app_name = "system_manager"
 
+
+# 설치위치명 등록 관련
 locate_api = [
+    # 설치위치 로드
     path("locate/<int:class_type>/", locate_views.read_locate_class, name="get_locate"),
+    # 설치위치 추가
     path("locate/add/", locate_views.add_locate, name="add_locate"),
+    # 설치위치 삭제
     path(
         "locate/delete/",
         locate_views.delete_locate,
         name="delete_locate",
     ),
+    # 설치위치 등록
     path("locate/accept/", locate_views.accept_locate, name="accept_locate"),
+    # 설치위치 등록 해제
     path(
         "locate/deregistration/",
         locate_views.deregistration_locate,

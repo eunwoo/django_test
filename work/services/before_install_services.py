@@ -21,6 +21,7 @@ from system_manager.models import ConstructManager
 from ..services.common_services import sms_send  # , image_send
 
 
+# 설치 작업 전 체크리스트 건설관리자 할당
 def assign_cm(request):
     doc = BeforeInstallCheckList.objects.get(pk=request.POST.get("docNum"))
     doc.isCheckWriter = True
@@ -49,11 +50,13 @@ def assign_cm(request):
     sms_send(link, [cm_phone], 2, due_date.strftime("%Y년 %m월 %d일 %I:%M %p"))
 
 
+# CM 목록 로드
 def get_require_users():
     users = ConstructManager.objects.all()
     return users
 
 
+# 설치 작업 전 체크리스트 항목 추가
 def create_item(type, title):
     if type == "강관 비계":
         equipment = "1"
@@ -66,6 +69,7 @@ def create_item(type, title):
     return new_item.pk
 
 
+# 설치 작업 전 체크리스트 작성
 def before_install_checklist_service(request, type: str):
     equipment = ""
     if type == "강관 비계":
@@ -130,6 +134,7 @@ def before_install_checklist_service(request, type: str):
     )
 
 
+# 설치 작업 전 체크리스트 수정
 def update_before_checklist_service(request, type, pk):
     instance = BeforeInstallCheckList.objects.get(pk=pk)
     if request.method == "POST":
@@ -210,6 +215,7 @@ def update_before_checklist_service(request, type, pk):
     )
 
 
+# 설치 작업 전 체크리스트 삭제
 def before_install_checklists_delete_service(request):
     if request.method == "POST":
         before_install_checklist_list = request.POST.getlist("delete_list[]")
@@ -222,6 +228,7 @@ def before_install_checklists_delete_service(request):
     return JsonResponse({"result": "fail"}, status=400)
 
 
+# 설치 작업 전 체크리스트 조치 리뷰 작성
 def review_before_install_checklist_service(request, type, pk):
     checklist = BeforeInstallCheckList.objects.get(pk=pk)
     isSave = False
@@ -268,6 +275,7 @@ def review_before_install_checklist_service(request, type, pk):
     )
 
 
+# 설치 작업 전 체크리스트 CM 조치 반영
 def measure_before_install_service(request, urlCode):
     checklist = get_object_or_404(
         BeforeInstallCheckList,
@@ -317,6 +325,7 @@ def measure_before_install_service(request, urlCode):
     )
 
 
+# 설치 작업 전 체크리스트 CM 조치 반영
 def measure_apply_before_install(request, urlCode):
     checklist = get_object_or_404(
         BeforeInstallCheckList,
@@ -333,6 +342,7 @@ def measure_apply_before_install(request, urlCode):
     return redirect("main:home")
 
 
+# 설치 작업 전 체크리스트 조치 완료
 def success_before_install_checklist_service(request, pk):
     checklist = get_object_or_404(BeforeInstallCheckList, pk=pk)
     checklist.isSuccess = True

@@ -15,6 +15,7 @@ from ..services.material_services import (
 )
 
 
+# 자재 공급원 신고서 목록
 @login_required(login_url="/user/login/")
 def material(request):
     page = request.GET.get("page", 1)
@@ -27,16 +28,19 @@ def material(request):
     return render(request, "work/material/material.html", {"materialitems": page_obj})
 
 
+# 자재 공급원 신고서 작성
 @login_required(login_url="/user/login/")
 def create_material(request):
     return create_material_service(request)
 
 
+# 자재 공급원 신고서 수정
 @login_required(login_url="/user/login/")
 def update_material(request, pk):
     return update_material_service(request, pk)
 
 
+# 자재 공급원 신고서 서명 요청
 @login_required(login_url="/user/login/")
 def require_sign_material(request):
     if request.method == "POST":
@@ -57,9 +61,10 @@ def require_sign_material(request):
     return Http404("잘못된 접근입니다.")
 
 
+# 자재 공급원 신고서 조회
 @login_required(login_url="/user/login/")
 def read_material(request, pk):
-    material = read_material_service(request.user, pk)
+    material = read_material_service(pk)
     material_url = list(map(lambda x: x.file.url, material.material_docs.all()))
     return render(
         request,
@@ -68,6 +73,7 @@ def read_material(request, pk):
     )
 
 
+# 자재 공급원 신고서 삭제
 @login_required(login_url="/user/login/")
 def delete_materials(request):
     return delete_materials_service(request)
