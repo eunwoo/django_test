@@ -23,6 +23,7 @@
 
 # 초기 작업
 - [Poetry를 설치해 주세요.](https://python-poetry.org/docs/#installation)
+- .env 파일을 설정해주세요.
 - 아래 내용을 전부 명령어로 입력하세요.
   - poetry install & poetry update              관련 패키지 설치
   - python manage.py makemigrations             데이터베이스 구조 설정

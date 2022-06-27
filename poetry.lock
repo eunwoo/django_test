@@ -235,6 +235,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "django-dotenv"
+version = "1.4.2"
+description = "foreman reads from .env. manage.py doesn't. Let's fix that."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "django-sslserver"
 version = "0.22"
 description = "An SSL-enabled development server for Django"
@@ -898,7 +906,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "91ef4e7c386f85cb0c57bca2636cddee40b52b681fe4982d8cfacb4e9234d0a9"
+content-hash = "ddfeecd51c75c8f32abb11120db57b9351f54b319fa23b00a041260db6d6d943"
 
 [metadata.files]
 appnope = [
@@ -1124,6 +1132,10 @@ django = [
 django-crispy-forms = [
     {file = "django-crispy-forms-1.14.0.tar.gz", hash = "sha256:35887b8851a931374dd697207a8f56c57a9c5cb9dbf0b9fa54314da5666cea5b"},
     {file = "django_crispy_forms-1.14.0-py3-none-any.whl", hash = "sha256:bc4d2037f6de602d39c0bc452ac3029d1f5d65e88458872cc4dbc01c3a400604"},
+]
+django-dotenv = [
+    {file = "django-dotenv-1.4.2.tar.gz", hash = "sha256:3812bb0f4876cf31f902aad140f0645e120e51ee30eb7c40c22050f58a0e4adb"},
+    {file = "django_dotenv-1.4.2-py2.py3-none-any.whl", hash = "sha256:a9b1b40a70bd321acd231926acedb9bd2c5e873e33a1873b34a7276d196a765e"},
 ]
 django-sslserver = [
     {file = "django_sslserver-0.22-py3-none-any.whl", hash = "sha256:c598a363d2ccdc2421c08ddb3d8b0973f80e8e47a3a5b74e4a2896f21c2947c5"},
