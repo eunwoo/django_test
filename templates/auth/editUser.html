@@ -225,7 +225,7 @@
 
     var canvas = document.getElementById("sig-canvas");
     canvas.width = 212;
-    canvas.height = 120;
+    canvas.height = 118;
 
     var ctx = canvas.getContext("2d");
 
@@ -236,7 +236,7 @@
     image.src = "https://i.imgur.com/e66zPVj.png"
     image.crossOrigin = 'Anonymous';
     image.onload = function () {
-      ctx.drawImage(image, 0, 0, 212, 120);
+      ctx.drawImage(image, 0, 0, 212, canvas.height);
     };
 
     var drawing = false;
@@ -345,7 +345,7 @@
 
     function clearCanvas() {
       canvas.width = canvas.width;
-      ctx.drawImage(image, 0, 0, 212, 120);
+      ctx.drawImage(image, 0, 0, 212, canvas.height);
     }
 
     // Set up the UI
@@ -390,7 +390,7 @@
     }
     return
   })
-
+  
   // 전화번호 입력방식
   function autoHypenTel(str) {
     str = str.replace(/[^0-9]/g, '');

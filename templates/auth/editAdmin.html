@@ -58,13 +58,16 @@
               <div class="col-md-2 offset-1">
                 <label for="" class="col-12">소속</label>
               </div>
-              <div class="col-md-8">
+              <div class="col-md-5">
+                {{form.class1.value}} > {{form.class2.value}} >
+              </div>
+              <div class="col-md-3">
                 <div class="row">
                   <div class="col">
                     <select name="class3" class="col-12 text-center" maxlength="60" id="id_class3">
-                      <option value="시공 관리자">시공 관리자</option>
-                      <option value="품질 관리자">품질 관리자</option>
-                      <option value="안전 관리자">안전 관리자</option>
+                      <option {% if form.class3.value == '시공 관리자' %} selected {% endif %} value="시공 관리자">시공 관리자</option>
+                      <option {% if form.class3.value == '품질 관리자' %} selected {% endif %} value="품질 관리자">품질 관리자</option>
+                      <option {% if form.class3.value == '안전 관리자' %} selected {% endif %} value="안전 관리자">안전 관리자</option>
                       <option value="해당 사항 없음">해당 사항 없음</option>
                     </select>
                   </div>
@@ -339,6 +342,8 @@
       canvas.width = canvas.width;
       ctx.drawImage(image, 0, 0, 212, 120);
     }
+
+  $('#id_class3 option').not(":selected").attr("disabled", "disabled");
 
     // Set up the UI
     var sigText = document.getElementById("sig-dataUrl");

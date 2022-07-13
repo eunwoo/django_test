@@ -31,7 +31,11 @@ System Information
                 </li>
                 {% with type|split:'-' as menu %}
                 <li class="breadcrumb-item">
+                  {% if menu.0 != "품질시험계획서" and menu.0 != "안전점검계획서" %}
                   <a href="{% url "system_manager:detail_menu" type=menu.0 %}">{{menu.0}}</a>
+                  {% else %}
+                  {{menu.0}}
+                  {% endif %}
                 </li>
                 <li class="breadcrumb-item">
                   {{menu.1}}
