@@ -226,35 +226,35 @@
               </tr>
               <tr>
                 <td class="table-primary">시료 채취자</td>
-                <td colspan="1">
-                  <div class="row">
-                    <div class="col-6">
-                      <label for="">업체명</label>
-                    </div>
-                    <div class="col-6">
-                      {{request.user.company}}
-                    </div>
-                  </div>
-                </td>
-                <td colspan="2">
-                  <div class="row">
-                    <div class="col-6">
-                      <label for="" class="mr-1">담당 업무</label>
-                    </div>
-                    <div class="col-6">
-                      {{request.user.class3}}
-                    </div>
-                  </div>
-                </td>
-                <td colspan="1">
-                  <div class="row">
-                    <div class="col-3">
-                      <label for="" class="mr-1">서명</label>
-                    </div>
-                    <div class="col-9">
-                      {{request.user.name}}
-                    </div>
-                  </div>
+                <td colspan="4" style="padding:0;margin:0;border:none;line-height:200%;">
+                  <table cellspacing="0" style="border:none;width:100%;">
+                    <tr>
+                      <td colspan="6" style="border-top:0px; border-bottom:0px; border-left:0px;">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="">업체명</label>
+                          </div>
+                          <div class="col-6">{{request.user.company}}</div>
+                        </div>
+                      </td>
+                      <td colspan="6" style="border-top:0px; border-bottom:0px;">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="" class="mr-1">담당 업무</label>
+                          </div>
+                          <div class="col-6">{{request.user.class3}}</div>
+                        </div>
+                      </td>
+                      <td colspan="6" style="border-top:0px; border-bottom:0px; border-right:0px;">
+                        <div class="row">
+                          <div class="col-3">
+                            <label for="" class="mr-1">서명</label>
+                          </div>
+                          <div class="col-9">{{request.user.name}}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
                 <td>
                   {% if form.instance.writerId != None %}<img width="60%" alt=""
@@ -293,26 +293,35 @@
               </tr>
               <tr>
                 <td class="table-secondary">입회자</td>
-                <td colspan="1">
-                  <div class="row">
-                    <div class="col-6">
-                      <label for="">업체명</label>
-                    </div>
-                  </div>
-                </td>
-                <td colspan="2">
-                  <div class="row">
-                    <div class="col-6">
-                      <label for="" class="mr-1">담당 업무</label>
-                    </div>
-                  </div>
-                </td>
-                <td colspan="1">
-                  <div class="row">
-                    <div class="col-3">
-                      <label for="" class="mr-1">서명</label>
-                    </div>
-                  </div>
+                <td colspan="4" style="padding:0;margin:0;border-top:1px solid #dee2e6;line-height:200%;">
+                  <table cellspacing="0" style="border:none;width:100%;">
+                    <tr>
+                      <td colspan="6" style="border-top:0px; border-bottom:0px; border-left:0px;">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="">업체명</label>
+                          </div>
+                          <div class="col-6"></div>
+                        </div>
+                      </td>
+                      <td colspan="6" style="border-top:1px; border-bottom:0px;">
+                        <div class="row">
+                          <div class="col-6">
+                            <label for="" class="mr-1">담당 업무</label>
+                          </div>
+                          <div class="col-6"></div>
+                        </div>
+                      </td>
+                      <td colspan="6" style="border-top:0px; border-bottom:0px; border-right:0px;">
+                        <div class="row">
+                          <div class="col-3">
+                            <label for="" class="mr-1">서명</label>
+                          </div>
+                          <div class="col-9"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
                 <td>
                   (인)
