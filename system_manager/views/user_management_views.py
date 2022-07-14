@@ -42,7 +42,7 @@ def register_user(request, pk):
     if request.method == "POST":
         user = CustomUser.objects.get(pk=pk)
         user.register = True
-        # accept_send(user.phone)
+        accept_send(user.phone)
         user.save()
         return redirect("system_manager:user_management")
     return redirect("main:home")
