@@ -89,7 +89,7 @@ def get_users(request):
 @login_required(login_url="/user/login/")
 def required_cm(request, type):
     if request.method == "POST":
-        assign_cm(request)
+        # assign_cm(request)
         return redirect("work:before_install", type)
     return Http404()
 

@@ -204,7 +204,7 @@
                 </td>
                 <td>
                   <!-- Button trigger modal -->
-                  {% if checkmenu.result == "2" %}
+                  {% if checkmenu.result == "2" and checkmenu.before_measure.first.content != "" %}
                   <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                     id="modal-btn-{{checkmenu.before_inspection_item_id.pk}}"
                     data-bs-target="#model{{checkmenu.before_inspection_item_id.pk}}">
@@ -213,7 +213,7 @@
                   {% else %}
                   <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                     id="modal-btn-{{checkmenu.before_inspection_item_id.pk}}"
-                    data-bs-target="#model{{checkmenu.before_inspection_item_id.pk}}" disabled>
+                    data-bs-target="#model{{checkmenu.before_inspection_item_id.pk}}" {% if checkmenu.result == "1" %} disabled {% endif %} >
                     입력
                   </button>
                   {% endif %}
@@ -394,18 +394,20 @@
 
   // 미흡항목이 입력 안돼있을 경우 요청 실패
   checklist_form.addEventListener("submit", (e) => {
+    /*
     for (const i of inadequate) {
       if (!(input_belong.includes(i))) {
         e.preventDefault()
         Swal.fire({
           title: 'Error!',
-          text: '미흡항목의 조치사항을 모두 입력해주세요.',
+          text: '미흡항목의 조치사항을 모두 입력해주세요1.',
           icon: 'error',
           confirmButtonText: '닫기'
         })
         return false;
       }
     }
+    */
     return true;
   });
 
@@ -567,6 +569,8 @@
 
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
+    
+    
     if (isChange === true) {
       Swal.fire({
         title: 'Error!',
@@ -576,6 +580,31 @@
       })
       return false;
     }
+
+    let checklist_radio_names = [
+    {% for checkmenu in checklist %}
+      {{checkmenu.before_inspection_item_id.pk}},
+    {% endfor %}
+    ]
+    var is_all_input_ok = true;
+    for(let i = 0; i < {{ checklist.count }}; i++) {
+      console.log(document.querySelector('input[name="'+checklist_radio_names[i]+'"]:checked').value)
+      if(document.querySelector('input[name="'+checklist_radio_names[i]+'"]:checked').value == 2
+      && $('#modal-btn-'+checklist_radio_names[i]).text().trim() === "입력") {
+        is_all_input_ok = false;
+        break;
+      }
+    }
+    if (is_all_input_ok === false) {
+      Swal.fire({
+        title: 'Error!',
+        text: '조치사항을 입력해 주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+
     const offset = new Date().getTimezoneOffset() * 60000
     document.getElementById('expired_date').value = new Date(Date.now() - offset).toISOString().slice(0, 16);
     const select_form = document.getElementById('sign_select')

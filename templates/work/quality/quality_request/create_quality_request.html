@@ -201,7 +201,7 @@
                   <div class="row" id="locate_table">
                     <div class="col-1">Level1</div>
                     <div class="col-3">
-                      <select class="form-select" id="class1">
+                      <select class="form-select" id="class1" >
                       </select>
                     </div>
                     <div class="col-1">Level2</div>
@@ -226,24 +226,32 @@
               </tr>
               <tr>
                 <td class="table-primary">시료 채취자</td>
-                <td colspan="4">
+                <td colspan="1">
                   <div class="row">
-                    <div class="col-1">
+                    <div class="col-6">
                       <label for="">업체명</label>
                     </div>
-                    <div class="col-3">
+                    <div class="col-6">
                       {{request.user.company}}
                     </div>
-                    <div class="col-1">
+                  </div>
+                </td>
+                <td colspan="2">
+                  <div class="row">
+                    <div class="col-6">
                       <label for="" class="mr-1">담당 업무</label>
                     </div>
-                    <div class="col-3">
+                    <div class="col-6">
                       {{request.user.class3}}
                     </div>
-                    <div class="col-1">
+                  </div>
+                </td>
+                <td colspan="1">
+                  <div class="row">
+                    <div class="col-3">
                       <label for="" class="mr-1">서명</label>
                     </div>
-                    <div class="col-3">
+                    <div class="col-9">
                       {{request.user.name}}
                     </div>
                   </div>
@@ -285,22 +293,24 @@
               </tr>
               <tr>
                 <td class="table-secondary">입회자</td>
-                <td colspan="4">
+                <td colspan="1">
                   <div class="row">
-                    <div class="col-1">
+                    <div class="col-6">
                       <label for="">업체명</label>
                     </div>
-                    <div class="col-3">
-                    </div>
-                    <div class="col-1">
+                  </div>
+                </td>
+                <td colspan="2">
+                  <div class="row">
+                    <div class="col-6">
                       <label for="" class="mr-1">담당 업무</label>
                     </div>
+                  </div>
+                </td>
+                <td colspan="1">
+                  <div class="row">
                     <div class="col-3">
-                    </div>
-                    <div class="col-1">
                       <label for="" class="mr-1">서명</label>
-                    </div>
-                    <div class="col-3">
                     </div>
                   </div>
                 </td>

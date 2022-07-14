@@ -121,8 +121,8 @@
                 </td>
                 <td class="table-primary">작성일자</td>
                 <td colspan="2">
-                  <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
-                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
+                  <input type="date" class="form-control" name="date" id="date" placeholder="날짜를 선택해주세요"
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
               <tr>
@@ -138,7 +138,7 @@
               <tr>
                 <td class="table-primary">제목</td>
                 <td colspan="5">
-                  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요."
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요"
                     value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
@@ -591,13 +591,22 @@
       return false;
     }
   })
-
+  console.log('file.title',{{file.title}})
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
     if (isChange === true) {
       Swal.fire({
         title: 'Error!',
         text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    if($('#file_preview').children().length) === 0) {
+      Swal.fire({
+        title: 'Error!',
+        text: '품질검사 성적서를 첨부해 주세요.',
         icon: 'error',
         confirmButtonText: '닫기'
       })

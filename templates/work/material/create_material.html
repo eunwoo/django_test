@@ -113,7 +113,7 @@
                 </td>
                 <td class="table-primary">작성일자</td>
                 <td colspan="2">
-                  <input type="date" class="form-control" name="date" id="date" placeholder="작성일자"
+                  <input type="date" class="form-control" name="date" id="date" placeholder="날짜를 선택해주세요"
                     value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
@@ -130,7 +130,7 @@
               <tr>
                 <td class="table-primary">제목</td>
                 <td colspan="5">
-                  <input type="text" class="form-control" name="title" id="title" placeholder="제목"
+                  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요"
                     value="{{form.instance.title|default_if_none:''}}" required />
                 </td>
               </tr>

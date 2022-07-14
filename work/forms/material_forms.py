@@ -14,7 +14,7 @@ class GeneralManagerMaterialSupplyReportForm(forms.ModelForm):
         ]
         widgets = {
             "text": forms.Textarea(
-                attrs={"class": "form-control text-wrap", "rows": 3, "cols": 50}
+                attrs={"class": "form-control text-wrap", "rows": 3, "cols": 50, "placeholder": "내용을 입력해주세요"}
             )
         }
 
