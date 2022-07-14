@@ -504,6 +504,19 @@
       })
       return false;
     }
+    var selected_option1 = $('#class1 option:selected');
+    var selected_option2 = $('#class2 option:selected');
+    var selected_option3 = $('#class3 option:selected');
+    console.log('selected_option1', selected_option1, selected_option1.val())
+    if(selected_option1.val() == "" || selected_option2.val() == "" || selected_option3.val() === "") {
+      Swal.fire({
+        title: 'Error!',
+        text: '시료채취장소를 입력해 주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
     const select_form = document.getElementById('sign_select')
     select_form.innerHTML = ""
     $.ajax({

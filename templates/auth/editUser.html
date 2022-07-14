@@ -59,21 +59,21 @@
               <div class="row">
                 <div class="col">
                   <select name="class1" class="col-12 text-center" maxlength="60" id="id_class1">
-                    <option value="종합건설업체">종합건설업체</option>
-                    <option value="감리 및 CM 업체">감리 및 CM 업체</option>
+                    <option {% if user.class1 == "종합건설업체" %} selected {% endif %} value="종합건설업체">종합건설업체</option>
+                    <option {% if user.class1 == "감리 및 CM 업체" %} selected {% endif %} value="감리 및 CM 업체">감리 및 CM 업체</option>
                   </select>
                 </div>
                 <div class="col">
                   <select name="class2" class="col-12 text-center" required="required" id="id_class2">
-                    <option value="일반 관리자">일반 관리자</option>
-                    <option value="현장 대리인">현장 대리인</option>
+                    <option {% if user.class2 == "일반 관리자" %} selected {% endif %} value="일반 관리자">일반 관리자</option>
+                    <option {% if user.class2 == "현장 대리인" %} selected {% endif %} value="현장 대리인">현장 대리인</option>
                   </select>
                 </div>
                 <div class="col">
                   <select name="class3" class="col-12 text-center" maxlength="60" id="id_class3">
-                    <option value="시공 관리자">시공 관리자</option>
-                    <option value="품질 관리자">품질 관리자</option>
-                    <option value="안전 관리자">안전 관리자</option>
+                    <option {% if user.class3 == "시공 관리자" %} selected {% endif %} value="시공 관리자">시공 관리자</option>
+                    <option {% if user.class3 == "품질 관리자" %} selected {% endif %} value="품질 관리자">품질 관리자</option>
+                    <option {% if user.class3 == "안전 관리자" %} selected {% endif %} value="안전 관리자">안전 관리자</option>
                     <option value="해당 사항 없음">해당 사항 없음</option>
                   </select>
                 </div>
@@ -348,6 +348,9 @@
       ctx.drawImage(image, 0, 0, 212, canvas.height);
     }
 
+    $('#id_class1 option').not(":selected").attr("disabled", "disabled");
+    $('#id_class2 option').not(":selected").attr("disabled", "disabled");
+    $('#id_class3 option').not(":selected").attr("disabled", "disabled");
     // Set up the UI
     var sigText = document.getElementById("sig-dataUrl");
     var sigImage = document.getElementById("sig-image");
