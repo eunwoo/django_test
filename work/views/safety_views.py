@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -65,6 +66,8 @@ def update_safety(request, pk):
     if request.user.class2 == "일반 사용자":
         return update_safety_general(request, pk)
     elif request.user.class2 == "현장 대리인":
+        print("auth test")
+        print(check_password("dlfqksguswkd2", request.user.password))
         return update_safety_agent(request, pk)
     elif request.user.class2 == "일반 건설사업관리기술인":
         return update_safety_generalEngineer(request, pk)
