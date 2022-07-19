@@ -237,7 +237,7 @@
               <tr>
                 <td class="table-primary">시료 채취 일자</td>
                 <td colspan="5">
-                  <input type="date" class="form-control" name="sampleDate" id="sampleDate" placeholder="날짜를 입력해주세요."
+                  <input type="text" class="form-control" name="sampleDate" id="sampleDate" placeholder="날짜를 입력해주세요." onfocus="(this.type='date')"
                     value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
