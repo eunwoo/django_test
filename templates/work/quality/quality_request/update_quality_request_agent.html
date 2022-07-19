@@ -171,20 +171,16 @@
               <tr>
                 <td class="table-secondary">시료 채취 장소</td>
                 <td colspan="5">
+                  {% for i in qty_request.locateId.all %}
                   <div class="row">
-                    <div class="col-1">Level1</div>
+                    {% for level in i.as_levels %}
+                    <div class="col-1">Level{{forloop.counter}}</div>
                     <div class="col-3">
-                      {{form.instance.locateId.class2.class1.class1}}
+                    {{ level }}
                     </div>
-                    <div class="col-1">Level2</div>
-                    <div class="col-3">
-                      {{form.instance.locateId.class2.class2}}
-                    </div>
-                    <div class="col-1">Level3</div>
-                    <div class="col-3">
-                      {{form.instance.locateId.class3}}
-                    </div>
+                  {% endfor %}
                   </div>
+                  {% endfor %}
                 </td>
               </tr>
               <tr>
@@ -302,7 +298,7 @@
               <tr>
                 <td rowspan="3" class="table-primary">의뢰일</td>
                 <td rowspan="3">
-                  <input type="date" class="form-control" name="orderDate" id="orderDate" placeholder="작성일자"
+                  <input type="date" class="form-control" name="orderDate" id="orderDate" placeholder="날짜를 입력하세요."
                     value="{{form.instance.orderDate|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
                 <td rowspan="3" class="table-secondary">의뢰인</td>
@@ -427,6 +423,7 @@
 
   // 저장 버튼 클릭 시
   qtyreq_form.addEventListener("submit", function (e) {
+    console.log('check')
     if (isChange && isSign) {
       return true;
     } else {
@@ -456,6 +453,15 @@
       Swal.fire({
         title: 'Error!',
         text: '저장을 해주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    if($('.form-control').eq(0).val() === "") {
+      Swal.fire({
+        title: 'Error!',
+        text: '외뢰일을 입력해주세요.',
         icon: 'error',
         confirmButtonText: '닫기'
       })

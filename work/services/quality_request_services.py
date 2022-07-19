@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from system_manager.models import Field
 
 from system_manager.models import InstallLocate
+# from work.views.quality_request_views import quality_request
 
 from ..models import QualityInspectionRequest
 from ..forms.quality_request_forms import (
@@ -178,6 +179,9 @@ def assign_user_for_qty_request(user, doc, user_pk: int, link):
 # 품질검사 의뢰서 조회
 def read_qty_request_service(pk):
     qty_request = QualityInspectionRequest.objects.get(docNum=pk)
+    # print("here")
+    # print(qty_request.docNum)
+    # print(qty_request.locateId.all())
     return qty_request
 
 

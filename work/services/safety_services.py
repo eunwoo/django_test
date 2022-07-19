@@ -195,6 +195,8 @@ def update_safety_agent(request, pk):
         safety.save()
         messages.success(request, "저장이 완료되었습니다.")
         return redirect("work:update_safety", safety.docNum)
+    print('update_safety_agent')
+    print(request.user.password)
     return render(
         request,
         "work/safety/create_safety_agent.html",

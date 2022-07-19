@@ -171,7 +171,7 @@
                         </div>
                         <div class="modal-body">
                           <div class="mb-3">
-                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
+                            <label for="signRequest" class="form-label">아이디를 입력해주세요1</label>
                             <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
                           </div>
                         </div>
@@ -332,6 +332,8 @@
 
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
+      console.log('verify', '{{request.user.username}}', '{{request.user.password}}')
+//      console.log('verify', '{{request.user.username}}')
     if (isSign === false) {
       Swal.fire({
         title: 'Error!',

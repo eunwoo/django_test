@@ -57,8 +57,11 @@ class InstallLocate(models.Model):
     class3 = models.CharField(max_length=30)  # 구분 3
     isApply = models.BooleanField(default=False)
 
+    def as_levels(self):
+        return [self.class2.class1.class1, self.class2.class2, self.class3]
+
     def __str__(self):
-        return self.class2.class1.class1 + " " + self.class2.class2 + " " + self.class3
+        return self.class2.class1.class1 + "." + self.class2.class2 + "." + self.class3
 
 
 # 문서 등록
