@@ -237,8 +237,8 @@
               <tr>
                 <td class="table-primary">시료 채취 일자</td>
                 <td colspan="5">
-                  <input type="date" class="form-control" name="sampleDate" id="sampleDate" placeholder="작성일자"
-                    value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" required />
+                  <input type="date" class="form-control" name="sampleDate" id="sampleDate" placeholder="날짜를 입력해주세요."
+                    value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
@@ -369,8 +369,8 @@
                 <td class="table-primary">국가중요시설 여부</td>
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='isImportFacility' id="isImportFacility"
-                    placeholder="내용을 입력해주세요." rows="3" value="{{form.instance.isImportFacility|default_if_none:''}}"
-                    required>{{form.instance.isImportFacility|default_if_none:''}}</textarea>
+                    placeholder="내용을 입력해주세요." rows="3"
+                    value="{{form.instance.isImportFacility|default_if_none:''}}">{{form.instance.isImportFacility|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>
@@ -504,6 +504,59 @@
       })
       return false;
     }
+    console.log($('.form-control'))
+    console.log($('input[name="locate[]"]').length)
+    let input_field_check = $('.form-control').map(function (idx, ele) {
+      console.log($(this).val())
+      if ($(this).val() == "") {
+        if (idx == 0) {
+          return "제목";
+        }
+        else if (idx == 1) {
+          return "시료명";
+        }
+        else if (idx == 2) {
+          return "규격";
+        }
+        else if (idx == 3) {
+          return "시료량";
+        }
+        else if (idx == 4) {
+          return "시료 또는 자재 생산국";
+        }
+        else if (idx == 5) {
+          return "시료 채취 일자";
+        }
+        else if (idx == 6) {
+          return "시험 및 시방기준";
+        }
+        else if (idx == 7) {
+          return "국가 중요시설 여부";
+        }
+        else return "";
+      }
+    }).get();
+    console.log(input_field_check)
+    if (input_field_check.length > 0) {
+      Swal.fire({
+        title: 'Error!',
+        text: input_field_check.join(', ') + '를 입력해 주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+    if ($('input[name="locate[]"]').length == 0) {
+      Swal.fire({
+        title: 'Error!',
+        text: '시료채취장소를 입력해 주세요.',
+        icon: 'error',
+        confirmButtonText: '닫기'
+      })
+      return false;
+    }
+
+    /*
     var selected_option1 = $('#class1 option:selected');
     var selected_option2 = $('#class2 option:selected');
     var selected_option3 = $('#class3 option:selected');
@@ -517,6 +570,7 @@
       })
       return false;
     }
+    */
     const select_form = document.getElementById('sign_select')
     select_form.innerHTML = ""
     $.ajax({

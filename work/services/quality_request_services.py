@@ -59,16 +59,21 @@ def create_quality_request_service(request):
             return redirect("work:update_quality_request", qty_req.docNum)
     else:
         form = GeneralManagerQualityInspectionRequestForm()
-    last_doc = QualityInspectionRequest.objects.last()
-    if not last_doc:
-        docNum = 1
-    else:
-        docNum = last_doc.docNum + 1
-    return render(
-        request,
-        "work/quality/quality_request/create_quality_request.html",
-        {"form": form, "docNum": docNum, "field": field},
-    )
+        qty_req = form.save(commit=False)
+        qty_req.writerId = request.user
+        qty_req.fieldId = field
+        qty_req.save()
+        return redirect("work:update_quality_request", qty_req.docNum)
+    # last_doc = QualityInspectionRequest.objects.last()
+    # if not last_doc:
+    #     docNum = 1
+    # else:
+    #     docNum = last_doc.docNum + 1
+    # return render(
+    #     request,
+    #     "work/quality/quality_request/create_quality_request.html",
+    #     {"form": form, "docNum": docNum, "field": field},
+    # )
 
 
 # 품질검사 의뢰서 수정

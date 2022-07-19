@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import NullBooleanField
 
 from django.utils import timezone
 from user.models import CustomUser
@@ -257,19 +258,19 @@ class MaterialDocs(models.Model):
 # 품질검사 의뢰서 관련 문서
 class QualityInspectionRequest(models.Model):
     docNum = models.AutoField(primary_key=True)  # 의뢰서 번호
-    title = models.CharField(max_length=90)  # 제목
-    goods = models.CharField(max_length=60)  # 품명
-    size = models.CharField(max_length=60)  # 규격
-    sampleQuentity = models.TextField()  # 시료량
-    sampleOrigin = models.TextField()  # 시료 또는 자제 생산국
-    testType_hweem = models.BooleanField(default=False)  # 시험검사종목 - 휨하중
-    testType_zip = models.BooleanField(default=False)  # 시험검사종목 - 압축하중
-    testType_tensile = models.BooleanField(default=False)  # 시험검사종목 - 인장하중
+    title = models.CharField(max_length=90, null=True, blank=True)  # 제목
+    goods = models.CharField(max_length=60, null=True, blank=True)  # 품명
+    size = models.CharField(max_length=60, null=True, blank=True)  # 규격
+    sampleQuentity = models.TextField(null=True, blank=True)  # 시료량
+    sampleOrigin = models.TextField(null=True, blank=True)  # 시료 또는 자제 생산국
+    testType_hweem = models.BooleanField(default=False, null=True)  # 시험검사종목 - 휨하중
+    testType_zip = models.BooleanField(default=False, null=True)  # 시험검사종목 - 압축하중
+    testType_tensile = models.BooleanField(default=False, null=True)  # 시험검사종목 - 인장하중
     locateId = models.ManyToManyField(
         InstallLocate, blank=True, related_name="quality_inspection_locateId"
     )  # 시료 채취 장소
-    sampleDate = models.DateField()  # 시료 채취 일자
-    testStandard = models.CharField(max_length=60)  # 시험 및 시방 기준
+    sampleDate = models.DateField(null=True, blank=True)  # 시료 채취 일자
+    testStandard = models.CharField(max_length=60, null=True, blank=True)  # 시험 및 시방 기준
 
     fieldId = models.ForeignKey(
         Field,
@@ -277,19 +278,19 @@ class QualityInspectionRequest(models.Model):
         null=True,
         related_name="quality_inspection_request",
     )  # 현장
-    isImportFacility = models.TextField()  # 국가 중요시설 여부
+    isImportFacility = models.TextField(null=True, blank=True)  # 국가 중요시설 여부
 
-    orderDate = models.DateField(null=True)  # 의뢰일
+    orderDate = models.DateField(null=True, blank=True)  # 의뢰일
 
     # 저장여부 확인
-    isSaveManager = models.BooleanField(default=False)
-    isSaveAgent = models.BooleanField(default=False)
-    isSaveGeneralEngineer = models.BooleanField(default=False)
+    isSaveManager = models.BooleanField(default=False, null=True)
+    isSaveAgent = models.BooleanField(default=False, null=True)
+    isSaveGeneralEngineer = models.BooleanField(default=False, null=True)
 
     # 확인여부 확인
-    isCheckManager = models.BooleanField(default=False)
-    isCheckAgent = models.BooleanField(default=False)
-    isSuccess = models.BooleanField(default=False)  # 성공 여부
+    isCheckManager = models.BooleanField(default=False, null=True)
+    isCheckAgent = models.BooleanField(default=False, null=True)
+    isSuccess = models.BooleanField(default=False, null=True)  # 성공 여부
 
     # 연결된 관리자
     writerId = models.ForeignKey(

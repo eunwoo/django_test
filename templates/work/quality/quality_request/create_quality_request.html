@@ -221,7 +221,7 @@
                 <td class="table-primary">시료 채취 일자</td>
                 <td colspan="5">
                   <input type="date" class="form-control" name="sampleDate" id="sampleDate" placeholder="날짜를 선택해주세요."
-                    value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" required />
+                    value="{{form.instance.sampleDate|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
@@ -371,7 +371,7 @@
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='isImportFacility' id="isImportFacility"
                     placeholder="내용을 입력해주세요." rows="3" value="{{form.instance.isImportFacility|default_if_none:''}}"
-                    required>{{form.instance.isImportFacility|default_if_none:''}}</textarea>
+                    >{{form.instance.isImportFacility|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>

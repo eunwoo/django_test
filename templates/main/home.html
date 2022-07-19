@@ -130,40 +130,44 @@ TQEMS 메인
           </div>
           <div class="row">
             <div class="col-md-12">
-              <a href="{% url 'user:editUser' %}">
-                <button class="btn col-md-4 offset-4" style="padding: 0;">개인정보 수정</button>
-              </a>
+              <div class="d-flex justify-content-center">
+                <a href="{% url 'user:editUser' %}">
+                  <button class="btn" style="padding: 0;">개인정보 수정</button>
+                </a>
+              </div>
             </div>
           </div>
           <div class="row mt-2">
             <div class="col-md-12">
-              <a href="{% url 'user:logout' %}">
-                <button class="btn col-md-4 offset-4" style="padding: 0;">로그아웃</button>
-              </a>
+              <div class="d-flex justify-content-center">
+                <a href="{% url 'user:logout' %}">
+                  <button class="btn" style="padding: 0;">로그아웃</button>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
       </div>
       <div class="row mt-3">
-        <div class="col">
+        <div class="col-12 col-md-4 mb-1">
           <a href="{% url 'work:index' %}">
-            <button class="btn2 btn col-md-12">업무</button>
+            <button class="btn2 btn col-md-12 w-100">업무</button>
           </a>
         </div>
-        <div class="col">
+        <div class="col-12 col-md-4 mb-1">
           <a href="{% url 'result:search' %}">
-            <button class="btn2 btn col-md-12">결과보고</button>
+            <button class="btn2 btn col-md-12 w-100">결과보고</button>
           </a>
         </div>
-        <div class="col">
+        <div class="col-12 col-md-4 mb-1">
           <a href="{% url 'announcement:announcement' %}">
-            <button class="btn2 btn col-md-12">공지사항</button>
+            <button class="btn2 btn col-md-12 w-100">공지사항</button>
           </a>
         </div>
-        <div class="col">
+        <div class="col-12 col-md-4 mb-1">
           <a href="{% url 'law:law' %}">
-            <button class="btn2 btn col-md-12">법령정보</button>
+            <button class="btn2 btn col-md-12 w-100">법령정보</button>
           </a>
         </div>
       </div>
