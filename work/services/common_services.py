@@ -63,7 +63,7 @@ def sms_send(
         "title": "[T-QEMS 알림] T-QEMS 알림 안내",  # 메세지 제목 (장문에 적용)
         # 'destination' : '01000000000|홍길동', # %고객명% 치환용 입력
     }
-    # requests.post(send_url, data=sms_data)
+    requests.post(send_url, data=sms_data)
 
 
 # SMS 컨텐츠 작성

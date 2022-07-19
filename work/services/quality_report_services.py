@@ -105,7 +105,6 @@ def update_quality_report_general(request, pk):
             qty_report.quality_performance.all().delete()
             create_quality_performance(request, qty_report)
             files = request.FILES.getlist("docs_files")
-            print('POST')
             if files:
                 qty_report.quality_performance_file.all().delete()
             for file in files:
@@ -116,7 +115,6 @@ def update_quality_report_general(request, pk):
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_quality_report", qty_report.docNum)
     else:
-        print('not POST')
         form = GeneralManagerQualityPerformanceReportForm(instance=instance)
     return render(
         request,
