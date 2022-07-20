@@ -27,9 +27,9 @@ class SafetyReport(models.Model):
         ("2", "조건부 승인-의견반영 후 진행"),
         ("3", "승인 불가"),
     )  # 결과 목록
-    result = models.CharField(max_length=10, choices=result_choices)  # 결과 내용
-    generalEngineerText = models.TextField(null=True)  # 담당자 의견
-    totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
+    result = models.CharField(max_length=10, choices=result_choices, null=True, blank=True)  # 결과 내용
+    generalEngineerText = models.TextField(null=True, blank=True)  # 담당자 의견
+    totalEngineerText = models.TextField(null=True, blank=True)  # 총괄 담당자 의견
 
     # 저장여부 확인
     isSaveManager = models.BooleanField(default=False)

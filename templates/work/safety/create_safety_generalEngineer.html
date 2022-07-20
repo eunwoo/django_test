@@ -203,8 +203,11 @@
               <tr>
                 <td class="table-primary">회신일자</td>
                 <td colspan="5">
-                  <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="작성일자"
-                    value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
+                  <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="날짜를 입력해주세요."
+                    value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" />
+                  <div class="d-flex justify-content-start">
+                    <div id="date-message">날짜를 입력해주세요.</div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -213,7 +216,7 @@
                 <td colspan="4">
                   <textarea class="form-control text-center" name='generalEngineerText' id="generalEngineerText"
                     placeholder="내용을 입력해주세요." rows="2" value="{{form.instance.generalEngineerText|default_if_none:''}}"
-                    required>{{form.instance.generalEngineerText|default_if_none:''}}</textarea>
+                    >{{form.instance.generalEngineerText|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>
@@ -239,7 +242,7 @@
               <tr>
                 <td class="table-primary">결과</td>
                 <td colspan="5">
-                  <select class="form-select" aria-label="공종" name="result" id="result" required>
+                  <select class="form-select" aria-label="공종" name="result" id="result" >
                     <option {% if form.instance.result == None %} selected="selected" {% endif %} value="">결과를
                       선택해주세요
                     </option>
@@ -280,8 +283,8 @@
                         </div>
                         <div class="modal-body">
                           <div class="mb-3">
-                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                            <label for="signRequest" class="form-label">패스워드를 입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="패스워드 입력">
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -322,6 +325,9 @@
   for (let input_item of input_list) {
     input_item.addEventListener("change", function () {
       isChange = true;
+      if($('#replyDate').val() !== "") {
+        $('#date-message').hide();
+      }
     })
   }
 
@@ -330,12 +336,74 @@
       isChange = true;
     })
   }
+  $('#result').on('change', () => {
+    console.log('result changed')
+    isChange = true;
+  })
 
   // 서명 할 경우 변경
   let isSign = '{{form.instance.replyDate}}' === "None" ? false : true;
   if ('{{form.instance.replyDate}}' === "None") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
+
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
+      function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      console.log('서명')
+      console.log(csrftoken)
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });      
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{% url 'work:is_password_true' %}",
+        //async: false,
+        //data: JSON.stringify('abcd'),
+        //data: { 'csrfmiddlewaretoken': csrftoken, password: $('#signRequest').val()},
+        data: JSON.stringify({ password: $('#signRequest').val()}),
+        success: (data) => {
+          console.log(data)
+          if (data['success'] === true) {
+            isSign = true;
+            const signModal = $('#signModal')
+            signModal.modal('hide');
+            signModal
+              .parent()
+              .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: '패스워드가 다릅니다.',
+              icon: 'error',
+              confirmButtonText: '닫기'
+            })
+          }
+        }
+      })          
+/*
       const id_input = document
         .getElementById("signRequest")
         .value
@@ -355,6 +423,7 @@
           confirmButtonText: '닫기'
         })
       }
+*/
     })
   }
 
@@ -429,6 +498,14 @@
     ).then(() => {
       document.forms['sign_form'].submit()
     })
+  })
+
+  $(function() {
+    console.log('ready')
+//    $('#replyDate').attr('placeholder','Some New Text');    
+    if($('#replyDate').val() !== "") {
+      $('#date-message').hide();
+    }
   })
 </script>
 {% endblock %}
