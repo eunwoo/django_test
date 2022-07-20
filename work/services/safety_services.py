@@ -201,7 +201,7 @@ def update_safety_agent(request, pk):
         safety.save()
         messages.success(request, "저장이 완료되었습니다.")
         return redirect("work:update_safety", safety.docNum)
-    print('update_safety_agent')
+    print("update_safety_agent")
     print(request.user.password)
     return render(
         request,
@@ -262,6 +262,8 @@ def read_checklist_service(safety):
 # 구조 안전성 신고서 체크리스트 제작
 def create_checklist_service(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
+    print("create_checklist_service")
+    print(safety.safety_check_list.all())
     safety.checklistConstructType = request.POST.get("constructType")
     safety.checklistDate = request.POST.get("date")
     safety.checklistTitle = request.POST.get("title")
@@ -269,14 +271,24 @@ def create_checklist_service(request, pk):
     delete_list = ["csrfmiddlewaretoken", "constructType", "date", "title"]
     for delete_item in delete_list:
         checklist.remove(delete_item)
-    for item in checklist:
-        result = request.POST.get(item)
-        checkitem = SafetyCheckList(
-            safetyReportId=safety,
-            safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)),
-            result=result,
-        )
-        checkitem.save()
+    if len(safety.safety_check_list.all()) == 0:
+        for item in checklist:
+            result = request.POST.get(item)
+            checkitem = SafetyCheckList(
+                safetyReportId=safety,
+                safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)),
+                result=result,
+            )
+            checkitem.save()
+    else:
+        print('update checklist')
+        for item in checklist:
+            result = request.POST.get(item)
+            checkitem = SafetyCheckList.objects.get(safetyReportId=safety, safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)))
+            checkitem.save()
+
+    if safety.checklistDate == "":
+        safety.checklistDate = None
     safety.save()
 
 

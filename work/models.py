@@ -27,7 +27,9 @@ class SafetyReport(models.Model):
         ("2", "조건부 승인-의견반영 후 진행"),
         ("3", "승인 불가"),
     )  # 결과 목록
-    result = models.CharField(max_length=10, choices=result_choices, null=True, blank=True)  # 결과 내용
+    result = models.CharField(
+        max_length=10, choices=result_choices, null=True, blank=True
+    )  # 결과 내용
     generalEngineerText = models.TextField(null=True, blank=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True, blank=True)  # 총괄 담당자 의견
 
@@ -44,7 +46,7 @@ class SafetyReport(models.Model):
     isSuccess = models.BooleanField(default=False)
 
     # 체크리스트 전용 속성
-    checklistDate = models.DateField(null=True)  # 체크리스트 작성 날짜
+    checklistDate = models.DateField(null=True, blank=True)  # 체크리스트 작성 날짜
     checklistConstructType = models.CharField(max_length=90, null=True)  # 체크리스트 타입
     checklistTitle = models.CharField(max_length=90, null=True)  # 체크리스트 제목
 
@@ -115,11 +117,12 @@ class SafetyCheckList(models.Model):
         ("1", "예"),
         ("2", "아니요"),
         ("3", "해당사항 없음"),
+        ("4", "선택 안함"),
     )  # 체크리스트 응답 목록
     result = models.CharField(
         max_length=60,
         choices=result_choices,
-        default="1",
+        default="4",
     )  # 체크리스트 응답
     safetyReportId = models.ForeignKey(
         SafetyReport,
