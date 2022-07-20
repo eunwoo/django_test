@@ -32,6 +32,7 @@ safety_url = [
         name="update_safety",
     ),  # 구조 안전성 검토 신고서 수정
     path("get_users/", safety_views.get_users, name="get_users"),  # 서명 요청 사용자 조회
+    path("is_password_true/", safety_views.is_password_true, name="is_password_true"),  # 패스워드 체크
     path("require_sign", safety_views.require_sign, name="require_sign"),  # 서명 요청 전송
     path(
         "read_safety/<int:pk>/",

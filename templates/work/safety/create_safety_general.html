@@ -379,6 +379,7 @@
   if ('{{form.instance.writerId}}' === "None") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
+console.log('서명')
       const id_input = document
         .getElementById("signRequest")
         .value
@@ -393,7 +394,7 @@
       } else {
         Swal.fire({
           title: 'Error!',
-          text: '아이디가 다릅니다.',
+          text: '아이디가 다릅니다2.',
           icon: 'error',
           confirmButtonText: '닫기'
         })
@@ -450,6 +451,7 @@
 
   // 서명 요청 시 서명 목록 로드
   $('#sign_modal_button').on('click', () => {
+    
     if (isChange === true) {
       Swal.fire({
         title: 'Error!',

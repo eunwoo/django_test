@@ -20,6 +20,7 @@ from ..services.safety_services import (
     update_safety_generalEngineer,
     update_safety_totalEngineer,
 )
+import json
 
 
 # 구조 안전성 검토 목록
@@ -66,8 +67,8 @@ def update_safety(request, pk):
     if request.user.class2 == "일반 사용자":
         return update_safety_general(request, pk)
     elif request.user.class2 == "현장 대리인":
-        print("auth test")
-        print(check_password("dlfqksguswkd2", request.user.password))
+        # print("auth test")
+        # print(check_password("dlfqksguswkd2", request.user.password))
         return update_safety_agent(request, pk)
     elif request.user.class2 == "일반 건설사업관리기술인":
         return update_safety_generalEngineer(request, pk)
@@ -86,6 +87,26 @@ def get_users(request):
         json_dumps_params={"ensure_ascii": False},
     )
 
+# 패스워드 체크
+@login_required(login_url="/user/login/")
+def is_password_true(request):
+    print('check_password')
+    if request.method == 'POST':
+        print('POST')
+        print(request.body)
+        data_bytes = request.body.decode('utf-8')
+        print(data_bytes)
+        data = json.loads(data_bytes)
+        print(data)
+        print(data['password'])
+        print(request.user.password)
+        result = check_password(data['password'], request.user.password)
+        print(result)
+        return JsonResponse(
+            {"success": result},
+            json_dumps_params={"ensure_ascii": False},
+        )
+    return Http404("잘못된 접근입니다.")
 
 # 문자 전송
 @login_required(login_url="/user/login/")
