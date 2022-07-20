@@ -117,15 +117,15 @@
                 </td>
                 <td class="table-primary">작성일자</td>
                 <td colspan="2">
-                  <input type="date" class="form-control" name="date" id="date" placeholder="날짜를 선택해주세요"
-                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
+                  <input type="text" class="form-control" name="date" id="date" placeholder="날짜를 선택해주세요"
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" onfocus="this.type='date'"/>
                 </td>
               </tr>
               <tr>
                 <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" placeholder="제목을 입력해주세요." class="form-control" name="title" id="title"
-                    value="{{form.instance.title|default_if_none:''}}" required />
+                    value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
@@ -169,7 +169,7 @@
                 </td>
                 <td colspan="3">
                   <input type="text" class="form-control" name="constructType" id="constructType"
-                    value="{{form.instance.constructType|default_if_none:''}}" readonly required />
+                    value="{{form.instance.constructType|default_if_none:''}}" readonly />
                 </td>
               </tr>
               <tr>
@@ -204,7 +204,6 @@
                     <div class="col-1">Level3</div>
                     <div class="col-3">
                       <select class="form-select" id="class3"
-                        {% if not form.instance.locateId.first %}required{% endif %}>
                       </select>
                     </div>
                   </div>
@@ -215,7 +214,7 @@
                 <td colspan="5" class="p-4">
                   <textarea class="form-control text-center" name='text' id="text" placeholder="내용을 입력해주세요." rows="3"
                     value="{{form.instance.text|default_if_none:''}}"
-                    required>{{form.instance.text|default_if_none:''}}</textarea>
+                    >{{form.instance.text|default_if_none:''}}</textarea>
                 </td>
               </tr>
               <tr>

@@ -81,44 +81,50 @@ def create_safety_service(request):
             return redirect("work:update_safety", safety.docNum)
     else:
         form = GeneralManagerSafetyReportForm()
+        safety = form.save(commit=False)
+        safety.writerId = request.user
+        locates = request.POST.getlist("locate[]")
+        files = request.POST.getlist("docs[]")
+        safety.save()
+        return redirect("work:update_safety", safety.docNum)
 
-    # 문서 번호 로드
-    last_doc = SafetyReport.objects.last()
-    if not last_doc:  # 처음 작성할 문서의 경우
-        docNum = 1
-    else:
-        docNum = last_doc.docNum + 1
+    # # 문서 번호 로드
+    # last_doc = SafetyReport.objects.last()
+    # if not last_doc:  # 처음 작성할 문서의 경우
+    #     docNum = 1
+    # else:
+    #     docNum = last_doc.docNum + 1
 
-    # 관련 문서 로드
-    construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
-    construct_bills2 = DocsFile.objects.filter(type="구조 계산서-시스템 비계")
-    construct_bills3 = DocsFile.objects.filter(type="구조 계산서-시스템 동바리")
-    detail_drawings1 = DocsFile.objects.filter(type="시공상세도면-강관 비계")
-    detail_drawings2 = DocsFile.objects.filter(type="시공상세도면-시스템 비계")
-    detail_drawings3 = DocsFile.objects.filter(type="시공상세도면-시스템 동바리")
+    # # 관련 문서 로드
+    # construct_bills1 = DocsFile.objects.filter(type="구조 계산서-강관 비계")
+    # construct_bills2 = DocsFile.objects.filter(type="구조 계산서-시스템 비계")
+    # construct_bills3 = DocsFile.objects.filter(type="구조 계산서-시스템 동바리")
+    # detail_drawings1 = DocsFile.objects.filter(type="시공상세도면-강관 비계")
+    # detail_drawings2 = DocsFile.objects.filter(type="시공상세도면-시스템 비계")
+    # detail_drawings3 = DocsFile.objects.filter(type="시공상세도면-시스템 동바리")
 
-    equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
-    equipment_list = list(map(lambda x: x[0], equipment_list))
+    # equipment_list = list(EquipmentTypes.objects.all().values_list("isActive"))
+    # equipment_list = list(map(lambda x: x[0], equipment_list))
 
-    return render(
-        request,
-        "work/safety/create_safety_general.html",
-        {
-            "docNum": docNum,
-            "form": form,
-            "construct_bills": [
-                construct_bills1,
-                construct_bills2,
-                construct_bills3,
-            ],
-            "detail_drawings": [
-                detail_drawings1,
-                detail_drawings2,
-                detail_drawings3,
-            ],
-            "equipment_list": equipment_list,
-        },
-    )
+    # return render(
+    #     request,
+    #     "work/safety/create_safety_general.html",
+    #     {
+    #         "docNum": docNum,
+    #         "form": form,
+    #         "construct_bills": [
+    #             construct_bills1,
+    #             construct_bills2,
+    #             construct_bills3,
+    #         ],
+    #         "detail_drawings": [
+    #             detail_drawings1,
+    #             detail_drawings2,
+    #             detail_drawings3,
+    #         ],
+    #         "equipment_list": equipment_list,
+    #     },
+    # )
 
 
 # 일반관리자 구조 안전성 검토 문서 수정

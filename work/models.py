@@ -14,14 +14,14 @@ from system_manager.models import (
 # 구조 안전성 검토 신고서 관련 문서
 class SafetyReport(models.Model):
     docNum = models.AutoField(primary_key=True)  # 문서 번호
-    date = models.DateField()  # 작성 일자
-    title = models.CharField(max_length=90)  # 제목
-    constructType = models.CharField(max_length=90)  # 공증
-    text = models.TextField()  # 내용
+    date = models.DateField(null=True, blank=True)  # 작성 일자
+    title = models.CharField(max_length=90, null=True, blank=True)  # 제목
+    constructType = models.CharField(max_length=90, null=True, blank=True)  # 공증
+    text = models.TextField(null=True, blank=True)  # 내용
     locateId = models.ManyToManyField(
         InstallLocate, blank=True, related_name="safetyReport_locateId"
     )  # 설치 위치
-    replyDate = models.DateField(null=True)  # 회신 일자
+    replyDate = models.DateField(null=True, blank=True)  # 회신 일자
     result_choices = (
         ("1", "승인-제출한 내용대로 진행"),
         ("2", "조건부 승인-의견반영 후 진행"),
