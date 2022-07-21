@@ -170,7 +170,7 @@
               <td>구조안전성 검토<br>체크리스트</td>
               <td colspan="4">
                 {% if safety.checklistDate %}
-                <a class="link-success" target="_blank" href="{% url 'work:read_checklist' safety.docNum %}">구조 안전성 검토
+                <a class="link-success" href="{% url 'work:read_checklist' safety.docNum %}">구조 안전성 검토
                   체크리스트 {{safety.docNum}}-{{safety.checklistTitle}}</a>
                 {% endif %}
               </td>
