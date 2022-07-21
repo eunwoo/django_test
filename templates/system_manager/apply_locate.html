@@ -269,6 +269,7 @@ System Information
           const class_list = document.getElementById(`class${class_type}-list`);
           const class_list_div = document.createElement("div");
           let title, type;
+          console.log(this);
           if (class_type === 1) {
             title = model.fields.class1;
             changeEvent = "Class1ChangeEvent.call(this)";
@@ -296,6 +297,8 @@ System Information
                 id="class${class_type}btn_${model.pk}"></button>
             </div>`;
           class_list.appendChild(class_list_div);
+
+          //location.reload();
         }
       }
     })
