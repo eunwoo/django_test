@@ -114,7 +114,7 @@
                 <td class="table-primary">작성일자</td>
                 <td colspan="2">
                   <input type="date" class="form-control" name="date" id="date" placeholder="날짜를 선택해주세요"
-                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" required />
+                    value="{{form.instance.date|date:'Y-m-d'|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
@@ -131,13 +131,13 @@
                 <td class="table-primary">제목</td>
                 <td colspan="5">
                   <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요"
-                    value="{{form.instance.title|default_if_none:''}}" required />
+                    value="{{form.instance.title|default_if_none:''}}" />
                 </td>
               </tr>
               <tr>
                 <td class="table-primary">공종</td>
                 <td colspan="2">
-                  <select class="form-select" aria-label="공종" id="constructTypeSelect" required>
+                  <select class="form-select" aria-label="공종" id="constructTypeSelect" >
                     <option value="">투입 공종을
                       선택해주세요
                     </option>
@@ -274,8 +274,8 @@
                         </div>
                         <div class="modal-body">
                           <div class="mb-3">
-                            <label for="signRequest" class="form-label">아이디를 입력해주세요</label>
-                            <input type="password" class="form-control" id="signRequest" placeholder="아이디 입력">
+                            <label for="signRequest" class="form-label">패스워드를 입력해주세요</label>
+                            <input type="password" class="form-control" id="signRequest" placeholder="패스워드 입력">
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -549,6 +549,64 @@
   if ('{{material.writerId}}' === "") {
     const sign_button = document.getElementById("sign_button")
     sign_button.addEventListener("click", function () {
+
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+      var csrftoken = getCookie('csrftoken');
+      function csrfSafeMethod(method) {
+          // these HTTP methods do not require CSRF protection
+          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+      console.log('서명')
+      console.log(csrftoken)
+      $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          }
+      });      
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{% url 'work:is_password_true' %}",
+        //async: false,
+        //data: JSON.stringify('abcd'),
+        //data: { 'csrfmiddlewaretoken': csrftoken, password: $('#signRequest').val()},
+        data: JSON.stringify({ password: $('#signRequest').val()}),
+        success: (data) => {
+          console.log(data)
+          if (data['success'] === true) {
+            isSign = true;
+            const signModal = $('#signModal')
+            signModal.modal('hide');
+            signModal
+              .parent()
+              .html("<img width='60%' alt='' src='{{request.user.signImage.url}}'/>")
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: '패스워드가 다릅니다.',
+              icon: 'error',
+              confirmButtonText: '닫기'
+            })
+          }
+        }
+      })     
+/*      
       const id_input = document
         .getElementById("signRequest")
         .value
@@ -568,6 +626,7 @@
           confirmButtonText: '닫기'
         })
       }
+*/      
     })
   }
 

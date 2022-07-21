@@ -145,10 +145,10 @@ class SafetyCheckList(models.Model):
 # 자재 공급원 신고서 관련 문서
 class MaterialSupplyReport(models.Model):
     docNum = models.AutoField(primary_key=True)  # 신고서 번호
-    date = models.DateField()  # 작성 일자
-    title = models.CharField(max_length=90)  # 제목
-    constructType = models.CharField(max_length=90)  # 공증
-    text = models.TextField()  # 기타사항
+    date = models.DateField(null=True, blank=True)  # 작성 일자
+    title = models.CharField(max_length=90, null=True, blank=True)  # 제목
+    constructType = models.CharField(max_length=90, null=True, blank=True)  # 공증
+    text = models.TextField(null=True, blank=True)  # 기타사항
 
     replyDate = models.DateField(null=True)  # 회신 일자
     generalEngineerText = models.TextField(null=True)  # 담당자 의견
