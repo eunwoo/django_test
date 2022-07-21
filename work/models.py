@@ -151,7 +151,7 @@ class MaterialSupplyReport(models.Model):
     text = models.TextField(null=True, blank=True)  # 기타사항
 
     replyDate = models.DateField(null=True)  # 회신 일자
-    generalEngineerText = models.TextField(null=True)  # 담당자 의견
+    generalEngineerText = models.TextField(null=True, blank=True)  # 담당자 의견
     totalEngineerText = models.TextField(null=True)  # 총괄 담당자 의견
     result_choices = (
         ("1", "승인-제출한 내용대로 진행"),
