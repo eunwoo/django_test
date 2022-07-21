@@ -108,7 +108,7 @@ class SafetyCheckMenu(models.Model):
     initItem = models.BooleanField(default=False)  # 초기 아이템 여부
 
     def __str__(self):
-        return self.content
+        return self.checkType.__str__() + "-" + self.content
 
 
 # 구조 안전성 검토 체크리스트 응답

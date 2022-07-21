@@ -147,25 +147,25 @@
               <tr class="table-secondary">
                 <th colspan=6 data-bs-toggle="collapse" data-bs-target="#addition{{forloop.counter}}"
                   data-mdb-ripple-color="light">
-                  {{checkmenu.0.checkType.title}}
+                  {{checkmenu.0.0.checkType.title}}
                 </th>
               </tr>
               <tr class="accordion-collapse collapse" id="addition{{forloop.counter}}" data-bs-parent=".table">
                 <td colspan="7" style="padding: 0;">
                   <table class="table table-bordered text-break checklist_table">
-                    {% for menu in checkmenu %}
+                    {% for menu, val in checkmenu.1 %}
                     <tr>
                       <td style="width: 5%">{{forloop.counter}}</td>
                       <td style="width: 55%" class="text-start">{{menu.content}}</td>
                       <td style="width: 10%">
-                        <input type="radio" name="{{menu.pk}}" value="1">
+                        <input type="radio" name="{{menu.pk}}" value="1" {% if val.result == "1" %} checked {% endif %} onclick="$('input:hidden[name={{menu.pk}}]').val('1')">
                       </td>
                       <td style="width: 10%">
-                        <input type="radio" name="{{menu.pk}}" value="2">
+                        <input type="radio" name="{{menu.pk}}" value="2" {% if val.result == "2" %} checked {% endif %} onclick="$('input:hidden[name={{menu.pk}}]').val('2')">
                       </td>
                       <td style="width: 10%">
-                        <input type="radio" name="{{menu.pk}}" value="3">
-                        <input type="hidden" name="{{menu.pk}}" value="4">
+                        <input type="radio" name="{{menu.pk}}" value="3" {% if val.result == "3" %} checked {% endif %} onclick="$('input:hidden[name={{menu.pk}}]').val('3')">
+                        <input type="hidden" name="{{menu.pk}}" value="{{val}}">
                       </td>
                       <td style="width: 10%">
                         <input type="checkbox">

@@ -263,7 +263,7 @@ def read_checklist_service(safety):
 def create_checklist_service(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
     print("create_checklist_service")
-    print(safety.safety_check_list.all())
+    # print(safety.safety_check_list.all())
     safety.checklistConstructType = request.POST.get("constructType")
     safety.checklistDate = request.POST.get("date")
     safety.checklistTitle = request.POST.get("title")
@@ -281,11 +281,17 @@ def create_checklist_service(request, pk):
             )
             checkitem.save()
     else:
-        print('update checklist')
+        print("update checklist")
+        # print(checklist)
         for item in checklist:
             result = request.POST.get(item)
-            checkitem = SafetyCheckList.objects.get(safetyReportId=safety, safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)))
-            checkitem.save()
+            print(result)
+            checkitem = SafetyCheckList.objects.get(
+                safetyReportId=safety,
+                safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(item)),
+            )
+            checkitem.result = result
+            checkitem.save(update_fields=["result"])
 
     if safety.checklistDate == "":
         safety.checklistDate = None

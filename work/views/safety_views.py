@@ -5,7 +5,7 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from work.services.common_services import assign_user
-from ..models import SafetyCheckMenu, SafetyReport
+from ..models import SafetyCheckMenu, SafetyReport, SafetyCheckList
 from ..services.safety_services import (
     create_checklist_item_service,
     create_checklist_service,
@@ -87,26 +87,28 @@ def get_users(request):
         json_dumps_params={"ensure_ascii": False},
     )
 
+
 # 패스워드 체크
 @login_required(login_url="/user/login/")
 def is_password_true(request):
-    print('check_password')
-    if request.method == 'POST':
-        print('POST')
+    print("check_password")
+    if request.method == "POST":
+        print("POST")
         print(request.body)
-        data_bytes = request.body.decode('utf-8')
+        data_bytes = request.body.decode("utf-8")
         print(data_bytes)
         data = json.loads(data_bytes)
         print(data)
-        print(data['password'])
+        print(data["password"])
         print(request.user.password)
-        result = check_password(data['password'], request.user.password)
+        result = check_password(data["password"], request.user.password)
         print(result)
         return JsonResponse(
             {"success": result},
             json_dumps_params={"ensure_ascii": False},
         )
     return Http404("잘못된 접근입니다.")
+
 
 # 문자 전송
 @login_required(login_url="/user/login/")
@@ -159,11 +161,40 @@ def create_checklist(request, pk):
         checkType_id=4,
         initItem=True,
     ).order_by("pk")
+    print("get previous checklist data...")
+    # print(checklist1)
+    safety = SafetyReport.objects.get(docNum=pk)
+    # checkitem = SafetyCheckList.objects.get(
+    #     safetyReportId=safety,
+    #     safetyCheckMenuId=SafetyCheckMenu.objects.get(pk=int(1)),
+    # )
+    checklist1val = SafetyCheckList.objects.filter(
+        safetyReportId=safety,
+        safetyCheckMenuId__in=checklist1,
+    )
+    checklist2val = SafetyCheckList.objects.filter(
+        safetyReportId=safety,
+        safetyCheckMenuId__in=checklist2,
+    )
+    checklist3val = SafetyCheckList.objects.filter(
+        safetyReportId=safety,
+        safetyCheckMenuId__in=checklist3,
+    )
+    checklist4val = SafetyCheckList.objects.filter(
+        safetyReportId=safety,
+        safetyCheckMenuId__in=checklist4,
+    )
+    zipped = [
+        [checklist1, zip(checklist1, checklist1val)],
+        [checklist2, zip(checklist2, checklist2val)],
+        [checklist3, zip(checklist3, checklist3val)],
+        [checklist4, zip(checklist4, checklist4val)],
+    ]
     return render(
         request,
         "work/safety/checklist.html",
         {
-            "checklist": [checklist1, checklist2, checklist3, checklist4],
+            "checklist": zipped,
             "docNum": pk,
         },
     )
