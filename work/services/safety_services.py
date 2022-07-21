@@ -262,7 +262,7 @@ def read_checklist_service(safety):
 # 구조 안전성 신고서 체크리스트 제작
 def create_checklist_service(request, pk):
     safety = SafetyReport.objects.get(docNum=pk)
-    print("create_checklist_service")
+    print("create_checklist_service.")
     # print(safety.safety_check_list.all())
     safety.checklistConstructType = request.POST.get("constructType")
     safety.checklistDate = request.POST.get("date")
@@ -293,9 +293,11 @@ def create_checklist_service(request, pk):
             checkitem.result = result
             checkitem.save(update_fields=["result"])
 
+    print('checklist date')
+    print(safety.checklistDate)
     if safety.checklistDate == "":
         safety.checklistDate = None
-    safety.save()
+    safety.save(update_fields=["checklistDate", "checklistConstructType", "checklistTitle"])
 
 
 # 구조 안전성 신고서 삭제

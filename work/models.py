@@ -47,8 +47,8 @@ class SafetyReport(models.Model):
 
     # 체크리스트 전용 속성
     checklistDate = models.DateField(null=True, blank=True)  # 체크리스트 작성 날짜
-    checklistConstructType = models.CharField(max_length=90, null=True)  # 체크리스트 타입
-    checklistTitle = models.CharField(max_length=90, null=True)  # 체크리스트 제목
+    checklistConstructType = models.CharField(max_length=90, null=True, blank=True)  # 체크리스트 타입
+    checklistTitle = models.CharField(max_length=90, null=True, blank=True)  # 체크리스트 제목
 
     # 구조안전성 검토 첨부문서
     docs = models.ManyToManyField(

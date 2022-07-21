@@ -139,6 +139,7 @@ def create_checklist(request, pk):
     if request.user.class2 != "일반 건설사업관리기술인":
         return Http404("잘못된 접근입니다.")
     if request.method == "POST":
+        print('create_checklist - POST')
         create_checklist_service(request, pk)
         return redirect("work:update_safety", pk)
     # 구조 일반 사항
@@ -162,7 +163,7 @@ def create_checklist(request, pk):
         initItem=True,
     ).order_by("pk")
     print("get previous checklist data...")
-    # print(checklist1)
+    print(checklist1)
     safety = SafetyReport.objects.get(docNum=pk)
     # checkitem = SafetyCheckList.objects.get(
     #     safetyReportId=safety,
@@ -184,6 +185,51 @@ def create_checklist(request, pk):
         safetyReportId=safety,
         safetyCheckMenuId__in=checklist4,
     )
+    print(len(checklist1val))
+    if len(checklist1val) == 0:
+        for item in checklist1:
+                checkitem = SafetyCheckList(
+                    safetyReportId=safety,
+                    safetyCheckMenuId=item,
+                )
+                checkitem.save()        
+        checklist1val = SafetyCheckList.objects.filter(
+            safetyReportId=safety,
+            safetyCheckMenuId__in=checklist1,
+        )
+    if len(checklist2val) == 0:
+        for item in checklist2:
+            checkitem = SafetyCheckList(
+                safetyReportId=safety,
+                safetyCheckMenuId=item,
+            )
+            checkitem.save()        
+        checklist2val = SafetyCheckList.objects.filter(
+            safetyReportId=safety,
+            safetyCheckMenuId__in=checklist2,
+        )
+    if len(checklist3val) == 0:
+        for item in checklist3:
+            checkitem = SafetyCheckList(
+                safetyReportId=safety,
+                safetyCheckMenuId=item,
+            )
+            checkitem.save()        
+        checklist3val = SafetyCheckList.objects.filter(
+            safetyReportId=safety,
+            safetyCheckMenuId__in=checklist3,
+        )
+    if len(checklist4val) == 0:
+        for item in checklist4:
+            checkitem = SafetyCheckList(
+                safetyReportId=safety,
+                safetyCheckMenuId=item,
+            )
+            checkitem.save()        
+        checklist4val = SafetyCheckList.objects.filter(
+            safetyReportId=safety,
+            safetyCheckMenuId__in=checklist4,
+        )            
     zipped = [
         [checklist1, zip(checklist1, checklist1val)],
         [checklist2, zip(checklist2, checklist2val)],
@@ -196,6 +242,7 @@ def create_checklist(request, pk):
         {
             "checklist": zipped,
             "docNum": pk,
+            "report" : safety,
         },
     )
 

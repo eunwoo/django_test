@@ -65,7 +65,7 @@
             <tr>
               <th scope="row" class="table-secondary align-middle" style="width: 15%">문서번호</th>
               <td style="width: 35%">구조 안전성 검토 체크리스트-{{docNum}}</td>
-              <th scope="row" class="table-secondary align-middle" style="width: 15%">담당자</th>
+              <th scope="row" class="table-primary align-middle" style="width: 15%">담당자</th>
               <td style="width: 35%">
                 <div class="row">
                   <div class="col">
@@ -106,28 +106,28 @@
               </td>
             </tr>
             <tr>
-              <th scope="row" class="table-secondary align-middle">조립 가설기자재 종류</th>
+              <th scope="row" class="table-primary align-middle">조립 가설기자재 종류</th>
               <td>
                 <select class="form-select" aria-label="공종" name="constructType" id="constructType" >
                   <option value="" selected="selected">투입 공종을 선택해주세요
                   </option>
-                  <option value="강관 비계">강관 비계
+                  <option value="강관 비계" {% if report.checklistConstructType == "강관 비계" %} selected {% endif %} >강관 비계
                   </option>
-                  <option value="시스템 비계">시스템 비계
+                  <option value="시스템 비계" {% if report.checklistConstructType == "시스템 비계" %} selected {% endif %} >시스템 비계
                   </option>
-                  <option value="시스템 동바리">시스템 동바리
+                  <option value="시스템 동바리" {% if report.checklistConstructType == "시스템 동바리" %} selected {% endif %} >시스템 동바리
                   </option>
                 </select>
               </td>
-              <th scope="row" class="table-secondary align-middle">확인 일자</th>
+              <th scope="row" class="table-primary align-middle">확인 일자</th>
               <td>
-                <input type="date" class="form-control" name="date" id="date" placeholder="확인 일자" />
+                <input type="date" class="form-control" name="date" id="date" placeholder="날짜를 입력해주세요." value="{{report.checklistDate|date:"Y-m-d"}}" required/>
               </td>
             </tr>
             <tr>
-              <th scope="row" class="table-secondary align-middle">제목</th>
+              <th scope="row" class="table-primary align-middle">제목</th>
               <td colspan="3">
-                <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요." />
+                <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요." value="{{report.checklistTitle}}"/>
               </td>
             </tr>
           </table>
