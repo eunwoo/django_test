@@ -65,7 +65,7 @@
                 </div>
                 <div class="col">
                   <select name="class2" class="col-12 text-center" required="required" id="id_class2">
-                    <option {% if user.class2 == "일반 관리자" %} selected {% endif %} value="일반 관리자">일반 관리자</option>
+                    <option {% if user.class2 == "일반 사용자" %} selected {% endif %} value="일반 사용자">일반 사용자</option>
                     <option {% if user.class2 == "현장 대리인" %} selected {% endif %} value="현장 대리인">현장 대리인</option>
                   </select>
                 </div>
@@ -385,7 +385,7 @@
     const class2 = document.getElementById('id_class2');
     if (value == '종합건설업체') {
       class2.innerHTML = `
-    <option value="일반 관리자">일반 관리자</option>
+    <option value="일반 사용자">일반 사용자</option>
     <option value="현장 대리인">현장 대리인</option>
     `
     } else {

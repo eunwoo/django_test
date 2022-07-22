@@ -80,9 +80,12 @@ def editUser(request):
                     answer.signImage = image_file
                 answer.save()
                 return redirect("main:home")
+            # print(form.errors)
         else:
             form = forms.AdminForm(instance=user)
-        return render(request, "auth/editAdmin.html", {"form": form, "class3": user.class3})
+        return render(
+            request, "auth/editAdmin.html", {"form": form, "class3": user.class3}
+        )
     else:
         if request.method == "POST":
             form = forms.UserForm(request.POST, instance=user)

@@ -67,7 +67,7 @@
                   </div>
                   <div class="col">
                     <select name="class2" class="col-12 text-center" required="required" id="id_class2">
-                      <option {% if form.class2.value == "일반 관리자" %} selected {% endif %} value="일반 관리자">일반 관리자</option>
+                      <option {% if form.class2.value == "일반 사용자" %} selected {% endif %} value="일반 사용자">일반 사용자</option>
                       <option {% if form.class2.value == "현장 대리인" %} selected {% endif %} value="현장 대리인">현장 대리인</option>
                     </select>
                   </div>
@@ -230,7 +230,7 @@
 
     var canvas = document.getElementById("sig-canvas");
     canvas.width = 212;
-    canvas.height = 120;
+    canvas.height = 118;
 
     var ctx = canvas.getContext("2d");
 
@@ -241,7 +241,7 @@
     image.src = "https://i.imgur.com/e66zPVj.png"
     image.crossOrigin = 'Anonymous';
     image.onload = function () {
-      ctx.drawImage(image, 0, 0, 212, 120);
+      ctx.drawImage(image, 0, 0, 212, canvas.height);
     };
 
     var drawing = false;
@@ -350,7 +350,7 @@
 
     function clearCanvas() {
       canvas.width = canvas.width;
-      ctx.drawImage(image, 0, 0, 212, 120);
+      ctx.drawImage(image, 0, 0, 212, canvas.height);
     }
 
     $('#id_class1 option').not(":selected").attr("disabled", "disabled");
