@@ -36,6 +36,7 @@ def locate_class(request, pk):
 @login_required(login_url="/user/login/")
 def read_locate_class(request, class_type):
     class_id = request.GET.get("class_id", 1)
+    print(class_id)
     if class_type == 1:
         install_locate = InstallLocateClass1.objects.all()
     elif class_type == 2:
@@ -44,7 +45,8 @@ def read_locate_class(request, class_type):
         )
     elif class_type == 3:
         class_accept = request.GET.get("class_accept", 1)
-        if class_accept == 1:
+        print(type(class_accept))
+        if int(class_accept) == 1:
             class_accept = True
         else:
             class_accept = False
