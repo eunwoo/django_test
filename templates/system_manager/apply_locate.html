@@ -377,13 +377,18 @@ $(function() {
       id2 = uuidv4();
       class2[id2] = {'name': '해당사항 없음', 'parent':id, 'parent_in_db':false, 'in_db':false}
       id3 = uuidv4();
-      class3[id3] = {'name': '해당사항 없음', 'parent':id2, 'parent_in_db':false, 'in_db':false, 'isApply':1}
+      class3[id3] = {'name': '해당사항 없음', 'parent':id2, 'parent_in_db':false, 'in_db':false, 'isApply':0}
     }
     else if(class_type === 2) {
       id = uuidv4();
-      class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':false, 'in_db':false}
+      if(parent_class_id in class1) {
+        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':class2[parent_class_id]['in_db'], 'in_db':false, 'isApply':0}
+      }
+      else {
+        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':false, 'in_db':false}
+      }
       id2 = uuidv4();
-      class3[id2] = {'name': '해당사항 없음', 'parent':id, 'parent_in_db':false, 'in_db':false, 'isApply':1}
+      class3[id2] = {'name': '해당사항 없음', 'parent':id, 'parent_in_db':false, 'in_db':false, 'isApply':0}
     }
     else if(class_type === 3) {
       console.log(parent_class_id)
@@ -500,20 +505,35 @@ $(function() {
   }
 
   const delete_locate = (class_type, e) => {
-    $.ajax({
-      url: "{% url 'system_manager:delete_locate' %}",
-      type: "POST",
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}'
-      },
-      data: {
-        class_type: class_type,
-        class_id: e.id.split("_")[1]
-      },
-      success: function (data) {
+    let id = e.id.split("_")[1];
+    if(class_type === 1) {
+      if(class1[id]['in_db'] === false) {
+        for(cls2id in class2) {
+          if(class2[cls2id]['parent'] === id) {
+            console.log(cls2id);
+          }
+        }
+        delete class1[id];
         e.parentNode.parentNode.remove();
+        // class1의 children과 class2의 children도 같이 삭제
       }
-    })
+      else {
+        $.ajax({
+          url: "{% url 'system_manager:delete_locate' %}",
+          type: "POST",
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          data: {
+            class_type: class_type,
+            class_id: e.id.split("_")[1]
+          },
+          success: function (data) {
+            e.parentNode.parentNode.remove();
+          }
+        })
+      }
+    }
   }
 
   function add_locate_in_db(class_type, input_value, parent_class_id, func_finish) {
@@ -546,8 +566,10 @@ $(function() {
   function register(class_type, input_value, parent_class_id, func_finish) {
     if(class_type === 3) {
       if(class2[parent_class_id]['in_db'] === false) {
+        console.log('register parent', class_type)
         register(2, class2[parent_class_id]['name'], class2[parent_class_id]['parent'], 
           (pk) => {
+            console.log('add locate', class_type)
             add_locate_in_db(class_type, input_value, pk, func_finish);
           }
         );
