@@ -50,7 +50,7 @@ System Information
             <div class="row">
               <div class="col-10">
                 <input class="form-check-input" type="radio" name="class1" id="class1_{{class_item.pk}}"
-                  value="{{class_item.pk}}" data-type="db">
+                  value="{{class_item.pk}}">
                 <label class="form-check-label" for="class1_{{class_item.pk}}">
                   {{class_item.class1}}
                 </label>
@@ -151,57 +151,6 @@ System Information
 
 {% block javascript %}
 <script type="text/javascript">
-
-// 등록하기 전의 임시 데이터 저장용 변수
-let class1 = {}, class2 = {}, class3 = {};
-
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
-$(function() {
-  console.log($('#class1_input').children())
-
-  function load_class(parent_id, class_type, class_accept) {
-    console.log('load_class', parent_id, class_type, class_accept)
-    $.ajax({
-      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', class_type),
-      type: "GET",
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}'
-      },
-      data: {
-        class_id: parent_id,
-        class_accept: class_accept
-      },
-      success: function (data) {
-        console.log(data.install_locate)
-        save_class(parent_id, class_type, data.install_locate, class_accept);
-      }
-    })
-  }
-  function save_class(parent_id, class_type, class_list, class_accept) {
-    console.log(class_list)
-    class_list.forEach( (val) => {
-      if(class_type === 1) class1[val.id] = {'name': val.class1, 'in_db':true}
-      else if(class_type === 2) class2[val.id] = {'name': val.class2, 'parent':String(parent_id), 'parent_in_db':true, 'in_db':true}
-      else if(class_type === 3) class3[val.id] = {'name': val.class3, 'parent':String(parent_id), 'parent_in_db':true, 'in_db':true, 'isApply':class_accept}
-      if(class_type < 3) {
-        load_class(val.id, class_type + 1, 0);
-        load_class(val.id, class_type + 1, 1);
-      }
-    })
-    console.log('class1',class1)
-    console.log('class2',class2)
-    console.log('class3',class3)
-  }
-  // 페이지가 로드되면 DB에 저장된 설치 위치 데이터를 모두 불러온다. class1, class2, class3을 불러오면 된다.
-  // class1 불러오기. 하위 class도 depth-first-search 방식으로 불러옴
-  load_class(0, 1, 0);  // class1의 경우, parent_id는 의미없는 값임.
-})
   const clear2 = () => {
     document.getElementById("class2-list").innerHTML = "";
   }
@@ -214,223 +163,81 @@ $(function() {
 
   function Class2ChangeEvent() {
     const class2_id = $(this).val();
-    function class3_innerHTML(id, label) {
-      return `<div class="col-10">
-                <input class="form-check-input" type="checkbox" name="class3" id="class3_${id}"
-                  value="${id}">
-                <label class="form-check-label" for="class3_${id}">
-                  ${label}
-                </label>
-              </div>
-              <div class="col-2">
-                <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(3, this)"
-                  id="class3btn_${id}"></button>
-              </div>`;
-    }
-    const class3_list = document.getElementById("class3-list");
-    class3_list.innerHTML = ""
-    for(id in class3) {
-      if(class3[id].parent === $(this).get(0).id.split('_')[1] && class3[id].isApply === 0) {
-        const class3_list_div = document.createElement("div");
-        class3_list_div.className = "row";
-        class3_list_div.innerHTML = class3_innerHTML(id, class3[id].name);
-        class3_list.appendChild(class3_list_div);
-      }
-    }
-
-    /*
-    if($(this).data('type') === 'db') {
-      $.ajax({
-        url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 3),
-        type: "GET",
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
-        },
-        data: {
-          class_id: class2_id,
-          class_accept: 0
-        },
-        success: function (data) {
-          const class3_list = document.getElementById("class3-list");
-          class3_list.innerHTML = ""
-          for (let item of data.install_locate) {
-            const class3_list_div = document.createElement("div");
-            class3_list_div.className = "row";
-            class3_list_div.innerHTML = class3_innerHTML(item.id, item.class3);
-            class3_list.appendChild(class3_list_div);
-          }
-        }
-      })
-    }
-    else {
-      const class3_list = document.getElementById("class3-list");
-      class3_list.innerHTML = ""
-      for(id in class3) {
-        if(class3[id].parent === $(this).get(0).id.split('_')[1]) {
+    $.ajax({
+      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 3),
+      type: "GET",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_id: class2_id,
+        class_accept: 0
+      },
+      success: function (data) {
+        const class3_list = document.getElementById("class3-list");
+        class3_list.innerHTML = ""
+        for (let item of data.install_locate) {
           const class3_list_div = document.createElement("div");
           class3_list_div.className = "row";
-          class3_list_div.innerHTML = class3_innerHTML(id, class3[id].name);
+          class3_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="checkbox" name="class3" id="class3_${item.id}"
+                value="${item.id}">
+              <label class="form-check-label" for="class3_${item.id}">
+                ${item.class3}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(3, this)"
+                id="class3btn_${item.id}"></button>
+            </div>`;
           class3_list.appendChild(class3_list_div);
         }
       }
-    }
-    */
+    })
   }
 
   function Class1ChangeEvent() {
-    function class2_innerHTML(id, label, in_db) {
-      if(in_db === true) {
-        type = 'db';
-      }
-      else {
-        type = 'temp';
-      }
-      return `<div class="col-10">
-                <input class="form-check-input" type="radio" name="class2" id="class2_${id}"
-                  value="${id}" data-type="${type}">
-                <label class="form-check-label" for="class2_${id}">
-                  ${label}
-                </label>
-              </div>
-              <div class="col-2">
-                <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(2, this)"
-                  id="class2btn_${id}"></button>
-              </div>`;      
-    }
+    const class1_id = $(this).val();
     clear2();
     clear3();
-    const class2_list = document.getElementById("class2-list");
-    for(id in class2) {
-      console.log(class2[id].parent, $(this).get(0).id.split('_')[1])
-      if(String(class2[id].parent) === $(this).get(0).id.split('_')[1]) {
-        console.log('class2 display')
-        console.log(class2[id].name)
-
-        const class2_list_div = document.createElement("div");
-        class2_list_div.className = "row";
-        class2_list_div.innerHTML = class2_innerHTML(id, class2[id].name, class2[id].in_db);
-        class2_list.appendChild(class2_list_div);
-
-        // Level 2 선택시 Level 3 설정
-        $("input[name=class2]:radio").change(Class2ChangeEvent)          
-      }
-    }
-
-    /*
-    if($(this).data('type') === 'db') {
-      const class1_id = $(this).val();
-      console.log(class1_id)
-      $.ajax({
-        url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 2),
-        type: "GET",
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
-        },
-        data: {
-          class_id: class1_id
-        },
-        success: function (data) {
-          const class2_list = document.getElementById("class2-list");
-          for (let item of data.install_locate) {
-            const class2_list_div = document.createElement("div");
-            class2_list_div.className = "row";
-            class2_list_div.innerHTML = class2_innerHTML(item.id, item.class2);
-            class2_list.appendChild(class2_list_div);
-          }
-
-          // Level 2 선택시 Level 3 설정
-          $("input[name=class2]:radio").change(Class2ChangeEvent)
-        }
-      })
-    }
-    else if($(this).data('type') === 'temp') {
-
-      const class2_list = document.getElementById("class2-list");
-      for(id in class2) {
-        if(class2[id].parent === $(this).get(0).id.split('_')[1]) {
-          console.log('class2 display')
-          console.log(class2[id].name)
-
+    $.ajax({
+      url: "{% url 'system_manager:get_locate' class_type=0 %}".replace('0', 2),
+      type: "GET",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        class_id: class1_id
+      },
+      success: function (data) {
+        const class2_list = document.getElementById("class2-list");
+        for (let item of data.install_locate) {
           const class2_list_div = document.createElement("div");
           class2_list_div.className = "row";
-          class2_list_div.innerHTML = class2_innerHTML(id, class2[id].name);
+          class2_list_div.innerHTML = `
+            <div class="col-10">
+              <input class="form-check-input" type="radio" name="class2" id="class2_${item.id}"
+                value="${item.id}">
+              <label class="form-check-label" for="class2_${item.id}">
+                ${item.class2}
+              </label>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(2, this)"
+                id="class2btn_${item.id}"></button>
+            </div>`;
           class2_list.appendChild(class2_list_div);
-
-          // Level 2 선택시 Level 3 설정
-          $("input[name=class2]:radio").change(Class2ChangeEvent)          
         }
+
+        // Level 2 선택시 Level 3 설정
+        $("input[name=class2]:radio").change(Class2ChangeEvent)
       }
-    }
-    */
+    })
   }
 
-  // 이 함수는 DB에 저장하지 않고 브라우저의 window공간에 임시로 저장한다.
-  // DB에 저장은 등록 버튼을 눌렀을 떄 한다.
-  function add_locate_temporary(class_type, title, parent_class_id) {
-    const class_list = document.getElementById(`class${class_type}-list`);
-    const class_list_div = document.createElement("div");
-    let type;
-    console.log(this);
-    if(class_type === 1) {
-      id = uuidv4();
-      class1[id] = {'name': title, 'in_db':false};
-      id2 = uuidv4();
-      class2[id2] = {'name': '해당사항 없음', 'parent':id, 'parent_in_db':false, 'in_db':false}
-      id3 = uuidv4();
-      class3[id3] = {'name': '해당사항 없음', 'parent':id2, 'parent_in_db':false, 'in_db':false, 'isApply':0}
-    }
-    else if(class_type === 2) {
-      id = uuidv4();
-      if(parent_class_id in class1) {
-        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':class1[parent_class_id]['in_db'], 'in_db':false, 'isApply':0}
-      }
-      else {
-        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':false, 'in_db':false}
-      }
-      id2 = uuidv4();
-      class3[id2] = {'name': '해당사항 없음', 'parent':id, 'parent_in_db':false, 'in_db':false, 'isApply':0}
-    }
-    else if(class_type === 3) {
-      console.log(parent_class_id)
-      id = uuidv4();
-      if(parent_class_id in class2) {
-        class3[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':class2[parent_class_id]['in_db'], 'in_db':false, 'isApply':0}
-      }
-      else {
-        class3[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':false, 'in_db':false, 'isApply':0}
-      }
-    }
-    console.log(class1)
-    console.log(class2)
-    console.log(class3)    
-    if (class_type === 1) {
-      changeEvent = "Class1ChangeEvent.call(this)";
-      type = 'radio';
-    } else if (class_type === 2) {
-      changeEvent = "Class2ChangeEvent.call(this)";
-      type = 'radio'
-    } else if (class_type === 3) {
-      changeEvent = "";
-      type = 'checkbox'
-    }
-    class_list_div.className = "row";
-    class_list_div.innerHTML = `
-      <div class="col-10">
-        <input class="form-check-input" type="${type}" name="class${class_type}" id="class${class_type}_${id}"
-          value="${id}" onchange="${changeEvent}" data-type="temp">
-        <label class="form-check-label" for="class${class_type}_${id}">
-          ${title}
-        </label>
-      </div>
-      <div class="col-2">
-        <button type="button" class="btn-close" aria-label="Close" onclick="delete_locate(${class_type}, this)"
-          id="class${class_type}btn_${id}"></button>
-      </div>`;
-    class_list.appendChild(class_list_div);    
-  }
   // 설치 위치 추가 이벤트
   const add_locate = (class_type, e) => {
-    console.log(class_type, e)
     const input_element = document.getElementById(`class${class_type}_input`);
     let parent_class_id = 0;
     if (class_type !== 1) {
@@ -439,19 +246,12 @@ $(function() {
         return false;
       }
       parent_class_id = document.querySelector(`input[name="class${class_type-1}"]:checked`).value;
-      parent_label = $(`label[for="class${class_type-1}_${parent_class_id}"]`).text().trim();
-      console.log(parent_label)
     }
     const input_value = input_element.value;
     if (input_value === "") {
       return false;
     }
     input_element.value = "";
-    console.log(input_value)
-   
-    add_locate_temporary(class_type, input_value, parent_class_id);
-
-    /* 등록버튼을 누를 때에 DB에 저장이 되도록 수정
     $.ajax({
       url: "{% url 'system_manager:add_locate' %}",
       type: "POST",
@@ -466,11 +266,9 @@ $(function() {
       success: function (data) {
         if (data.result === "success") {
           const model = JSON.parse(data.data)[0];
-          console.log(model)
           const class_list = document.getElementById(`class${class_type}-list`);
           const class_list_div = document.createElement("div");
           let title, type;
-          console.log(this);
           if (class_type === 1) {
             title = model.fields.class1;
             changeEvent = "Class1ChangeEvent.call(this)";
@@ -501,195 +299,54 @@ $(function() {
         }
       }
     })
-    */
   }
 
   const delete_locate = (class_type, e) => {
-    let id = e.id.split("_")[1];
-    if(class_type === 1) {
-      if(class1[id]['in_db'] === false) {
-        for(cls2id in class2) {
-          if(class2[cls2id]['parent'] === id) {
-            console.log(cls2id);
-          }
-        }
-        delete class1[id];
-        e.parentNode.parentNode.remove();
-        // class1의 children과 class2의 children도 같이 삭제
-      }
-      else {
-        $.ajax({
-          url: "{% url 'system_manager:delete_locate' %}",
-          type: "POST",
-          headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
-          },
-          data: {
-            class_type: class_type,
-            class_id: e.id.split("_")[1]
-          },
-          success: function (data) {
-            e.parentNode.parentNode.remove();
-          }
-        })
-      }
-    }
-  }
-
-  function add_locate_in_db(class_type, input_value, parent_class_id, func_finish) {
     $.ajax({
-      url: "{% url 'system_manager:add_locate' %}",
+      url: "{% url 'system_manager:delete_locate' %}",
       type: "POST",
       headers: {
         'X-CSRFToken': '{{ csrf_token }}'
       },
       data: {
         class_type: class_type,
-        name: input_value,
-        class_id: parent_class_id
+        class_id: e.id.split("_")[1]
       },
       success: function (data) {
-        if (data.result === "success") {
-          const model = JSON.parse(data.data)[0];
-          console.log(model)
-          const class_list = document.getElementById(`class${class_type}-list`);
-          const class_list_div = document.createElement("div");
-          let title, type;
-          console.log(this);
-          // in_db 속성을 true로 변경
-          func_finish(model.pk);
-        }
+        e.parentNode.parentNode.remove();
       }
-    })    
+    })
   }
 
-  function register(class_type, input_value, parent_class_id, func_finish) {
-    if(class_type === 3) {
-      if(class2[parent_class_id]['in_db'] === false) {
-        console.log('register parent', class_type)
-        register(2, class2[parent_class_id]['name'], class2[parent_class_id]['parent'], 
-          (pk) => {
-            console.log('add locate(callback)', class_type)
-            add_locate_in_db(class_type, input_value, pk, func_finish);
-          }
-        );
-      }
-      else {
-        console.log('add locate(no callback)', class_type)
-        add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
-      }
-    }
-    else if(class_type === 2) {
-      if(class1[parent_class_id]['in_db'] === false) {
-        console.log('register parent', class_type)
-        register(1, class1[parent_class_id]['name'], class1[parent_class_id]['parent'], 
-          (pk) => {
-            console.log('add locate(callback)', class_type)
-            add_locate_in_db(class_type, input_value, pk, func_finish);
-          }
-        );
-      }
-      else {
-        console.log('add locate(no callback)', class_type)
-        add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
-      }
-    }
-    else {
-      console.log('add locate(no callback)', class_type)
-      add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
-    }
-  }
 
   // Level 1 선택시 Level 2 설정
   $("input[name=class1]:radio").change(Class1ChangeEvent)
 
   // Level3 선택된 값 모두 불러오기
   const apply_locate = () => {
-    const class3_ids_db = [], class3_ids_temp = [];
-    console.log($("input[name='class3']:checked"))
-    console.log(class1)
-    console.log(class2)
-    console.log(class3)
-
-    function request_apply(class3_ids) {
-      $.ajax({
-        url: "{% url 'system_manager:accept_locate' %}",
-        type: "POST",
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
-        },
-        data: {
-          'class_list[]': class3_ids,
-        },
-        success: function (data) {
-          Swal.fire({
-            title: '설치위치 설정 완료',
-            text: '설치위치 설정이 완료되었습니다.',
-            icon: 'success',
-            confirmButtonText: '확인'
-          }).then(() => {
-            location.reload();
-          })
-        }
-      })      
-    }
-    if($("input[name='class3']:checked").length === 0) {
-      Swal.fire({
-        title: '선택',
-        text: 'Level3 이 선택되지 않았습니다.',
-        icon: 'success',
-        confirmButtonText: '확인'
-      })      
-      return;
-    }
-
-
-    let count_db_in_false_max = 0;
-    $("input[name='class3']:checked").each( function(index, element) {
-      if(class3[$(this).val()]['in_db'] === true) {
-        class3_ids_db.push($(this).val())
-      }
-      else {
-        count_db_in_false_max++;
+    const class3_ids = Array.from(document.querySelectorAll("input[name=class3]:checked")).map(item => item
+      .value);
+    console.log(class3_ids)
+    $.ajax({
+      url: "{% url 'system_manager:accept_locate' %}",
+      type: "POST",
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      data: {
+        'class_list[]': class3_ids,
+      },
+      success: function (data) {
+        Swal.fire({
+          title: '설치위치 설정 완료',
+          text: '설치위치 설정이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인'
+        }).then(() => {
+          location.reload();
+        })
       }
     })
-
-    let count_db_in_false = 0;
-    if(count_db_in_false_max !== 0) {
-      $("input[name='class3']:checked").each( function(index, element) {
-        console.log(element)
-        console.log($(this).val())
-        console.log(class3[$(this).val()])
-
-        if(class3[$(this).val()]['in_db'] === false) {
-          class2_id = class3[$(this).val()]['parent']
-          
-          if(class2[class2_id]['in_db'] === false) {
-            console.log('class2 is temp')
-            class1_id = class2[class2_id]['parent'];
-            if(class1[class1_id]['in_db'] === false) {
-              console.log('class1 is temp')
-            }
-          }
-
-          register(3, class3[$(this).val()]['name'], class3[$(this).val()]['parent'], 
-            (pk) => {
-              class3[$(this).val()]['in_db'] = true;
-              count_db_in_false++;
-              class3_ids_temp.push(pk);
-              const class3_ids = class3_ids_db.concat(class3_ids_temp);
-              if(count_db_in_false === count_db_in_false_max) {
-                request_apply(class3_ids);
-              }
-            }
-          );
-        }
-      })
-
-    }
-    else {
-      request_apply(class3_ids_db);
-    }
   }
 
   // 설치위치 등록 해제
