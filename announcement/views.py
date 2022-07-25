@@ -82,6 +82,14 @@ def update_views(request, pk):
             return redirect("announcement:read_announcement", pk=pk)
     else:
         form = forms.AnnouncePostForm(instance=instance)
+        print('GET announcement')
+
+        # for item in instance.files.all():
+        #     print(file)
+        #     f = item.file.open('rb')
+        #     data = f.read()
+        #     print(data[0:10])
+
     return render(
         request,
         "announcement/create_announcement.html",
