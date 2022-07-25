@@ -382,7 +382,7 @@ $(function() {
     else if(class_type === 2) {
       id = uuidv4();
       if(parent_class_id in class1) {
-        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':class2[parent_class_id]['in_db'], 'in_db':false, 'isApply':0}
+        class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':class1[parent_class_id]['in_db'], 'in_db':false, 'isApply':0}
       }
       else {
         class2[id] = {'name': title, 'parent':parent_class_id, 'parent_in_db':false, 'in_db':false}
@@ -569,29 +569,33 @@ $(function() {
         console.log('register parent', class_type)
         register(2, class2[parent_class_id]['name'], class2[parent_class_id]['parent'], 
           (pk) => {
-            console.log('add locate', class_type)
+            console.log('add locate(callback)', class_type)
             add_locate_in_db(class_type, input_value, pk, func_finish);
           }
         );
       }
       else {
+        console.log('add locate(no callback)', class_type)
         add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
       }
     }
     else if(class_type === 2) {
-      console.log(parent_class_id)
       if(class1[parent_class_id]['in_db'] === false) {
+        console.log('register parent', class_type)
         register(1, class1[parent_class_id]['name'], class1[parent_class_id]['parent'], 
           (pk) => {
+            console.log('add locate(callback)', class_type)
             add_locate_in_db(class_type, input_value, pk, func_finish);
           }
         );
       }
       else {
+        console.log('add locate(no callback)', class_type)
         add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
       }
     }
     else {
+      console.log('add locate(no callback)', class_type)
       add_locate_in_db(class_type, input_value, parent_class_id, func_finish);
     }
   }
