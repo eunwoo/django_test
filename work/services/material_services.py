@@ -232,6 +232,8 @@ def update_material_generalEngineer(request, docNum):
             material.save()
             messages.success(request, "저장이 완료되었습니다.")
             return redirect("work:update_material", material.docNum)
+        else:
+            print(form.errors)
     else:
         form = GeneralEngineerMaterialSupplyReportForm(instance=material)
     return render(

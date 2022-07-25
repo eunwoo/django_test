@@ -273,7 +273,7 @@
               <tr>
                 <td class="table-secondary">회신일자</td>
                 <td colspan="5">
-                  <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="회신일자"
+                  <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}"
                     value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
                 </td>
               </tr>
@@ -368,6 +368,10 @@
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript">
+  $(function() {
+    $('input[name=replyDate]').attr("readonly",true);
+    $('input[name=replyDate]').datepicker('disable').removeAttr('disabled');
+  })
   // 변경 되었을 시 서명 입력이 안됨
 
   let isChange = false;

@@ -204,9 +204,8 @@
                 <td class="table-primary">회신일자</td>
                 <td colspan="5">
                   <input type="date" class="form-control" name="replyDate" id="replyDate" placeholder="날짜를 입력해주세요."
-                    value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" />
+                    value="{{form.instance.replyDate|date:'Y-m-d'|default_if_none:''}}" required />
                   <div class="d-flex justify-content-start">
-                    <div id="date-message">날짜를 입력해주세요.</div>
                   </div>
                 </td>
               </tr>
