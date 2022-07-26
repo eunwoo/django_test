@@ -78,7 +78,8 @@
                 <th scope="row">첨부파일</th>
                 <td>
                   <input class="form-control" id="file_list" type="file" name="file_list" multiple>
-                  <ul class="list-group" id="file_list_preview">
+                  <div style="display:flex; justify-content:flex-start">기존 첨부파일</div>
+                  <ul class="list-group" id="file_list_previous">
                     {% if form.instance.files.all %}
                     {% for item in form.instance.files.all %}
                     <li class="list-group-item" id="{{item.pk}}" name="{{item.file}}">{{item.file}}
@@ -87,6 +88,9 @@
                     <input type="hidden" id="filelist_{{item.pk}}" name="ids[]" value="{{item.pk}}">
                     {% endfor %}
                     {% endif %}
+                  </ul>
+                  <div style="display:flex; justify-content:flex-start">새로운 첨부파일</div>
+                  <ul class="list-group" id="file_list_preview">
                   </ul>
                 </td>
               </tr>
@@ -137,6 +141,7 @@
 
   fileInput.addEventListener('change', function () {
     const files = Array.from(this.files);
+    preview.innerHTML = '';
     files.forEach( (file, index) => {
       file.test = 'a';
       const li = document.createElement('li')

@@ -62,12 +62,21 @@ def update_views(request, pk):
             else:
                 law.preSave = False
             law.save()
-            files = request.FILES.getlist("file_list")
-            if files:
+
+            ids = request.POST.getlist("ids[]")
+            if len(ids) > 0:
+                for file in law.files.all():
+                    print(file.id)
+                    if str(file.id) not in ids:
+                        print("delete " + str(file.id))
+                        file.delete()
+            else:
                 law.files.all().delete()
+
+            files = request.FILES.getlist("file_list")
             for file in files:
                 law.files.create(file=file)
-            if law.preSave == True:
+            if law.preSave:
                 messages.success(request, "임시저장이 완료되었습니다.")
                 return redirect("law:update_law", law.pk)
             return redirect("law:read_law", pk=pk)

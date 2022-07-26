@@ -75,10 +75,8 @@ def update_views(request, pk):
             else:
                 announce.preSave = False
             announce.save()
-            files = request.FILES.getlist("file_list")
-            print(request.POST.getlist("ids[]"))
+
             ids = request.POST.getlist("ids[]")
-            print(announce.files.filter(pk__in=ids))
             if len(ids) > 0:
                 for file in announce.files.all():
                     print(file.id)
@@ -87,6 +85,8 @@ def update_views(request, pk):
                         file.delete()
             else:
                 announce.files.all().delete()
+
+            files = request.FILES.getlist("file_list")
             for file in files:
                 announce.files.create(file=file)
             if announce.preSave:
