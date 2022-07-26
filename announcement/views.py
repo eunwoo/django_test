@@ -85,6 +85,8 @@ def update_views(request, pk):
                     if str(file.id) not in ids:
                         print("delete " + str(file.id))
                         file.delete()
+            else:
+                announce.files.all().delete()
             for file in files:
                 announce.files.create(file=file)
             if announce.preSave:
