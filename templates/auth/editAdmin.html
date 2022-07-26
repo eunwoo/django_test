@@ -351,6 +351,9 @@
     function clearCanvas() {
       canvas.width = canvas.width;
       ctx.drawImage(image, 0, 0, 212, canvas.height);
+      // 서명 삭제후 글자 굵기 얇아지는 것 수정
+      ctx.strokeStyle = "#222222";
+      ctx.lineWidth = 4;
     }
 
     $('#id_class1 option').not(":selected").attr("disabled", "disabled");

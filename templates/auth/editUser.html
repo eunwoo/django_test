@@ -348,6 +348,8 @@
     function clearCanvas() {
       canvas.width = canvas.width;
       ctx.drawImage(image, 0, 0, 212, canvas.height);
+      ctx.strokeStyle = "#222222";
+      ctx.lineWidth = 4;
     }
 
     $('#id_class1 option').not(":selected").attr("disabled", "disabled");
