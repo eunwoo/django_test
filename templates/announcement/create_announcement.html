@@ -81,7 +81,10 @@
                   <ul class="list-group" id="file_list_preview">
                     {% if form.instance.files.all %}
                     {% for item in form.instance.files.all %}
-                    <li class="list-group-item" id="{{item.pk}}">{{item.file}}</li>
+                    <li class="list-group-item" id="{{item.pk}}" name="{{item.file}}">{{item.file}}
+                      <button class="btn btn-danger btn-sm" type="button" onclick="delete_file.bind(this)();">삭제</button>
+                    </li>
+                    <input type="hidden" id="filelist_{{item.pk}}" name="ids[]" value="{{item.pk}}">
                     {% endfor %}
                     {% endif %}
                   </ul>
@@ -109,57 +112,61 @@
   const preview = document.getElementById(`${v}_preview`)
   
   
-  console.log($(`#${v}_preview > li`))
+  console.log($(`#${v}_preview`).find("> li"))
   let filename = []
   $(`#${v}_preview > li`).map( function() { 
-    console.log($(this).text())
-    sp = $(this).text().split('/');
-    filename.push(sp[sp.length-1])
+    console.log($(this).attr('name'))
+    sp = $(this).attr('name');
+    filename.push(sp)
   })
   let files = [];
   filename.forEach( function(value) {
     console.log(value)
     const file = new File([""], value);
-    //files.push(file)
+    files.push(file)
   })
   
+  function delete_file() {
+    console.log(this)
+    const dataTranster = new DataTransfer();
+    const current_files = document.getElementById(v).files;
+    console.log('current_files.length', current_files.length)
+    const id = this.parentNode.dataset.id;  // DB에 저장되어 있는 파일은 dataset.id가 없어서 undefined
+    console.log('id',id);
+    Array.from(current_files).forEach( (file, index) => {
+      console.log(file.lastModified);
+      console.log(index)
+      if (id === undefined || parseInt(id) !== index) {
+        dataTranster.items.add(file)
+        console.log('add file',file)
+      }
+    })
+    console.log(dataTranster.files)
+    document.getElementById(v).files = dataTranster.files;
+    this.parentNode.remove()
+    console.log('delete_file',$(this.parentNode).attr('id'))
+    let hidden_id = $(this.parentNode).attr('id');
+    console.log($(`:hidden#filelist_${hidden_id}`))
+    $(`:hidden#filelist_${hidden_id}`).remove();
+  }
+
   fileInput.addEventListener('change', function () {
     const files = Array.from(this.files)
-    //files.push.apply(files, this.files)
-    preview.innerHTML = ''
     files.forEach( (file, index) => {
+      file.test = 'a';
       const li = document.createElement('li')
       li.classList.add('list-group-item')
-      li.id = file.lastModified
-      li.innerHTML = file.name
-      li.dataset.id = index
+      li.innerHTML = file.name+" "
+      li.dataset.id = index;  // 새로 추가된 파일에 번호를 붙임
       const delete_button = document.createElement('button')
       delete_button.innerHTML = '삭제'
       delete_button.classList.add('btn', 'btn-danger', 'btn-sm')
       delete_button.type = 'button'
-      delete_button.onclick = function () {
-        const modify = this.parentNode.id;
-        const dataTranster = new DataTransfer();
-        const current_files = document.getElementById(v).files;
-        console.log(current_files)
-        const id = this.parentNode.dataset.id;
-        console.log('id',id);
-        Array.from(current_files).forEach( (file, index) => {
-          console.log(file.lastModified);
-          console.log(index)
-          if (parseInt(id) !== index) {
-            dataTranster.items.add(file)
-            console.log('add file',file)
-          }
-        })
-        console.log(dataTranster.files)
-        document.getElementById(v).files = dataTranster.files;
-        this.parentNode.remove()
-        console.log(document.getElementById(v).files)
-      }
+      delete_button.onclick = delete_file.bind(delete_button);
       li.append(delete_button)
       preview.append(li)
     })
+    console.log(files);
   })
 </script>
 {% endblock  %}

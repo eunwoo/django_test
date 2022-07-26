@@ -76,11 +76,18 @@ def update_views(request, pk):
                 announce.preSave = False
             announce.save()
             files = request.FILES.getlist("file_list")
-            if files:
-                announce.files.all().delete()
+            print(request.POST.getlist("ids[]"))
+            ids = request.POST.getlist("ids[]")
+            print(announce.files.filter(pk__in=ids))
+            if len(ids) > 0:
+                for file in announce.files.all():
+                    print(file.id)
+                    if str(file.id) not in ids:
+                        print("delete " + str(file.id))
+                        file.delete()
             for file in files:
                 announce.files.create(file=file)
-            if announce.preSave == True:
+            if announce.preSave:
                 messages.success(request, "임시저장이 완료되었습니다.")
                 return redirect("announcement:update_announcement", announce.pk)
             return redirect("announcement:read_announcement", pk=pk)
