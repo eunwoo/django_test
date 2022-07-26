@@ -137,19 +137,19 @@
               <tr>
                 <td>
                   {% if i.type == "safety" %}
-                  <a target="_blank" href="{% url 'work:read_safety' i.docNum %}" class="link-primary">
+                  <a href="{% url 'work:read_safety' i.docNum %}" class="link-primary">
                     구조 안전성 검토 신고서-{{ i.docNum}}-{{i.title}}
                   </a>
                   {% elif i.type == "material" %}
-                  <a target="_blank" href="{% url 'work:read_material' i.docNum %}" class="link-primary">
+                  <a href="{% url 'work:read_material' i.docNum %}" class="link-primary">
                     자재 공급원 신고서-{{ i.docNum}}-{{i.title}}
                   </a>
                   {% elif i.type == "qty_request" %}
-                  <a target="_blank" href="{% url 'work:read_quality_request' i.docNum %}" class="link-primary">
+                  <a href="{% url 'work:read_quality_request' i.docNum %}" class="link-primary">
                     품질검사 의뢰서-{{ i.docNum}}-{{i.title}}
                   </a>
                   {% elif i.type == "qty_report" %}
-                  <a target="_blank" href="{% url 'work:read_quality_report' i.docNum %}" class="link-primary">
+                  <a href="{% url 'work:read_quality_report' i.docNum %}" class="link-primary">
                     품질검사 성과보고서-{{ i.docNum}}-{{i.title}}
                   </a>
                   {% elif i.type == "beforechecklist" %}
