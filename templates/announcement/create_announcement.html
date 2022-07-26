@@ -111,21 +111,6 @@
   const fileInput = document.getElementById(v)
   const preview = document.getElementById(`${v}_preview`)
   
-  
-  console.log($(`#${v}_preview`).find("> li"))
-  let filename = []
-  $(`#${v}_preview > li`).map( function() { 
-    console.log($(this).attr('name'))
-    sp = $(this).attr('name');
-    filename.push(sp)
-  })
-  let files = [];
-  filename.forEach( function(value) {
-    console.log(value)
-    const file = new File([""], value);
-    files.push(file)
-  })
-  
   function delete_file() {
     console.log(this)
     const dataTranster = new DataTransfer();
@@ -151,7 +136,7 @@
   }
 
   fileInput.addEventListener('change', function () {
-    const files = Array.from(this.files)
+    const files = Array.from(this.files);
     files.forEach( (file, index) => {
       file.test = 'a';
       const li = document.createElement('li')
@@ -166,7 +151,6 @@
       li.append(delete_button)
       preview.append(li)
     })
-    console.log(files);
   })
 </script>
 {% endblock  %}
