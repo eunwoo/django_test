@@ -81,7 +81,7 @@
                   <ul class="list-group" id="file_list_preview">
                     {% if form.instance.files.all %}
                     {% for item in form.instance.files.all %}
-                    <li class="list-group-item">{{item.file}}</li>
+                    <li class="list-group-item" id="{{item.pk}}">{{item.file}}</li>
                     {% endfor %}
                     {% endif %}
                   </ul>

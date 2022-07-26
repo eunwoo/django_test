@@ -44,7 +44,11 @@ def create_views(request):
         )
         if pre_save_post.count() > 0:
             messages.success(request, "임시저장한 문서를 불러왔습니다.")
-            return redirect("announcement:update_announcement", pre_save_post[0].pk)
+            return redirect(
+                "announcement:update_announcement",
+                pre_save_post[0].pk,
+                pre_save_post[0].files,
+            )
         form = forms.AnnouncePostForm()
     return render(
         request,
@@ -82,7 +86,7 @@ def update_views(request, pk):
             return redirect("announcement:read_announcement", pk=pk)
     else:
         form = forms.AnnouncePostForm(instance=instance)
-        print('GET announcement')
+        print("GET announcement")
 
         # for item in instance.files.all():
         #     print(file)
